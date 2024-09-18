@@ -1,0 +1,447 @@
+-- Blox Fruits UI V4 Rework --
+
+local ScreenGui = Instance.new("ScreenGui")
+local OpenClose = Instance.new("TextButton")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local ChestBox = Instance.new("ScrollingFrame")
+local BuyStuffBox = Instance.new("ScrollingFrame")
+
+
+ScreenGui.Parent = game.CoreGui
+
+-- More ScrollingFrame --
+
+ChestBox.Parent = ScreenGui
+ChestBox.Size = UDim2.new(0.1, 0, 0.2, 0)
+ChestBox.Position = UDim2.new(-1, 0, 0.2, 0)
+ChestBox.BackgroundColor3 = Color3.new(0, 0, 0)
+ChestBox.BackgroundTransparency = 0.5
+ChestBox.CanvasSize = UDim2.new(0, 0, 2, 0)
+ChestBox.ScrollBarThickness = 0.1
+
+BuyStuffBox.Parent = ScreenGui
+BuyStuffBox.Size = UDim2.new(0.1, 0, 0.2, 0)
+BuyStuffBox.Position = UDim2.new(-1, 0, 0.2, 0)
+BuyStuffBox.BackgroundColor3 = Color3.new(0, 0, 0)
+BuyStuffBox.BackgroundTransparency = 0.5
+BuyStuffBox.CanvasSize = UDim2.new(0, 0, 2, 0)
+BuyStuffBox.ScrollBarThickness = 0.1
+
+-- More Button --
+
+-- Function --
+
+local tweenService = game:GetService("TweenService")
+local tweenSpeed = 150 -- Default speed in studs per second
+
+-- Function to calculate tween duration based on distance and speed
+local function calculateTweenDuration(startPos, endPos, speed)
+    local distance = (endPos - startPos).magnitude
+    return distance / speed
+end
+
+-- Define a function to create tween information
+local function createTweenInfo(startPos, endPos)
+    local duration = calculateTweenDuration(startPos, endPos, tweenSpeed)
+    return TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+end
+
+-- Toggle mode variable
+local isTweenMode = false
+local currentTween = nil
+
+-- Hold references to buttons and other UI elements
+local teleportButtons = {}
+local visibilityToggleButton, modeToggleButton, textBox, speedTextBox
+
+-- Function to print all player names to the console
+local function printAllPlayerNames()
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        print(player.Name)
+    end
+end
+
+-- Execute the printAllPlayerNames function immediately
+printAllPlayerNames()
+
+
+
+-- Close Function --
+
+ScrollingFrame.Parent = ScreenGui
+ScrollingFrame.Size = UDim2.new(0.3, 0, 0.1, 0)  -- Adjusted to a more visible size
+ScrollingFrame.Position = UDim2.new(1.2, 0, 0.28, 0)  -- Positioned in the center of the screen
+ScrollingFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingFrame.BackgroundTransparency = 0.5
+ScrollingFrame.CanvasSize = UDim2.new(2, 0, 0, 0)  -- Wider canvas size to enable scrolling
+ScrollingFrame.ScrollBarThickness = 0.1
+
+local ScrollingFrameCorner = Instance.new("UICorner")
+ScrollingFrameCorner.Parent = ScrollingFrame
+ScrollingFrameCorner.CornerRadius = UDim.new(0, 10)
+
+-- OpenClose Function --
+
+OpenClose.Parent = ScreenGui
+OpenClose.BackgroundColor3 = Color3.new(0, 0, 0)
+OpenClose.BackgroundTransparency = 0.5
+OpenClose.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
+OpenClose.TextScaled = true
+OpenClose.Position = UDim2.new(0.84, 0, -0.1, 0)  -- Positioned outside the ScrollingFrame
+OpenClose.TextColor3 = Color3.new(1, 1, 1)
+OpenClose.Font = Enum.Font.PatrickHand
+OpenClose.Text = "+"
+
+local OpenCloseCorner = Instance.new("UICorner")
+OpenCloseCorner.Parent = OpenClose
+OpenCloseCorner.CornerRadius = UDim.new(0, 10)
+
+-- Create and configure TweenService
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeedd = 1  -- Duration in seconds
+local tweenInfo = TweenInfo.new(tweenSpeedd, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+-- Define tween goals
+
+local goalPosition1 = UDim2.new(0.6, 0, 0.28, 0)  -- Move ScrollingFrame down
+local goalPosition2 = UDim2.new(1.2, 0, 0.28, 0)  -- Original position
+
+-- Create tweens
+
+local tween1 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition1})
+local tween2 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition2})
+
+-- Toggle button behavior
+
+local isToggled = false
+OpenClose.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween2:Play()
+    else
+        tween1:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- Done --
+
+-- Button Ability Inside ScrollingFrame --
+
+local button1 = Instance.new("TextButton")
+button1.Parent = ScrollingFrame
+button1.BackgroundColor3 = Color3.new(0, 0, 0)
+button1.BackgroundTransparency = 0.5
+button1.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button1.TextScaled = true
+button1.Position = UDim2.new(0.005, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+button1.Font = Enum.Font.PatrickHand
+button1.Text = "Chest Farm"
+
+local button2 = Instance.new("TextButton")
+button2.Parent = ScrollingFrame
+button2.BackgroundColor3 = Color3.new(0, 0, 0)
+button2.BackgroundTransparency = 0.5
+button2.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button2.TextScaled = true
+button2.Position = UDim2.new(0.045, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+button2.Font = Enum.Font.PatrickHand
+button2.Text = "Mode: Teleportation"
+
+local button3 = Instance.new("TextBox")
+button3.Parent = ScrollingFrame
+button3.BackgroundColor3 = Color3.new(0, 0, 0)
+button3.BackgroundTransparency = 0.5
+button3.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button3.TextScaled = true
+button3.Position = UDim2.new(0.085, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button3.TextColor3 = Color3.fromRGB(255, 255, 255)
+button3.Font = Enum.Font.PatrickHand
+button3.Text = tostring(tweenSpeed)
+button3.ClearTextOnFocus = false
+
+local button4 = Instance.new("TextBox")
+button4.Parent = ScrollingFrame
+button4.BackgroundColor3 = Color3.new(0, 0, 0)
+button4.BackgroundTransparency = 0.5
+button4.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button4.TextScaled = true
+button4.Position = UDim2.new(0.125, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button4.TextColor3 = Color3.fromRGB(255, 255, 255)
+button4.Font = Enum.Font.PatrickHand
+button4.Text = "Username In"
+button4.ClearTextOnFocus = false
+
+local Reset = Instance.new("TextButton")
+Reset.Parent = ScrollingFrame
+Reset.BackgroundColor3 = Color3.new(0, 0, 0)
+Reset.BackgroundTransparency = 0.5
+Reset.Size = UDim2.new(0.03, 0, 0.9, 0)
+Reset.TextScaled = true
+Reset.Position = UDim2.new(0.165, 0, 0, 0)
+Reset.TextColor3 = Color3.new(1, 1, 1)
+Reset.Font = Enum.Font.PatrickHand
+Reset.Text = "Reset Character"
+
+Reset.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+end)
+
+local Shop = Instance.new("TextButton")
+Shop.Parent = ScrollingFrame
+Shop.BackgroundColor3 = Color3.new(0, 0, 0)
+Shop.BackgroundTransparency = 0.5
+Shop.Size = UDim2.new(0.03, 0, 0.9, 0)
+Shop.TextScaled = true
+Shop.Position = UDim2.new(0.205, 0, 0, 0)
+Shop.TextColor3 = Color3.new(1, 1, 1)
+Shop.Font = Enum.Font.PatrickHand
+Shop.Text = "Shop Items"
+
+-- Define tween goals
+
+local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ChestBox down
+local goalPosition4 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+-- Create tweens
+
+local tween3 = TweenService:Create(ChestBox, tweenInfo, {Position = goalPosition3})
+local tween4 = TweenService:Create(ChestBox, tweenInfo, {Position = goalPosition4})
+
+-- Toggle button behavior
+
+local isToggled = false
+button1.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween4:Play()
+    else
+        tween3:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- Define tween goals
+
+local goalPosition5 = UDim2.new(0.1, 0, 0.2, 0)  -- Move ChestBox down
+local goalPosition6 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+-- Create tweens
+
+local tween5 = TweenService:Create(BuyStuffBox, tweenInfo, {Position = goalPosition5})
+local tween6 = TweenService:Create(BuyStuffBox, tweenInfo, {Position = goalPosition6})
+
+-- Toggle button behavior
+
+local isToggled = false
+Shop.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween6:Play()
+    else
+        tween5:Play()
+    end
+    isToggled = not isToggled
+end)
+
+button2.MouseButton1Click:Connect(function()
+    isTweenMode = not isTweenMode
+    button2.Text = isTweenMode and "Mode: Tweening" or "Mode: Teleportation"
+    button2.TextColor3 = isTweenMode and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(255, 255, 255)
+    
+    if not isTweenMode and currentTween then
+        currentTween:Cancel()
+    end
+end)
+
+button3.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local newSpeed = tonumber(button3.Text)
+        if newSpeed and newSpeed > 0 then
+            tweenSpeed = newSpeed
+        else
+            warn("Invalid tween speed: " .. tostring(speedTextBox.Text))
+        end
+    end
+end)
+
+button4.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local username = button4.Text
+        local player = game:GetService("Players"):FindFirstChild(username)
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
+            local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+            if isTweenMode then
+                if currentTween then
+                    currentTween:Cancel()
+                end
+
+                local goal = {CFrame = CFrame.new(targetPosition)}
+                local tweenInfo = createTweenInfo(playerPos, targetPosition)
+                currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+                currentTween:Play()
+            else
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+            end
+        else
+            warn("Player not found: " .. username)
+        end
+    end
+end)
+
+-- Chest TP --
+
+local SilverChest = Instance.new("TextButton")
+SilverChest.Parent = ChestBox
+SilverChest.BackgroundColor3 = Color3.new(0, 0, 0)
+SilverChest.BackgroundTransparency = 0.5
+SilverChest.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+SilverChest.TextScaled = true
+SilverChest.Position = UDim2.new(0.1, 0, 0.005, 0)  -- Positioned inside the ScrollingFrame
+SilverChest.TextColor3 = Color3.new(1, 1, 1)
+SilverChest.Font = Enum.Font.PatrickHand
+SilverChest.Text = "Silver Chest"
+
+SilverChest.MouseButton1Click:Connect(function()
+    local chest = game:GetService("Workspace"):FindFirstChild("Chest1")
+    if chest then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = chest.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        warn("Chest not found: Chest1")
+    end
+end)
+
+local GoldenChest = Instance.new("TextButton")
+GoldenChest.Parent = ChestBox
+GoldenChest.BackgroundColor3 = Color3.new(0, 0, 0)
+GoldenChest.BackgroundTransparency = 0.5
+GoldenChest.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+GoldenChest.TextScaled = true
+GoldenChest.Position = UDim2.new(0.1, 0, 0.085, 0)  -- Positioned inside the ScrollingFrame
+GoldenChest.TextColor3 = Color3.new(1, 1, 1)
+GoldenChest.Font = Enum.Font.PatrickHand
+GoldenChest.Text = "Golden Chest"
+
+GoldenChest.MouseButton1Click:Connect(function()
+    local chestg = game:GetService("Workspace"):FindFirstChild("Chest2")
+    if chestg then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = chestg.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestg.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        warn("Chest not found: Chest2")
+    end
+end)
+
+local DiamondChest = Instance.new("TextButton")
+DiamondChest.Parent = ChestBox
+DiamondChest.BackgroundColor3 = Color3.new(0, 0, 0)
+DiamondChest.BackgroundTransparency = 0.5
+DiamondChest.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+DiamondChest.TextScaled = true
+DiamondChest.Position = UDim2.new(0.1, 0, 0.165, 0)  -- Positioned inside the ScrollingFrame
+DiamondChest.TextColor3 = Color3.new(1, 1, 1)
+DiamondChest.Font = Enum.Font.PatrickHand
+DiamondChest.Text = "Golden Chest"
+
+DiamondChest.MouseButton1Click:Connect(function()
+    local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
+    if chestd then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = chestd.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestd.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        warn("Chest not found: Chest3")
+    end
+end)
+
+-- Shop --
+
+local BuyItem1 = Instance.new("TextButton")
+BuyItem1.Parent = BuyStuffBox
+BuyItem1.BackgroundColor3 = Color3.new(0, 0, 0)
+BuyItem1.BackgroundTransparency = 0.5
+BuyItem1.Size = UDim2.new(0.8, 0, 0.05, 0)
+BuyItem1.TextScaled = true
+BuyItem1.Position = UDim2.new(0.1, 0, 0.005, 0)
+BuyItem1.TextColor3 = Color3.new(1, 1, 1)
+BuyItem1.Font = Enum.Font.PatrickHand
+BuyItem1.Text = "Buy: Geppo/Air Jump"
+
+BuyItem1.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "BuyHaki",
+    [2] = "Geppo"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+end)
+
+local BuyItem2 = Instance.new("TextButton")
+BuyItem2.Parent = BuyStuffBox
+BuyItem2.BackgroundColor3 = Color3.new(0, 0, 0)
+BuyItem2.BackgroundTransparency = 0.5
+BuyItem2.Size = UDim2.new(0.8, 0, 0.05, 0)
+BuyItem2.TextScaled = true
+BuyItem2.Position = UDim2.new(0.1, 0, 0.085, 0)
+BuyItem2.TextColor3 = Color3.new(1, 1, 1)
+BuyItem2.Font = Enum.Font.PatrickHand
+BuyItem2.Text = "Buy: Buso Haki/Weapon"
+
+BuyItem2.MouseButton1Click:Connect(function()
+    warn("nothing")
+end)
+
+local BuyItem3 = Instance.new("TextButton")
+BuyItem3.Parent = BuyStuffBox
+BuyItem3.BackgroundColor3 = Color3.new(0, 0, 0)
+BuyItem3.BackgroundTransparency = 0.5
+BuyItem3.Size = UDim2.new(0.8, 0, 0.05, 0)
+BuyItem3.TextScaled = true
+BuyItem3.Position = UDim2.new(0.1, 0, 0.165, 0)
+BuyItem3.TextColor3 = Color3.new(1, 1, 1)
+BuyItem3.Font = Enum.Font.PatrickHand
+BuyItem3.Text = "Buy: Soru/Flash Step"
+
+BuyItem3.MouseButton1Click:Connect(function()
+    warn("nothing")
+end)
+
+-- Welcome message --
+
+local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Welcome to NganHa2k3 Script",
+            Text = "Blox Fruits collect chest, quicks change weapon !",
+            Duration = 2,
+        })
