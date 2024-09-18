@@ -1,0 +1,568 @@
+-- NganHa2k3 MM2 Tools Box --
+
+local ScreenGui = Instance.new("ScreenGui")
+local PlusButton = Instance.new("TextButton")
+
+local ToolsBox = Instance.new("ScrollingFrame")
+
+ScreenGui.Parent = game.CoreGui
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+-- Function Box --
+
+local function AutoCoinsFunction()
+    local partName = "Coin_Server"
+    local teleportSpeed = 1
+
+    -- Function to find only the first instance of the part with the specified name
+    local function findPart(partName, parent)
+        for _, obj in pairs(parent:GetChildren()) do
+            if obj:IsA("Model") or obj:IsA("Folder") then
+                local part = findPart(partName, obj)
+                if part then
+                    return part
+                end
+            elseif obj:IsA("BasePart") and obj.Name == partName then
+                return obj
+            end
+        end
+        return nil
+    end
+
+    local function teleportPlayerToPart(player, part, originalPosition)
+        if player and part and part:IsA("BasePart") then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                local humanoidRootPart = character.HumanoidRootPart
+                local originalCFrame = humanoidRootPart.CFrame
+                
+                humanoidRootPart.CFrame = part.CFrame + Vector3.new(0, 4, 0)
+                
+                wait(teleportSpeed)
+                humanoidRootPart.CFrame = originalPosition
+            end
+        end
+    end
+
+    local player = game.Players.LocalPlayer
+    local part = findPart(partName, game.Workspace)
+
+    if part then
+        local character = player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local originalPosition = character.HumanoidRootPart.CFrame
+            
+            teleportPlayerToPart(player, part, originalPosition)
+            wait(teleportSpeed)
+        end
+    else
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Error",
+            Text = "Not Found Any Coin Exist!",
+            Duration = 2,
+        })
+        wait(5)
+    end
+end
+
+local function AutoGunDropFunction()
+    local partName = "GunDrop"
+    local teleportSpeed = 1
+
+    -- Function to find only the first instance of the part with the specified name
+    local function findPart(partName, parent)
+        for _, obj in pairs(parent:GetChildren()) do
+            if obj:IsA("Model") or obj:IsA("Folder") then
+                local part = findPart(partName, obj)
+                if part then
+                    return part
+                end
+            elseif obj:IsA("BasePart") and obj.Name == partName then
+                return obj
+            end
+        end
+        return nil
+    end
+
+    local function teleportPlayerToPart(player, part, originalPosition)
+        if player and part and part:IsA("BasePart") then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                local humanoidRootPart = character.HumanoidRootPart
+                local originalCFrame = humanoidRootPart.CFrame
+                
+                humanoidRootPart.CFrame = part.CFrame
+                
+                wait(teleportSpeed)
+                humanoidRootPart.CFrame = originalPosition
+            end
+        end
+    end
+
+    local player = game.Players.LocalPlayer
+    local part = findPart(partName, game.Workspace)
+
+    if part then
+        local character = player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            local originalPosition = character.HumanoidRootPart.CFrame
+            
+            teleportPlayerToPart(player, part, originalPosition)
+            wait(teleportSpeed)
+        end
+    else
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Error: No Gun Drop",
+            Text = "Not Found Any Gun Exist!",
+            Duration = 2,
+        })
+        wait(5)
+    end
+end
+
+local function MurderAllPlayers()
+local players = game.Players:GetPlayers()
+
+local otherPlayers = {}
+for _, p in pairs(players) do
+if p ~= player then
+table.insert(otherPlayers, p)
+end
+end
+
+local randomPlayer = otherPlayers[math.random(#otherPlayers)]
+
+randomPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+end
+
+local function AutoVote()
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- List of target positions
+local targetPositions = {
+    Vector3.new(-101, 145, 87),
+Vector3.new(-110, 145, 86),
+Vector3.new(-119, 145, 87),
+Vector3.new(-110, 143, 52)
+}
+
+local speed = 150  -- Speed in studs per second
+
+-- Function to create and play tween
+local function createAndPlayTween(targetPos, tweenInfo)
+    local tweenGoal = { CFrame = CFrame.new(targetPos) }
+    local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
+    tween:Play()
+    return tween
+end
+
+-- Function to start tweening through positions
+local function startTweens()
+    local tweenIndex = 1
+
+    local function tweenToNextPosition()
+        if tweenIndex > #targetPositions then
+            print("Tweening completed.")
+            return  -- Stop when all positions have been tweened
+        end
+
+        local currentPos = humanoidRootPart.Position
+        local targetPos = targetPositions[tweenIndex]
+        local distance = (currentPos - targetPos).magnitude
+        local duration = distance / speed  -- Calculate duration based on speed
+
+        local tweenInfo = TweenInfo.new(
+            duration,  -- Duration based on speed
+            Enum.EasingStyle.Linear,
+            Enum.EasingDirection.InOut
+        )
+
+        local tween = createAndPlayTween(targetPos, tweenInfo)
+
+        tween.Completed:Connect(function()
+            tweenIndex = tweenIndex + 1
+            wait(0.5)  -- Optional delay between tweens
+            tweenToNextPosition()
+        end)
+    end
+
+    tweenToNextPosition()  -- Start tweening
+end
+
+startTweens()
+end
+
+local function MurderSheriffESP()
+local Players = game:GetService("Players")
+local arkenstoneName = "Gun"  -- Tool Name for Gun
+local stoneName = "Knife"     -- Tool Name for Knife
+local redColor = Color3.fromRGB(255, 0, 0)  -- Red color
+local blueColor = Color3.fromRGB(0, 0, 255)  -- Blue color
+
+-- Function to create or update the BillboardGui with the appropriate symbol and color
+local function updateNameTag(player)
+    local character = player.Character
+    if not character then return end
+
+    -- Ensure the character has a head
+    local head = character:FindFirstChild("Head")
+    if not head then return end
+
+    -- Find and remove existing BillboardGui if it exists
+    local existingBillboardGui = head:FindFirstChild("BillboardGui")
+    if existingBillboardGui then
+        existingBillboardGui:Destroy()
+    end
+
+    -- Check if the player has the specific tools
+    local backpack = player:FindFirstChildOfClass("Backpack")
+    local hasArkenstone = false
+    local hasStone = false
+    if backpack then
+        for _, tool in ipairs(backpack:GetChildren()) do
+            if tool:IsA("Tool") then
+                if tool.Name == arkenstoneName then
+                    hasArkenstone = true
+                elseif tool.Name == stoneName then
+                    hasStone = true
+                end
+            end
+        end
+    end
+    
+    -- Create new BillboardGui if needed
+    if hasArkenstone or hasStone then
+        local billboardGui = Instance.new("BillboardGui")
+        billboardGui.Name = "BillboardGui"
+        billboardGui.Adornee = head
+        billboardGui.Size = UDim2.new(0, 50, 0, 50)
+        billboardGui.StudsOffset = Vector3.new(0, 2, 0)  -- Adjust as necessary
+        billboardGui.Parent = head
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Name = "box"  -- Name text label as "box"
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextStrokeTransparency = 0.5
+        textLabel.TextScaled = true
+        textLabel.Parent = billboardGui
+
+        -- Update the text and color based on tool presence
+        if hasArkenstone then
+            textLabel.Text = "<Sheriff>"
+            textLabel.TextColor3 = blueColor  -- Set text color to blue for Gun
+        elseif hasStone then
+            textLabel.Text = "<Murderer>"
+            textLabel.TextColor3 = redColor  -- Set text color to red for Knife
+        end
+    end
+end
+
+-- Function to handle player respawn and update their name tags
+local function onCharacterAdded(character)
+    local player = Players:GetPlayerFromCharacter(character)
+    if player then
+        updateNameTag(player)
+    end
+end
+
+-- Function to monitor players and update their name tags
+local function monitorPlayers()
+    while true do
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player.Character then
+                updateNameTag(player)
+            end
+        end
+        wait(0.5)  -- Check every second
+    end
+end
+
+-- Connect functions to player events
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(onCharacterAdded)
+    player.CharacterRemoving:Connect(function()
+        -- Ensure to remove BillboardGui on character removing
+        local character = player.Character
+        if character then
+            local head = character:FindFirstChild("Head")
+            if head then
+                local billboardGui = head:FindFirstChild("BillboardGui")
+                if billboardGui then
+                    billboardGui:Destroy()
+                end
+            end
+        end
+    end)
+end)
+
+-- Ensure we update all existing players' name tags
+for _, player in ipairs(Players:GetPlayers()) do
+    if player.Character then
+        updateNameTag(player)
+    end
+end
+
+-- Start monitoring players
+coroutine.wrap(monitorPlayers)()
+end
+
+-- Close of Function Box --
+
+PlusButton.Parent = ScreenGui
+PlusButton.BackgroundColor3 = Color3.new(0, 0, 0)
+PlusButton.BackgroundTransparency = 0.5
+PlusButton.Size = UDim2.new(0.05, 0, 0.1, 0)
+PlusButton.TextScaled = true
+PlusButton.Position = UDim2.new(0.88, 0, -0.1, 0)
+PlusButton.TextColor3 = Color3.new(1, 1, 1)
+PlusButton.Font = Enum.Font.PatrickHand
+PlusButton.Text = "+"
+
+local PlusButtonCorner = Instance.new("UICorner")
+PlusButtonCorner.Parent = PlusButton
+PlusButtonCorner.CornerRadius = UDim.new(0, 10)
+
+ToolsBox.Parent = ScreenGui
+ToolsBox.Size = UDim2.new(0.3, 0, 0.1, 0)
+ToolsBox.Position = UDim2.new(1.2, 0, 0.18, 0)
+ToolsBox.BackgroundColor3 = Color3.new(0, 0, 0)
+ToolsBox.BackgroundTransparency = 0.5
+ToolsBox.CanvasSize = UDim2.new(2, 0, 0, 0)
+ToolsBox.ScrollBarThickness = 0.1
+
+local goalPosition1 = UDim2.new(0.695, 0, 0.18, 0)
+local goalPosition2 = UDim2.new(1.2, 0, 0.18, 0)
+
+local tween1 = TweenService:Create(ToolsBox, tweenInfo, {Position = goalPosition1})
+local tween2 = TweenService:Create(ToolsBox, tweenInfo, {Position = goalPosition2})
+
+local isToggled = false
+PlusButton.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween2:Play()
+    else
+        tween1:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- Button Inside Tools Box --
+
+local button1 = Instance.new("TextButton")
+button1.Parent = ToolsBox
+button1.BackgroundColor3 = Color3.new(0, 0, 0)
+button1.BackgroundTransparency = 0.5
+button1.Size = UDim2.new(0.03, 0, 0.9, 0)
+button1.TextScaled = true
+button1.Position = UDim2.new(0.005, 0, 0, 0)
+button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+button1.Font = Enum.Font.PatrickHand
+button1.Text = "Auto Collect Coins: OFF"
+
+local isActivated = false
+
+button1.MouseButton1Click:Connect(function()
+    if isActivated then
+        button1.Text = "Auto Collect Coins: OFF"
+        button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        isActivated = false
+    else
+        button1.Text = "Auto Collect Coins: ON"
+        button1.TextColor3 = Color3.fromRGB(0, 255, 0)
+        
+        isActivated = true
+        
+        while isActivated do
+    AutoCoinsFunction()
+wait(0.5)
+end
+    end
+end)
+
+local button2 = Instance.new("TextButton")
+button2.Parent = ToolsBox
+button2.BackgroundColor3 = Color3.new(0, 0, 0)
+button2.BackgroundTransparency = 0.5
+button2.Size = UDim2.new(0.03, 0, 0.9, 0)
+button2.TextScaled = true
+button2.Position = UDim2.new(0.045, 0, 0, 0)
+button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+button2.Font = Enum.Font.PatrickHand
+button2.Text = "Auto Get Gun Drop: OFF"
+
+local isActivateds = false
+
+button2.MouseButton1Click:Connect(function()
+    if isActivateds then
+        button2.Text = "Auto Get Gun Drop: OFF"
+        button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        isActivateds = false
+    else
+        button2.Text = "Auto Get Gun Drop: ON"
+        button2.TextColor3 = Color3.fromRGB(0, 255, 0)
+        
+        isActivateds = true
+        
+        while isActivateds do
+    AutoGunDropFunction()
+wait(0.1)
+end
+    end
+end)
+
+local button3 = Instance.new("TextButton")
+button3.Parent = ToolsBox
+button3.BackgroundColor3 = Color3.new(0, 0, 0)
+button3.BackgroundTransparency = 0.5
+button3.Size = UDim2.new(0.03, 0, 0.9, 0)
+button3.TextScaled = true
+button3.Position = UDim2.new(0.085, 0, 0, 0)
+button3.TextColor3 = Color3.fromRGB(255, 255, 255)
+button3.Font = Enum.Font.PatrickHand
+button3.Text = "Kill All Players: OFF"
+
+local isActivatedd = false
+
+button3.MouseButton1Click:Connect(function()
+    if isActivatedd then
+        button3.Text = "Kill All Players: OFF"
+        button3.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        isActivatedd = false
+    else
+        button3.Text = "Kill All Players: ON"
+        button3.TextColor3 = Color3.fromRGB(0, 255, 0)
+        
+        isActivatedd = true
+        
+        while isActivatedd do
+    MurderAllPlayers()
+wait(0.05)
+end
+    end
+end)
+
+local button4 = Instance.new("TextButton")
+button4.Parent = ToolsBox
+button4.BackgroundColor3 = Color3.new(0, 0, 0)
+button4.BackgroundTransparency = 0.5
+button4.Size = UDim2.new(0.03, 0, 0.9, 0)
+button4.TextScaled = true
+button4.Position = UDim2.new(0.125, 0, 0, 0)
+button4.TextColor3 = Color3.fromRGB(255, 255, 255)
+button4.Font = Enum.Font.PatrickHand
+button4.Text = "Teleportation: Lobby"
+
+button4.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-110.09020233154297, 140.18894958496094, 26.569164276123047)
+end)
+
+local button5 = Instance.new("TextButton")
+button5.Parent = ToolsBox
+button5.BackgroundColor3 = Color3.new(0, 0, 0)
+button5.BackgroundTransparency = 0.5
+button5.Size = UDim2.new(0.03, 0, 0.9, 0)
+button5.TextScaled = true
+button5.Position = UDim2.new(0.165, 0, 0, 0)
+button5.TextColor3 = Color3.fromRGB(255, 255, 255)
+button5.Font = Enum.Font.PatrickHand
+button5.Text = "Auto Vote: OFF"
+
+local isActivatedd = false
+
+button5.MouseButton1Click:Connect(function()
+    if isActivatedd then
+        button5.Text = "Auto Vote: OFF"
+        button5.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        isActivatedd = false
+    else
+        button5.Text = "Auto Vote: ON"
+        button5.TextColor3 = Color3.fromRGB(0, 255, 0)
+        
+        isActivatedd = true
+        
+        while isActivatedd do
+    AutoVote()
+wait(0.05)
+end
+    end
+end)
+
+local button6 = Instance.new("TextButton")
+button6.Parent = ToolsBox
+button6.BackgroundColor3 = Color3.new(0, 0, 0)
+button6.BackgroundTransparency = 0.5
+button6.Size = UDim2.new(0.03, 0, 0.9, 0)
+button6.TextScaled = true
+button6.Position = UDim2.new(0.205, 0, 0, 0)
+button6.TextColor3 = Color3.fromRGB(255, 255, 255)
+button6.Font = Enum.Font.PatrickHand
+button6.Text = "Teleportation: Players"
+
+button6.MouseButton1Click:Connect(function()
+    local players = game.Players:GetPlayers()
+
+local otherPlayers = {}
+for _, p in pairs(players) do
+if p ~= player then
+table.insert(otherPlayers, p)
+end
+end
+
+local randomPlayer = otherPlayers[math.random(#otherPlayers)]
+
+game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(randomPlayer.Character.HumanoidRootPart.CFrame)
+end)
+
+local button7 = Instance.new("TextButton")
+button7.Parent = ToolsBox
+button7.BackgroundColor3 = Color3.new(0, 0, 0)
+button7.BackgroundTransparency = 0.5
+button7.Size = UDim2.new(0.03, 0, 0.9, 0)
+button7.TextScaled = true
+button7.Position = UDim2.new(0.245, 0, 0, 0)
+button7.TextColor3 = Color3.fromRGB(255, 255, 255)
+button7.Font = Enum.Font.PatrickHand
+button7.Text = "ESP Murder and Sheriff: OFF"
+
+local isActivatedd = false
+
+button7.MouseButton1Click:Connect(function()
+    if isActivatedd then
+        button7.Text = "ESP Murder and Sheriff: Sorry OFF Function not Yet Working On It"
+        button7.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        isActivatedd = false
+    else
+        button7.Text = "ESP Murder and Sheriff: ON"
+        button7.TextColor3 = Color3.fromRGB(0, 255, 0)
+        
+        isActivatedd = true
+        
+        while isActivatedd do
+    MurderSheriffESP()
+wait(0.05)
+end
+    end
+end)
+
+-- Welcome Notification Message --
+
+local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Welcome to NganHa2k3 Script",
+            Text = "It's a Murder Mystery 2 Script made for fun, 7 ability. Bye",
+            Duration = 2,
+        })
