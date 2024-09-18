@@ -1,0 +1,718 @@
+-- UI Elements --
+
+local TweenService = game:GetService("TweenService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+local ScreenGui = Instance.new("ScreenGui")
+local OpenCloseUI = Instance.new("TextButton")
+
+-- Create local ScrollingFrame --
+
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local ScrollingJob = Instance.new("ScrollingFrame")
+local ScrollingHouseA = Instance.new("ScrollingFrame")
+local ScrollingHouseB = Instance.new("ScrollingFrame")
+local ScrollingHouseC = Instance.new("ScrollingFrame")
+local ScrollingShop = Instance.new("ScrollingFrame")
+
+-- List --
+
+local targetPositions = {
+    Vector3.new(68, 7, -9),
+Vector3.new(58, 7, -8),
+Vector3.new(63, 7, -10),
+Vector3.new(62, 4, -28),
+Vector3.new(63, 4, -54),
+Vector3.new(5, 4, -122),
+Vector3.new(4, 4, -349)
+}
+
+-- Close List --
+
+local speed = 250
+
+-- Function Memories --
+
+local function createAndPlayTween(targetPos, tweenInfo)
+    local tweenGoal = { CFrame = CFrame.new(targetPos) }
+    local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
+    tween:Play()
+    return tween
+end
+
+-- Function to start tweening through positions
+local function startTweens()
+    local tweenIndex = 0.05
+
+    local function tweenToNextPosition()
+        if tweenIndex > #targetPositions then
+            print("Tweening completed.")
+            return  -- Stop when all positions have been tweened
+        end
+
+        local currentPos = humanoidRootPart.Position
+        local targetPos = targetPositions[tweenIndex]
+        local distance = (currentPos - targetPos).magnitude
+        local duration = distance / speed  -- Calculate duration based on speed
+
+        local tweenInfo = TweenInfo.new(
+            duration,  -- Duration based on speed
+            Enum.EasingStyle.Linear,
+            Enum.EasingDirection.InOut
+        )
+
+        local tween = createAndPlayTween(targetPos, tweenInfo)
+
+        tween.Completed:Connect(function()
+            tweenIndex = tweenIndex + 1
+            wait(0.5)  -- Optional delay between tweens
+            tweenToNextPosition()
+        end)
+    end
+
+    tweenToNextPosition()  -- Start tweening
+end
+
+-- End of Function Memories --
+
+-- GUI Tween Info --
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1  -- Duration in seconds
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+ScreenGui.Parent = game.CoreGui
+
+-- ScrollingFrame Info --
+
+ScrollingFrame.Parent = ScreenGui
+ScrollingFrame.Size = UDim2.new(0.3, 0, 0.1, 0)
+ScrollingFrame.Position = UDim2.new(1.2, 0, 0.28, 0)
+ScrollingFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingFrame.BackgroundTransparency = 0.5
+ScrollingFrame.CanvasSize = UDim2.new(2, 0, 0, 0)
+ScrollingFrame.ScrollBarThickness = 0.1
+
+-- OpenCloseUI Info --
+
+OpenCloseUI.Parent = ScreenGui
+OpenCloseUI.BackgroundColor3 = Color3.new(0, 0, 0)
+OpenCloseUI.BackgroundTransparency = 0.5
+OpenCloseUI.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
+OpenCloseUI.TextScaled = true
+OpenCloseUI.Position = UDim2.new(0.88, 0, -0.1, 0)  -- Positioned outside the ScrollingFrame
+OpenCloseUI.TextColor3 = Color3.new(1, 1, 1)
+OpenCloseUI.Font = Enum.Font.PatrickHand
+OpenCloseUI.Text = "+"
+
+local OpenCloseUICorner = Instance.new("UICorner")
+OpenCloseUICorner.Parent = OpenCloseUI
+OpenCloseUICorner.CornerRadius = UDim.new(0, 10)
+
+-- Button In ScrollingFrame --
+
+local button1 = Instance.new("TextButton")
+button1.Parent = ScrollingFrame
+button1.BackgroundColor3 = Color3.new(0, 0, 0)
+button1.BackgroundTransparency = 0.5
+button1.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button1.TextScaled = true
+button1.Position = UDim2.new(0.01, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button1.TextColor3 = Color3.new(1, 1, 1)
+button1.Font = Enum.Font.PatrickHand
+button1.Text = "Select: Work/Job"
+
+local Button1Corner = Instance.new("UICorner")
+Button1Corner.Parent = button1
+Button1Corner.CornerRadius = UDim.new(0, 10)
+
+-- 1 --
+
+local button2 = Instance.new("TextButton")
+button2.Parent = ScrollingFrame
+button2.BackgroundColor3 = Color3.new(0, 0, 0)
+button2.BackgroundTransparency = 0.5
+button2.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button2.TextScaled = true
+button2.Position = UDim2.new(0.06, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button2.TextColor3 = Color3.new(1, 1, 1)
+button2.Font = Enum.Font.PatrickHand
+button2.Text = "Road"
+
+local Button2Corner = Instance.new("UICorner")
+Button2Corner.Parent = button2
+Button2Corner.CornerRadius = UDim.new(0, 10)
+
+button2.MouseButton1Click:Connect(function()
+    startTweens()
+end)
+
+-- 2 --
+
+local button3 = Instance.new("TextButton")
+button3.Parent = ScrollingFrame
+button3.BackgroundColor3 = Color3.new(0, 0, 0)
+button3.BackgroundTransparency = 0.5
+button3.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button3.TextScaled = true
+button3.Position = UDim2.new(0.11, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button3.TextColor3 = Color3.new(1, 1, 1)
+button3.Font = Enum.Font.PatrickHand
+button3.Text = "Selecting House"
+
+local Button3Corner = Instance.new("UICorner")
+Button3Corner.Parent = button3
+Button3Corner.CornerRadius = UDim.new(0, 10)
+
+-- 3 --
+
+local button4 = Instance.new("TextButton")
+button4.Parent = ScrollingFrame
+button4.BackgroundColor3 = Color3.new(0, 0, 0)
+button4.BackgroundTransparency = 0.5
+button4.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button4.TextScaled = true
+button4.Position = UDim2.new(0.16, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button4.TextColor3 = Color3.new(1, 1, 1)
+button4.Font = Enum.Font.PatrickHand
+button4.Text = "Decorate Shop and Pets Shop"
+
+local Button4Corner = Instance.new("UICorner")
+Button4Corner.Parent = button4
+Button4Corner.CornerRadius = UDim.new(0, 10)
+
+-- 4 --
+
+local button5 = Instance.new("TextButton")
+button5.Parent = ScrollingFrame
+button5.BackgroundColor3 = Color3.new(0, 0, 0)
+button5.BackgroundTransparency = 0.5
+button5.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button5.TextScaled = true
+button5.Position = UDim2.new(0.21, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button5.TextColor3 = Color3.new(1, 1, 1)
+button5.Font = Enum.Font.PatrickHand
+button5.Text = "Reset Character: Set Health Zero"
+
+local Button5Corner = Instance.new("UICorner")
+Button5Corner.Parent = button5
+Button5Corner.CornerRadius = UDim.new(0, 10)
+
+button5.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+end)
+
+-- 5 --
+
+-- End --
+
+-- Scrolling Box --
+
+ScrollingJob.Parent = ScreenGui
+ScrollingJob.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingJob.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingJob.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingJob.BackgroundTransparency = 0.5
+ScrollingJob.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingJob.ScrollBarThickness = 0.1
+
+local ScrollingJobCorner = Instance.new("UICorner")
+ScrollingJobCorner.Parent = ScrollingJob
+ScrollingJobCorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition4 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween3 = TweenService:Create(ScrollingJob, tweenInfo, {Position = goalPosition3})
+local tween4 = TweenService:Create(ScrollingJob, tweenInfo, {Position = goalPosition4})
+
+local isToggled1 = false
+button1.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween4:Play()
+    else
+        tween3:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 1 --
+
+ScrollingHouseA.Parent = ScreenGui
+ScrollingHouseA.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingHouseA.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingHouseA.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingHouseA.BackgroundTransparency = 0.5
+ScrollingHouseA.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingHouseA.ScrollBarThickness = 0.1
+
+local ScrollingHouseACorner = Instance.new("UICorner")
+ScrollingHouseACorner.Parent = ScrollingHouseA
+ScrollingHouseACorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition5 = UDim2.new(0.1, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition6 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween5 = TweenService:Create(ScrollingHouseA, tweenInfo, {Position = goalPosition5})
+local tween6 = TweenService:Create(ScrollingHouseA, tweenInfo, {Position = goalPosition6})
+
+local isToggled1 = false
+button3.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween6:Play()
+    else
+        tween5:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 2 --
+
+ScrollingHouseB.Parent = ScreenGui
+ScrollingHouseB.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingHouseB.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingHouseB.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingHouseB.BackgroundTransparency = 0.5
+ScrollingHouseB.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingHouseB.ScrollBarThickness = 0.1
+
+local ScrollingHouseBCorner = Instance.new("UICorner")
+ScrollingHouseBCorner.Parent = ScrollingHouseB
+ScrollingHouseBCorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition7 = UDim2.new(0.2, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition8 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween7 = TweenService:Create(ScrollingHouseB, tweenInfo, {Position = goalPosition7})
+local tween8 = TweenService:Create(ScrollingHouseB, tweenInfo, {Position = goalPosition8})
+
+local isToggled1 = false
+button3.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween8:Play()
+    else
+        tween7:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 3 --
+
+ScrollingHouseC.Parent = ScreenGui
+ScrollingHouseC.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingHouseC.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingHouseC.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingHouseC.BackgroundTransparency = 0.5
+ScrollingHouseC.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingHouseC.ScrollBarThickness = 0.1
+
+local ScrollingHouseCCorner = Instance.new("UICorner")
+ScrollingHouseCCorner.Parent = ScrollingHouseC
+ScrollingHouseCCorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition9 = UDim2.new(0.3, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition10 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween9 = TweenService:Create(ScrollingHouseC, tweenInfo, {Position = goalPosition9})
+local tween10 = TweenService:Create(ScrollingHouseC, tweenInfo, {Position = goalPosition10})
+
+local isToggled1 = false
+button3.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween10:Play()
+    else
+        tween9:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 4 --
+
+ScrollingShop.Parent = ScreenGui
+ScrollingShop.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingShop.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingShop.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingShop.BackgroundTransparency = 0.5
+ScrollingShop.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingShop.ScrollBarThickness = 0.1
+
+local ScrollingShopCorner = Instance.new("UICorner")
+ScrollingShopCorner.Parent = ScrollingShop
+ScrollingShopCorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition11 = UDim2.new(0.4, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition12 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween11 = TweenService:Create(ScrollingShop, tweenInfo, {Position = goalPosition11})
+local tween12 = TweenService:Create(ScrollingShop, tweenInfo, {Position = goalPosition12})
+
+local isToggled1 = false
+button4.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween12:Play()
+    else
+        tween11:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 5 --
+
+-- End --
+
+-- OpenCloseUI Button Function --
+
+local goalPosition1 = UDim2.new(0.6, 0, 0.28, 0)  -- Move ScrollingFrame down
+local goalPosition2 = UDim2.new(1.2, 0, 0.28, 0)  -- Original position
+
+
+local tween1 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition1})
+local tween2 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition2})
+
+
+local isToggled = false
+OpenCloseUI.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween2:Play()
+    else
+        tween1:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- Data Box --
+
+local job1 = Instance.new("TextButton")
+job1.Parent = ScrollingJob
+job1.BackgroundColor3 = Color3.new(0, 0, 0)
+job1.BackgroundTransparency = 0.5
+job1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+job1.TextScaled = true
+job1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+job1.TextColor3 = Color3.new(1, 1, 1)
+job1.Font = Enum.Font.PatrickHand
+job1.Text = "4 Button Job"
+
+job1.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(49, 4, 84)
+end)
+
+local job2 = Instance.new("TextButton")
+job2.Parent = ScrollingJob
+job2.BackgroundColor3 = Color3.new(0, 0, 0)
+job2.BackgroundTransparency = 0.5
+job2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+job2.TextScaled = true
+job2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+job2.TextColor3 = Color3.new(1, 1, 1)
+job2.Font = Enum.Font.PatrickHand
+job2.Text = "Chef: Making Pizza"
+
+job2.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(37, 4, 55)
+end)
+
+local job3 = Instance.new("TextButton")
+job3.Parent = ScrollingJob
+job3.BackgroundColor3 = Color3.new(0, 0, 0)
+job3.BackgroundTransparency = 0.5
+job3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+job3.TextScaled = true
+job3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+job3.TextColor3 = Color3.new(1, 1, 1)
+job3.Font = Enum.Font.PatrickHand
+job3.Text = "Boxer: Place Pizza in a Box"
+
+job3.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(59, 4, 13)
+end)
+
+local job4 = Instance.new("TextButton")
+job4.Parent = ScrollingJob
+job4.BackgroundColor3 = Color3.new(0, 0, 0)
+job4.BackgroundTransparency = 0.5
+job4.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+job4.TextScaled = true
+job4.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingFrame
+job4.TextColor3 = Color3.new(1, 1, 1)
+job4.Font = Enum.Font.PatrickHand
+job4.Text = "Grab: Pizza"
+
+job4.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(66, 4, -17)
+end)
+
+local job5 = Instance.new("TextButton")
+job5.Parent = ScrollingJob
+job5.BackgroundColor3 = Color3.new(0, 0, 0)
+job5.BackgroundTransparency = 0.5
+job5.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+job5.TextScaled = true
+job5.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned inside the ScrollingFrame
+job5.TextColor3 = Color3.new(1, 1, 1)
+job5.Font = Enum.Font.PatrickHand
+job5.Text = "Get Food Box"
+
+job5.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(7, 13, -1022)
+end)
+
+local job6 = Instance.new("TextButton")
+job6.Parent = ScrollingJob
+job6.BackgroundColor3 = Color3.new(0, 0, 0)
+job6.BackgroundTransparency = 0.5
+job6.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+job6.TextScaled = true
+job6.Position = UDim2.new(0.1, 0, 0.36, 0)  -- Positioned inside the ScrollingFrame
+job6.TextColor3 = Color3.new(1, 1, 1)
+job6.Font = Enum.Font.PatrickHand
+job6.Text = "Managers"
+
+job6.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(24, 4, 6)
+end)
+
+local job7 = Instance.new("TextButton")
+job7.Parent = ScrollingJob
+job7.BackgroundColor3 = Color3.new(0, 0, 0)
+job7.BackgroundTransparency = 0.5
+job7.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+job7.TextScaled = true
+job7.Position = UDim2.new(0.1, 0, 0.43, 0)  -- Positioned inside the ScrollingFrame
+job7.TextColor3 = Color3.new(1, 1, 1)
+job7.Font = Enum.Font.PatrickHand
+job7.Text = "Watcher"
+
+job7.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(69, 4, 57)
+end)
+
+-- Close of Job Data Box --
+
+-- House Tp Data Box --
+
+local A1 = Instance.new("TextButton")
+A1.Parent = ScrollingHouseA
+A1.BackgroundColor3 = Color3.new(0, 0, 0)
+A1.BackgroundTransparency = 0.5
+A1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+A1.TextScaled = true
+A1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+A1.TextColor3 = Color3.new(1, 1, 1)
+A1.Font = Enum.Font.PatrickHand
+A1.Text = "A-1"
+
+A1.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(179, 4, -463)
+end)
+
+local A2 = Instance.new("TextButton")
+A2.Parent = ScrollingHouseA
+A2.BackgroundColor3 = Color3.new(0, 0, 0)
+A2.BackgroundTransparency = 0.5
+A2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+A2.TextScaled = true
+A2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+A2.TextColor3 = Color3.new(1, 1, 1)
+A2.Font = Enum.Font.PatrickHand
+A2.Text = "A-2"
+
+A2.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(179, 4, -643)
+end)
+
+local A3 = Instance.new("TextButton")
+A3.Parent = ScrollingHouseA
+A3.BackgroundColor3 = Color3.new(0, 0, 0)
+A3.BackgroundTransparency = 0.5
+A3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+A3.TextScaled = true
+A3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+A3.TextColor3 = Color3.new(1, 1, 1)
+A3.Font = Enum.Font.PatrickHand
+A3.Text = "A-3"
+
+A3.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(181, 4, -823)
+end)
+
+local B1 = Instance.new("TextButton")
+B1.Parent = ScrollingHouseB
+B1.BackgroundColor3 = Color3.new(0, 0, 0)
+B1.BackgroundTransparency = 0.5
+B1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+B1.TextScaled = true
+B1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+B1.TextColor3 = Color3.new(1, 1, 1)
+B1.Font = Enum.Font.PatrickHand
+B1.Text = "B-1"
+
+B1.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-12, 4, -441)
+end)
+
+local B2 = Instance.new("TextButton")
+B2.Parent = ScrollingHouseB
+B2.BackgroundColor3 = Color3.new(0, 0, 0)
+B2.BackgroundTransparency = 0.5
+B2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+B2.TextScaled = true
+B2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+B2.TextColor3 = Color3.new(1, 1, 1)
+B2.Font = Enum.Font.PatrickHand
+B2.Text = "B-2"
+
+B2.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(16, 4, -480)
+end)
+
+local B3 = Instance.new("TextButton")
+B3.Parent = ScrollingHouseB
+B3.BackgroundColor3 = Color3.new(0, 0, 0)
+B3.BackgroundTransparency = 0.5
+B3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+B3.TextScaled = true
+B3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+B3.TextColor3 = Color3.new(1, 1, 1)
+B3.Font = Enum.Font.PatrickHand
+B3.Text = "B-3"
+
+B3.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-11, 4, -620)
+end)
+
+local B4 = Instance.new("TextButton")
+B4.Parent = ScrollingHouseB
+B4.BackgroundColor3 = Color3.new(0, 0, 0)
+B4.BackgroundTransparency = 0.5
+B4.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+B4.TextScaled = true
+B4.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingFrame
+B4.TextColor3 = Color3.new(1, 1, 1)
+B4.Font = Enum.Font.PatrickHand
+B4.Text = "B-4"
+
+B4.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(14, 4, -655)
+end)
+
+local B5 = Instance.new("TextButton")
+B5.Parent = ScrollingHouseB
+B5.BackgroundColor3 = Color3.new(0, 0, 0)
+B5.BackgroundTransparency = 0.5
+B5.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+B5.TextScaled = true
+B5.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned inside the ScrollingFrame
+B5.TextColor3 = Color3.new(1, 1, 1)
+B5.Font = Enum.Font.PatrickHand
+B5.Text = "B-5"
+
+B5.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-13, 4, -799)
+end)
+
+local B6 = Instance.new("TextButton")
+B6.Parent = ScrollingHouseB
+B6.BackgroundColor3 = Color3.new(0, 0, 0)
+B6.BackgroundTransparency = 0.5
+B6.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+B6.TextScaled = true
+B6.Position = UDim2.new(0.1, 0, 0.36, 0)  -- Positioned inside the ScrollingFrame
+B6.TextColor3 = Color3.new(1, 1, 1)
+B6.Font = Enum.Font.PatrickHand
+B6.Text = "B-6"
+
+B6.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(16, 4, -835)
+end)
+
+local C1 = Instance.new("TextButton")
+C1.Parent = ScrollingHouseC
+C1.BackgroundColor3 = Color3.new(0, 0, 0)
+C1.BackgroundTransparency = 0.5
+C1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+C1.TextScaled = true
+C1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+C1.TextColor3 = Color3.new(1, 1, 1)
+C1.Font = Enum.Font.PatrickHand
+C1.Text = "C-1"
+
+C1.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-176, 4, -440)
+end)
+
+local C2 = Instance.new("TextButton")
+C2.Parent = ScrollingHouseC
+C2.BackgroundColor3 = Color3.new(0, 0, 0)
+C2.BackgroundTransparency = 0.5
+C2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+C2.TextScaled = true
+C2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+C2.TextColor3 = Color3.new(1, 1, 1)
+C2.Font = Enum.Font.PatrickHand
+C2.Text = "C-2"
+
+C2.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-174, 4, -611)
+end)
+
+local C3 = Instance.new("TextButton")
+C3.Parent = ScrollingHouseC
+C3.BackgroundColor3 = Color3.new(0, 0, 0)
+C3.BackgroundTransparency = 0.5
+C3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+C3.TextScaled = true
+C3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+C3.TextColor3 = Color3.new(1, 1, 1)
+C3.Font = Enum.Font.PatrickHand
+C3.Text = "C-3"
+
+C3.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-177, 4, -796)
+end)
+
+-- Close of it --
+
+-- Shop Pet / Shop Decorate --
+
+local Pet = Instance.new("TextButton")
+Pet.Parent = ScrollingShop
+Pet.BackgroundColor3 = Color3.new(0, 0, 0)
+Pet.BackgroundTransparency = 0.5
+Pet.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Pet.TextScaled = true
+Pet.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+Pet.TextColor3 = Color3.new(1, 1, 1)
+Pet.Font = Enum.Font.PatrickHand
+Pet.Text = "Shop: Pet"
+
+Pet.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(46, 4, -242)
+end)
+
+local Decorate = Instance.new("TextButton")
+Decorate.Parent = ScrollingShop
+Decorate.BackgroundColor3 = Color3.new(0, 0, 0)
+Decorate.BackgroundTransparency = 0.5
+Decorate.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Decorate.TextScaled = true
+Decorate.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+Decorate.TextColor3 = Color3.new(1, 1, 1)
+Decorate.Font = Enum.Font.PatrickHand
+Decorate.Text = "Shop: Decorate"
+
+Decorate.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(40, 4, -183)
+end)
+
+-- End Maybe More In Future --
+
+local CoreGui = game:GetService("StarterGui")
+
+    CoreGui:SetCore("SendNotification", {
+        Title = "Welcome to NganHa2k3 Fun Script",
+        Text = " Quick Teleport !",
+        Duration = 10,
+})
