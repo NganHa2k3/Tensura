@@ -1,0 +1,656 @@
+local ScreenGui = Instance.new("ScreenGui")
+local ToggleButton = Instance.new("TextButton")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local ScrollingS = Instance.new("ScrollingFrame")
+local ScrollingI = Instance.new("ScrollingFrame")
+
+ScreenGui.Parent = game.CoreGui
+
+-- Function to collect and teleport to all outerOrb parts --
+
+local function outerOrbCollection(teleportSpeed)
+    local partName = "outerOrb"
+
+    local function findParts(partName, parent)
+        local parts = {}
+        for _, obj in pairs(parent:GetChildren()) do
+            if obj:IsA("Model") or obj:IsA("Folder") then
+                local foundParts = findParts(partName, obj)
+                for _, part in pairs(foundParts) do
+                    table.insert(parts, part)
+                end
+            elseif obj:IsA("BasePart") and obj.Name == partName then
+                table.insert(parts, obj)
+            end
+        end
+        return parts
+    end
+
+    local function teleportPlayerToPart(player, part)
+        if player and part and part:IsA("BasePart") then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                character.HumanoidRootPart.CFrame = part.CFrame
+            end
+        end
+    end
+
+    local player = game.Players.LocalPlayer
+    local parts = findParts(partName, game.Workspace)
+
+    if #parts > 0 then
+        for _, part in ipairs(parts) do
+            teleportPlayerToPart(player, part)
+            wait(teleportSpeed) -- Wait before teleporting to the next part
+        end
+    else
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Error",
+            Text = "There are no more Orbs to collect!",
+            Duration = 2,
+        })
+    end
+end
+
+local function outerGemCollection(teleportSpeed)
+    local partName = "outerGem"
+
+    local function findParts(partName, parent)
+        local parts = {}
+        for _, obj in pairs(parent:GetChildren()) do
+            if obj:IsA("Model") or obj:IsA("Folder") then
+                local foundParts = findParts(partName, obj)
+                for _, part in pairs(foundParts) do
+                    table.insert(parts, part)
+                end
+            elseif obj:IsA("BasePart") and obj.Name == partName then
+                table.insert(parts, obj)
+            end
+        end
+        return parts
+    end
+
+    local function teleportPlayerToPart(player, part)
+        if player and part and part:IsA("BasePart") then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                character.HumanoidRootPart.CFrame = part.CFrame
+            end
+        end
+    end
+
+    local player = game.Players.LocalPlayer
+    local parts = findParts(partName, game.Workspace)
+
+    if #parts > 0 then
+        for _, part in ipairs(parts) do
+            teleportPlayerToPart(player, part)
+            wait(teleportSpeed) -- Wait before teleporting to the next part
+        end
+    else
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Error",
+            Text = "There are no more Diamonds to collect!",
+            Duration = 2,
+        })
+    end
+end
+
+local function HoopCollection(teleportSpeed)
+    local partName = "Hoop"
+
+    local function findParts(partName, parent)
+        local parts = {}
+        for _, obj in pairs(parent:GetChildren()) do
+            if obj:IsA("Model") or obj:IsA("Folder") then
+                local foundParts = findParts(partName, obj)
+                for _, part in pairs(foundParts) do
+                    table.insert(parts, part)
+                end
+            elseif obj:IsA("BasePart") and obj.Name == partName then
+                table.insert(parts, obj)
+            end
+        end
+        return parts
+    end
+
+    local function teleportPlayerToPart(player, part)
+        if player and part and part:IsA("BasePart") then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                character.HumanoidRootPart.CFrame = part.CFrame
+            end
+        end
+    end
+
+    local player = game.Players.LocalPlayer
+    local parts = findParts(partName, game.Workspace)
+
+    if #parts > 0 then
+        for _, part in ipairs(parts) do
+            teleportPlayerToPart(player, part)
+            wait(teleportSpeed) -- Wait before teleporting to the next part
+        end
+    else
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Error",
+            Text = "There are no more Hoop to jump on!",
+            Duration = 2,
+        })
+    end
+end
+
+local function finishRaceCollection(teleportSpeed)
+    local partName = "finishPart"
+
+    local function findParts(partName, parent)
+        local parts = {}
+        for _, obj in pairs(parent:GetChildren()) do
+            if obj:IsA("Model") or obj:IsA("Folder") then
+                local foundParts = findParts(partName, obj)
+                for _, part in pairs(foundParts) do
+                    table.insert(parts, part)
+                end
+            elseif obj:IsA("BasePart") and obj.Name == partName then
+                table.insert(parts, obj)
+            end
+        end
+        return parts
+    end
+
+    local function teleportPlayerToPart(player, part)
+        if player and part and part:IsA("BasePart") then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                character.HumanoidRootPart.CFrame = part.CFrame
+            end
+        end
+    end
+
+    local player = game.Players.LocalPlayer
+    local parts = findParts(partName, game.Workspace)
+
+    if #parts > 0 then
+        for _, part in ipairs(parts) do
+            teleportPlayerToPart(player, part)
+            wait(teleportSpeed) -- Wait before teleporting to the next part
+        end
+    else
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Error",
+            Text = "There are no more Race to win!",
+            Duration = 2,
+        })
+    end
+end
+
+local function girl()
+local args = {
+    [1] = "rebirthRequest"
+}
+
+game:GetService("ReplicatedStorage").rEvents.rebirthEvent:FireServer(unpack(args))
+end
+
+local function boy()
+local args = {
+    [1] = "joinRace"
+}
+
+game:GetService("ReplicatedStorage").rEvents.raceEvent:FireServer(unpack(args))
+end
+
+local function snowCrystal()
+local args = {
+    [1] = "openCrystal",
+    [2] = "Snow Crystal"
+}
+
+game:GetService("ReplicatedStorage").rEvents.openCrystalRemote:InvokeServer(unpack(args))
+end
+
+local function lavaCrystal()
+local args = {
+    [1] = "openCrystal",
+    [2] = "Lava Crystal"
+}
+
+game:GetService("ReplicatedStorage").rEvents.openCrystalRemote:InvokeServer(unpack(args))
+end
+
+-- End of item function --
+
+ScrollingI.Parent = ScreenGui
+ScrollingI.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingI.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingI.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingI.BackgroundTransparency = 0.5
+ScrollingI.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingI.ScrollBarThickness = 0.1
+
+ScrollingS.Parent = ScreenGui
+ScrollingS.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingS.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingS.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingS.BackgroundTransparency = 0.5
+ScrollingS.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingS.ScrollBarThickness = 0.1
+
+ScrollingFrame.Parent = ScreenGui
+ScrollingFrame.Size = UDim2.new(0.3, 0, 0.1, 0)
+ScrollingFrame.Position = UDim2.new(1.2, 0, 0.18, 0)
+ScrollingFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingFrame.BackgroundTransparency = 0.5
+ScrollingFrame.CanvasSize = UDim2.new(2, 0, 0, 0)
+ScrollingFrame.ScrollBarThickness = 0.1
+
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.new(0, 0, 0)
+ToggleButton.BackgroundTransparency = 0.5
+ToggleButton.Size = UDim2.new(0.05, 0, 0.1, 0)
+ToggleButton.TextScaled = true
+ToggleButton.Position = UDim2.new(0.88, 0, -0.1, 0)
+ToggleButton.TextColor3 = Color3.new(1, 1, 1)
+ToggleButton.Font = Enum.Font.PatrickHand
+ToggleButton.Text = "+"
+
+local ToggleButtonCorner = Instance.new("UICorner")
+ToggleButtonCorner.Parent = ToggleButton
+ToggleButtonCorner.CornerRadius = UDim.new(0, 10)
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+local goalPosition1 = UDim2.new(0.695, 0, 0.18, 0)
+local goalPosition2 = UDim2.new(1.2, 0, 0.18, 0)
+
+local tween1 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition1})
+local tween2 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition2})
+
+local isToggled = false
+ToggleButton.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween2:Play()
+    else
+        tween1:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- Button ON and OFF --
+
+local button1 = Instance.new("TextButton")
+button1.Parent = ScrollingFrame
+button1.BackgroundColor3 = Color3.new(0, 0, 0)
+button1.BackgroundTransparency = 0.5
+button1.Size = UDim2.new(0.03, 0, 0.9, 0)
+button1.TextScaled = true
+button1.Position = UDim2.new(0.005, 0, 0, 0)
+button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+button1.Font = Enum.Font.PatrickHand
+button1.Text = "Get Speed Orbs: OFF"
+
+local loopRunning = false
+local teleportSpeed = 0.01 -- Default teleport speed, can be modified
+
+button1.MouseButton1Click:Connect(function()
+    if loopRunning then
+        button1.Text = "Get Speed Orbs: OFF"
+        button1.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loopRunning = false
+    else
+        button1.Text = "Get Speed Orbs: ON"
+        button1.TextColor3 = Color3.fromRGB(0, 255, 0)
+        loopRunning = true
+        
+        while loopRunning do
+            outerOrbCollection(teleportSpeed)
+            wait(0.01)
+        end
+    end
+end)
+
+local button2 = Instance.new("TextButton")
+button2.Parent = ScrollingFrame
+button2.BackgroundColor3 = Color3.new(0, 0, 0)
+button2.BackgroundTransparency = 0.5
+button2.Size = UDim2.new(0.03, 0, 0.9, 0)
+button2.TextScaled = true
+button2.Position = UDim2.new(0.045, 0, 0, 0)
+button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+button2.Font = Enum.Font.PatrickHand
+button2.Text = "Get Diamonds: OFF"
+
+local loopRunning = false
+local teleportSpeed = 0.01 -- Default teleport speed, can be modified
+
+button2.MouseButton1Click:Connect(function()
+    if loopRunning then
+        button2.Text = "Get Diamonds: OFF"
+        button2.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loopRunning = false
+    else
+        button2.Text = "Get Diamonds: ON"
+        button2.TextColor3 = Color3.fromRGB(0, 255, 0)
+        loopRunning = true
+        
+        while loopRunning do
+            outerGemCollection(teleportSpeed)
+            wait(0.01)
+        end
+    end
+end)
+
+local button3 = Instance.new("TextButton")
+button3.Parent = ScrollingFrame
+button3.BackgroundColor3 = Color3.new(0, 0, 0)
+button3.BackgroundTransparency = 0.5
+button3.Size = UDim2.new(0.03, 0, 0.9, 0)
+button3.TextScaled = true
+button3.Position = UDim2.new(0.085, 0, 0, 0)
+button3.TextColor3 = Color3.fromRGB(255, 255, 255)
+button3.Font = Enum.Font.PatrickHand
+button3.Text = "Auto Jump on Hoop: OFF"
+
+local loopRunning = false
+local teleportSpeed = 0.01 -- Default teleport speed, can be modified
+
+button3.MouseButton1Click:Connect(function()
+    if loopRunning then
+        button3.Text = "Auto Jump on Hoop: OFF"
+        button3.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loopRunning = false
+    else
+        button3.Text = "Auto Jump on Hoop: ON"
+        button3.TextColor3 = Color3.fromRGB(0, 255, 0)
+        loopRunning = true
+        
+        while loopRunning do
+            HoopCollection(teleportSpeed)
+            wait(0.01)
+        end
+    end
+end)
+
+local button4 = Instance.new("TextButton")
+button4.Parent = ScrollingFrame
+button4.BackgroundColor3 = Color3.new(0, 0, 0)
+button4.BackgroundTransparency = 0.5
+button4.Size = UDim2.new(0.03, 0, 0.9, 0)
+button4.TextScaled = true
+button4.Position = UDim2.new(0.125, 0, 0, 0)
+button4.TextColor3 = Color3.fromRGB(255, 255, 255)
+button4.Font = Enum.Font.PatrickHand
+button4.Text = "Get Race Win: OFF"
+
+local loopRunning = false
+local teleportSpeed = 0.01 -- Default teleport speed, can be modified
+
+button4.MouseButton1Click:Connect(function()
+    if loopRunning then
+        button4.Text = "Get Race Win: OFF"
+        button4.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loopRunning = false
+    else
+        button4.Text = "Get Race Win: ON"
+        button4.TextColor3 = Color3.fromRGB(0, 255, 0)
+        loopRunning = true
+        
+        while loopRunning do
+            finishRaceCollection(teleportSpeed)
+            wait(0.01)
+        end
+    end
+end)
+
+local button5 = Instance.new("TextButton")
+button5.Parent = ScrollingFrame
+button5.BackgroundColor3 = Color3.new(0, 0, 0)
+button5.BackgroundTransparency = 0.5
+button5.Size = UDim2.new(0.03, 0, 0.9, 0)
+button5.TextScaled = true
+button5.Position = UDim2.new(0.165, 0, 0, 0)
+button5.TextColor3 = Color3.fromRGB(255, 255, 255)
+button5.Font = Enum.Font.PatrickHand
+button5.Text = "Auto Rebirth: OFF"
+
+local loopRunning = false
+
+button5.MouseButton1Click:Connect(function()
+    if loopRunning then
+        button5.Text = "Auto Rebirth: OFF"
+        button5.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loopRunning = false
+    else
+        button5.Text = "Auto Rebirth: ON"
+        button5.TextColor3 = Color3.fromRGB(0, 255, 0)
+        loopRunning = true
+        
+        while loopRunning do
+            girl()
+            wait(1)
+        end
+    end
+end)
+
+local button6 = Instance.new("TextButton")
+button6.Parent = ScrollingFrame
+button6.BackgroundColor3 = Color3.new(0, 0, 0)
+button6.BackgroundTransparency = 0.5
+button6.Size = UDim2.new(0.03, 0, 0.9, 0)
+button6.TextScaled = true
+button6.Position = UDim2.new(0.205, 0, 0, 0)
+button6.TextColor3 = Color3.fromRGB(255, 255, 255)
+button6.Font = Enum.Font.PatrickHand
+button6.Text = "Auto Join Race: OFF"
+
+local loopRunning = false
+
+button6.MouseButton1Click:Connect(function()
+    if loopRunning then
+        button6.Text = "Auto Join Race: OFF"
+        button6.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loopRunning = false
+    else
+        button6.Text = "Auto Join Race: ON"
+        button6.TextColor3 = Color3.fromRGB(0, 255, 0)
+        loopRunning = true
+        
+        while loopRunning do
+            boy()
+            wait(1)
+        end
+    end
+end)
+
+local button7 = Instance.new("TextButton")
+button7.Parent = ScrollingFrame
+button7.BackgroundColor3 = Color3.new(0, 0, 0)
+button7.BackgroundTransparency = 0.5
+button7.Size = UDim2.new(0.03, 0, 0.9, 0)
+button7.TextScaled = true
+button7.Position = UDim2.new(0.245, 0, 0, 0)
+button7.TextColor3 = Color3.fromRGB(255, 255, 255)
+button7.Font = Enum.Font.PatrickHand
+button7.Text = "Random: Pet or Trail and Speed Bonus"
+
+local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition4 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween3 = TweenService:Create(ScrollingS, tweenInfo, {Position = goalPosition3})
+local tween4 = TweenService:Create(ScrollingS, tweenInfo, {Position = goalPosition4})
+
+local isToggleds = false
+button7.MouseButton1Click:Connect(function()
+    if isToggleds then
+        tween4:Play()
+    else
+        tween3:Play()
+    end
+    isToggleds = not isToggleds
+end)
+
+local button8 = Instance.new("TextButton")
+button8.Parent = ScrollingFrame
+button8.BackgroundColor3 = Color3.new(0, 0, 0)
+button8.BackgroundTransparency = 0.5
+button8.Size = UDim2.new(0.03, 0, 0.9, 0)
+button8.TextScaled = true
+button8.Position = UDim2.new(0.285, 0, 0, 0)
+button8.TextColor3 = Color3.fromRGB(255, 255, 255)
+button8.Font = Enum.Font.PatrickHand
+button8.Text = "Islands Teleportation"
+
+local goalPosition5 = UDim2.new(0.1, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition6 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween5 = TweenService:Create(ScrollingI, tweenInfo, {Position = goalPosition5})
+local tween6 = TweenService:Create(ScrollingI, tweenInfo, {Position = goalPosition6})
+
+local isToggledss = false
+button8.MouseButton1Click:Connect(function()
+    if isToggledss then
+        tween6:Play()
+    else
+        tween5:Play()
+    end
+    isToggledss = not isToggledss
+end)
+
+-- Pet Random Box Data --
+
+local tps = Instance.new("TextButton")
+tps.Parent = ScrollingS
+tps.BackgroundColor3 = Color3.new(0, 0, 0)
+tps.BackgroundTransparency = 0.5
+tps.Size = UDim2.new(0.8, 0, 0.05, 0)
+tps.TextScaled = true
+tps.Position = UDim2.new(0.1, 0, 0.005, 0)
+tps.TextColor3 = Color3.new(1, 1, 1)
+tps.Font = Enum.Font.PatrickHand
+tps.Text = "Snowy Islands Random: OFF"
+
+local loopRunning = false
+
+tps.MouseButton1Click:Connect(function()
+    if loopRunning then
+        tps.Text = "Snowy Islands Random: OFF"
+        tps.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loopRunning = false
+    else
+        tps.Text = "Snowy Islands Random: ON"
+        tps.TextColor3 = Color3.fromRGB(0, 255, 0)
+        loopRunning = true
+        
+        while loopRunning do
+            snowCrystal()
+            wait(0.2)
+        end
+    end
+end)
+
+local tps1 = Instance.new("TextButton")
+tps1.Parent = ScrollingS
+tps1.BackgroundColor3 = Color3.new(0, 0, 0)
+tps1.BackgroundTransparency = 0.5
+tps1.Size = UDim2.new(0.8, 0, 0.05, 0)
+tps1.TextScaled = true
+tps1.Position = UDim2.new(0.1, 0, 0.085, 0)
+tps1.TextColor3 = Color3.new(1, 1, 1)
+tps1.Font = Enum.Font.PatrickHand
+tps1.Text = "Volcano Islands Random: OFF"
+
+local loopRunning = false
+
+tps1.MouseButton1Click:Connect(function()
+    if loopRunning then
+        tps1.Text = "Volcano Islands Random: OFF"
+        tps1.TextColor3 = Color3.fromRGB(255, 255, 255)
+        loopRunning = false
+    else
+        tps1.Text = "Volcano Islands Random: ON"
+        tps1.TextColor3 = Color3.fromRGB(0, 255, 0)
+        loopRunning = true
+        
+        while loopRunning do
+            lavaCrystal()
+            wait(0.2)
+        end
+    end
+end)
+
+-- Islands Teleport Data --
+
+local tpi = Instance.new("TextButton")
+tpi.Parent = ScrollingI
+tpi.BackgroundColor3 = Color3.new(0, 0, 0)
+tpi.BackgroundTransparency = 0.5
+tpi.Size = UDim2.new(0.8, 0, 0.05, 0)
+tpi.TextScaled = true
+tpi.Position = UDim2.new(0.1, 0, 0.005, 0)
+tpi.TextColor3 = Color3.new(1, 1, 1)
+tpi.Font = Enum.Font.PatrickHand
+tpi.Text = "Main Islands"
+
+tpi.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-606.1099243164062, 4.29374885559082, 457.54931640625)
+end)
+
+local tpi1 = Instance.new("TextButton")
+tpi1.Parent = ScrollingI
+tpi1.BackgroundColor3 = Color3.new(0, 0, 0)
+tpi1.BackgroundTransparency = 0.5
+tpi1.Size = UDim2.new(0.8, 0, 0.05, 0)
+tpi1.TextScaled = true
+tpi1.Position = UDim2.new(0.1, 0, 0.085, 0)
+tpi1.TextColor3 = Color3.new(1, 1, 1)
+tpi1.Font = Enum.Font.PatrickHand
+tpi1.Text = "Snowy Islands"
+
+tpi1.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-149.5094451904297, 4.34375, 2566.02880859375)
+end)
+
+local tpi2 = Instance.new("TextButton")
+tpi2.Parent = ScrollingI
+tpi2.BackgroundColor3 = Color3.new(0, 0, 0)
+tpi2.BackgroundTransparency = 0.5
+tpi2.Size = UDim2.new(0.8, 0, 0.05, 0)
+tpi2.TextScaled = true
+tpi2.Position = UDim2.new(0.1, 0, 0.165, 0)
+tpi2.TextColor3 = Color3.new(1, 1, 1)
+tpi2.Font = Enum.Font.PatrickHand
+tpi2.Text = "Volcano Islands"
+
+tpi2.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2499.02197265625, 15.234957695007324, 4374.63134765625)
+end)
+
+local tpi3 = Instance.new("TextButton")
+tpi3.Parent = ScrollingI
+tpi3.BackgroundColor3 = Color3.new(0, 0, 0)
+tpi3.BackgroundTransparency = 0.5
+tpi3.Size = UDim2.new(0.8, 0, 0.05, 0)
+tpi3.TextScaled = true
+tpi3.Position = UDim2.new(0.1, 0, 0.245, 0)
+tpi3.TextColor3 = Color3.new(1, 1, 1)
+tpi3.Font = Enum.Font.PatrickHand
+tpi3.Text = "Electrics Islands"
+
+tpi3.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3741.839599609375, 71.87368774414062, 5598.1396484375)
+end)
+
+-- Welcome Notification Message --
+
+local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Welcome to NganHa2k3 Script",
+            Text = "Automatically Collect Item, Randomiser, Teleport, Easy Win!",
+            Duration = 2,
+        })
