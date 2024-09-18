@@ -2,7 +2,7 @@
 
 local gameScripts = {
     -- Blox Fruit --
-    [994732206] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript/main/BloxFruits_V4",
+    [994732206] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/place/BloxFruits",
 
     -- The Strongest Battlegrounds --
     [3808081382] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/place/TheStrongestBattlegrounds",
