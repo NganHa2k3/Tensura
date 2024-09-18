@@ -1,0 +1,1409 @@
+-- Create UI elements
+local ScreenGui = Instance.new("ScreenGui")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+local ToggleButton = Instance.new("TextButton")
+
+local ScrollingEmote = Instance.new("ScrollingFrame")
+local ScrollingAnims = Instance.new("ScrollingFrame")
+local ScrollingArea = Instance.new("ScrollingFrame")
+local ScrollingChat = Instance.new("ScrollingFrame")
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+-- Function Box --
+
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+local function sendRandomMessages()
+    local nearestPlayer = getNearestPlayer()
+    if not nearestPlayer then
+        print("No nearest player found.")
+        return
+    end
+
+    local msg = {
+        "LOL " .. nearestPlayer.Name .. " was to EZ !",
+        "You're " .. nearestPlayer.Name .. " is a Runner, Kids !",
+        "I win EZ, " .. nearestPlayer.Name .. " Vs " .. localPlayer.Name .. " !",
+        "Trash " .. nearestPlayer.Name .. " You're is Spammer, EZ !",
+        "You're " .. nearestPlayer.Name .. " too EZ, Haha you can't win me " .. localPlayer.Name .. "."
+    }
+
+    local randomIndex = math.random(1, #msg)
+    local args = {
+        [1] = msg[randomIndex],
+        [2] = "All"
+    }
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+
+-- End of Function Box --
+
+-- Create and configure TweenService
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1  -- Duration in seconds
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+-- Setup ScreenGui
+ScreenGui.Parent = game.CoreGui
+
+-- Setup ScrollingFrame
+ScrollingFrame.Parent = ScreenGui
+ScrollingFrame.Size = UDim2.new(0.3, 0, 0.1, 0)  -- Adjusted to a more visible size
+ScrollingFrame.Position = UDim2.new(1.2, 0, 0.28, 0)  -- Positioned in the center of the screen
+ScrollingFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingFrame.BackgroundTransparency = 0.5
+ScrollingFrame.CanvasSize = UDim2.new(2, 0, 0, 0)  -- Wider canvas size to enable scrolling
+ScrollingFrame.ScrollBarThickness = 0.1
+
+local ScrollingFrameCorner = Instance.new("UICorner")
+ScrollingFrameCorner.Parent = ScrollingFrame
+ScrollingFrameCorner.CornerRadius = UDim.new(0, 10)
+
+-- Setup ToggleButton
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.new(0, 0, 0)
+ToggleButton.BackgroundTransparency = 0.5
+ToggleButton.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
+ToggleButton.TextScaled = true
+ToggleButton.Position = UDim2.new(0.88, 0, -0.1, 0)  -- Positioned outside the ScrollingFrame
+ToggleButton.TextColor3 = Color3.new(1, 1, 1)
+ToggleButton.Font = Enum.Font.PatrickHand
+ToggleButton.Text = "+"
+
+local ToggleButtonCorner = Instance.new("UICorner")
+ToggleButtonCorner.Parent = ToggleButton
+ToggleButtonCorner.CornerRadius = UDim.new(0, 10)
+
+-- Button --
+
+local button1 = Instance.new("TextButton")
+button1.Parent = ScrollingFrame
+button1.BackgroundColor3 = Color3.new(0, 0, 0)
+button1.BackgroundTransparency = 0.5
+button1.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button1.TextScaled = true
+button1.Position = UDim2.new(0.01, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button1.TextColor3 = Color3.new(1, 1, 1)
+button1.Font = Enum.Font.PatrickHand
+button1.Text = "Emote"
+
+local Button1Corner = Instance.new("UICorner")
+Button1Corner.Parent = button1
+Button1Corner.CornerRadius = UDim.new(0, 10)
+
+-- 1 --
+
+local button2 = Instance.new("TextButton")
+button2.Parent = ScrollingFrame
+button2.BackgroundColor3 = Color3.new(0, 0, 0)
+button2.BackgroundTransparency = 0.5
+button2.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button2.TextScaled = true
+button2.Position = UDim2.new(0.06, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button2.TextColor3 = Color3.new(1, 1, 1)
+button2.Font = Enum.Font.PatrickHand
+button2.Text = "Animations"
+
+local Button2Corner = Instance.new("UICorner")
+Button2Corner.Parent = button2
+Button2Corner.CornerRadius = UDim.new(0, 10)
+
+-- 2 --
+
+local button3 = Instance.new("TextButton")
+button3.Parent = ScrollingFrame
+button3.BackgroundColor3 = Color3.new(0, 0, 0)
+button3.BackgroundTransparency = 0.5
+button3.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button3.TextScaled = true
+button3.Position = UDim2.new(0.23, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button3.TextColor3 = Color3.new(1, 1, 1)
+button3.Font = Enum.Font.PatrickHand
+button3.Text = "Locations"
+
+local Button3Corner = Instance.new("UICorner")
+Button3Corner.Parent = button3
+Button3Corner.CornerRadius = UDim.new(0, 10)
+
+-- 3 --
+
+local button4 = Instance.new("TextButton")
+button4.Parent = ScrollingFrame
+button4.BackgroundColor3 = Color3.new(0, 0, 0)
+button4.BackgroundTransparency = 0.5
+button4.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button4.TextScaled = true
+button4.Position = UDim2.new(0.28, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button4.TextColor3 = Color3.new(1, 1, 1)
+button4.Font = Enum.Font.PatrickHand
+button4.Text = "Ghosthub: Fling Script"
+
+local Button4Corner = Instance.new("UICorner")
+Button4Corner.Parent = button4
+Button4Corner.CornerRadius = UDim.new(0, 10)
+
+button4.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/Auto%20Fling%20Player'))()
+
+    local CoreGui = game:GetService("StarterGui")
+
+    CoreGui:SetCore("SendNotification", {
+        Title = "GhostHub",
+        Text = "Fling Script Executed Successfully !",
+        Duration = 2,
+})
+end)
+
+-- 4 --
+
+local button5 = Instance.new("TextButton")
+button5.Parent = ScrollingFrame
+button5.BackgroundColor3 = Color3.new(0, 0, 0)
+button5.BackgroundTransparency = 0.5
+button5.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button5.TextScaled = true
+button5.Position = UDim2.new(0.33, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button5.TextColor3 = Color3.new(1, 1, 1)
+button5.Font = Enum.Font.PatrickHand
+button5.Text = "Chat Spam"
+
+local Button5Corner = Instance.new("UICorner")
+Button5Corner.Parent = button5
+Button5Corner.CornerRadius = UDim.new(0, 10)
+
+-- 5 --
+
+-- Scrolling Box --
+
+ScrollingEmote.Parent = ScreenGui
+ScrollingEmote.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingEmote.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingEmote.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingEmote.BackgroundTransparency = 0.5
+ScrollingEmote.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingEmote.ScrollBarThickness = 0.1
+
+local EmoteCorner = Instance.new("UICorner")
+EmoteCorner.Parent = ScrollingEmote
+EmoteCorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition4 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween3 = TweenService:Create(ScrollingEmote, tweenInfo, {Position = goalPosition3})
+local tween4 = TweenService:Create(ScrollingEmote, tweenInfo, {Position = goalPosition4})
+
+local isToggled1 = false
+button1.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween4:Play()
+    else
+        tween3:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 1 --
+
+ScrollingAnims.Parent = ScreenGui
+ScrollingAnims.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingAnims.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingAnims.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingAnims.BackgroundTransparency = 0.5
+ScrollingAnims.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingAnims.ScrollBarThickness = 0.1
+
+local AnimsCorner = Instance.new("UICorner")
+AnimsCorner.Parent = ScrollingAnims
+AnimsCorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition5 = UDim2.new(0.1, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition6 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween5 = TweenService:Create(ScrollingAnims, tweenInfo, {Position = goalPosition5})
+local tween6 = TweenService:Create(ScrollingAnims, tweenInfo, {Position = goalPosition6})
+
+local isToggled1 = false
+button2.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween6:Play()
+    else
+        tween5:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 2 --
+
+ScrollingArea.Parent = ScreenGui
+ScrollingArea.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingArea.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingArea.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingArea.BackgroundTransparency = 0.5
+ScrollingArea.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingArea.ScrollBarThickness = 0.1
+
+local AreaCorner = Instance.new("UICorner")
+AreaCorner.Parent = ScrollingArea
+AreaCorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition7 = UDim2.new(0.2, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition8 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween7 = TweenService:Create(ScrollingArea, tweenInfo, {Position = goalPosition7})
+local tween8 = TweenService:Create(ScrollingArea, tweenInfo, {Position = goalPosition8})
+
+local isToggled1 = false
+button3.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween8:Play()
+    else
+        tween7:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 3 --
+
+ScrollingChat.Parent = ScreenGui
+ScrollingChat.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingChat.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingChat.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingChat.BackgroundTransparency = 0.5
+ScrollingChat.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingChat.ScrollBarThickness = 0.1
+
+local ChatCorner = Instance.new("UICorner")
+ChatCorner.Parent = ScrollingChat
+ChatCorner.CornerRadius = UDim.new(0, 10)
+
+local goalPosition9 = UDim2.new(0.3, 0, 0.2, 0)  -- Move ScrollingChat down
+local goalPosition10 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween9 = TweenService:Create(ScrollingChat, tweenInfo, {Position = goalPosition9})
+local tween10 = TweenService:Create(ScrollingChat, tweenInfo, {Position = goalPosition10})
+
+local isToggled1 = false
+button5.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween10:Play()
+    else
+        tween9:Play()
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 4 --
+
+-- End --
+
+-- Define tween goals
+local goalPosition1 = UDim2.new(0.6, 0, 0.28, 0)  -- Move ScrollingFrame down
+local goalPosition2 = UDim2.new(1.2, 0, 0.28, 0)  -- Original position
+
+-- Create tweens
+local tween1 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition1})
+local tween2 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition2})
+
+-- Toggle button behavior
+local isToggled = false
+ToggleButton.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween2:Play()
+    else
+        tween1:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- Data Storage of Emote Box --
+
+-- Animation and Sound IDs
+local animationIds = {
+    ["Teleport"] = "rbxassetid://15957361339",
+    ["Anim1"] = "rbxassetid://17861841334",
+    ["Anim2"] = "rbxassetid://17863041811",
+    ["Anim3"] = "rbxassetid://15090032390",
+    ["Anim4"] = "rbxassetid://17097409396",
+    ["Anim5"] = "rbxassetid://15503060948",
+    ["Anim6"] = "rbxassetid://12345678",
+    ["Anim7"] = "rbxassetid://12345678",
+    ["Anim8"] = "rbxassetid://12772543293",
+    ["Anim9"] = "rbxassetid://15391323441",
+    ["Anim10"] = "rbxassetid://12345678",
+    ["Anim11"] = "rbxassetid://12345678",
+    ["Anim12"] = "rbxassetid://12345678"
+}
+
+local soundIds = {
+    ["Teleport"] = "rbxassetid://405593386",
+    ["Emote"] = "rbxassetid://12345678",
+    ["Anim1"] = "rbxassetid://9044612350",
+    ["Anim2"] = "rbxassetid://12345678",
+    ["Anim3"] = "rbxassetid://8964762256",
+    ["Anim4"] = "rbxassetid://12345678",
+    ["Anim5"] = "rbxassetid://1837301393",
+    ["Anim6"] = "rbxassetid://12345678",
+    ["Anim7"] = "rbxassetid://12345678",
+    ["Anim8"] = "rbxassetid://13059564956",
+    ["Anim9"] = "rbxassetid://15806232934",
+    ["Anim10"] = "rbxassetid://12345678",
+    ["Anim11"] = "rbxassetid://12345678",
+    ["Anim12"] = "rbxassetid://12345678"
+}
+
+-- Function to stop all existing animations
+local function stopAllAnimations(humanoid)
+    for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+        track:Stop()
+    end
+end
+
+-- Function to stop all existing sounds
+local function stopAllSounds(character)
+    for _, child in ipairs(character:GetChildren()) do
+        if child:IsA("Sound") then
+            child:Stop()
+            child:Destroy()
+        end
+    end
+end
+
+-- Function to play an animation by name
+local function playAnimation(name)
+    local animationId = animationIds[name]
+    if not animationId then
+        warn("Animation ID for '" .. name .. "' not found")
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    if humanoid then
+        -- Stop all currently playing animations
+        stopAllAnimations(humanoid)
+        
+        -- Load and play the new animation
+        local animation = Instance.new("Animation")
+        animation.AnimationId = animationId
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play()
+    else
+        warn("Humanoid not found in character")
+    end
+end
+
+-- Function to play a sound by name
+local function playSound(name)
+    local soundId = soundIds[name]
+    if not soundId then
+        warn("Sound ID for '" .. name .. "' not found")
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    -- Stop all currently playing sounds
+    stopAllSounds(character)
+
+    -- Create and play the new sound
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Parent = character
+    sound:Play()
+
+    -- Clean up after sound finishes
+    sound.Ended:Connect(function()
+        sound:Destroy()
+    end)
+end
+
+-- Emote box --
+
+local emote1 = Instance.new("TextButton")
+emote1.Parent = ScrollingEmote
+emote1.BackgroundColor3 = Color3.new(0, 0, 0)
+emote1.BackgroundTransparency = 0.5
+emote1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote1.TextScaled = true
+emote1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+emote1.TextColor3 = Color3.new(1, 1, 1)
+emote1.Font = Enum.Font.PatrickHand
+emote1.Text = "Bunny Dance"
+
+emote1.MouseButton1Click:Connect(function()
+    playAnimation("Anim1")
+    playSound("Anim1")
+end)
+
+local emote2 = Instance.new("TextButton")
+emote2.Parent = ScrollingEmote
+emote2.BackgroundColor3 = Color3.new(0, 0, 0)
+emote2.BackgroundTransparency = 0.5
+emote2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote2.TextScaled = true
+emote2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+emote2.TextColor3 = Color3.new(1, 1, 1)
+emote2.Font = Enum.Font.PatrickHand
+emote2.Text = "Pixel Dance"
+
+emote2.MouseButton1Click:Connect(function()
+    playAnimation("Anim2")
+    playSound("Anim2")
+end)
+
+local emote3 = Instance.new("TextButton")
+emote3.Parent = ScrollingEmote
+emote3.BackgroundColor3 = Color3.new(0, 0, 0)
+emote3.BackgroundTransparency = 0.5
+emote3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote3.TextScaled = true
+emote3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+emote3.TextColor3 = Color3.new(1, 1, 1)
+emote3.Font = Enum.Font.PatrickHand
+emote3.Text = "Breakdance"
+
+emote3.MouseButton1Click:Connect(function()
+    playAnimation("Anim3")
+    playSound("Anim3")
+end)
+
+local emote4 = Instance.new("TextButton")
+emote4.Parent = ScrollingEmote
+emote4.BackgroundColor3 = Color3.new(0, 0, 0)
+emote4.BackgroundTransparency = 0.5
+emote4.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote4.TextScaled = true
+emote4.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingFrame
+emote4.TextColor3 = Color3.new(1, 1, 1)
+emote4.Font = Enum.Font.PatrickHand
+emote4.Text = "Nika: Luffy"
+
+emote4.MouseButton1Click:Connect(function()
+    playAnimation("Anim4")
+    playSound("Anim4")
+end)
+
+local emote5 = Instance.new("TextButton")
+emote5.Parent = ScrollingEmote
+emote5.BackgroundColor3 = Color3.new(0, 0, 0)
+emote5.BackgroundTransparency = 0.5
+emote5.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote5.TextScaled = true
+emote5.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned inside the ScrollingFrame
+emote5.TextColor3 = Color3.new(1, 1, 1)
+emote5.Font = Enum.Font.PatrickHand
+emote5.Text = "Heaven Feels"
+
+emote5.MouseButton1Click:Connect(function()
+    playAnimation("Anim5")
+    playSound("Anim5")
+end)
+
+local emote6 = Instance.new("TextButton")
+emote6.Parent = ScrollingEmote
+emote6.BackgroundColor3 = Color3.new(0, 0, 0)
+emote6.BackgroundTransparency = 0.5
+emote6.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote6.TextScaled = true
+emote6.Position = UDim2.new(0.1, 0, 0.36, 0)  -- Positioned inside the ScrollingFrame
+emote6.TextColor3 = Color3.new(1, 1, 1)
+emote6.Font = Enum.Font.PatrickHand
+emote6.Text = "Unknown Name"
+
+emote6.MouseButton1Click:Connect(function()
+    print("hi")
+end)
+
+local emote7 = Instance.new("TextButton")
+emote7.Parent = ScrollingEmote
+emote7.BackgroundColor3 = Color3.new(0, 0, 0)
+emote7.BackgroundTransparency = 0.5
+emote7.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote7.TextScaled = true
+emote7.Position = UDim2.new(0.1, 0, 0.43, 0)  -- Positioned inside the ScrollingFrame
+emote7.TextColor3 = Color3.new(1, 1, 1)
+emote7.Font = Enum.Font.PatrickHand
+emote7.Text = "Unknown Name"
+
+emote7.MouseButton1Click:Connect(function()
+    print("hi")
+end)
+
+local emote8 = Instance.new("TextButton")
+emote8.Parent = ScrollingEmote
+emote8.BackgroundColor3 = Color3.new(0, 0, 0)
+emote8.BackgroundTransparency = 0.5
+emote8.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote8.TextScaled = true
+emote8.Position = UDim2.new(0.1, 0, 0.5, 0)  -- Positioned inside the ScrollingFrame
+emote8.TextColor3 = Color3.new(1, 1, 1)
+emote8.Font = Enum.Font.PatrickHand
+emote8.Text = "Unknown Name"
+
+emote8.MouseButton1Click:Connect(function()
+    print("hi")
+end)
+
+local emote9 = Instance.new("TextButton")
+emote9.Parent = ScrollingEmote
+emote9.BackgroundColor3 = Color3.new(0, 0, 0)
+emote9.BackgroundTransparency = 0.5
+emote9.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote9.TextScaled = true
+emote9.Position = UDim2.new(0.1, 0, 0.57, 0)  -- Positioned inside the ScrollingFrame
+emote9.TextColor3 = Color3.new(1, 1, 1)
+emote9.Font = Enum.Font.PatrickHand
+emote9.Text = "Unknown Name"
+
+emote9.MouseButton1Click:Connect(function()
+    print("hi")
+end)
+
+local emote10 = Instance.new("TextButton")
+emote10.Parent = ScrollingEmote
+emote10.BackgroundColor3 = Color3.new(0, 0, 0)
+emote10.BackgroundTransparency = 0.5
+emote10.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+emote10.TextScaled = true
+emote10.Position = UDim2.new(0.1, 0, 0.64, 0)  -- Positioned inside the ScrollingFrame
+emote10.TextColor3 = Color3.new(1, 1, 1)
+emote10.Font = Enum.Font.PatrickHand
+emote10.Text = "Unknown Name"
+
+emote10.MouseButton1Click:Connect(function()
+    print("hi")
+end)
+
+-- End of Emote Box --
+
+
+
+
+-- Data Storage of Anims Box --
+
+-- Animation and Sound IDs
+local animationIds = {
+    ["Anims1"] = "rbxassetid://15391323441",
+    ["Anims2"] = "rbxassetid://12772543293",
+    ["Anims3"] = "rbxassetid://15943915877",
+    ["Anims4"] = "rbxassetid://15311685628",
+    ["Anims5"] = "rbxassetid://12351854556",
+    ["Anims6"] = "rbxassetid://15128849047",
+    ["Anims7"] = "rbxassetid://13927612951",
+    ["Anims8"] = "rbxassetid://12342141464",
+    ["Anims9"] = "rbxassetid://12345678",
+    ["Anims10"] = "rbxassetid://12345678",
+    ["Anims11"] = "rbxassetid://12345678",
+    ["Anims12"] = "rbxassetid://12345678"
+}
+
+local soundIds = {
+    ["Anims1"] = "rbxassetid://15806232934",
+    ["Anims2"] = "rbxassetid://13059564956",
+    ["Anims3"] = "rbxassetid://8964762256",
+    ["Anims4"] = "rbxassetid://12345678",
+    ["Anims5"] = "rbxassetid://1837301393",
+    ["Anims6"] = "rbxassetid://12345678",
+    ["Anims7"] = "rbxassetid://12345678",
+    ["Anims8"] = "rbxassetid://12345678",
+    ["Anims9"] = "rbxassetid://12345678",
+    ["Anims10"] = "rbxassetid://12345678",
+    ["Anims11"] = "rbxassetid://12345678",
+    ["Anims12"] = "rbxassetid://12345678"
+}
+
+-- Function to stop all existing animations
+local function stopAllAnimations(humanoid)
+    for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+        track:Stop()
+    end
+end
+
+-- Function to stop all existing sounds
+local function stopAllSounds(character)
+    for _, child in ipairs(character:GetChildren()) do
+        if child:IsA("Sound") then
+            child:Stop()
+            child:Destroy()
+        end
+    end
+end
+
+-- Function to play an animation by name
+local function playAnimation(name)
+    local animationId = animationIds[name]
+    if not animationId then
+        warn("Animation ID for '" .. name .. "' not found")
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    if humanoid then
+        -- Stop all currently playing animations
+        stopAllAnimations(humanoid)
+        
+        -- Load and play the new animation
+        local animation = Instance.new("Animation")
+        animation.AnimationId = animationId
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play()
+    else
+        warn("Humanoid not found in character")
+    end
+end
+
+-- Function to play a sound by name
+local function playSound(name)
+    local soundId = soundIds[name]
+    if not soundId then
+        warn("Sound ID for '" .. name .. "' not found")
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    -- Stop all currently playing sounds
+    stopAllSounds(character)
+
+    -- Create and play the new sound
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Parent = character
+    sound:Play()
+
+    -- Clean up after sound finishes
+    sound.Ended:Connect(function()
+        sound:Destroy()
+    end)
+end
+
+-- Animation Box --
+
+local Anima1 = Instance.new("TextButton")
+Anima1.Parent = ScrollingAnims
+Anima1.BackgroundColor3 = Color3.new(0, 0, 0)
+Anima1.BackgroundTransparency = 0.5
+Anima1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Anima1.TextScaled = true
+Anima1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+Anima1.TextColor3 = Color3.new(1, 1, 1)
+Anima1.Font = Enum.Font.PatrickHand
+Anima1.Text = "Atomic Samurai: Awakening"
+
+Anima1.MouseButton1Click:Connect(function()
+    playAnimation("Anims1")
+    playSound("Anims1")
+end)
+
+local Anima2 = Instance.new("TextButton")
+Anima2.Parent = ScrollingAnims
+Anima2.BackgroundColor3 = Color3.new(0, 0, 0)
+Anima2.BackgroundTransparency = 0.5
+Anima2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Anima2.TextScaled = true
+Anima2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+Anima2.TextColor3 = Color3.new(1, 1, 1)
+Anima2.Font = Enum.Font.PatrickHand
+Anima2.Text = "Destruction Cyborg: Awakening"
+
+Anima2.MouseButton1Click:Connect(function()
+    playAnimation("Anims2")
+    playSound("Anims2")
+end)
+
+local Anima3 = Instance.new("TextButton")
+Anima3.Parent = ScrollingAnims
+Anima3.BackgroundColor3 = Color3.new(0, 0, 0)
+Anima3.BackgroundTransparency = 0.5
+Anima3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Anima3.TextScaled = true
+Anima3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+Anima3.TextColor3 = Color3.new(1, 1, 1)
+Anima3.Font = Enum.Font.PatrickHand
+Anima3.Text = "Destruction Cyborg: Wall Combo"
+
+Anima3.MouseButton1Click:Connect(function()
+    playAnimation("Anims3")
+    playSound("Anims3")
+end)
+
+local Anima4 = Instance.new("TextButton")
+Anima4.Parent = ScrollingAnims
+Anima4.BackgroundColor3 = Color3.new(0, 0, 0)
+Anima4.BackgroundTransparency = 0.5
+Anima4.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Anima4.TextScaled = true
+Anima4.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingFrame
+Anima4.TextColor3 = Color3.new(1, 1, 1)
+Anima4.Font = Enum.Font.PatrickHand
+Anima4.Text = "Samurai: Fake Counter"
+
+Anima4.MouseButton1Click:Connect(function()
+    playAnimation("Anims4")
+    playSound("Anims4")
+end)
+
+local Anima5 = Instance.new("TextButton")
+Anima5.Parent = ScrollingAnims
+Anima5.BackgroundColor3 = Color3.new(0, 0, 0)
+Anima5.BackgroundTransparency = 0.5
+Anima5.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Anima5.TextScaled = true
+Anima5.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned inside the ScrollingFrame
+Anima5.TextColor3 = Color3.new(1, 1, 1)
+Anima5.Font = Enum.Font.PatrickHand
+Anima5.Text = "Garou: Fake Counter"
+
+Anima5.MouseButton1Click:Connect(function()
+    playAnimation("Anims5")
+    playSound("Anims5")
+end)
+
+local Anima6 = Instance.new("TextButton")
+Anima6.Parent = ScrollingAnims
+Anima6.BackgroundColor3 = Color3.new(0, 0, 0)
+Anima6.BackgroundTransparency = 0.5
+Anima6.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Anima6.TextScaled = true
+Anima6.Position = UDim2.new(0.1, 0, 0.36, 0)  -- Positioned inside the ScrollingFrame
+Anima6.TextColor3 = Color3.new(1, 1, 1)
+Anima6.Font = Enum.Font.PatrickHand
+Anima6.Text = "Metal Bat: Fake Counter"
+
+Anima6.MouseButton1Click:Connect(function()
+    playAnimation("Anims6")
+    playSound("Anims6")
+end)
+
+local Anima7 = Instance.new("TextButton")
+Anima7.Parent = ScrollingAnims
+Anima7.BackgroundColor3 = Color3.new(0, 0, 0)
+Anima7.BackgroundTransparency = 0.5
+Anima7.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Anima7.TextScaled = true
+Anima7.Position = UDim2.new(0.1, 0, 0.43, 0)  -- Positioned inside the ScrollingFrame
+Anima7.TextColor3 = Color3.new(1, 1, 1)
+Anima7.Font = Enum.Font.PatrickHand
+Anima7.Text = "Saitama: Fake Omni Punch"
+
+Anima7.MouseButton1Click:Connect(function()
+    playAnimation("Anims7")
+    playSound("Anims7")
+end)
+
+local Anima8 = Instance.new("TextButton")
+Anima8.Parent = ScrollingAnims
+Anima8.BackgroundColor3 = Color3.new(0, 0, 0)
+Anima8.BackgroundTransparency = 0.5
+Anima8.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Anima8.TextScaled = true
+Anima8.Position = UDim2.new(0.1, 0, 0.50, 0)  -- Positioned inside the ScrollingFrame
+Anima8.TextColor3 = Color3.new(1, 1, 1)
+Anima8.Font = Enum.Font.PatrickHand
+Anima8.Text = "Garou: Awakening"
+
+Anima8.MouseButton1Click:Connect(function()
+    playAnimation("Anims8")
+    playSound("Anims8")
+end)
+
+-- End of Animation Box --
+
+
+
+
+-- Teleport Button --
+
+-- Create the teleportButton
+local teleportButton = Instance.new("TextButton")
+teleportButton.Name = "teleportButton"
+teleportButton.Parent = ScreenGui
+teleportButton.BackgroundColor3 = Color3.new(0, 0, 0)
+teleportButton.BackgroundTransparency = 0.5
+teleportButton.Size = UDim2.new(0.1, 0, 0.1, 0)
+teleportButton.TextScaled = true
+teleportButton.Position = UDim2.new(0.7, 0, 0.4, 0)
+teleportButton.TextColor3 = Color3.new(1, 1, 1)
+teleportButton.Font = Enum.Font.PatrickHand
+teleportButton.Text = "Teleport"
+teleportButton.Visible = false
+
+local teleportButtonCorner = Instance.new("UICorner")
+teleportButtonCorner.Parent = teleportButton
+teleportButtonCorner.CornerRadius = UDim.new(0, 10)
+
+-- Create the toggleTeleport button
+local toggleTeleport = Instance.new("TextButton")
+toggleTeleport.Name = "toggleTeleport"
+toggleTeleport.Parent = ScrollingFrame
+toggleTeleport.BackgroundColor3 = Color3.new(0, 0, 0)
+toggleTeleport.BackgroundTransparency = 0.5
+toggleTeleport.Size = UDim2.new(0.03, 0, 0.9, 0)
+toggleTeleport.TextScaled = true
+toggleTeleport.Position = UDim2.new(0.11, 0, 0, 0)
+toggleTeleport.TextColor3 = Color3.new(1, 1, 1)
+toggleTeleport.Font = Enum.Font.PatrickHand
+toggleTeleport.Text = "OFF"
+
+local teleportCorner = Instance.new("UICorner")
+teleportCorner.Parent = toggleTeleport
+teleportCorner.CornerRadius = UDim.new(0, 10)
+
+-- Script to toggle visibility and text
+local isTeleportButtonVisible = false
+
+toggleTeleport.MouseButton1Click:Connect(function()
+    isTeleportButtonVisible = not isTeleportButtonVisible
+    teleportButton.Visible = isTeleportButtonVisible
+    toggleTeleport.Text = isTeleportButtonVisible and "ON" or "OFF"
+end)
+
+-- Teleport Mode --
+local toggleMode = Instance.new("TextButton")
+toggleMode.Name = "toggleMode"
+toggleMode.Parent = ScrollingFrame
+toggleMode.BackgroundColor3 = Color3.new(0, 0, 0)
+toggleMode.BackgroundTransparency = 0.5
+toggleMode.Size = UDim2.new(0.03, 0, 0.9, 0)
+toggleMode.TextScaled = true
+toggleMode.Position = UDim2.new(0.17, 0, 0, 0)
+toggleMode.TextColor3 = Color3.fromRGB(0, 0, 200)
+toggleMode.Font = Enum.Font.PatrickHand
+toggleMode.Text = "Player"
+
+local toggleButtonCorner = Instance.new("UICorner")
+toggleButtonCorner.Parent = toggleMode
+toggleButtonCorner.CornerRadius = UDim.new(0, 10)
+
+-- Function to toggle text
+local function toggleText()
+    if toggleMode.Text == "Player" then
+        toggleMode.Text = "NPC"
+    else
+        toggleMode.Text = "Player"
+    end
+end
+
+-- Connect the function to the button click event
+toggleMode.MouseButton1Click:Connect(toggleText)
+
+-- Animation and Sound IDs for Teleport only
+local animationIds = {
+    ["Teleport"] = "rbxassetid://15957361339"
+}
+
+local soundIds = {
+    ["Teleport"] = "rbxassetid://405593386"
+}
+
+-- Function to play an animation by name
+local function playAnimation(name)
+    local animationId = animationIds[name]
+    if not animationId then
+        warn("Animation ID for '" .. name .. "' not found")
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    if humanoid then
+        -- Stop all currently playing animations
+        stopAllAnimations(humanoid)
+        
+        -- Load and play the new animation
+        local animation = Instance.new("Animation")
+        animation.AnimationId = animationId
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play()
+        return animationTrack
+    else
+        warn("Humanoid not found in character")
+    end
+end
+
+-- Function to play a sound by name
+local function playSound(name)
+    local soundId = soundIds[name]
+    if not soundId then
+        warn("Sound ID for '" .. name .. "' not found")
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+
+    -- Stop all currently playing sounds
+    stopAllSounds(character)
+
+    -- Create and play the new sound
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Parent = character
+    sound:Play()
+
+    -- Clean up after sound finishes
+    sound.Ended:Connect(function()
+        sound:Destroy()
+    end)
+end
+
+-- Function to find a random player
+local function teleportToRandomPlayer()
+    local players = game.Players:GetPlayers()
+    local otherPlayers = {}
+    for _, p in pairs(players) do
+        if p ~= game.Players.LocalPlayer then
+            table.insert(otherPlayers, p)
+        end
+    end
+    
+    if #otherPlayers > 0 then
+        local randomPlayer = otherPlayers[math.random(#otherPlayers)]
+        game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(randomPlayer.Character.HumanoidRootPart.CFrame)
+    else
+        print("No other players found.")
+    end
+end
+
+-- Function to teleport based on the toggle state and play animation
+local function teleportToTarget()
+    local targetPosition
+
+    if toggleMode.Text == "Player" then
+        toggleMode.TextColor3 = Color3.fromRGB(0, 0, 200)
+        teleportToRandomPlayer()
+    elseif toggleMode.Text == "NPC" then
+        toggleMode.TextColor3 = Color3.fromRGB(200, 0, 0)
+        local npc = game:GetService("Workspace").Live:FindFirstChild("Weakest Dummy")
+        if npc and npc:FindFirstChild("HumanoidRootPart") then
+            targetPosition = npc.HumanoidRootPart.CFrame
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetPosition)
+        end
+    end
+
+    playSound("Teleport")
+    local animationTrack = playAnimation("Teleport")
+    if animationTrack then
+        animationTrack.Stopped:Wait()
+    end
+end
+
+teleportButton.MouseButton1Click:Connect(teleportToTarget)
+
+
+-- Area Teleport Locations Box --
+
+local location1 = Instance.new("TextButton")
+location1.Parent = ScrollingArea
+location1.BackgroundColor3 = Color3.new(0, 0, 0)
+location1.BackgroundTransparency = 0.5
+location1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+location1.TextScaled = true
+location1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingArea
+location1.TextColor3 = Color3.new(1, 1, 1)
+location1.Font = Enum.Font.PatrickHand
+location1.Text = "Atomic Samurai: Atom"
+
+location1.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+    player.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Cutscenes.Atoms.sphere.Model.atom.root.CFrame
+end)
+
+local location2 = Instance.new("TextButton")
+location2.Parent = ScrollingArea
+location2.BackgroundColor3 = Color3.new(0, 0, 0)
+location2.BackgroundTransparency = 0.5
+location2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+location2.TextScaled = true
+location2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingArea
+location2.TextColor3 = Color3.new(1, 1, 1)
+location2.Font = Enum.Font.PatrickHand
+location2.Text = "Saitama: Death Counter"
+
+location2.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+    player.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Cutscenes["Death Cutscene"].Camm.CFrame
+end)
+
+-- Spawn Part --
+
+local Player = game.Players.LocalPlayer
+local Char = Player.Character
+local Hum = Char:FindFirstChild("HumanoidRootPart")
+
+local SpawnPart = Instance.new("Part")
+SpawnPart.Parent = Workspace
+SpawnPart.Name = "SpawnPart"
+SpawnPart.CanCollide = false
+SpawnPart.Anchored = true
+SpawnPart.Transparency = 0.8
+SpawnPart.Color = Color3.new(0,1,0)
+SpawnPart.Position = Hum.Position + Vector3.new(0,0,0)
+
+local location3 = Instance.new("TextButton")
+location3.Parent = ScrollingArea
+location3.BackgroundColor3 = Color3.new(0, 0, 0)
+location3.BackgroundTransparency = 0.5
+location3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+location3.TextScaled = true
+location3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingArea
+location3.TextColor3 = Color3.new(1, 1, 1)
+location3.Font = Enum.Font.PatrickHand
+location3.Text = "Home: Your Spawn"
+
+location3.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+    player.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").SpawnPart.CFrame
+end)
+
+-- Spawn Part At Void Position --
+
+local SpawnPartv = Instance.new("Part")
+SpawnPartv.Parent = Workspace
+SpawnPartv.Name = "SpawnPartv"
+SpawnPartv.CanCollide = true
+SpawnPartv.Size = Vector3.new(2000, 1, 2000)
+SpawnPartv.Anchored = true
+SpawnPartv.Transparency = 0.8
+SpawnPartv.Color = Color3.new(0,1,0)
+SpawnPartv.Position = Vector3.new(99999,90,99999)
+
+local location4 = Instance.new("TextButton")
+location4.Parent = ScrollingArea
+location4.BackgroundColor3 = Color3.new(0, 0, 0)
+location4.BackgroundTransparency = 0.5
+location4.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+location4.TextScaled = true
+location4.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingArea
+location4.TextColor3 = Color3.new(1, 1, 1)
+location4.Font = Enum.Font.PatrickHand
+location4.Text = "Void: Position"
+
+location4.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+    player.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").SpawnPartv.CFrame + Vector3.new(0, 2, 0)
+end)
+
+-- Chat Spam Box --
+
+local chat1 = Instance.new("TextButton")
+chat1.Parent = ScrollingChat
+chat1.BackgroundColor3 = Color3.new(0, 0, 0)
+chat1.BackgroundTransparency = 0.5
+chat1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+chat1.TextScaled = true
+chat1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingChat
+chat1.TextColor3 = Color3.new(1, 1, 1)
+chat1.Font = Enum.Font.PatrickHand
+chat1.Text = "Spam EZ"
+
+chat1.MouseButton1Click:Connect(function()
+    local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+-- Ensure LocalPlayer and their HumanoidRootPart are available
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+-- Find the nearest player
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+-- Function to send a chat message
+local function sendChatMessage(player)
+    local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+    if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
+        local message = player.Name .. ", EZ !"
+        local args = { message, "All" } -- Message first, then channel
+        chatEvent.SayMessageRequest:FireServer(unpack(args))
+    else
+        local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Error: Can't Find Target",
+    Text = " This game does not have ChatEvents or SayMessageRequest to do spam !",
+    Duration = 2,
+})
+    end
+end
+
+-- Execute once when the script runs
+local nearestPlayer = getNearestPlayer()
+if nearestPlayer then
+    sendChatMessage(nearestPlayer)
+else
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Error: Can't Find Target",
+    Text = " Need to has a Players in server to used this chat spam !",
+    Duration = 2,
+})
+end
+end)
+
+local chat2 = Instance.new("TextButton")
+chat2.Parent = ScrollingChat
+chat2.BackgroundColor3 = Color3.new(0, 0, 0)
+chat2.BackgroundTransparency = 0.5
+chat2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+chat2.TextScaled = true
+chat2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned below chat1
+chat2.TextColor3 = Color3.new(1, 1, 1)
+chat2.Font = Enum.Font.PatrickHand
+chat2.Text = "Say GGs"
+
+chat2.MouseButton1Click:Connect(function()
+    local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+-- Ensure LocalPlayer and their HumanoidRootPart are available
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+-- Find the nearest player
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+-- Function to send a chat message
+local function sendChatMessage(player)
+    local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+    if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
+        local message = player.Name .. ", GGs !"
+        local args = { message, "All" } -- Message first, then channel
+        chatEvent.SayMessageRequest:FireServer(unpack(args))
+    else
+        local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Error: Can't Find Target",
+    Text = " This game does not have ChatEvents or SayMessageRequest to do spam !",
+    Duration = 2,
+})
+    end
+end
+
+-- Execute once when the script runs
+local nearestPlayer = getNearestPlayer()
+if nearestPlayer then
+    sendChatMessage(nearestPlayer)
+else
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Error: Can't Find Target",
+    Text = " Need to has a Players in server to used this chat spam !",
+    Duration = 2,
+})
+end
+end)
+
+local chat3 = Instance.new("TextButton")
+chat3.Parent = ScrollingChat
+chat3.BackgroundColor3 = Color3.new(0, 0, 0)
+chat3.BackgroundTransparency = 0.5
+chat3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+chat3.TextScaled = true
+chat3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned below chat2
+chat3.TextColor3 = Color3.new(1, 1, 1)
+chat3.Font = Enum.Font.PatrickHand
+chat3.Text = "Say Others Are Cheater Too"
+
+chat3.MouseButton1Click:Connect(function()
+    local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+-- Ensure LocalPlayer and their HumanoidRootPart are available
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+-- Find the nearest player
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+-- Function to send a chat message
+local function sendChatMessage(player)
+    local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+    if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
+        local message = player.Name .. ", You're Cheater Too !"
+        local args = { message, "All" } -- Message first, then channel
+        chatEvent.SayMessageRequest:FireServer(unpack(args))
+    else
+        local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Error: Can't Find Target",
+    Text = " This game does not have ChatEvents or SayMessageRequest to do spam !",
+    Duration = 2,
+})
+    end
+end
+
+-- Execute once when the script runs
+local nearestPlayer = getNearestPlayer()
+if nearestPlayer then
+    sendChatMessage(nearestPlayer)
+else
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Error: Can't Find Target",
+    Text = " Need to has a Players in server to used this chat spam !",
+    Duration = 2,
+})
+end
+end)
+
+local chat4 = Instance.new("TextButton")
+chat4.Parent = ScrollingChat
+chat4.BackgroundColor3 = Color3.new(0, 0, 0)
+chat4.BackgroundTransparency = 0.5
+chat4.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+chat4.TextScaled = true
+chat4.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned below chat2
+chat4.TextColor3 = Color3.new(1, 1, 1)
+chat4.Font = Enum.Font.PatrickHand
+chat4.Text = "Send Random Toxic Message"
+
+chat4.MouseButton1Click:Connect(function()
+    sendRandomMessages()
+end)
+
+-- End of Chat Spam Box --
+
+-- Credit --
+
+local CoreGui = game:GetService("StarterGui")
+
+    CoreGui:SetCore("SendNotification", {
+        Title = "NganHa2k3 Script",
+        Text = " Welcome to my The Strongest Battlground script !",
+        Duration = 3,
+})
+
+-- Random Message on Chatted --
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+local function sendRandomMessagesa()
+    local nearestPlayer = getNearestPlayer()
+    if not nearestPlayer then
+        print("No nearest player found.")
+        return
+    end
+
+    local msga = {
+        "Hello " .. nearestPlayer.Name .. ", I'm is " .. localPlayer.Name .. " !",
+        "I'm the Strongest one here, " .. nearestPlayer.Name .. " ARE YOU READY !",
+        "Round Started: " .. nearestPlayer.Name .. " Vs " .. localPlayer.Name .. " !",
+        "Oh noe, " .. nearestPlayer.Name .. " You're is UnLucky meets me " .. localPlayer.Name .. ".",
+        "Try Your Best, " .. nearestPlayer.Name .. " Haha you can't win me " .. localPlayer.Name .. "."
+    }
+
+    local randomIndex = math.random(1, #msga)
+    local args = {
+        [1] = msga[randomIndex],
+        [2] = "All"
+    }
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+
+sendRandomMessagesa()
