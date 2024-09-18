@@ -1,0 +1,984 @@
+-- GUI Creation --
+local ScreenGui = Instance.new("ScreenGui")
+local ToggleButton = Instance.new("TextButton")
+local ScrollingFrame = Instance.new("ScrollingFrame")
+
+local ScrollingS = Instance.new("ScrollingFrame")
+local ScrollingB = Instance.new("ScrollingFrame")
+
+local TextBox = Instance.new("TextBox")
+local ExecuteBox = Instance.new("TextBox")
+
+-- ScreenGui Parent --
+
+ScreenGui.Parent = game.CoreGui
+
+-- Create ScrollingFrame --
+
+-- Setup ScrollingFrame
+
+ScrollingFrame.Parent = ScreenGui
+ScrollingFrame.Size = UDim2.new(0.3, 0, 0.1, 0)  -- Adjusted to a more visible size
+ScrollingFrame.Position = UDim2.new(1.2, 0, 0.28, 0)  -- Positioned in the center of the screen
+ScrollingFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingFrame.BackgroundTransparency = 0.5
+ScrollingFrame.CanvasSize = UDim2.new(2, 0, 0, 0)  -- Wider canvas size to enable scrolling
+ScrollingFrame.ScrollBarThickness = 0.1
+
+local ScrollingFrameCorner = Instance.new("UICorner")
+ScrollingFrameCorner.Parent = ScrollingFrame
+ScrollingFrameCorner.CornerRadius = UDim.new(0, 10)
+
+-- Create Toggle Open and Close GUI --
+
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.new(0, 0, 0)
+ToggleButton.BackgroundTransparency = 0.5
+ToggleButton.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
+ToggleButton.TextScaled = true
+ToggleButton.Position = UDim2.new(0.88, 0, -0.1, 0)  -- Positioned outside the ScrollingFrame
+ToggleButton.TextColor3 = Color3.new(1, 1, 1)
+ToggleButton.Font = Enum.Font.PatrickHand
+ToggleButton.Text = "+"
+
+local ToggleButtonCorner = Instance.new("UICorner")
+ToggleButtonCorner.Parent = ToggleButton
+ToggleButtonCorner.CornerRadius = UDim.new(0, 10)
+
+-- Toggle Button Function --
+
+-- Create and configure TweenService
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1  -- Duration in seconds
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+-- Define tween goals
+
+local goalPosition1 = UDim2.new(0.6, 0, 0.28, 0)  -- Move ScrollingFrame down
+local goalPosition2 = UDim2.new(1.2, 0, 0.28, 0)  -- Original position
+
+-- Create tweens
+
+local tween1 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition1})
+local tween2 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPosition2})
+
+-- Toggle button behavior
+
+local isToggled = false
+ToggleButton.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween2:Play()
+    else
+        tween1:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- GUI Holding Button Complete now Below it a Button inside ScrollingFrame --
+
+-- Button in ScrollingFrame --
+
+local button1 = Instance.new("TextButton")
+button1.Parent = ScrollingFrame
+button1.BackgroundColor3 = Color3.new(0, 0, 0)
+button1.BackgroundTransparency = 0.5
+button1.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button1.TextScaled = true
+button1.Position = UDim2.new(0.005, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button1.TextColor3 = Color3.fromRGB(255, 0, 0)
+button1.Font = Enum.Font.PatrickHand
+button1.Text = "Find Arkenstone: OFF"
+
+-- Button For Reset --
+
+local button2 = Instance.new("TextButton")
+button2.Parent = ScrollingFrame
+button2.BackgroundColor3 = Color3.new(0, 0, 0)
+button2.BackgroundTransparency = 0.5
+button2.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button2.TextScaled = true
+button2.Position = UDim2.new(0.045, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button2.TextColor3 = Color3.fromRGB(255, 255, 0)
+button2.Font = Enum.Font.PatrickHand
+button2.Text = "Reset Character"
+
+button2.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.Humanoid.Health = 0
+    
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Reset Character",
+    Text = "Success !",
+    Duration = 2,
+})
+end)
+
+-- Button for DetectTool --
+
+local button3 = Instance.new("TextButton")
+button3.Parent = ScrollingFrame
+button3.BackgroundColor3 = Color3.new(0, 0, 0)
+button3.BackgroundTransparency = 0.5
+button3.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button3.TextScaled = true
+button3.Position = UDim2.new(0.085, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button3.TextColor3 = Color3.fromRGB(0, 0, 250)
+button3.Font = Enum.Font.PatrickHand
+button3.Text = "Locate: The Arkenstone"
+
+button3.MouseButton1Click:Connect(function()
+    local toolName = "The Arkenstone"
+
+local function playerHasTool(player)
+    local backpack = player:FindFirstChildOfClass("Backpack")
+    if backpack then
+        for _, item in pairs(backpack:GetChildren()) do
+            if item:IsA("Tool") and item.Name == toolName then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+local function announcePlayersWithTool()
+    local currentPlayersWithTool = {}
+    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+        if playerHasTool(player) then
+            table.insert(currentPlayersWithTool, player.Name)
+        end
+    end
+
+    local message
+    if #currentPlayersWithTool > 0 then
+        message = table.concat(currentPlayersWithTool, ", ") .. " have " .. toolName
+    else
+        message = "No one has " .. toolName
+    end
+    
+    local args = {
+        [1] = message,
+        [2] = "All"
+    }
+    game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+
+announcePlayersWithTool()
+end)
+
+-- Find Arkenstone Function --
+
+-- Variables to control teleportation
+local teleportSpeed = 0.5  -- Default speed (seconds)
+local checkInterval = 1    -- Default check interval (seconds)
+local shouldTeleport = false
+local teleportThread
+
+-- Function to start teleportation
+local function startTeleportation(speed, interval)
+    teleportSpeed = speed or teleportSpeed
+    checkInterval = interval or checkInterval
+    shouldTeleport = true
+    
+    -- Start teleportation process
+    teleportThread = spawn(function()
+        while shouldTeleport do
+            if game:GetService("Workspace"):FindFirstChild("The Arkenstone") and game:GetService("Workspace")["The Arkenstone"]:FindFirstChild("Handle") then
+                local Enlightal = game:GetService("Workspace")["The Arkenstone"].Handle
+                local Player = game.Players.LocalPlayer
+                local Char = Player.Character
+                local Hum = Char:FindFirstChild("HumanoidRootPart")
+
+                local originalCFrame = Hum.CFrame
+                Hum.CFrame = Enlightal.CFrame
+                task.wait(teleportSpeed)
+                Hum.CFrame = originalCFrame
+            end
+            task.wait(checkInterval)
+        end
+    end)
+end
+
+-- Function to stop teleportation
+local function stopTeleportation()
+    shouldTeleport = false
+    if teleportThread then
+        teleportThread:Disconnect()  -- Make sure to stop the thread if needed
+        teleportThread = nil
+    end
+end
+
+-- Function for Button --
+
+-- Button Number 1 --
+    local isbutton1toggle = false
+button1.MouseButton1Click:Connect(function()
+    if isbutton1toggle then
+        startTeleportation(0.0001, 0.2)
+        button1.Text = "Find Arkenstone: ON"
+        button1.TextColor3 = Color3.fromRGB(0, 255, 0)
+        
+        local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "It's Activated",
+    Text = "Anytime who dropped The Arkenstone you will Teleport to it !",
+    Duration = 2,
+})
+    else
+        stopTeleportation()
+        button1.Text = "Find Arkenstone: OFF"
+        button1.TextColor3 = Color3.fromRGB(255, 0, 0)
+        
+        local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "It's Deactivated",
+    Text = "Find Arkenstone is now OFF !",
+    Duration = 2,
+})
+    end
+        isbutton1toggle = not isbutton1toggle
+end)
+
+-- 4th button sorry if script it a mess --
+
+ScrollingS.Parent = ScreenGui
+ScrollingS.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingS.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingS.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingS.BackgroundTransparency = 0.5
+ScrollingS.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingS.ScrollBarThickness = 0.1
+
+local button4 = Instance.new("TextButton")
+button4.Parent = ScrollingFrame
+button4.BackgroundColor3 = Color3.new(0, 0, 0)
+button4.BackgroundTransparency = 0.5
+button4.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button4.TextScaled = true
+button4.Position = UDim2.new(0.125, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button4.TextColor3 = Color3.new(1, 1, 1)
+button4.Font = Enum.Font.PatrickHand
+button4.Text = "Teleport Selection"
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1  -- Duration in seconds
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition4 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween3 = TweenService:Create(ScrollingS, tweenInfo, {Position = goalPosition3})
+local tween4 = TweenService:Create(ScrollingS, tweenInfo, {Position = goalPosition4})
+
+local isToggleds = false
+button4.MouseButton1Click:Connect(function()
+    if isToggleds then
+        tween4:Play()
+    else
+        tween3:Play()
+    end
+    isToggleds = not isToggleds
+end)
+
+-- Teleport the local player to the nearest player
+local function Tptoplayer()
+    local players = game:GetService("Players")
+    local localPlayer = players.LocalPlayer
+    local closestPlayer = nil
+    local shortestDistance = math.huge
+
+    for _, player in ipairs(players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player ~= localPlayer then
+            local distance = (player.Character.HumanoidRootPart.Position - localPlayer.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                closestPlayer = player
+                shortestDistance = distance
+            end
+        end
+    end
+
+    if closestPlayer and closestPlayer.Character and closestPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        localPlayer.Character.HumanoidRootPart.CFrame = closestPlayer.Character.HumanoidRootPart.CFrame
+    end
+end
+
+-- Teleport the nearest player to the local player
+local function Playertpto()
+    local players = game:GetService("Players")
+    local localPlayer = players.LocalPlayer
+    local closestPlayer = nil
+    local shortestDistance = math.huge
+
+    for _, player in ipairs(players:GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player ~= localPlayer then
+            local distance = (player.Character.HumanoidRootPart.Position - localPlayer.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                closestPlayer = player
+                shortestDistance = distance
+            end
+        end
+    end
+
+    if closestPlayer and closestPlayer.Character and closestPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        closestPlayer.Character.HumanoidRootPart.CFrame = localPlayer.Character.HumanoidRootPart.CFrame
+    end
+end
+
+local players = game:GetService("Players")
+local localPlayer = players.LocalPlayer
+
+local tps = Instance.new("TextButton")
+tps.Parent = ScrollingS
+tps.BackgroundColor3 = Color3.new(0, 0, 0)
+tps.BackgroundTransparency = 0.5
+tps.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+tps.TextScaled = true
+tps.Position = UDim2.new(0.1, 0, 0.005, 0)  -- Positioned inside the ScrollingFrame
+tps.TextColor3 = Color3.new(1, 1, 1)
+tps.Font = Enum.Font.PatrickHand
+tps.Text = "Teleport: Nearby"
+
+tps.MouseButton1Click:Connect(function()
+    Tptoplayer()
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Teleport Complete",
+    Text = "You've Teleport to Nearby Players !",
+    Duration = 2,
+})
+end)
+
+
+local tps1 = Instance.new("TextButton")
+tps1.Parent = ScrollingS
+tps1.BackgroundColor3 = Color3.new(0, 0, 0)
+tps1.BackgroundTransparency = 0.5
+tps1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+tps1.TextScaled = true
+tps1.Position = UDim2.new(0.1, 0, 0.085, 0)  -- Positioned inside the ScrollingFrame
+tps1.TextColor3 = Color3.new(1, 1, 1)
+tps1.Font = Enum.Font.PatrickHand
+tps1.Text = "Bring: Nearby"
+
+tps1.MouseButton1Click:Connect(function()
+    Playertpto()
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Bring Successful",
+    Text = "You've Teleport Nearby Player to You !",
+    Duration = 2,
+})
+end)
+
+local Area = Instance.new("Part")
+Area.Parent = Workspace
+Area.Size = Vector3.new(20000, 2, 20000)
+Area.Position = Vector3.new(9999, 99, 9999)
+Area.Material = "Grass"
+Area.CanCollide = true
+Area.Name = "Safe"
+Area.Color = Color3.fromRGB(0, 255, 0)
+Area.Anchored = true
+Area.Transparency = 0.8
+
+local tps2 = Instance.new("TextButton")
+tps2.Parent = ScrollingS
+tps2.BackgroundColor3 = Color3.new(0, 0, 0)
+tps2.BackgroundTransparency = 0.5
+tps2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+tps2.TextScaled = true
+tps2.Position = UDim2.new(0.1, 0, 0.165, 0)  -- Positioned inside the ScrollingFrame
+tps2.TextColor3 = Color3.new(1, 1, 1)
+tps2.Font = Enum.Font.PatrickHand
+tps2.Text = "Teleport: Area"
+
+tps2.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Safe.CFrame + Vector3.new(0, 4, 0)
+    
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Teleport Successful",
+    Text = "You've Teleport to Safe Zone !",
+    Duration = 2,
+})
+end)
+
+-- Bad Words --
+
+ScrollingB.Parent = ScreenGui
+ScrollingB.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingB.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingB.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingB.BackgroundTransparency = 0.5
+ScrollingB.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingB.ScrollBarThickness = 0.1
+
+local button5 = Instance.new("TextButton")
+button5.Parent = ScrollingFrame
+button5.BackgroundColor3 = Color3.new(0, 0, 0)
+button5.BackgroundTransparency = 0.5
+button5.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button5.TextScaled = true
+button5.Position = UDim2.new(0.165, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button5.TextColor3 = Color3.new(1, 1, 1)
+button5.Font = Enum.Font.PatrickHand
+button5.Text = "Bads Word on Chatted"
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1  -- Duration in seconds
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+local goalPosition5 = UDim2.new(0.1, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition6 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween5 = TweenService:Create(ScrollingB, tweenInfo, {Position = goalPosition5})
+local tween6 = TweenService:Create(ScrollingB, tweenInfo, {Position = goalPosition6})
+
+local isToggledss = false
+button5.MouseButton1Click:Connect(function()
+    if isToggledss then
+        tween6:Play()
+    else
+        tween5:Play()
+    end
+    isToggledss = not isToggledss
+end)
+
+local tpsb = Instance.new("TextButton")
+tpsb.Parent = ScrollingB
+tpsb.BackgroundColor3 = Color3.new(0, 0, 0)
+tpsb.BackgroundTransparency = 0.5
+tpsb.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+tpsb.TextScaled = true
+tpsb.Position = UDim2.new(0.1, 0, 0.005, 0)  -- Positioned inside the ScrollingFrame
+tpsb.TextColor3 = Color3.new(1, 1, 1)
+tpsb.Font = Enum.Font.PatrickHand
+tpsb.Text = "Say Nearest GAY !"
+
+tpsb.MouseButton1Click:Connect(function()
+    
+    local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+-- Ensure LocalPlayer and their HumanoidRootPart are available
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+-- Find the nearest player
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+-- Function to send a chat message
+local function sendChatMessage(player)
+    local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+    if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
+        local message = player.Name .. " 🄰🅁🄴 🄶🄰🅈 !"
+        local args = { message, "All" } -- Message first, then channel
+        chatEvent.SayMessageRequest:FireServer(unpack(args))
+    else
+        print("Chat event or SayMessageRequest not found.")
+    end
+end
+
+-- Execute once when the script runs
+local nearestPlayer = getNearestPlayer()
+if nearestPlayer then
+    sendChatMessage(nearestPlayer)
+else
+    print("No nearest player found.")
+end
+    
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Bad Words",
+    Text = " LOL HIS IS GAY !",
+    Duration = 2,
+})
+end)
+
+local tpsb1 = Instance.new("TextButton")
+tpsb1.Parent = ScrollingB
+tpsb1.BackgroundColor3 = Color3.new(0, 0, 0)
+tpsb1.BackgroundTransparency = 0.5
+tpsb1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+tpsb1.TextScaled = true
+tpsb1.Position = UDim2.new(0.1, 0, 0.085, 0)  -- Positioned inside the ScrollingFrame
+tpsb1.TextColor3 = Color3.new(1, 1, 1)
+tpsb1.Font = Enum.Font.PatrickHand
+tpsb1.Text = "Say Nearest Abuser !"
+
+tpsb1.MouseButton1Click:Connect(function()
+    
+    local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+-- Ensure LocalPlayer and their HumanoidRootPart are available
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+-- Find the nearest player
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+-- Function to send a chat message
+local function sendChatMessage(player)
+    local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+    if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
+        local message = player.Name .. " have The Arkenstone, His is Abuser !"
+        local args = { message, "All" } -- Message first, then channel
+        chatEvent.SayMessageRequest:FireServer(unpack(args))
+    else
+        print("Chat event or SayMessageRequest not found.")
+    end
+end
+
+-- Execute once when the script runs
+local nearestPlayer = getNearestPlayer()
+if nearestPlayer then
+    sendChatMessage(nearestPlayer)
+else
+    print("No nearest player found.")
+end
+    
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Bad Words",
+    Text = " HIS ARE ABUSER RIGHT !",
+    Duration = 2,
+})
+end)
+
+local tpsb11 = Instance.new("TextButton")
+tpsb11.Parent = ScrollingB
+tpsb11.BackgroundColor3 = Color3.new(0, 0, 0)
+tpsb11.BackgroundTransparency = 0.5
+tpsb11.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+tpsb11.TextScaled = true
+tpsb11.Position = UDim2.new(0.1, 0, 0.165, 0)  -- Positioned inside the ScrollingFrame
+tpsb11.TextColor3 = Color3.new(1, 1, 1)
+tpsb11.Font = Enum.Font.PatrickHand
+tpsb11.Text = "Say Nearest EZ !"
+
+tpsb11.MouseButton1Click:Connect(function()
+    
+    local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+-- Ensure LocalPlayer and their HumanoidRootPart are available
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+-- Find the nearest player
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+-- Function to send a chat message
+local function sendChatMessage(player)
+    local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+    if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
+        local message = player.Name .. ", EZ LOL HaHa !"
+        local args = { message, "All" } -- Message first, then channel
+        chatEvent.SayMessageRequest:FireServer(unpack(args))
+    else
+        print("Chat event or SayMessageRequest not found.")
+    end
+end
+
+-- Execute once when the script runs
+local nearestPlayer = getNearestPlayer()
+if nearestPlayer then
+    sendChatMessage(nearestPlayer)
+else
+    print("No nearest player found.")
+end
+    
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Bad Words",
+    Text = " Toxic Moments !",
+    Duration = 2,
+})
+end)
+
+local button6 = Instance.new("TextButton")
+button6.Parent = ScrollingFrame
+button6.BackgroundColor3 = Color3.new(0, 0, 0)
+button6.BackgroundTransparency = 0.5
+button6.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button6.TextScaled = true
+button6.Position = UDim2.new(0.205, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button6.TextColor3 = Color3.new(1, 1, 1)
+button6.Font = Enum.Font.PatrickHand
+button6.Text = "Drop Tools: Fake"
+
+button6.MouseButton1Click:Connect(function()
+    -- Get the local player and their character
+    
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local backpack = player.Backpack
+
+-- Function to drop all tools from the backpack
+
+local function dropTools()
+    -- Find the humanoid in the character
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+    
+        -- Unequip all tools
+        
+        humanoid:UnequipTools()
+
+        -- Iterate through each tool in the backpack
+        
+        for _, tool in ipairs(backpack:GetChildren()) do
+            if tool:IsA("Tool") then
+            
+                -- Move the tool to the workspace
+                
+                tool.Parent = workspace
+                
+                -- Position the tool in front of the player
+                
+                local characterHead = character:FindFirstChild("Head")
+                if characterHead then
+                    tool.Position = characterHead.Position + characterHead.CFrame.LookVector * 5
+                end
+            end
+        end
+    end
+end
+
+-- Execute the function
+
+dropTools()
+
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Drop Tools",
+    Text = " You've Dropped an Tools !",
+    Duration = 2,
+})
+end)
+
+local secretButton1 = Instance.new("TextButton")
+secretButton1.Parent = ScrollingFrame  -- Ensure ScrollingFrame is defined
+secretButton1.BackgroundColor3 = Color3.new(0, 0, 0)
+secretButton1.BackgroundTransparency = 0.5
+secretButton1.Size = UDim2.new(0.03, 0, 0.9, 0)
+secretButton1.Position = UDim2.new(0.325, 0, 0, 0)
+secretButton1.TextScaled = true
+secretButton1.TextColor3 = Color3.new(1, 1, 0)
+secretButton1.Font = Enum.Font.PatrickHand
+secretButton1.Text = "Secrect: Heavenly Strike"
+secretButton1.Visible = false  -- Make the button initially invisible
+
+secretButton1.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Ability/backup/Heavenly_Strike_Sfx'))()
+end)
+
+ExecuteBox.Parent = ScreenGui  -- Make sure ScreenGui is defined in your script
+ExecuteBox.Size = UDim2.new(0.3, 0, 0.1, 0)
+ExecuteBox.Position = UDim2.new(1.2, 0, 0.4, 0)
+ExecuteBox.BackgroundColor3 = Color3.new(0, 0, 0)
+ExecuteBox.BackgroundTransparency = 0.5
+ExecuteBox.ClearTextOnFocus = false
+ExecuteBox.TextColor3 = Color3.fromRGB(255, 255, 0)
+ExecuteBox.Text = "[Input You Script Here]"
+ExecuteBox.Font = Enum.Font.PatrickHand
+ExecuteBox.TextScaled = true
+ExecuteBox.PlaceholderText = "[Ensure Your Code Is Correct]"
+
+local secretButton = Instance.new("TextButton")
+secretButton.Parent = ScrollingFrame  -- Ensure ScrollingFrame is defined
+secretButton.BackgroundColor3 = Color3.new(0, 0, 0)
+secretButton.BackgroundTransparency = 0.5
+secretButton.Size = UDim2.new(0.03, 0, 0.9, 0)
+secretButton.Position = UDim2.new(0.285, 0, 0, 0)
+secretButton.TextScaled = true
+secretButton.TextColor3 = Color3.new(0, 1, 0)
+secretButton.Font = Enum.Font.PatrickHand
+secretButton.Text = "Secrect: Executor"
+secretButton.Visible = false  -- Make the button initially invisible
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+local goalPosition9 = UDim2.new(0.5, 0, 0.4, 0)  -- New position
+local goalPosition10 = UDim2.new(1.2, 0, 0.4, 0)  -- Original position
+
+local tween9 = TweenService:Create(ExecuteBox, tweenInfo, {Position = goalPosition9})
+local tween10 = TweenService:Create(ExecuteBox, tweenInfo, {Position = goalPosition10})
+
+local isToggledss = false
+secretButton.MouseButton1Click:Connect(function()
+    if isToggledss then
+        tween10:Play()
+    else
+        tween9:Play()
+    end
+    isToggledss = not isToggledss
+end)
+
+TextBox.Parent = ScreenGui  -- Make sure ScreenGui is defined in your script
+TextBox.Size = UDim2.new(0.3, 0, 0.1, 0)
+TextBox.Position = UDim2.new(1.2, 0, 0.15, 0)
+TextBox.BackgroundColor3 = Color3.new(0, 0, 0)
+TextBox.BackgroundTransparency = 0.5
+TextBox.ClearTextOnFocus = true
+TextBox.TextColor3 = Color3.fromRGB(0, 0, 200)
+TextBox.Text = "Enter a Code In Here"
+TextBox.Font = Enum.Font.PatrickHand
+TextBox.TextScaled = true
+TextBox.PlaceholderText = "[Enter Your Code Inside Here]"
+
+local specificTexts = {
+    "execute",
+    "heaven",
+    "cmds"
+}
+
+local function onLostFocus()
+    local input = TextBox.Text:lower()
+
+    for _, text in ipairs(specificTexts) do
+        if input == text:lower() then
+            local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Small Notification",
+    Text = "Correct Code:" .. text,
+    Duration = 2,
+})
+                if text == "cmds" then
+                    loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/RobloxScript/item/Commands_V3'))()
+                elseif text == "execute" then
+                    secretButton.Visible = true
+                    
+                    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Script Executor",
+    Text = " Unlocked Secrect Button !",
+    Duration = 2,
+})
+                elseif text == "heaven" then
+                    secretButton1.Visible = true
+                    
+                    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Heavenly Strike",
+    Text = " Unlocked Secrect Button !",
+    Duration = 2,
+})
+                end
+            return
+        end
+    end
+
+    TextBox.Text = "[Error Code]"
+    TextBox.TextColor3 = Color3.fromRGB(255, 0, 0)
+    
+    wait(2)
+    TextBox.Text = "Enter Code Again !"
+    TextBox.TextColor3 = Color3.fromRGB(0, 0, 200)
+end
+
+TextBox.FocusLost:Connect(onLostFocus)
+
+local button7 = Instance.new("TextButton")
+button7.Parent = ScrollingFrame  -- Ensure ScrollingFrame is defined
+button7.BackgroundColor3 = Color3.new(0, 0, 0)
+button7.BackgroundTransparency = 0.5
+button7.Size = UDim2.new(0.03, 0, 0.9, 0)
+button7.Position = UDim2.new(0.245, 0, 0, 0)
+button7.TextScaled = true
+button7.TextColor3 = Color3.new(1, 1, 1)
+button7.Font = Enum.Font.PatrickHand
+button7.Text = "Secret Code"
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+local goalPosition7 = UDim2.new(0.5, 0, 0.15, 0)
+local goalPosition8 = UDim2.new(1.2, 0, 0.15, 0)
+
+local tween7 = TweenService:Create(TextBox, tweenInfo, {Position = goalPosition7})
+local tween8 = TweenService:Create(TextBox, tweenInfo, {Position = goalPosition8})
+
+local isToggledss = false
+button7.MouseButton1Click:Connect(function()
+    if isToggledss then
+        tween8:Play()
+    else
+        tween7:Play()
+    end
+    isToggledss = not isToggledss
+end)
+
+-- Execute Box Function --
+
+-- Function to execute the code inside ExecuteBox
+
+local function onLostFocus()
+    local code = ExecuteBox.Text
+    
+    -- Check if the code is not empty
+    
+    if code and code ~= "" then
+    
+        -- Compile the code
+        
+        local func, errorMessage = loadstring(code)
+        if func then
+        
+            -- Run the code
+            
+            local success, runError = pcall(func)
+            if not success then
+                local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Runtime Error",
+    Text = "Error:" .. runError,
+    Duration = 2,
+})
+            end
+        else
+        
+            -- Print error message if code fails to load
+            
+            local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Execute Script Failed",
+    Text = "Failed:" .. errorMessage,
+    Duration = 2,
+})
+        end
+    end
+end
+
+-- Connect the function to the LostFocus event
+
+ExecuteBox.FocusLost:Connect(onLostFocus)
+
+
+-- WC message --
+
+local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Welcome to NganHa2k3 Script",
+    Text = "The Chosen One Script, make for fun",
+    Duration = 2,
+})
+
+-- Random Message on Chatted --
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+local function sendRandomMessagesa()
+    local nearestPlayer = getNearestPlayer()
+    if not nearestPlayer then
+        print("No nearest player found.")
+        return
+    end
+
+    local msga = {
+        "Hello " .. nearestPlayer.Name .. ", I'm is " .. localPlayer.Name .. " !",
+        "You're Cute " .. nearestPlayer.Name .. " , 🄸 🄻🄾🅅🄴 🅈🄾🅄 :> !",
+        "It's Beautiful, right " .. nearestPlayer.Name .. " !?",
+        "Hiiii, You're " .. nearestPlayer.Name .. " Ahahaha.. " .. localPlayer.Name .. ".",
+        "Don't Try to Annoyed me.... " .. nearestPlayer.Name .. " Vs " .. localPlayer.Name .. ", 🅈🄾🅄 🄳🄴🄳 !"
+    }
+
+    local randomIndex = math.random(1, #msga)
+    local args = {
+        [1] = msga[randomIndex],
+        [2] = "All"
+    }
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+
+sendRandomMessagesa()
