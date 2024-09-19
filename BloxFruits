@@ -5,6 +5,7 @@ local OpenClose = Instance.new("TextButton")
 local ScrollingFrame = Instance.new("ScrollingFrame")
 local ChestBox = Instance.new("ScrollingFrame")
 local BuyStuffBox = Instance.new("ScrollingFrame")
+local SwitchFightingStyle = Instance.new("ScrollingFrame")
 
 
 ScreenGui.Parent = game.CoreGui
@@ -26,6 +27,14 @@ BuyStuffBox.BackgroundColor3 = Color3.new(0, 0, 0)
 BuyStuffBox.BackgroundTransparency = 0.5
 BuyStuffBox.CanvasSize = UDim2.new(0, 0, 2, 0)
 BuyStuffBox.ScrollBarThickness = 0.1
+
+SwitchFightingStyle.Parent = ScreenGui
+SwitchFightingStyle.Size = UDim2.new(0.1, 0, 0.2, 0)
+SwitchFightingStyle.Position = UDim2.new(-1, 0, 0.2, 0)
+SwitchFightingStyle.BackgroundColor3 = Color3.new(0, 0, 0)
+SwitchFightingStyle.BackgroundTransparency = 0.5
+SwitchFightingStyle.CanvasSize = UDim2.new(0, 0, 2, 0)
+SwitchFightingStyle.ScrollBarThickness = 0.1
 
 -- More Button --
 
@@ -200,6 +209,17 @@ Shop.TextColor3 = Color3.new(1, 1, 1)
 Shop.Font = Enum.Font.PatrickHand
 Shop.Text = "Shop Items"
 
+local FightingStyle = Instance.new("TextButton")
+FightingStyle.Parent = ScrollingFrame
+FightingStyle.BackgroundColor3 = Color3.new(0, 0, 0)
+FightingStyle.BackgroundTransparency = 0.5
+FightingStyle.Size = UDim2.new(0.03, 0, 0.9, 0)
+FightingStyle.TextScaled = true
+FightingStyle.Position = UDim2.new(0.245, 0, 0, 0)
+FightingStyle.TextColor3 = Color3.new(1, 1, 1)
+FightingStyle.Font = Enum.Font.PatrickHand
+FightingStyle.Text = "FightingStyle Switch"
+
 -- Define tween goals
 
 local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ChestBox down
@@ -240,6 +260,28 @@ Shop.MouseButton1Click:Connect(function()
         tween6:Play()
     else
         tween5:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- Define tween goals
+
+local goalPosition7 = UDim2.new(0.2, 0, 0.2, 0)  -- Move ChestBox down
+local goalPosition8 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+-- Create tweens
+
+local tween7 = TweenService:Create(SwitchFightingStyle, tweenInfo, {Position = goalPosition7})
+local tween8 = TweenService:Create(SwitchFightingStyle, tweenInfo, {Position = goalPosition8})
+
+-- Toggle button behavior
+
+local isToggled = false
+FightingStyle.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween8:Play()
+    else
+        tween7:Play()
     end
     isToggled = not isToggled
 end)
@@ -435,6 +477,203 @@ BuyItem3.Text = "Buy: Soru/Flash Step"
 
 BuyItem3.MouseButton1Click:Connect(function()
     warn("nothing")
+end)
+
+local RandomFruit = Instance.new("TextButton")
+RandomFruit.Parent = BuyStuffBox
+RandomFruit.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruit.BackgroundTransparency = 0.5
+RandomFruit.Size = UDim2.new(0.8, 0, 0.05, 0)
+RandomFruit.TextScaled = true
+RandomFruit.Position = UDim2.new(0.1, 0, 0.245, 0)
+RandomFruit.TextColor3 = Color3.new(1, 1, 1)
+RandomFruit.Font = Enum.Font.PatrickHand
+RandomFruit.Text = "Buy: Random Fruits"
+
+RandomFruit.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Cousin",
+    [2] = "Buy"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+    local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Random Fruit",
+            Text = "You've just roll a fruit, if no mean you does not have money !",
+            Duration = 2,
+        })
+end)
+
+-- Switch Melee --
+
+local DarkLeg = Instance.new("TextButton")
+DarkLeg.Parent = SwitchFightingStyle
+DarkLeg.BackgroundColor3 = Color3.new(0, 0, 0)
+DarkLeg.BackgroundTransparency = 0.5
+DarkLeg.Size = UDim2.new(0.8, 0, 0.05, 0)
+DarkLeg.TextScaled = true
+DarkLeg.Position = UDim2.new(0.1, 0, 0.005, 0)
+DarkLeg.TextColor3 = Color3.new(1, 1, 1)
+DarkLeg.Font = Enum.Font.PatrickHand
+DarkLeg.Text = "Sanji: Black Leg"
+
+DarkLeg.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "BuyBlackLeg"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+end)
+
+local ElectricClaw = Instance.new("TextButton")
+ElectricClaw.Parent = SwitchFightingStyle
+ElectricClaw.BackgroundColor3 = Color3.new(0, 0, 0)
+ElectricClaw.BackgroundTransparency = 0.5
+ElectricClaw.Size = UDim2.new(0.8, 0, 0.05, 0)
+ElectricClaw.TextScaled = true
+ElectricClaw.Position = UDim2.new(0.1, 0, 0.085, 0)
+ElectricClaw.TextColor3 = Color3.new(1, 1, 1)
+ElectricClaw.Font = Enum.Font.PatrickHand
+ElectricClaw.Text = "Mink: Electric"
+
+ElectricClaw.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "BuyElectro"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+end)
+
+local FishKungFu = Instance.new("TextButton")
+FishKungFu.Parent = SwitchFightingStyle
+FishKungFu.BackgroundColor3 = Color3.new(0, 0, 0)
+FishKungFu.BackgroundTransparency = 0.5
+FishKungFu.Size = UDim2.new(0.8, 0, 0.05, 0)
+FishKungFu.TextScaled = true
+FishKungFu.Position = UDim2.new(0.1, 0, 0.165, 0)
+FishKungFu.TextColor3 = Color3.new(1, 1, 1)
+FishKungFu.Font = Enum.Font.PatrickHand
+FishKungFu.Text = "Fishman: Karate"
+
+FishKungFu.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "BuyFishmanKarate"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+end)
+
+local DragonBreath = Instance.new("TextButton")
+DragonBreath.Parent = SwitchFightingStyle
+DragonBreath.BackgroundColor3 = Color3.new(0, 0, 0)
+DragonBreath.BackgroundTransparency = 0.5
+DragonBreath.Size = UDim2.new(0.8, 0, 0.05, 0)
+DragonBreath.TextScaled = true
+DragonBreath.Position = UDim2.new(0.1, 0, 0.245, 0)
+DragonBreath.TextColor3 = Color3.new(1, 1, 1)
+DragonBreath.Font = Enum.Font.PatrickHand
+DragonBreath.Text = "Sabo: Dragon Breath"
+
+DragonBreath.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "BlackbeardReward",
+    [2] = "DragonClaw",
+    [3] = "2"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+end)
+
+local SuperHuman = Instance.new("TextButton")
+SuperHuman.Parent = SwitchFightingStyle
+SuperHuman.BackgroundColor3 = Color3.new(0, 0, 0)
+SuperHuman.BackgroundTransparency = 0.5
+SuperHuman.Size = UDim2.new(0.8, 0, 0.05, 0)
+SuperHuman.TextScaled = true
+SuperHuman.Position = UDim2.new(0.1, 0, 0.325, 0)
+SuperHuman.TextColor3 = Color3.new(1, 1, 1)
+SuperHuman.Font = Enum.Font.PatrickHand
+SuperHuman.Text = "Ciper Pol: Super Human"
+
+SuperHuman.MouseButton1Click:Connect(function()
+    warn("Empty for now")
+end)
+
+local DarkStep = Instance.new("TextButton")
+DarkStep.Parent = SwitchFightingStyle
+DarkStep.BackgroundColor3 = Color3.new(0, 0, 0)
+DarkStep.BackgroundTransparency = 0.5
+DarkStep.Size = UDim2.new(0.8, 0, 0.05, 0)
+DarkStep.TextScaled = true
+DarkStep.Position = UDim2.new(0.1, 0, 0.405, 0)
+DarkStep.TextColor3 = Color3.new(1, 1, 1)
+DarkStep.Font = Enum.Font.PatrickHand
+DarkStep.Text = "Sanji: Death Step"
+
+DarkStep.MouseButton1Click:Connect(function()
+    warn("Empty for now")
+end)
+
+local ElectricPaw = Instance.new("TextButton")
+ElectricPaw.Parent = SwitchFightingStyle
+ElectricPaw.BackgroundColor3 = Color3.new(0, 0, 0)
+ElectricPaw.BackgroundTransparency = 0.5
+ElectricPaw.Size = UDim2.new(0.8, 0, 0.05, 0)
+ElectricPaw.TextScaled = true
+ElectricPaw.Position = UDim2.new(0.1, 0, 0.485, 0)
+ElectricPaw.TextColor3 = Color3.new(1, 1, 1)
+ElectricPaw.Font = Enum.Font.PatrickHand
+ElectricPaw.Text = "Mink: Electric Claw"
+
+ElectricPaw.MouseButton1Click:Connect(function()
+    warn("Empty for now")
+end)
+
+local SharkmanKarate = Instance.new("TextButton")
+SharkmanKarate.Parent = SwitchFightingStyle
+SharkmanKarate.BackgroundColor3 = Color3.new(0, 0, 0)
+SharkmanKarate.BackgroundTransparency = 0.5
+SharkmanKarate.Size = UDim2.new(0.8, 0, 0.05, 0)
+SharkmanKarate.TextScaled = true
+SharkmanKarate.Position = UDim2.new(0.1, 0, 0.565, 0)
+SharkmanKarate.TextColor3 = Color3.new(1, 1, 1)
+SharkmanKarate.Font = Enum.Font.PatrickHand
+SharkmanKarate.Text = "Sharkman: Karate"
+
+SharkmanKarate.MouseButton1Click:Connect(function()
+    warn("Empty for now")
+end)
+
+local InfernoDragonBreath = Instance.new("TextButton")
+InfernoDragonBreath.Parent = SwitchFightingStyle
+InfernoDragonBreath.BackgroundColor3 = Color3.new(0, 0, 0)
+InfernoDragonBreath.BackgroundTransparency = 0.5
+InfernoDragonBreath.Size = UDim2.new(0.8, 0, 0.05, 0)
+InfernoDragonBreath.TextScaled = true
+InfernoDragonBreath.Position = UDim2.new(0.1, 0, 0.645, 0)
+InfernoDragonBreath.TextColor3 = Color3.new(1, 1, 1)
+InfernoDragonBreath.Font = Enum.Font.PatrickHand
+InfernoDragonBreath.Text = "Inferno: Dragon Breath"
+
+InfernoDragonBreath.MouseButton1Click:Connect(function()
+    warn("Empty for now")
+end)
+
+local GodHuman = Instance.new("TextButton")
+GodHuman.Parent = SwitchFightingStyle
+GodHuman.BackgroundColor3 = Color3.new(0, 0, 0)
+GodHuman.BackgroundTransparency = 0.5
+GodHuman.Size = UDim2.new(0.8, 0, 0.05, 0)
+GodHuman.TextScaled = true
+GodHuman.Position = UDim2.new(0.1, 0, 0.725, 0)
+GodHuman.TextColor3 = Color3.new(1, 1, 1)
+GodHuman.Font = Enum.Font.PatrickHand
+GodHuman.Text = "Ciper Pol 0: God Human"
+
+GodHuman.MouseButton1Click:Connect(function()
+    warn("Empty for now")
 end)
 
 -- Welcome message --
