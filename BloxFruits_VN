@@ -1,3 +1,13 @@
+-- Remove Existed One --
+local player = game.Players.LocalPlayer
+local screenGuiName = "BloxFruitsMyUIVN"
+
+for _, gui in ipairs(player:WaitForChild("PlayerGui"):GetChildren()) do
+    if gui:IsA("ScreenGui") and gui.Name == screenGuiName then
+        gui:Destroy()
+    end
+end
+
 -- Blox Fruits UI V4 VN --
 
 local ScreenGui = Instance.new("ScreenGui")
@@ -11,6 +21,7 @@ local BoatSelection = Instance.new("ScrollingFrame")
 
 
 ScreenGui.Parent = game.CoreGui
+ScreenGui.Name = "BloxFruitsMyUIVN"
 
 -- More ScrollingFrame --
 
