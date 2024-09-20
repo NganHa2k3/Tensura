@@ -2,10 +2,12 @@
 
 local ScreenGui = Instance.new("ScreenGui")
 local OpenClose = Instance.new("TextButton")
+local HoldBoatName = Instance.new("TextBox")
 local ScrollingFrame = Instance.new("ScrollingFrame")
 local ChestBox = Instance.new("ScrollingFrame")
 local BuyStuffBox = Instance.new("ScrollingFrame")
 local SwitchFightingStyle = Instance.new("ScrollingFrame")
+local BoatSelection = Instance.new("ScrollingFrame")
 
 
 ScreenGui.Parent = game.CoreGui
@@ -35,6 +37,14 @@ SwitchFightingStyle.BackgroundColor3 = Color3.new(0, 0, 0)
 SwitchFightingStyle.BackgroundTransparency = 0.5
 SwitchFightingStyle.CanvasSize = UDim2.new(0, 0, 2, 0)
 SwitchFightingStyle.ScrollBarThickness = 0.1
+
+BoatSelection.Parent = ScreenGui
+BoatSelection.Size = UDim2.new(0.1, 0, 0.2, 0)
+BoatSelection.Position = UDim2.new(-1, 0, 0.2, 0)
+BoatSelection.BackgroundColor3 = Color3.new(0, 0, 0)
+BoatSelection.BackgroundTransparency = 0.5
+BoatSelection.CanvasSize = UDim2.new(0, 0, 2, 0)
+BoatSelection.ScrollBarThickness = 0.1
 
 -- More Button --
 
@@ -104,6 +114,20 @@ OpenClose.Text = "+"
 local OpenCloseCorner = Instance.new("UICorner")
 OpenCloseCorner.Parent = OpenClose
 OpenCloseCorner.CornerRadius = UDim.new(0, 10)
+
+HoldBoatName.Parent = ScreenGui
+HoldBoatName.BackgroundColor3 = Color3.new(0, 0, 0)
+HoldBoatName.BackgroundTransparency = 0.5
+HoldBoatName.Size = UDim2.new(0.1, 0, 0.1, 0)  -- Adjusted size for better visibility
+HoldBoatName.TextScaled = true
+HoldBoatName.Position = UDim2.new(0.64, 0, -0.1, 0)  -- Positioned outside the ScrollingFrame
+HoldBoatName.TextColor3 = Color3.new(1, 1, 1)
+HoldBoatName.Font = Enum.Font.PatrickHand
+HoldBoatName.Text = "No Boat"
+
+local HoldBoatNameCorner = Instance.new("UICorner")
+HoldBoatNameCorner.Parent = HoldBoatName
+HoldBoatNameCorner.CornerRadius = UDim.new(0, 10)
 
 -- Create and configure TweenService
 
@@ -220,6 +244,17 @@ FightingStyle.TextColor3 = Color3.new(1, 1, 1)
 FightingStyle.Font = Enum.Font.PatrickHand
 FightingStyle.Text = "FightingStyle Switch"
 
+local BoatButton = Instance.new("TextButton")
+BoatButton.Parent = ScrollingFrame
+BoatButton.BackgroundColor3 = Color3.new(0, 0, 0)
+BoatButton.BackgroundTransparency = 0.5
+BoatButton.Size = UDim2.new(0.03, 0, 0.9, 0)
+BoatButton.TextScaled = true
+BoatButton.Position = UDim2.new(0.285, 0, 0, 0)
+BoatButton.TextColor3 = Color3.new(1, 1, 1)
+BoatButton.Font = Enum.Font.PatrickHand
+BoatButton.Text = "Boat/Ship"
+
 -- Define tween goals
 
 local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ChestBox down
@@ -282,6 +317,28 @@ FightingStyle.MouseButton1Click:Connect(function()
         tween8:Play()
     else
         tween7:Play()
+    end
+    isToggled = not isToggled
+end)
+
+-- Define tween goals
+
+local goalPosition9 = UDim2.new(0.3, 0, 0.2, 0)  -- Move ChestBox down
+local goalPosition10 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+-- Create tweens
+
+local tween9 = TweenService:Create(BoatSelection, tweenInfo, {Position = goalPosition9})
+local tween10 = TweenService:Create(BoatSelection, tweenInfo, {Position = goalPosition10})
+
+-- Toggle button behavior
+
+local isToggled = false
+BoatButton.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween10:Play()
+    else
+        tween9:Play()
     end
     isToggled = not isToggled
 end)
@@ -405,7 +462,7 @@ DiamondChest.TextScaled = true
 DiamondChest.Position = UDim2.new(0.1, 0, 0.165, 0)  -- Positioned inside the ScrollingFrame
 DiamondChest.TextColor3 = Color3.new(1, 1, 1)
 DiamondChest.Font = Enum.Font.PatrickHand
-DiamondChest.Text = "Golden Chest"
+DiamondChest.Text = "Diamond Chest"
 
 DiamondChest.MouseButton1Click:Connect(function()
     local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
@@ -424,6 +481,37 @@ DiamondChest.MouseButton1Click:Connect(function()
         end
     else
         warn("Chest not found: Chest3")
+    end
+end)
+
+local Boat = Instance.new("TextButton")
+Boat.Parent = ChestBox
+Boat.BackgroundColor3 = Color3.new(0, 0, 0)
+Boat.BackgroundTransparency = 0.5
+Boat.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Boat.TextScaled = true
+Boat.Position = UDim2.new(0.1, 0, 0.245, 0)  -- Positioned inside the ScrollingFrame
+Boat.TextColor3 = Color3.new(1, 1, 1)
+Boat.Font = Enum.Font.PatrickHand
+Boat.Text = "Fruit Spawn"
+
+Boat.MouseButton1Click:Connect(function()
+    local fruitx = game:GetService("Workspace"):FindFirstChild("Fruit")
+    if fruitx then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = fruitx.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitx.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        warn("Chest not found: Fruit")
     end
 end)
 
@@ -674,6 +762,296 @@ GodHuman.Text = "Ciper Pol 0: God Human"
 
 GodHuman.MouseButton1Click:Connect(function()
     warn("Empty for now")
+end)
+
+-- Boat Settings --
+
+local SpawnPart = Instance.new("TextButton")
+SpawnPart.Parent = BoatSelection
+SpawnPart.BackgroundColor3 = Color3.new(0, 0, 0)
+SpawnPart.BackgroundTransparency = 0.5
+SpawnPart.Size = UDim2.new(0.8, 0, 0.05, 0)
+SpawnPart.TextScaled = true
+SpawnPart.Position = UDim2.new(0.1, 0, 0.005, 0)
+SpawnPart.TextColor3 = Color3.new(1, 1, 1)
+SpawnPart.Font = Enum.Font.PatrickHand
+SpawnPart.Text = "Set this at Boat Dealer"
+
+SpawnPart.MouseButton1Click:Connect(function()
+    local existingPart = workspace:FindFirstChild("Check")
+    if existingPart then
+        existingPart:Destroy() -- Remove previous part if it exists
+    end
+    
+    local part = Instance.new("Part")
+    part.Name = "Check" -- Name the part "Check"
+    part.Size = Vector3.new(2, 1, 2)
+    part.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 5, 0) -- Spawn above player
+    part.Anchored = true
+    part.Parent = workspace
+end)
+
+local BuyBoat = Instance.new("TextButton")
+BuyBoat.Parent = BoatSelection
+BuyBoat.BackgroundColor3 = Color3.new(0, 0, 0)
+BuyBoat.BackgroundTransparency = 0.5
+BuyBoat.Size = UDim2.new(0.8, 0, 0.05, 0)
+BuyBoat.TextScaled = true
+BuyBoat.Position = UDim2.new(0.1, 0, 0.165, 0)
+BuyBoat.TextColor3 = Color3.new(1, 1, 1)
+BuyBoat.Font = Enum.Font.PatrickHand
+BuyBoat.Text = "Buy Selected Boat"
+
+BuyBoat.MouseButton1Click:Connect(function()
+    local part = workspace:FindFirstChild("Check")
+    if part then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = part.CFrame + Vector3.new(0, 3, 0) -- Teleport above the part
+    end
+    
+    wait(0.02)
+    
+    local boattext = HoldBoatName.Text
+    
+    local args = {
+    [1] = "BuyBoat",
+    [2] = boattext
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+end)
+
+local BringBoat = Instance.new("TextButton")
+BringBoat.Parent = BoatSelection
+BringBoat.BackgroundColor3 = Color3.new(0, 0, 0)
+BringBoat.BackgroundTransparency = 0.5
+BringBoat.Size = UDim2.new(0.8, 0, 0.05, 0)
+BringBoat.TextScaled = true
+BringBoat.Position = UDim2.new(0.1, 0, 0.085, 0)
+BringBoat.TextColor3 = Color3.new(1, 1, 1)
+BringBoat.Font = Enum.Font.PatrickHand
+BringBoat.Text = "Bring Boat"
+
+BringBoat.MouseButton1Click:Connect(function()
+    local getboat = HoldBoatName.Text
+        
+        local vehicle = game.Workspace.Boats:FindFirstChild(getboat)
+        if vehicle and vehicle:IsA("Model") then
+            local vehicleSeat = vehicle:FindFirstChild("VehicleSeat")
+            if vehicleSeat then
+                vehicleSeat.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+            else
+                warn("No VehicleSeat found in " .. getboat)
+            end
+        else
+            warn("No boat named " .. getboat .. " found.")
+        end
+end)
+
+local Dinghy = Instance.new("TextButton")
+Dinghy.Parent = BoatSelection
+Dinghy.BackgroundColor3 = Color3.new(0, 0, 0)
+Dinghy.BackgroundTransparency = 0.5
+Dinghy.Size = UDim2.new(0.8, 0, 0.05, 0)
+Dinghy.TextScaled = true
+Dinghy.Position = UDim2.new(0.1, 0, 0.245, 0)
+Dinghy.TextColor3 = Color3.new(1, 1, 1)
+Dinghy.Font = Enum.Font.PatrickHand
+Dinghy.Text = "Dinghy"
+
+local isSelected = false
+Dinghy.MouseButton1Click:Connect(function()
+    if isSelected then
+        Dinghy.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        Dinghy.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "Dinghy"
+    end
+    isSelected = not isSelected
+end)
+
+local PirateSloop = Instance.new("TextButton")
+PirateSloop.Parent = BoatSelection
+PirateSloop.BackgroundColor3 = Color3.new(0, 0, 0)
+PirateSloop.BackgroundTransparency = 0.5
+PirateSloop.Size = UDim2.new(0.8, 0, 0.05, 0)
+PirateSloop.TextScaled = true
+PirateSloop.Position = UDim2.new(0.1, 0, 0.325, 0)
+PirateSloop.TextColor3 = Color3.new(1, 1, 1)
+PirateSloop.Font = Enum.Font.PatrickHand
+PirateSloop.Text = "Pirate Sloop"
+
+local isSelected = false
+PirateSloop.MouseButton1Click:Connect(function()
+    if isSelected then
+        PirateSloop.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        PirateSloop.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "PirateSloop"
+    end
+    isSelected = not isSelected
+end)
+
+local PirateBrigade = Instance.new("TextButton")
+PirateBrigade.Parent = BoatSelection
+PirateBrigade.BackgroundColor3 = Color3.new(0, 0, 0)
+PirateBrigade.BackgroundTransparency = 0.5
+PirateBrigade.Size = UDim2.new(0.8, 0, 0.05, 0)
+PirateBrigade.TextScaled = true
+PirateBrigade.Position = UDim2.new(0.1, 0, 0.405, 0)
+PirateBrigade.TextColor3 = Color3.new(1, 1, 1)
+PirateBrigade.Font = Enum.Font.PatrickHand
+PirateBrigade.Text = "Pirate Brigade"
+
+local isSelected = false
+PirateBrigade.MouseButton1Click:Connect(function()
+    if isSelected then
+        PirateBrigade.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        PirateBrigade.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "PirateBrigade"
+    end
+    isSelected = not isSelected
+end)
+
+local PirateGrandBrigade = Instance.new("TextButton")
+PirateGrandBrigade.Parent = BoatSelection
+PirateGrandBrigade.BackgroundColor3 = Color3.new(0, 0, 0)
+PirateGrandBrigade.BackgroundTransparency = 0.5
+PirateGrandBrigade.Size = UDim2.new(0.8, 0, 0.05, 0)
+PirateGrandBrigade.TextScaled = true
+PirateGrandBrigade.Position = UDim2.new(0.1, 0, 0.485, 0)
+PirateGrandBrigade.TextColor3 = Color3.new(1, 1, 1)
+PirateGrandBrigade.Font = Enum.Font.PatrickHand
+PirateGrandBrigade.Text = "Pirate Grand Brigade"
+
+local isSelected = false
+PirateGrandBrigade.MouseButton1Click:Connect(function()
+    if isSelected then
+        PirateGrandBrigade.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        PirateGrandBrigade.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "PirateGrandBrigade"
+    end
+    isSelected = not isSelected
+end)
+
+local MarineSloop = Instance.new("TextButton")
+MarineSloop.Parent = BoatSelection
+MarineSloop.BackgroundColor3 = Color3.new(0, 0, 0)
+MarineSloop.BackgroundTransparency = 0.5
+MarineSloop.Size = UDim2.new(0.8, 0, 0.05, 0)
+MarineSloop.TextScaled = true
+MarineSloop.Position = UDim2.new(0.1, 0, 0.565, 0)
+MarineSloop.TextColor3 = Color3.new(1, 1, 1)
+MarineSloop.Font = Enum.Font.PatrickHand
+MarineSloop.Text = "Marine Sloop"
+
+local isSelected = false
+MarineSloop.MouseButton1Click:Connect(function()
+    if isSelected then
+        MarineSloop.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        MarineSloop.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "MarineSloop"
+    end
+    isSelected = not isSelected
+end)
+
+local MarineBrigade = Instance.new("TextButton")
+MarineBrigade.Parent = BoatSelection
+MarineBrigade.BackgroundColor3 = Color3.new(0, 0, 0)
+MarineBrigade.BackgroundTransparency = 0.5
+MarineBrigade.Size = UDim2.new(0.8, 0, 0.05, 0)
+MarineBrigade.TextScaled = true
+MarineBrigade.Position = UDim2.new(0.1, 0, 0.645, 0)
+MarineBrigade.TextColor3 = Color3.new(1, 1, 1)
+MarineBrigade.Font = Enum.Font.PatrickHand
+MarineBrigade.Text = "Marine Brigade"
+
+local isSelected = false
+MarineBrigade.MouseButton1Click:Connect(function()
+    if isSelected then
+        MarineBrigade.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        MarineBrigade.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "MarineBrigade"
+    end
+    isSelected = not isSelected
+end)
+
+local MarineGrandBrigade = Instance.new("TextButton")
+MarineGrandBrigade.Parent = BoatSelection
+MarineGrandBrigade.BackgroundColor3 = Color3.new(0, 0, 0)
+MarineGrandBrigade.BackgroundTransparency = 0.5
+MarineGrandBrigade.Size = UDim2.new(0.8, 0, 0.05, 0)
+MarineGrandBrigade.TextScaled = true
+MarineGrandBrigade.Position = UDim2.new(0.1, 0, 0.725, 0)
+MarineGrandBrigade.TextColor3 = Color3.new(1, 1, 1)
+MarineGrandBrigade.Font = Enum.Font.PatrickHand
+MarineGrandBrigade.Text = "Marine Grand Brigade"
+
+local isSelected = false
+MarineGrandBrigade.MouseButton1Click:Connect(function()
+    if isSelected then
+        MarineGrandBrigade.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        MarineGrandBrigade.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "MarineGrandBrigade"
+    end
+    isSelected = not isSelected
+end)
+
+local Lantern = Instance.new("TextButton")
+Lantern.Parent = BoatSelection
+Lantern.BackgroundColor3 = Color3.new(0, 0, 0)
+Lantern.BackgroundTransparency = 0.5
+Lantern.Size = UDim2.new(0.8, 0, 0.05, 0)
+Lantern.TextScaled = true
+Lantern.Position = UDim2.new(0.1, 0, 0.805, 0)
+Lantern.TextColor3 = Color3.new(1, 1, 1)
+Lantern.Font = Enum.Font.PatrickHand
+Lantern.Text = "Lantern"
+
+local isSelected = false
+Lantern.MouseButton1Click:Connect(function()
+    if isSelected then
+        Lantern.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        Lantern.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "Lantern"
+    end
+    isSelected = not isSelected
+end)
+
+local Guardian = Instance.new("TextButton")
+Guardian.Parent = BoatSelection
+Guardian.BackgroundColor3 = Color3.new(0, 0, 0)
+Guardian.BackgroundTransparency = 0.5
+Guardian.Size = UDim2.new(0.8, 0, 0.05, 0)
+Guardian.TextScaled = true
+Guardian.Position = UDim2.new(0.1, 0, 0.885, 0)
+Guardian.TextColor3 = Color3.new(1, 1, 1)
+Guardian.Font = Enum.Font.PatrickHand
+Guardian.Text = "Guardian"
+
+local isSelected = false
+Guardian.MouseButton1Click:Connect(function()
+    if isSelected then
+        Guardian.TextColor3 = Color3.new(1, 1, 1)
+        HoldBoatName.Text = "No Boat"
+    else
+        Guardian.TextColor3 = Color3.new(0, 1, 0)
+        HoldBoatName.Text = "Guardian"
+    end
+    isSelected = not isSelected
 end)
 
 -- Welcome message --
