@@ -1011,10 +1011,10 @@ end
 local function teleportToTarget()
     local targetPosition
 
-    if toggleMode.Text == "Player" then
+    if toggleMode.Text == "Dịch chuyển tới người chơi" then
         toggleMode.TextColor3 = Color3.fromRGB(0, 0, 200)
         teleportToRandomPlayer()
-    elseif toggleMode.Text == "NPC" then
+    elseif toggleMode.Text == "Dịch chuyển tới Hình nộm Yếu nhất" then
         toggleMode.TextColor3 = Color3.fromRGB(200, 0, 0)
         local npc = game:GetService("Workspace").Live:FindFirstChild("Weakest Dummy")
         if npc and npc:FindFirstChild("HumanoidRootPart") then
