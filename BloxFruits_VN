@@ -282,6 +282,17 @@ RaidChip.Font = Enum.Font.PatrickHand
 RaidChip.Text = "Nhập tên Chip Raid bằng Tiếng Anh"
 RaidChip.ClearTextOnFocus = true
 
+local ServerHop = Instance.new("TextButton")
+ServerHop.Parent = ScrollingFrame
+ServerHop.BackgroundColor3 = Color3.new(0, 0, 0)
+ServerHop.BackgroundTransparency = 0.5
+ServerHop.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+ServerHop.TextScaled = true
+ServerHop.Position = UDim2.new(0.365, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+ServerHop.TextColor3 = Color3.new(1, 1, 1)
+ServerHop.Font = Enum.Font.PatrickHand
+ServerHop.Text = "Đổi Máy Chủ Nhanh"
+
 -- Define tween goals
 
 local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ChestBox down
@@ -436,6 +447,18 @@ task.wait(0.1)
         Text = "Bạn đã mua, Chìa Khóa Tập Kích: " .. chip .. ", nếu không có nghĩa là bạn không có đủ tiền random!",
         Duration = 2,
     })
+end)
+
+ServerHop.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://www.scriptblox.com/raw/Server-Browser_80", true))()
+    
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Thông Báo Hệ Thống",
+    Text = "Danh sách máy chủ - Đã kích hoạt (Chờ tải....).",
+    Duration = 10,
+})
 end)
 
 -- Chest TP --
