@@ -435,7 +435,7 @@ local TweenService = game:GetService("TweenService")
 local tweenSpeed = 1  -- Duration in seconds
 local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
 
-local goalPosition11 = UDim2.new(0.3, 0, 0.3, 0)  -- Move ScrollingFrame down
+local goalPosition11 = UDim2.new(0.2, 0, 0, 0)  -- Move ScrollingFrame down
 local goalPosition12 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
 
 local tween11 = TweenService:Create(ScrollingSS, tweenInfo, {Position = goalPosition11})
@@ -770,7 +770,7 @@ tpsb11.TextScaled = true
 tpsb11.Position = UDim2.new(0.1, 0, 0.165, 0)  -- Positioned inside the ScrollingFrame
 tpsb11.TextColor3 = Color3.new(1, 1, 1)
 tpsb11.Font = Enum.Font.PatrickHand
-tpsb11.Text = "Say Nearest EZ !"
+tpsb11.Text = "Spam Enlighting me !"
 
 tpsb11.MouseButton1Click:Connect(function()
     
@@ -804,7 +804,7 @@ end
 local function sendChatMessage(player)
     local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
     if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
-        local message = player.Name .. ", EZ LOL HaHa !"
+        local message = player.Name .. ", Enlighten me !"
         local args = { message, "All" } -- Message first, then channel
         chatEvent.SayMessageRequest:FireServer(unpack(args))
     else
