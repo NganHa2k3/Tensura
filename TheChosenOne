@@ -435,7 +435,7 @@ local TweenService = game:GetService("TweenService")
 local tweenSpeed = 1  -- Duration in seconds
 local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
 
-local goalPosition11 = UDim2.new(0.2, 0, 0, 0)  -- Move ScrollingFrame down
+local goalPosition11 = UDim2.new(0.2, 0, 0.2, 0)  -- Move ScrollingFrame down
 local goalPosition12 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
 
 local tween11 = TweenService:Create(ScrollingSS, tweenInfo, {Position = goalPosition11})
@@ -873,9 +873,9 @@ local function WTFL()
     end
 
     local apq = {
-        "🄸 🄻🄾🅅🄴 🅈🄾🅄" .. nearestPlayer.Name .. "🩸",
+        "🄸 🄻🄾🅅🄴 🅈🄾🅄 " .. nearestPlayer.Name .. " 😋 !",
         "Can I 🄴🄰🅃 " .. nearestPlayer.Name .. " Ahahaha !",
-        "🄸 Wanna 🄰🅃🄴 You" .. nearestPlayer.Name .. "Ahaha 😋"
+        "🄸 Wanna 🄰🅃🄴 You" .. nearestPlayer.Name .. " Ahaha 😋"
     }
 
     local randomIndex = math.random(1, #apq)
