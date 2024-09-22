@@ -5,6 +5,7 @@ local ScrollingFrame = Instance.new("ScrollingFrame")
 
 local ScrollingS = Instance.new("ScrollingFrame")
 local ScrollingB = Instance.new("ScrollingFrame")
+local ScrollingSS = Instance.new("ScrollingFrame")
 
 local TextBox = Instance.new("TextBox")
 local ExecuteBox = Instance.new("TextBox")
@@ -409,6 +410,180 @@ CoreGui:SetCore("SendNotification", {
 })
 end)
 
+-- Simon Says --
+
+ScrollingSS.Parent = ScreenGui
+ScrollingSS.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+ScrollingSS.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+ScrollingSS.BackgroundColor3 = Color3.new(0, 0, 0)
+ScrollingSS.BackgroundTransparency = 0.5
+ScrollingSS.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+ScrollingSS.ScrollBarThickness = 0.1
+
+local buttonS = Instance.new("TextButton")
+buttonS.Parent = ScrollingFrame
+buttonS.BackgroundColor3 = Color3.new(0, 0, 0)
+buttonS.BackgroundTransparency = 0.5
+buttonS.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+buttonS.TextScaled = true
+buttonS.Position = UDim2.new(0.365, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+buttonS.TextColor3 = Color3.new(1, 1, 1)
+buttonS.Font = Enum.Font.PatrickHand
+buttonS.Text = "Quick: Simon Says Challenge."
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1  -- Duration in seconds
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+local goalPosition11 = UDim2.new(0.3, 0, 0.3, 0)  -- Move ScrollingFrame down
+local goalPosition12 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween11 = TweenService:Create(ScrollingSS, tweenInfo, {Position = goalPosition11})
+local tween12 = TweenService:Create(ScrollingSS, tweenInfo, {Position = goalPosition12})
+
+local isToggleds = false
+buttonS.MouseButton1Click:Connect(function()
+    if isToggleds then
+        tween12:Play()
+    else
+        tween11:Play()
+    end
+    isToggleds = not isToggleds
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+local function sendRandomMessagesss()
+    local nearestPlayer = getNearestPlayer()
+    if not nearestPlayer then
+        print("No nearest player found.")
+        return
+    end
+
+    local msgss = {
+        "Hello, Is there anyone wanna playin a Simon Says !",
+        "Do you " .. nearestPlayer.Name .. " wanna play ?",
+        "I'm " .. localPlayer.Name .. " so bored, I wanna play SS.",
+        "With you're " .. nearestPlayer.Name .. " !",
+        "Hey, Let's Go playin with me " .. nearestPlayer.Name .. " come here !"
+    }
+
+    local randomIndex = math.random(1, #msgss)
+    local args = {
+        [1] = msgss[randomIndex],
+        [2] = "All"
+    }
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+
+local SimonRule = Instance.new("TextButton")
+SimonRule.Parent = ScrollingSS
+SimonRule.BackgroundColor3 = Color3.new(0, 0, 0)
+SimonRule.BackgroundTransparency = 0.5
+SimonRule.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+SimonRule.TextScaled = true
+SimonRule.Position = UDim2.new(0.1, 0, 0.005, 0)  -- Positioned inside the ScrollingFrame
+SimonRule.TextColor3 = Color3.new(1, 1, 1)
+SimonRule.Font = Enum.Font.PatrickHand
+SimonRule.Text = "Ask for playing it"
+
+SimonRule.MouseButton1Click:Connect(function()
+    sendRandomMessagesss()
+end)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+local function SimonSayChallenge()
+    local nearestPlayer = getNearestPlayer()
+    if not nearestPlayer then
+        print("No nearest player found.")
+        return
+    end
+
+    local msgssi = {
+        "Simon Says: Everyone Jump 5 Time !",
+        "Simon Says: Everyone Turn Around 1 Time !",
+        "Simon Says: Everyone Do Dancing !",
+        "Simon Says: All Do Jump and Spin at same time for 1",
+        "Simon Says: Solve 80 / 4 = ? In 5 Seconds !",
+        "Simon Says: 'Simon Says' in Reverted, 10 Seconds.",
+        "Simon Says: Jump 5 Time and Spin 2 Time !",
+        "Simon syaS: Everyone Jump 5 Time !",
+        "Simon Syas: Everyone Do Dancing !",
+        "Somin Says: Everyone Turn Around 1 Time !",
+        "Simon Says: What is 1 × 2 = ?, And Look at me. ",
+        "Simon Says: Tell my username" .. localPlayer.Name .. " 1 Time !",
+        "Simon Says: Slowly Turn Around 1 Time !",
+        "Simon Says: " .. nearestPlayer.Name .. " You're Losing, Unlucky !"
+    }
+
+    local randomIndex = math.random(1, #msgssi)
+    local args = {
+        [1] = msgssi[randomIndex],
+        [2] = "All"
+    }
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+
+local SimonSayText = Instance.new("TextButton")
+SimonSayText.Parent = ScrollingSS
+SimonSayText.BackgroundColor3 = Color3.new(0, 0, 0)
+SimonSayText.BackgroundTransparency = 0.5
+SimonSayText.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+SimonSayText.TextScaled = true
+SimonSayText.Position = UDim2.new(0.1, 0, 0.085, 0)  -- Positioned inside the ScrollingFrame
+SimonSayText.TextColor3 = Color3.new(1, 1, 1)
+SimonSayText.Font = Enum.Font.PatrickHand
+SimonSayText.Text = "Simon Says: Request"
+
+SimonSayText.MouseButton1Click:Connect(function()
+    SimonSayChallenge()
+end)
+
 -- Bad Words --
 
 ScrollingB.Parent = ScreenGui
@@ -652,6 +827,66 @@ CoreGui:SetCore("SendNotification", {
     Text = " Toxic Moments !",
     Duration = 2,
 })
+end)
+
+local tpsb3 = Instance.new("TextButton")
+tpsb3.Parent = ScrollingB
+tpsb3.BackgroundColor3 = Color3.new(0, 0, 0)
+tpsb3.BackgroundTransparency = 0.5
+tpsb3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+tpsb3.TextScaled = true
+tpsb3.Position = UDim2.new(0.1, 0, 0.245, 0)  -- Positioned inside the ScrollingFrame
+tpsb3.TextColor3 = Color3.new(1, 1, 1)
+tpsb3.Font = Enum.Font.PatrickHand
+tpsb3.Text = "Say WTF !"
+
+tpsb3.MouseButton1Click:Connect(function()
+    local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local localPlayer = Players.LocalPlayer
+
+if not localPlayer or not localPlayer.Character or not localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+    print("LocalPlayer or their HumanoidRootPart is not available.")
+    return
+end
+
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= localPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (localPlayer.Character.HumanoidRootPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+local function WTFL()
+    local nearestPlayer = getNearestPlayer()
+    if not nearestPlayer then
+        print("No nearest player found.")
+        return
+    end
+
+    local apq = {
+        "🄸 🄻🄾🅅🄴 🅈🄾🅄" .. nearestPlayer.Name .. "🩸",
+        "Can I 🄴🄰🅃 " .. nearestPlayer.Name .. " Ahahaha !",
+        "🄸 Wanna 🄰🅃🄴 You" .. nearestPlayer.Name .. "Ahaha 😋"
+    }
+
+    local randomIndex = math.random(1, #apq)
+    local args = {
+        [1] = apq[randomIndex],
+        [2] = "All"
+    }
+    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+
+WTFL()
 end)
 
 local button6 = Instance.new("TextButton")
@@ -970,7 +1205,10 @@ local function sendRandomMessagesa()
         "You're Cute " .. nearestPlayer.Name .. " , 🄸 🄻🄾🅅🄴 🅈🄾🅄 :> !",
         "It's Beautiful, right " .. nearestPlayer.Name .. " !?",
         "Hiiii, You're " .. nearestPlayer.Name .. " Ahahaha.. " .. localPlayer.Name .. ".",
-        "Don't Try to Annoyed me.... " .. nearestPlayer.Name .. " Vs " .. localPlayer.Name .. ", 🅈🄾🅄 🄳🄴🄳 !"
+        "Don't Try to Annoyed me.... " .. nearestPlayer.Name .. " Vs " .. localPlayer.Name .. ", 🅈🄾🅄 🄳🄴🄳 !",
+        "🄸 🄻🄾🅅🄴 🅈🄾🅄" .. nearestPlayer.Name .. "🩸",
+        "🄰🄻🄾🅃 🄰🄷🄰🄷🄰",
+        "🄸 Wanna 🄰🅃🄴 You" .. nearestPlayer.Name .. "Ahaha 😋"
     }
 
     local randomIndex = math.random(1, #msga)
