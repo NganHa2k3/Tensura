@@ -410,6 +410,31 @@ CoreGui:SetCore("SendNotification", {
 })
 end)
 
+-- Server Browser --
+
+local ServerHop = Instance.new("TextButton")
+ServerHop.Parent = ScrollingFrame
+ServerHop.BackgroundColor3 = Color3.new(0, 0, 0)
+ServerHop.BackgroundTransparency = 0.5
+ServerHop.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+ServerHop.TextScaled = true
+ServerHop.Position = UDim2.new(0.405, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+ServerHop.TextColor3 = Color3.new(1, 1, 1)
+ServerHop.Font = Enum.Font.PatrickHand
+ServerHop.Text = "Server Browser"
+
+ServerHop.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://www.scriptblox.com/raw/Server-Browser_80", true))()
+    
+    local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Notification Report",
+    Text = "Server Browser - Successfully Activated (Wait for it loaded).",
+    Duration = 2,
+})
+end)
+
 -- Simon Says --
 
 ScrollingSS.Parent = ScreenGui
