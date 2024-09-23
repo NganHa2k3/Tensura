@@ -17,7 +17,10 @@ local gameScripts = {
     [1119466531] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/place/LegendsOfSpeed",
 
     -- Pizza Place --
-    [47545] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/place/PizzaPlace"
+    [47545] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/place/PizzaPlace",
+
+    -- Meme Sea --
+    [3756501373] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript_1/main/MemeSea_Language"
 }
 
 local function loadGameScript(gameId)
@@ -30,7 +33,7 @@ local function loadGameScript(gameId)
             warn("Failed to load script: " .. result)
         end
     else
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/RobloxScript/item/Commands_V3'))()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/DetectTool/main/Scripter_Tool'))()
         
         local CoreGui = game:GetService("StarterGui")
 
