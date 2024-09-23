@@ -1,0 +1,1064 @@
+-- Meme Sea Tools Script --
+
+local MemeGui = Instance.new("ScreenGui")
+local OCDashBoard = Instance.new("TextButton")
+local MemeTools = Instance.new("ScrollingFrame")
+local RandomSelect = Instance.new("ScrollingFrame")
+local SetSpawnIslands = Instance.new("ScrollingFrame")
+
+MemeGui.Parent = game.CoreGui
+
+-- UI Tweening Info --
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeed = 1
+local tweenInfo = TweenInfo.new(tweenSpeed, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+-- Let Close It --
+
+-- Hold All Function --
+
+local function NotifyRandom()
+local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Random Fruits",
+            Text = "Successfully Roll a Fruit, If no You're not enough Cash !",
+            Duration = 2,
+        })
+end
+
+local function GiftCode()
+local args = {
+    [1] = "UPDATE4"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Code:InvokeServer(unpack(args))
+
+task.wait(1)
+
+    local args = {
+    [1] = "10MVisits"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Code:InvokeServer(unpack(args))
+
+task.wait(1)
+
+local args = {
+    [1] = "10KLikes"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Code:InvokeServer(unpack(args))
+
+task.wait(1)
+
+local args = {
+    [1] = "10KMembers"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Code:InvokeServer(unpack(args))
+
+task.wait(1)
+
+local args = {
+    [1] = "20kActive"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Code:InvokeServer(unpack(args))
+
+task.wait(1)
+
+local args = {
+    [1] = "40kActive"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Code:InvokeServer(unpack(args))
+
+task.wait(1)
+
+local args = {
+    [1] = "70kActive"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Code:InvokeServer(unpack(args))
+
+task.wait(1)
+
+local args = {
+    [1] = "100kActive"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Code:InvokeServer(unpack(args))
+
+task.wait(1)
+
+local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Successfully Redeem",
+            Text = "All Gift Code Exist Has Been Redeem Successfully, Bye !",
+            Duration = 2,
+        })
+end
+
+local function NotifyUFO()
+    local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "《Summoning In》",
+            Text = "Prepare to teleport you to selected Islands, if not then cooldown is unfinished !",
+            Duration = 2,
+        })
+end
+
+local function StoreFruit()
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Invisible Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Fly Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Bomb Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Spin Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Barrier Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Diamond Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Paw Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Water Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Sand Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Gold Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Flame Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Snow Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Ice Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Moai Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dough Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dog Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Dark Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+local args = {
+    [1] = "Eatable_Power",
+    [2] = {
+        ["Action"] = "Store",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Floppa Power")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+end
+
+local function MoneyBagDropped()
+local args = {
+    [1] = "Money_Bag",
+    [2] = {
+        ["Action"] = "Drop",
+        ["Tool"] = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Money Bag")
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+end
+
+-- For Now Closed It --
+
+OCDashBoard.Parent = MemeGui
+OCDashBoard.BackgroundColor3 = Color3.new(0, 0, 0)
+OCDashBoard.BackgroundTransparency = 0.5
+OCDashBoard.Size = UDim2.new(0.05, 0, 0.1, 0)
+OCDashBoard.TextScaled = true
+OCDashBoard.Position = UDim2.new(0.88, 0, -0.1, 0)
+OCDashBoard.TextColor3 = Color3.new(1, 1, 1)
+OCDashBoard.Font = Enum.Font.PatrickHand
+OCDashBoard.Text = "◇Zero"
+
+local OCDashBoardCorner = Instance.new("UICorner")
+OCDashBoardCorner.Parent = OCDashBoard
+OCDashBoardCorner.CornerRadius = UDim.new(0, 10)
+
+-- ScrollingFrame --
+
+MemeTools.Parent = MemeGui
+MemeTools.Size = UDim2.new(0.3, 0, 0.1, 0)
+MemeTools.Position = UDim2.new(1.2, 0, 0.18, 0)
+MemeTools.BackgroundColor3 = Color3.new(0, 0, 0)
+MemeTools.BackgroundTransparency = 0.5
+MemeTools.CanvasSize = UDim2.new(2, 0, 0, 0)
+MemeTools.ScrollBarThickness = 0.1
+
+local goalPosition1 = UDim2.new(0.695, 0, 0.18, 0)
+local goalPosition2 = UDim2.new(1.2, 0, 0.18, 0)
+
+local tween1 = TweenService:Create(MemeTools, tweenInfo, {Position = goalPosition1})
+local tween2 = TweenService:Create(MemeTools, tweenInfo, {Position = goalPosition2})
+
+local isToggled = false
+OCDashBoard.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween2:Play()
+        OCDashBoard.TextColor3 = Color3.new(1, 1, 1)
+    else
+        tween1:Play()
+        OCDashBoard.TextColor3 = Color3.new(1, 0, 0)
+    end
+    isToggled = not isToggled
+end)
+
+-- More down below --
+
+RandomSelect.Parent = MemeGui
+RandomSelect.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+RandomSelect.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+RandomSelect.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomSelect.BackgroundTransparency = 0.5
+RandomSelect.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+RandomSelect.ScrollBarThickness = 0.1
+
+local RandomSelectCorner = Instance.new("UICorner")
+RandomSelectCorner.Parent = RandomSelect
+RandomSelectCorner.CornerRadius = UDim.new(0, 10)
+
+-- 1 --
+
+SetSpawnIslands.Parent = MemeGui
+SetSpawnIslands.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+SetSpawnIslands.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+SetSpawnIslands.BackgroundColor3 = Color3.new(0, 0, 0)
+SetSpawnIslands.BackgroundTransparency = 0.5
+SetSpawnIslands.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+SetSpawnIslands.ScrollBarThickness = 0.1
+
+local SetSpawnIslandsCorner = Instance.new("UICorner")
+SetSpawnIslandsCorner.Parent = SetSpawnIslands
+SetSpawnIslandsCorner.CornerRadius = UDim.new(0, 10)
+
+-- 2 --
+
+-- ScrollingFrame Ability --
+
+local button1 = Instance.new("TextButton")
+button1.Parent = MemeTools
+button1.BackgroundColor3 = Color3.new(0, 0, 0)
+button1.BackgroundTransparency = 0.5
+button1.Size = UDim2.new(0.03, 0, 0.9, 0)
+button1.TextScaled = true
+button1.Position = UDim2.new(0.005, 0, 0, 0)
+button1.TextColor3 = Color3.new(1, 1, 1)
+button1.Font = Enum.Font.PatrickHand
+button1.Text = "Random Fruit/Code"
+
+local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition4 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween3 = TweenService:Create(RandomSelect, tweenInfo, {Position = goalPosition3})
+local tween4 = TweenService:Create(RandomSelect, tweenInfo, {Position = goalPosition4})
+
+local isToggled1 = false
+button1.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween4:Play()
+        button1.TextColor3 = Color3.new(1, 1, 1)
+    else
+        tween3:Play()
+        button1.TextColor3 = Color3.new(1, 0, 1)
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 1 --
+
+local button2 = Instance.new("TextButton")
+button2.Parent = MemeTools
+button2.BackgroundColor3 = Color3.new(0, 0, 0)
+button2.BackgroundTransparency = 0.5
+button2.Size = UDim2.new(0.03, 0, 0.9, 0)
+button2.TextScaled = true
+button2.Position = UDim2.new(0.045, 0, 0, 0)
+button2.TextColor3 = Color3.new(1, 1, 1)
+button2.Font = Enum.Font.PatrickHand
+button2.Text = "Dimensional Leap"
+
+local goalPosition5 = UDim2.new(0.1, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition6 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween5 = TweenService:Create(SetSpawnIslands, tweenInfo, {Position = goalPosition5})
+local tween6 = TweenService:Create(SetSpawnIslands, tweenInfo, {Position = goalPosition6})
+
+local isToggled1 = false
+button2.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween6:Play()
+        button2.TextColor3 = Color3.new(1, 1, 1)
+    else
+        tween5:Play()
+        button2.TextColor3 = Color3.new(0, 1, 1)
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 2 --
+
+local button3 = Instance.new("TextButton")
+button3.Parent = MemeTools
+button3.BackgroundColor3 = Color3.new(0, 0, 0)
+button3.BackgroundTransparency = 0.5
+button3.Size = UDim2.new(0.03, 0, 0.9, 0)
+button3.TextScaled = true
+button3.Position = UDim2.new(0.085, 0, 0, 0)
+button3.TextColor3 = Color3.new(1, 1, 1)
+button3.Font = Enum.Font.PatrickHand
+button3.Text = "Quick Storing Fruits: OFF"
+
+local isStored = false
+
+button3.MouseButton1Click:Connect(function()
+    if isStored then
+        button3.Text = "Quick Storing Fruits: OFF"
+        button3.TextColor3 = Color3.new(1, 1, 1)
+        
+        isStored = false
+    else
+        button3.Text = "Quick Storing Fruits: ON"
+        button3.TextColor3 = Color3.new(0, 1, 0)
+        
+        isStored = true
+        
+        while isStored do
+            StoreFruit()
+            wait(0.5)
+        end
+    end
+end)
+
+-- 3 --
+
+local button4 = Instance.new("TextBox")
+button4.Parent = MemeTools
+button4.BackgroundColor3 = Color3.new(0, 0, 0)
+button4.BackgroundTransparency = 0.5
+button4.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button4.TextScaled = true
+button4.Position = UDim2.new(0.125, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button4.TextColor3 = Color3.fromRGB(255, 255, 255)
+button4.Font = Enum.Font.PatrickHand
+button4.Text = "[write in a value]"
+button4.ClearTextOnFocus = true
+
+-- 4 --
+
+local button5 = Instance.new("TextButton")
+button5.Parent = MemeTools
+button5.BackgroundColor3 = Color3.new(0, 0, 0)
+button5.BackgroundTransparency = 0.5
+button5.Size = UDim2.new(0.03, 0, 0.9, 0)
+button5.TextScaled = true
+button5.Position = UDim2.new(0.165, 0, 0, 0)
+button5.TextColor3 = Color3.new(1, 1, 1)
+button5.Font = Enum.Font.PatrickHand
+button5.Text = "Get Money Bag"
+
+button5.MouseButton1Click:Connect(function()
+    local valuex = button4.Text
+    
+    local args = {
+    [1] = valuex
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.DropMoney:InvokeServer(unpack(args))
+    
+    local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "《Success》",
+            Text = "If false then you're not have enough cash !",
+            Duration = 1,
+        })
+end)
+
+-- 5 --
+
+local button6 = Instance.new("TextButton")
+button6.Parent = MemeTools
+button6.BackgroundColor3 = Color3.new(0, 0, 0)
+button6.BackgroundTransparency = 0.5
+button6.Size = UDim2.new(0.03, 0, 0.9, 0)
+button6.TextScaled = true
+button6.Position = UDim2.new(0.205, 0, 0, 0)
+button6.TextColor3 = Color3.new(1, 1, 1)
+button6.Font = Enum.Font.PatrickHand
+button6.Text = "Drop Money Bag: OFF"
+
+local isDropped = false
+
+button6.MouseButton1Click:Connect(function()
+    if isDropped then
+        button6.Text = "Drop Money Bag: OFF"
+        button6.TextColor3 = Color3.new(1, 1, 1)
+        
+        isDropped = false
+    else
+        button6.Text = "Drop Money Bag: ON"
+        button6.TextColor3 = Color3.new(0, 1, 0)
+        
+        isDropped = true
+        
+        while isDropped do
+            MoneyBagDropped()
+            wait(0.5)
+        end
+    end
+end)
+
+-- 6 --
+
+local button7 = Instance.new("TextBox")
+button7.Parent = MemeTools
+button7.BackgroundColor3 = Color3.new(0, 0, 0)
+button7.BackgroundTransparency = 0.5
+button7.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+button7.TextScaled = true
+button7.Position = UDim2.new(0.245, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+button7.TextColor3 = Color3.fromRGB(255, 255, 255)
+button7.Font = Enum.Font.PatrickHand
+button7.Text = "[Speed Value]"
+button7.ClearTextOnFocus = true
+
+button7.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local speedv = button7.Text
+        
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speedv
+    end
+end)
+
+-- 7 --
+
+-- Random Fruit Select ScrollingFrame Data --
+
+local RandomFruitsX1 = Instance.new("TextButton")
+RandomFruitsX1.Parent = RandomSelect
+RandomFruitsX1.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruitsX1.BackgroundTransparency = 0.5
+RandomFruitsX1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RandomFruitsX1.TextScaled = true
+RandomFruitsX1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+RandomFruitsX1.TextColor3 = Color3.new(1, 1, 1)
+RandomFruitsX1.Font = Enum.Font.PatrickHand
+RandomFruitsX1.Text = "$: Random Fruit x1"
+
+RandomFruitsX1.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Once",
+        ["NPCName"] = "Floppa Gacha",
+        ["GachaType"] = "Money"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    NotifyRandom()
+end)
+
+local RandomFruitsX3 = Instance.new("TextButton")
+RandomFruitsX3.Parent = RandomSelect
+RandomFruitsX3.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruitsX3.BackgroundTransparency = 0.5
+RandomFruitsX3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RandomFruitsX3.TextScaled = true
+RandomFruitsX3.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+RandomFruitsX3.TextColor3 = Color3.new(1, 1, 1)
+RandomFruitsX3.Font = Enum.Font.PatrickHand
+RandomFruitsX3.Text = "$: Random Fruit x3"
+
+RandomFruitsX3.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Triple",
+        ["NPCName"] = "Floppa Gacha",
+        ["GachaType"] = "Money"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    NotifyRandom()
+end)
+
+local RandomFruitsX10 = Instance.new("TextButton")
+RandomFruitsX10.Parent = RandomSelect
+RandomFruitsX10.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruitsX10.BackgroundTransparency = 0.5
+RandomFruitsX10.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RandomFruitsX10.TextScaled = true
+RandomFruitsX10.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+RandomFruitsX10.TextColor3 = Color3.new(1, 1, 1)
+RandomFruitsX10.Font = Enum.Font.PatrickHand
+RandomFruitsX10.Text = "$: Random Fruit x10"
+
+RandomFruitsX10.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Decuple",
+        ["NPCName"] = "Floppa Gacha",
+        ["GachaType"] = "Money"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    NotifyRandom()
+end)
+
+local RandomFruitsX1G = Instance.new("TextButton")
+RandomFruitsX1G.Parent = RandomSelect
+RandomFruitsX1G.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruitsX1G.BackgroundTransparency = 0.5
+RandomFruitsX1G.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RandomFruitsX1G.TextScaled = true
+RandomFruitsX1G.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingFrame
+RandomFruitsX1G.TextColor3 = Color3.new(1, 1, 1)
+RandomFruitsX1G.Font = Enum.Font.PatrickHand
+RandomFruitsX1G.Text = "Gem: Random Fruit x1"
+
+RandomFruitsX1G.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Once",
+        ["NPCName"] = "Doge Gacha",
+        ["GachaType"] = "Gem"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    NotifyRandom()
+end)
+
+local RandomFruitsX3G = Instance.new("TextButton")
+RandomFruitsX3G.Parent = RandomSelect
+RandomFruitsX3G.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruitsX3G.BackgroundTransparency = 0.5
+RandomFruitsX3G.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RandomFruitsX3G.TextScaled = true
+RandomFruitsX3G.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned inside the ScrollingFrame
+RandomFruitsX3G.TextColor3 = Color3.new(1, 1, 1)
+RandomFruitsX3G.Font = Enum.Font.PatrickHand
+RandomFruitsX3G.Text = "Gem: Random Fruit x3"
+
+RandomFruitsX3G.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Triple",
+        ["NPCName"] = "Doge Gacha",
+        ["GachaType"] = "Gem"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    NotifyRandom()
+end)
+
+local RandomFruitsX10G = Instance.new("TextButton")
+RandomFruitsX10G.Parent = RandomSelect
+RandomFruitsX10G.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruitsX10G.BackgroundTransparency = 0.5
+RandomFruitsX10G.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RandomFruitsX10G.TextScaled = true
+RandomFruitsX10G.Position = UDim2.new(0.1, 0, 0.36, 0)  -- Positioned inside the ScrollingFrame
+RandomFruitsX10G.TextColor3 = Color3.new(1, 1, 1)
+RandomFruitsX10G.Font = Enum.Font.PatrickHand
+RandomFruitsX10G.Text = "Gem: Random Fruit x10"
+
+RandomFruitsX10G.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Decuple",
+        ["NPCName"] = "Doge Gacha",
+        ["GachaType"] = "Gem"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    NotifyRandom()
+end)
+
+local InsertAllCode = Instance.new("TextButton")
+InsertAllCode.Parent = RandomSelect
+InsertAllCode.BackgroundColor3 = Color3.new(0, 0, 0)
+InsertAllCode.BackgroundTransparency = 0.5
+InsertAllCode.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+InsertAllCode.TextScaled = true
+InsertAllCode.Position = UDim2.new(0.1, 0, 0.43, 0)  -- Positioned inside the ScrollingFrame
+InsertAllCode.TextColor3 = Color3.new(1, 1, 1)
+InsertAllCode.Font = Enum.Font.PatrickHand
+InsertAllCode.Text = "Insertion: All Code"
+
+InsertAllCode.MouseButton1Click:Connect(function()
+    GiftCode()
+    
+    warn("Code Insertion...")
+end)
+
+-- Set Spawn Islands ScrollingFrame Data --
+
+local IslandsX1 = Instance.new("TextButton")
+IslandsX1.Parent = SetSpawnIslands
+IslandsX1.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX1.BackgroundTransparency = 0.5
+IslandsX1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX1.TextScaled = true
+IslandsX1.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+IslandsX1.TextColor3 = Color3.new(1, 1, 1)
+IslandsX1.Font = Enum.Font.PatrickHand
+IslandsX1.Text = "Floppa Island"
+
+IslandsX1.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn1"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX2 = Instance.new("TextButton")
+IslandsX2.Parent = SetSpawnIslands
+IslandsX2.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX2.BackgroundTransparency = 0.5
+IslandsX2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX2.TextScaled = true
+IslandsX2.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+IslandsX2.TextColor3 = Color3.new(1, 1, 1)
+IslandsX2.Font = Enum.Font.PatrickHand
+IslandsX2.Text = "Snowy Island"
+
+IslandsX2.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn2"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX3 = Instance.new("TextButton")
+IslandsX3.Parent = SetSpawnIslands
+IslandsX3.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX3.BackgroundTransparency = 0.5
+IslandsX3.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX3.TextScaled = true
+IslandsX3.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+IslandsX3.TextColor3 = Color3.new(1, 1, 1)
+IslandsX3.Font = Enum.Font.PatrickHand
+IslandsX3.Text = "Monkey Island"
+
+IslandsX3.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn3"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX4 = Instance.new("TextButton")
+IslandsX4.Parent = SetSpawnIslands
+IslandsX4.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX4.BackgroundTransparency = 0.5
+IslandsX4.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX4.TextScaled = true
+IslandsX4.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingFrame
+IslandsX4.TextColor3 = Color3.new(1, 1, 1)
+IslandsX4.Font = Enum.Font.PatrickHand
+IslandsX4.Text = "Sand Island"
+
+IslandsX4.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn4"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX5 = Instance.new("TextButton")
+IslandsX5.Parent = SetSpawnIslands
+IslandsX5.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX5.BackgroundTransparency = 0.5
+IslandsX5.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX5.TextScaled = true
+IslandsX5.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned inside the ScrollingFrame
+IslandsX5.TextColor3 = Color3.new(1, 1, 1)
+IslandsX5.Font = Enum.Font.PatrickHand
+IslandsX5.Text = "Pumpkin Island"
+
+IslandsX5.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn5"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX6 = Instance.new("TextButton")
+IslandsX6.Parent = SetSpawnIslands
+IslandsX6.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX6.BackgroundTransparency = 0.5
+IslandsX6.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX6.TextScaled = true
+IslandsX6.Position = UDim2.new(0.1, 0, 0.36, 0)  -- Positioned inside the ScrollingFrame
+IslandsX6.TextColor3 = Color3.new(1, 1, 1)
+IslandsX6.Font = Enum.Font.PatrickHand
+IslandsX6.Text = "Moai Island"
+
+IslandsX6.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn6"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX7 = Instance.new("TextButton")
+IslandsX7.Parent = SetSpawnIslands
+IslandsX7.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX7.BackgroundTransparency = 0.5
+IslandsX7.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX7.TextScaled = true
+IslandsX7.Position = UDim2.new(0.1, 0, 0.43, 0)  -- Positioned inside the ScrollingFrame
+IslandsX7.TextColor3 = Color3.new(1, 1, 1)
+IslandsX7.Font = Enum.Font.PatrickHand
+IslandsX7.Text = "Suspicious Island"
+
+IslandsX7.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn7"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX8 = Instance.new("TextButton")
+IslandsX8.Parent = SetSpawnIslands
+IslandsX8.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX8.BackgroundTransparency = 0.5
+IslandsX8.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX8.TextScaled = true
+IslandsX8.Position = UDim2.new(0.1, 0, 0.50, 0)  -- Positioned inside the ScrollingFrame
+IslandsX8.TextColor3 = Color3.new(1, 1, 1)
+IslandsX8.Font = Enum.Font.PatrickHand
+IslandsX8.Text = "PvP Arena"
+
+IslandsX8.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn8"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX9 = Instance.new("TextButton")
+IslandsX9.Parent = SetSpawnIslands
+IslandsX9.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX9.BackgroundTransparency = 0.5
+IslandsX9.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX9.TextScaled = true
+IslandsX9.Position = UDim2.new(0.1, 0, 0.57, 0)  -- Positioned inside the ScrollingFrame
+IslandsX9.TextColor3 = Color3.new(1, 1, 1)
+IslandsX9.Font = Enum.Font.PatrickHand
+IslandsX9.Text = "MrBeast Island"
+
+IslandsX9.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn9"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+local IslandsX10 = Instance.new("TextButton")
+IslandsX10.Parent = SetSpawnIslands
+IslandsX10.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsX10.BackgroundTransparency = 0.5
+IslandsX10.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+IslandsX10.TextScaled = true
+IslandsX10.Position = UDim2.new(0.1, 0, 0.64, 0)  -- Positioned inside the ScrollingFrame
+IslandsX10.TextColor3 = Color3.new(1, 1, 1)
+IslandsX10.Font = Enum.Font.PatrickHand
+IslandsX10.Text = "Forgotten Island"
+
+IslandsX10.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Set_BedPoint",
+    [2] = "SetSpawn10"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    
+    task.wait(0.5)
+    
+    local args = {
+    [1] = "Teleport"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
+    
+    NotifyUFO()
+end)
+
+-- Close of Data Box --
+
+-- Welcome Message Notification --
+
+local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Welcome to NganHa2k3 Script",
+            Text = "Meme Sea script ability: Quick Random/Code/Shoping/Teleport Island !",
+            Duration = 2,
+        })
