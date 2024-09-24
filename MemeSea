@@ -5,6 +5,7 @@ local OCDashBoard = Instance.new("TextButton")
 local MemeTools = Instance.new("ScrollingFrame")
 local RandomSelect = Instance.new("ScrollingFrame")
 local SetSpawnIslands = Instance.new("ScrollingFrame")
+local StatusPoint = Instance.new("ScrollingFrame")
 
 MemeGui.Parent = game.CoreGui
 
@@ -303,6 +304,58 @@ local args = {
 game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
 end
 
+local function MeleeStatusP()
+    local args = {
+    [1] = {
+        ["Target"] = "MeleeLevel",
+        ["Action"] = "UpgradeStats",
+        ["Amount"] = 1
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+end
+
+local function DefenseStatusP()
+    local args = {
+    [1] = {
+        ["Target"] = "DefenseLevel",
+        ["Action"] = "UpgradeStats",
+        ["Amount"] = 1
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+end
+
+local function SwordStatusP()
+    local args = {
+    [1] = {
+        ["Target"] = "SwordLevel",
+        ["Action"] = "UpgradeStats",
+        ["Amount"] = 1
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+end
+
+local function FruitStatusP()
+    local args = {
+    [1] = {
+        ["Target"] = "MemePowerLevel",
+        ["Action"] = "UpgradeStats",
+        ["Amount"] = 1
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+end
+
+local function TeleportMemeBeast()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Monster["Meme Beast"].HumanoidRootPart.CFrame
+end
+
 -- For Now Closed It --
 
 OCDashBoard.Parent = MemeGui
@@ -376,6 +429,20 @@ SetSpawnIslandsCorner.Parent = SetSpawnIslands
 SetSpawnIslandsCorner.CornerRadius = UDim.new(0, 10)
 
 -- 2 --
+
+StatusPoint.Parent = MemeGui
+StatusPoint.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+StatusPoint.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+StatusPoint.BackgroundColor3 = Color3.new(0, 0, 0)
+StatusPoint.BackgroundTransparency = 0.5
+StatusPoint.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+StatusPoint.ScrollBarThickness = 0.1
+
+local StatusPointCorner = Instance.new("UICorner")
+StatusPointCorner.Parent = StatusPoint
+StatusPointCorner.CornerRadius = UDim.new(0, 10)
+
+-- 3 --
 
 -- ScrollingFrame Ability --
 
@@ -563,7 +630,7 @@ button7.Position = UDim2.new(0.245, 0, 0, 0)  -- Positioned inside the Scrolling
 button7.TextColor3 = Color3.fromRGB(255, 255, 255)
 button7.Font = Enum.Font.PatrickHand
 button7.Text = "[Speed Value]"
-button7.ClearTextOnFocus = true
+button7.ClearTextOnFocus = false
 
 button7.FocusLost:Connect(function(enterPressed)
     if enterPressed then
@@ -574,6 +641,69 @@ button7.FocusLost:Connect(function(enterPressed)
 end)
 
 -- 7 --
+
+local button8 = Instance.new("TextButton")
+button8.Parent = MemeTools
+button8.BackgroundColor3 = Color3.new(0, 0, 0)
+button8.BackgroundTransparency = 0.5
+button8.Size = UDim2.new(0.03, 0, 0.9, 0)
+button8.TextScaled = true
+button8.Position = UDim2.new(0.285, 0, 0, 0)
+button8.TextColor3 = Color3.new(1, 1, 1)
+button8.Font = Enum.Font.PatrickHand
+button8.Text = "Quick Status Points"
+
+local goalPosition7 = UDim2.new(0.2, 0, 0.2, 0)  -- Move ScrollingFrame down
+local goalPosition8 = UDim2.new(-1, 0, 0.2, 0)  -- Original position
+
+local tween7 = TweenService:Create(StatusPoint, tweenInfo, {Position = goalPosition7})
+local tween8 = TweenService:Create(StatusPoint, tweenInfo, {Position = goalPosition8})
+
+local isToggled1 = false
+button8.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween8:Play()
+        button8.TextColor3 = Color3.new(1, 1, 1)
+    else
+        tween7:Play()
+        button8.TextColor3 = Color3.new(0, 1, 1)
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 8 --
+
+local button9 = Instance.new("TextButton")
+button9.Parent = MemeTools
+button9.BackgroundColor3 = Color3.new(0, 0, 0)
+button9.BackgroundTransparency = 0.5
+button9.Size = UDim2.new(0.03, 0, 0.9, 0)
+button9.TextScaled = true
+button9.Position = UDim2.new(0.325, 0, 0, 0)
+button9.TextColor3 = Color3.new(1, 1, 1)
+button9.Font = Enum.Font.PatrickHand
+button9.Text = "Hunt Meme Beast"
+
+local isButton9Off = false
+
+button9.MouseButton1Click:Connect(function()
+    if isButton9Off then
+        button9.TextColor3 = Color3.new(1, 1, 1)
+        
+        isButton9Off = false
+    else
+        button9.TextColor3 = Color3.new(1, 0, 0)
+        
+        isButton9Off = true
+        
+        while isButton9Off do
+            TeleportMemeBeast()
+            wait(0.05)
+        end
+    end
+end)
+
+-- 9 --
 
 -- Random Fruit Select ScrollingFrame Data --
 
@@ -1050,6 +1180,240 @@ game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(un
 game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Ability:InvokeServer(unpack(args))
     
     NotifyUFO()
+end)
+
+-- Status Upgrades Data Box --
+
+local UpdateAllStatus = Instance.new("TextButton")
+UpdateAllStatus.Parent = StatusPoint
+UpdateAllStatus.BackgroundColor3 = Color3.new(0, 0, 0)
+UpdateAllStatus.BackgroundTransparency = 0.5
+UpdateAllStatus.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+UpdateAllStatus.TextScaled = true
+UpdateAllStatus.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+UpdateAllStatus.TextColor3 = Color3.new(1, 1, 1)
+UpdateAllStatus.Font = Enum.Font.PatrickHand
+UpdateAllStatus.Text = "UPGRADES ALL: OFF"
+
+local isAllUpdated = false
+
+UpdateAllStatus.MouseButton1Click:Connect(function()
+    if isAllUpdated then
+        UpdateAllStatus.Text = "UPGRADES ALL: OFF"
+        UpdateAllStatus.TextColor3 = Color3.new(1, 1, 1)
+        
+        isAllUpdated = false
+    else
+        UpdateAllStatus.Text = "UPGRADES ALL: ON"
+        UpdateAllStatus.TextColor3 = Color3.new(1, 1, 0)
+        
+        isAllUpdated = true
+        
+        while isAllUpdated do
+    local args = {
+    [1] = {
+        ["Target"] = "MeleeLevel",
+        ["Action"] = "UpgradeStats",
+        ["Amount"] = 1
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+    
+    task.wait(0.2)
+    
+    local args = {
+    [1] = {
+        ["Target"] = "DefenseLevel",
+        ["Action"] = "UpgradeStats",
+        ["Amount"] = 1
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+    
+    task.wait(0.2)
+    
+    local args = {
+    [1] = {
+        ["Target"] = "SwordLevel",
+        ["Action"] = "UpgradeStats",
+        ["Amount"] = 1
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+    
+    task.wait(0.2)
+    
+    local args = {
+    [1] = {
+        ["Target"] = "MemePowerLevel",
+        ["Action"] = "UpgradeStats",
+        ["Amount"] = 1
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+            wait(0.2)
+        end
+    end
+end)
+
+local ResetStatus = Instance.new("TextButton")
+ResetStatus.Parent = StatusPoint
+ResetStatus.BackgroundColor3 = Color3.new(0, 0, 0)
+ResetStatus.BackgroundTransparency = 0.5
+ResetStatus.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+ResetStatus.TextScaled = true
+ResetStatus.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+ResetStatus.TextColor3 = Color3.new(1, 1, 1)
+ResetStatus.Font = Enum.Font.PatrickHand
+ResetStatus.Text = "Reset Points"
+
+ResetStatus.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = {
+        ["Action"] = "ResetStats"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.StatsFunction:InvokeServer(unpack(args))
+    
+    local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "《Notice Status Reset Successfully》",
+            Text = " Check You're Menu Status, If not then you're not enough Gem !",
+            Duration = 2,
+        })
+end)
+
+local UpdateMelee = Instance.new("TextButton")
+UpdateMelee.Parent = StatusPoint
+UpdateMelee.BackgroundColor3 = Color3.new(0, 0, 0)
+UpdateMelee.BackgroundTransparency = 0.5
+UpdateMelee.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+UpdateMelee.TextScaled = true
+UpdateMelee.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+UpdateMelee.TextColor3 = Color3.new(1, 1, 1)
+UpdateMelee.Font = Enum.Font.PatrickHand
+UpdateMelee.Text = "UPGRADES MELEE: OFF"
+
+local isAllUpdatedm = false
+
+UpdateMelee.MouseButton1Click:Connect(function()
+    if isAllUpdatedm then
+        UpdateMelee.Text = "UPGRADES MELEE: OFF"
+        UpdateMelee.TextColor3 = Color3.new(1, 1, 1)
+        
+        isAllUpdatedm = false
+    else
+        UpdateMelee.Text = "UPGRADES MELEE: ON"
+        UpdateMelee.TextColor3 = Color3.new(1, 1, 0)
+        
+        isAllUpdatedm = true
+        
+        while isAllUpdatedm do
+            MeleeStatusP()
+            wait(0.05)
+        end
+    end
+end)
+
+local UpdateDefense = Instance.new("TextButton")
+UpdateDefense.Parent = StatusPoint
+UpdateDefense.BackgroundColor3 = Color3.new(0, 0, 0)
+UpdateDefense.BackgroundTransparency = 0.5
+UpdateDefense.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+UpdateDefense.TextScaled = true
+UpdateDefense.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingFrame
+UpdateDefense.TextColor3 = Color3.new(1, 1, 1)
+UpdateDefense.Font = Enum.Font.PatrickHand
+UpdateDefense.Text = "UPGRADES DEFENSE: OFF"
+
+local isAllUpdatedd = false
+
+UpdateDefense.MouseButton1Click:Connect(function()
+    if isAllUpdatedd then
+        UpdateDefense.Text = "UPGRADES DEFENSE: OFF"
+        UpdateDefense.TextColor3 = Color3.new(1, 1, 1)
+        
+        isAllUpdatedd = false
+    else
+        UpdateDefense.Text = "UPGRADES DEFENSE: ON"
+        UpdateDefense.TextColor3 = Color3.new(1, 1, 0)
+        
+        isAllUpdatedd = true
+        
+        while isAllUpdatedd do
+            DefenseStatusP()
+            wait(0.05)
+        end
+    end
+end)
+
+local UpdateSword = Instance.new("TextButton")
+UpdateSword.Parent = StatusPoint
+UpdateSword.BackgroundColor3 = Color3.new(0, 0, 0)
+UpdateSword.BackgroundTransparency = 0.5
+UpdateSword.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+UpdateSword.TextScaled = true
+UpdateSword.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned inside the ScrollingFrame
+UpdateSword.TextColor3 = Color3.new(1, 1, 1)
+UpdateSword.Font = Enum.Font.PatrickHand
+UpdateSword.Text = "UPGRADES SWORD: OFF"
+
+local isAllUpdatedsw = false
+
+UpdateSword.MouseButton1Click:Connect(function()
+    if isAllUpdatedsw then
+        UpdateSword.Text = "UPGRADES SWORD: OFF"
+        UpdateSword.TextColor3 = Color3.new(1, 1, 1)
+        
+        isAllUpdatedsw = false
+    else
+        UpdateSword.Text = "UPGRADES SWORD: ON"
+        UpdateSword.TextColor3 = Color3.new(1, 1, 0)
+        
+        isAllUpdatedsw = true
+        
+        while isAllUpdatedsw do
+            SwordStatusP()
+            wait(0.05)
+        end
+    end
+end)
+
+local UpdateFruits = Instance.new("TextButton")
+UpdateFruits.Parent = StatusPoint
+UpdateFruits.BackgroundColor3 = Color3.new(0, 0, 0)
+UpdateFruits.BackgroundTransparency = 0.5
+UpdateFruits.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+UpdateFruits.TextScaled = true
+UpdateFruits.Position = UDim2.new(0.1, 0, 0.36, 0)  -- Positioned inside the ScrollingFrame
+UpdateFruits.TextColor3 = Color3.new(1, 1, 1)
+UpdateFruits.Font = Enum.Font.PatrickHand
+UpdateFruits.Text = "UPGRADES FRUIT: OFF"
+
+local isAllUpdatedf = false
+
+UpdateFruits.MouseButton1Click:Connect(function()
+    if isAllUpdatedf then
+        UpdateFruits.Text = "UPGRADES FRUIT: OFF"
+        UpdateFruits.TextColor3 = Color3.new(1, 1, 1)
+        
+        isAllUpdatedf = false
+    else
+        UpdateFruits.Text = "UPGRADES FRUIT: ON"
+        UpdateFruits.TextColor3 = Color3.new(1, 1, 0)
+        
+        isAllUpdatedf = true
+        
+        while isAllUpdatedf do
+            FruitStatusP()
+            wait(0.05)
+        end
+    end
 end)
 
 -- Close of Data Box --
