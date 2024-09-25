@@ -1181,6 +1181,103 @@ end
 
 ExecuteBox.FocusLost:Connect(onLostFocus)
 
+-- New Button --
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local function createNameTag(player, messageColor)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local head = character:WaitForChild("Head")
+
+    -- Check if a BillboardGui already exists and remove it
+    local existingBillboard = head:FindFirstChild("BillboardGui")
+    if existingBillboard then
+        existingBillboard:Destroy()
+    end
+
+    local billboardGui = Instance.new("BillboardGui", head)
+    billboardGui.Size = UDim2.new(0, 200, 0, 50)
+    billboardGui.StudsOffset = Vector3.new(0, -6, 0)
+    billboardGui.AlwaysOnTop = true
+
+    local textLabel = Instance.new("TextLabel", billboardGui)
+    textLabel.Size = UDim2.new(0.4, 0, 0.3, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextColor3 = messageColor
+    textLabel.TextStrokeTransparency = 0.5
+    textLabel.Text = "✦ѕρу」"
+    textLabel.TextScaled = true
+
+    player.Chatted:Connect(function(message)
+        textLabel.Text = "✦ѕρу」" .. message
+    end)
+end
+
+local function clearNameTags()
+    for _, player in ipairs(Players:GetPlayers()) do
+        local character = player.Character
+        if character then
+            local head = character:FindFirstChild("Head")
+            if head then
+                local billboardGui = head:FindFirstChild("BillboardGui")
+                if billboardGui then
+                    billboardGui:Destroy()
+                end
+            end
+        end
+    end
+end
+
+local button8 = Instance.new("TextButton", ScrollingFrame)  -- Ensure parent is defined correctly
+button8.BackgroundColor3 = Color3.new(0, 0, 0)
+button8.BackgroundTransparency = 0.5
+button8.Size = UDim2.new(0.03, 0, 0.9, 0)
+button8.Position = UDim2.new(0.445, 0, 0, 0)
+button8.TextScaled = true
+button8.TextColor3 = Color3.new(1, 1, 1)
+button8.Font = Enum.Font.PatrickHand
+button8.Text = "Chat Detection: OFF"
+
+local isChatOff = false
+local messageColor = Color3.new(0, 1, 1)
+
+button8.MouseButton1Click:Connect(function()
+    isChatOff = not isChatOff
+
+    if isChatOff then
+        button8.Text = "Chat Detection: ON"
+        button8.TextColor3 = Color3.new(0, 1, 0)
+        
+        -- Create name tags for all players
+        for _, player in ipairs(Players:GetPlayers()) do
+            createNameTag(player, messageColor)
+        end
+        
+        Players.PlayerAdded:Connect(function(player)
+            createNameTag(player, messageColor)
+        end)
+    else
+        button8.Text = "Chat Detection: OFF"
+        button8.TextColor3 = Color3.new(1, 1, 1)
+
+        clearNameTags()
+    end
+end)
+
+-- Initialize name tags for existing players at startup
+for _, player in ipairs(Players:GetPlayers()) do
+    if isChatOff then
+        createNameTag(player, messageColor)
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    if isChatOff then
+        createNameTag(player, messageColor)
+    end
+end)
 
 -- WC message --
 
