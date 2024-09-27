@@ -20,7 +20,10 @@ local gameScripts = {
     [47545] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/place/PizzaPlace",
 
     -- Meme Sea --
-    [3756501373] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript_1/main/MemeSea_Language"
+    [3756501373] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript_1/main/MemeSea_Language",
+
+    -- No Jump Obbies --
+    [5926583186] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript/item/NoJumpObby"
 }
 
 local function loadGameScript(gameId)
