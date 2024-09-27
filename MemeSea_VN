@@ -1426,3 +1426,28 @@ local CoreGui = game:GetService("StarterGui")
             Text = "Biển Meme chức năng: Nhanh Gọn Lẹ Tìm Trái Ngẫu Nhiên, Tự Nhập mã Code, Mua Đồ, Dịch chuyển !",
             Duration = 2,
         })
+
+-- Commands Secrecrly Here --
+
+-- Meme Sea Others Person Script --
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local function onPlayerChatted(message)
+    local words = string.split(message, " ")
+
+    if words[1] == "MemeSea" then
+        loadstring(game:HttpGet("https://rawscripts.net/raw/UPDATE-4-Meme-Sea-OP-17937"))()
+        
+        local CoreGui = game:GetService("StarterGui")
+
+    CoreGui:SetCore("SendNotification", {
+        Title = "《Kích hoạt thành công》",
+        Text = " Tốt rồi, Chờ 1 chút xíu thôi... !",
+        Duration = 3,
+})
+    end
+end
+
+player.Chatted:Connect(onPlayerChatted)
