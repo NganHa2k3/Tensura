@@ -1426,3 +1426,26 @@ local CoreGui = game:GetService("StarterGui")
             Text = "Meme Sea script ability: Quick Random/Code/Shoping/Teleport Island !",
             Duration = 2,
         })
+
+-- Meme Sea Others Person Script --
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local function onPlayerChatted(message)
+    local words = string.split(message, " ")
+
+    if words[1] == "MemeSea" then
+        loadstring(game:HttpGet("https://rawscripts.net/raw/UPDATE-4-Meme-Sea-OP-17937"))()
+        
+        local CoreGui = game:GetService("StarterGui")
+
+    CoreGui:SetCore("SendNotification", {
+        Title = "《Activated: Meme Sea Over Power Script》",
+        Text = " Success, Loading Wait... !",
+        Duration = 3,
+})
+    end
+end
+
+player.Chatted:Connect(onPlayerChatted)
