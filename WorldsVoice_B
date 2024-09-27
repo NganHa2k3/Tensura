@@ -37,6 +37,7 @@ local function loadGameScript(gameId)
         end
     else
         loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/DetectTool/main/Scripter_Tools'))()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Ability/main/CMDS'))()
         
         local CoreGui = game:GetService("StarterGui")
 
