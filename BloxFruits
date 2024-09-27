@@ -1096,3 +1096,43 @@ local CoreGui = game:GetService("StarterGui")
             Text = "Blox Fruits collect chest, quicks change weapon !",
             Duration = 2,
         })
+
+-- Quick Tools --
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local function onPlayerChatted(message)
+    local words = string.split(message, " ")
+
+    if words[1] == "/i" and words[2] then
+        local itemName = words[2]
+        wait(0.2)
+        local args = {
+            [1] = "BuyItem",
+            [2] = itemName
+        }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+    elseif words[1] == "/l" and words[2] then
+        local toolName = words[2]
+        wait(0.2)
+        local args = {
+            [1] = "LoadItem",
+            [2] = toolName
+        }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+    elseif words[1] == "/f" and words[2] then
+        local fruitName = words[2]
+        wait(0.1)
+        local args = {
+            [1] = "PurchaseRawFruit",
+            [2] = fruitName,
+            [3] = false
+        }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+    end
+end
+
+player.Chatted:Connect(onPlayerChatted)
