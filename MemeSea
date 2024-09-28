@@ -1445,6 +1445,16 @@ local function onPlayerChatted(message)
         Text = " Success, Loading Wait... !",
         Duration = 3,
 })
+    elseif words[1] == "KeyBoard" then
+        loadstring(game:HttpGet(('https://pastefy.app/Te4dwSw2/raw'),true))()
+
+        local CoreGui = game:GetService("StarterGui")
+
+    CoreGui:SetCore("SendNotification", {
+        Title = "《Activated: Keyboard》",
+        Text = " Success, Loading Wait for it... !",
+        Duration = 3,
+})
     end
 end
 
