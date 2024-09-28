@@ -6,6 +6,7 @@ local MemeTools = Instance.new("ScrollingFrame")
 local RandomSelect = Instance.new("ScrollingFrame")
 local SetSpawnIslands = Instance.new("ScrollingFrame")
 local StatusPoint = Instance.new("ScrollingFrame")
+local AutoCombo = Instance.new("ScrollingFrame")
 
 MemeGui.Parent = game.CoreGui
 
@@ -356,6 +357,166 @@ local function TeleportMemeBeast()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Monster["Meme Beast"].HumanoidRootPart.CFrame
 end
 
+local function QuickDoughCombo()
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Dough Power",
+    [3] = "C",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Dough Power",
+    [3] = "C",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = Vector3.new(-3.36187744140625, -67.87625885009766, -665.6732788085938)
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Dough Power",
+    [3] = "X",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Dough Power",
+    [3] = "X",
+    [4] = "Release",
+    [5] = {
+        ["Hit_Position"] = Vector3.new(342.89471435546875, -40.0265007019043, -664.9300537109375),
+        ["Mouse_Position"] = Vector3.new(342.89471435546875, -40.0265007019043, -664.9300537109375)
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Dough Power",
+    [3] = "Z",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Dough Power",
+    [3] = "Z",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = Vector3.new(233.27114868164062, -39.90449905395508, -675.9471435546875)
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Dough Power",
+    [3] = "V",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Dough Power",
+    [3] = "V",
+    [4] = "Release",
+    [5] = {
+        ["Hit_Position"] = Vector3.new(380.04266357421875, -40.0265007019043, -622.525146484375),
+        ["Mouse_Position"] = Vector3.new(68.48214721679688, -190.56849670410156, -375.8225402832031)
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+end
+
+local function QuickPurpleKatanaCombo()
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Purple Katana",
+    [3] = "X",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Purple Katana",
+    [3] = "X",
+    [4] = "Release",
+    [5] = {
+        ["Hit_Position"] = Vector3.new(199.02210998535156, -39.90434265136719, -513.5591430664062),
+        ["Mouse_Position"] = Vector3.new(199.02210998535156, -39.90434265136719, -513.5591430664062)
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Purple Katana",
+    [3] = "Z",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+
+local args = {
+    [1] = game:GetService("Players").LocalPlayer.Character,
+    [2] = "Purple Katana",
+    [3] = "Z",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = Vector3.new(202.14010620117188, -40.04305648803711, -438.01019287109375)
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+end
+
+local function RaceActivated()
+local args = {
+    [1] = "RaceSkill"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Movement:FireServer(unpack(args))
+wait(0.01)
+end
+
 -- For Now Closed It --
 
 OCDashBoard.Parent = MemeGui
@@ -443,6 +604,20 @@ StatusPointCorner.Parent = StatusPoint
 StatusPointCorner.CornerRadius = UDim.new(0, 10)
 
 -- 3 --
+
+AutoCombo.Parent = MemeGui
+AutoCombo.Size = UDim2.new(0.1, 0, 0.2, 0)  -- Adjusted to a more visible size
+AutoCombo.Position = UDim2.new(-1, 0, 0.2, 0)  -- Positioned in the center of the screen
+AutoCombo.BackgroundColor3 = Color3.new(0, 0, 0)
+AutoCombo.BackgroundTransparency = 0.5
+AutoCombo.CanvasSize = UDim2.new(0, 0, 2, 0)  -- Wider canvas size to enable scrolling
+AutoCombo.ScrollBarThickness = 0.1
+
+local AutoComboCorner = Instance.new("UICorner")
+AutoComboCorner.Parent = AutoCombo
+AutoComboCorner.CornerRadius = UDim.new(0, 10)
+
+-- 4 --
 
 -- ScrollingFrame Ability --
 
@@ -704,6 +879,37 @@ button9.MouseButton1Click:Connect(function()
 end)
 
 -- 9 --
+
+local button10 = Instance.new("TextButton")
+button10.Parent = MemeTools
+button10.BackgroundColor3 = Color3.new(0, 0, 0)
+button10.BackgroundTransparency = 0.5
+button10.Size = UDim2.new(0.03, 0, 0.9, 0)
+button10.TextScaled = true
+button10.Position = UDim2.new(0.365, 0, 0, 0)
+button10.TextColor3 = Color3.new(1, 1, 1)
+button10.Font = Enum.Font.PatrickHand
+button10.Text = "Combo đánh nhau"
+
+local goalPosition9 = UDim2.new(0.2, 0, 0.4, 0)  -- Move ScrollingFrame down
+local goalPosition10 = UDim2.new(-1, 0, 0.4, 0)  -- Original position
+
+local tween9 = TweenService:Create(AutoCombo, tweenInfo, {Position = goalPosition9})
+local tween10 = TweenService:Create(AutoCombo, tweenInfo, {Position = goalPosition10})
+
+local isToggled1 = false
+button10.MouseButton1Click:Connect(function()
+    if isToggled1 then
+        tween10:Play()
+        button10.TextColor3 = Color3.new(1, 1, 1)
+    else
+        tween9:Play()
+        button10.TextColor3 = Color3.new(1, 0, 1)
+    end
+    isToggled1 = not isToggled1
+end)
+
+-- 10 --
 
 -- Random Fruit Select ScrollingFrame Data --
 
@@ -1413,6 +1619,124 @@ UpdateFruits.MouseButton1Click:Connect(function()
             FruitStatusP()
             wait(0.05)
         end
+    end
+end)
+
+-- Auto Combo Selecting Data Box --
+
+local RaceAbility = Instance.new("TextButton")
+RaceAbility.Parent = AutoCombo
+RaceAbility.BackgroundColor3 = Color3.new(0, 0, 0)
+RaceAbility.BackgroundTransparency = 0.5
+RaceAbility.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RaceAbility.TextScaled = true
+RaceAbility.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+RaceAbility.TextColor3 = Color3.new(1, 1, 1)
+RaceAbility.Font = Enum.Font.PatrickHand
+RaceAbility.Text = "Tự dùng tộc V2"
+
+local isButtonCombosX0 = false
+
+RaceAbility.MouseButton1Click:Connect(function()
+    if isButtonCombosX0 then
+        RaceAbility.TextColor3 = Color3.new(1, 1, 1)
+        
+        isButtonCombosX0 = false
+    else
+        RaceAbility.TextColor3 = Color3.new(0, 1, 0)
+        
+        isButtonCombosX0 = true
+        
+        while isButtonCombosX0 do
+            RaceActivated()
+            wait(0.05)
+        end
+    end
+end)
+
+local DoughCombo = Instance.new("TextButton")
+DoughCombo.Parent = MemeGui
+DoughCombo.BackgroundColor3 = Color3.new(0, 0, 0)
+DoughCombo.BackgroundTransparency = 0.5
+DoughCombo.Size = UDim2.new(0.1, 0, 0.029, 0)  -- Adjusted size for better visibility
+DoughCombo.TextScaled = true
+DoughCombo.Position = UDim2.new(0.6, 0, 0.75, 0)  -- Positioned inside the ScrollingFrame
+DoughCombo.TextColor3 = Color3.new(1, 1, 1)
+DoughCombo.Font = Enum.Font.PatrickHand
+DoughCombo.Text = "Dùng Combo Bột"
+DoughCombo.Visible = false
+
+DoughCombo.MouseButton1Click:Connect(function()
+    QuickDoughCombo()
+end)
+
+local Dough = Instance.new("TextButton")
+Dough.Parent = AutoCombo
+Dough.BackgroundColor3 = Color3.new(0, 0, 0)
+Dough.BackgroundTransparency = 0.5
+Dough.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+Dough.TextScaled = true
+Dough.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+Dough.TextColor3 = Color3.new(1, 1, 1)
+Dough.Font = Enum.Font.PatrickHand
+Dough.Text = "Trái Bột"
+
+local isButtonCombosX1 = false
+
+Dough.MouseButton1Click:Connect(function()
+    if isButtonCombosX1 then
+        DoughCombo.Visible = false
+        Dough.TextColor3 = Color3.new(1, 1, 1)
+        
+        isButtonCombosX1 = false
+    else
+        DoughCombo.Visible = true
+        Dough.TextColor3 = Color3.new(0, 1, 0)
+        
+        isButtonCombosX1 = true
+    end
+end)
+
+local PKatana = Instance.new("TextButton")
+PKatana.Parent = MemeGui
+PKatana.BackgroundColor3 = Color3.new(0, 0, 0)
+PKatana.BackgroundTransparency = 0.5
+PKatana.Size = UDim2.new(0.1, 0, 0.029, 0)  -- Adjusted size for better visibility
+PKatana.TextScaled = true
+PKatana.Position = UDim2.new(0.6, 0, 0.65, 0)  -- Positioned inside the ScrollingFrame
+PKatana.TextColor3 = Color3.new(1, 1, 1)
+PKatana.Font = Enum.Font.PatrickHand
+PKatana.Text = "Dùng Kiếm Màu Tím"
+PKatana.Visible = false
+
+PKatana.MouseButton1Click:Connect(function()
+    QuickPurpleKatanaCombo()
+end)
+
+local PurpleKatana = Instance.new("TextButton")
+PurpleKatana.Parent = AutoCombo
+PurpleKatana.BackgroundColor3 = Color3.new(0, 0, 0)
+PurpleKatana.BackgroundTransparency = 0.5
+PurpleKatana.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+PurpleKatana.TextScaled = true
+PurpleKatana.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+PurpleKatana.TextColor3 = Color3.new(1, 1, 1)
+PurpleKatana.Font = Enum.Font.PatrickHand
+PurpleKatana.Text = "Kiếm Màu Tím"
+
+local isButtonCombosX2 = false
+
+PurpleKatana.MouseButton1Click:Connect(function()
+    if isButtonCombosX2 then
+        PKatana.Visible = false
+        PurpleKatana.TextColor3 = Color3.new(1, 1, 1)
+        
+        isButtonCombosX2 = false
+    else
+        PKatana.Visible = true
+        PurpleKatana.TextColor3 = Color3.new(0, 1, 0)
+        
+        isButtonCombosX2 = true
     end
 end)
 
