@@ -1447,6 +1447,16 @@ local function onPlayerChatted(message)
         Text = " Tốt rồi, Chờ 1 chút xíu thôi... !",
         Duration = 3,
 })
+    elseif words[1] == "KeyBoard" then
+        loadstring(game:HttpGet(('https://pastefy.app/Te4dwSw2/raw'),true))()
+
+        local CoreGui = game:GetService("StarterGui")
+
+    CoreGui:SetCore("SendNotification", {
+        Title = "《Kích hoạt phụ trợ》",
+        Text = " Thành công, Nếu chưa xin hãy chờ đợi 1 xíu ạ... !",
+        Duration = 3,
+})
     end
 end
 
