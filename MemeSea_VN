@@ -358,108 +358,142 @@ local function TeleportMemeBeast()
 end
 
 local function QuickDoughCombo()
-local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
-    [2] = "Dough Power",
-    [3] = "C",
-    [4] = "Hold"
-}
+    local localPlayer = game:GetService("Players").LocalPlayer
+    local character = localPlayer.Character
+    if not character then return end
+    
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
 
-game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        if player ~= localPlayer and player.Character then
+            local distance = (player.Character.HumanoidRootPart.Position - character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
 
+    if not nearestPlayer then return end
 
-local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
-    [2] = "Dough Power",
-    [3] = "C",
-    [4] = "Release",
-    [5] = {
-        ["Mouse_Position"] = Vector3.new(-3.36187744140625, -67.87625885009766, -665.6732788085938)
+    local args = {
+        [1] = character,
+        [2] = "Dough Power",
+        [3] = "C",
+        [4] = "Hold"
     }
-}
+    
+    game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
-
-wait(0.02)
-
-local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
-    [2] = "Dough Power",
-    [3] = "X",
-    [4] = "Hold"
-}
-
-game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
-
-
-local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
-    [2] = "Dough Power",
-    [3] = "X",
-    [4] = "Release",
-    [5] = {
-        ["Hit_Position"] = Vector3.new(342.89471435546875, -40.0265007019043, -664.9300537109375),
-        ["Mouse_Position"] = Vector3.new(342.89471435546875, -40.0265007019043, -664.9300537109375)
+    args = {
+        [1] = character,
+        [2] = "Dough Power",
+        [3] = "C",
+        [4] = "Release",
+        [5] = {
+            ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+        }
     }
-}
+    
+    game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+    wait(0.02)
 
-wait(0.02)
-
-local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
-    [2] = "Dough Power",
-    [3] = "Z",
-    [4] = "Hold"
-}
-
-game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
-
-
-local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
-    [2] = "Dough Power",
-    [3] = "Z",
-    [4] = "Release",
-    [5] = {
-        ["Mouse_Position"] = Vector3.new(233.27114868164062, -39.90449905395508, -675.9471435546875)
+    args = {
+        [1] = character,
+        [2] = "Dough Power",
+        [3] = "X",
+        [4] = "Hold"
     }
-}
+    
+    game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
-
-wait(0.02)
-
-local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
-    [2] = "Dough Power",
-    [3] = "V",
-    [4] = "Hold"
-}
-
-game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
-
-
-local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
-    [2] = "Dough Power",
-    [3] = "V",
-    [4] = "Release",
-    [5] = {
-        ["Hit_Position"] = Vector3.new(380.04266357421875, -40.0265007019043, -622.525146484375),
-        ["Mouse_Position"] = Vector3.new(68.48214721679688, -190.56849670410156, -375.8225402832031)
+    args = {
+        [1] = character,
+        [2] = "Dough Power",
+        [3] = "X",
+        [4] = "Release",
+        [5] = {
+            ["Hit_Position"] = nearestPlayer.Character.HumanoidRootPart.Position,
+            ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+        }
     }
-}
+    
+    game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+    wait(0.02)
 
-wait(0.02)
+    args = {
+        [1] = character,
+        [2] = "Dough Power",
+        [3] = "Z",
+        [4] = "Hold"
+    }
+    
+    game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+    args = {
+        [1] = character,
+        [2] = "Dough Power",
+        [3] = "Z",
+        [4] = "Release",
+        [5] = {
+            ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+        }
+    }
+    
+    game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+    wait(0.02)
+
+    args = {
+        [1] = character,
+        [2] = "Dough Power",
+        [3] = "V",
+        [4] = "Hold"
+    }
+    
+    game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+    args = {
+        [1] = character,
+        [2] = "Dough Power",
+        [3] = "V",
+        [4] = "Release",
+        [5] = {
+            ["Hit_Position"] = nearestPlayer.Character.HumanoidRootPart.Position,
+            ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+        }
+    }
+    
+    game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+    wait(0.02)
 end
 
 local function QuickPurpleKatanaCombo()
+    local localPlayer = game:GetService("Players").LocalPlayer
+    local character = localPlayer.Character
+    if not character then return end
+    
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        if player ~= localPlayer and player.Character then
+            local distance = (player.Character.HumanoidRootPart.Position - character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+
+    if not nearestPlayer then return end
+
 local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
+    [1] = character,
     [2] = "Purple Katana",
     [3] = "X",
     [4] = "Hold"
@@ -469,13 +503,13 @@ game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireSe
 
 
 local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
+    [1] = character,
     [2] = "Purple Katana",
     [3] = "X",
     [4] = "Release",
     [5] = {
-        ["Hit_Position"] = Vector3.new(199.02210998535156, -39.90434265136719, -513.5591430664062),
-        ["Mouse_Position"] = Vector3.new(199.02210998535156, -39.90434265136719, -513.5591430664062)
+        ["Hit_Position"] = nearestPlayer.Character.HumanoidRootPart.Position,
+        ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
     }
 }
 
@@ -484,7 +518,7 @@ game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireSe
 wait(0.02)
 
 local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
+    [1] = character,
     [2] = "Purple Katana",
     [3] = "Z",
     [4] = "Hold"
@@ -494,12 +528,12 @@ game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireSe
 
 
 local args = {
-    [1] = game:GetService("Players").LocalPlayer.Character,
+    [1] = character,
     [2] = "Purple Katana",
     [3] = "Z",
     [4] = "Release",
     [5] = {
-        ["Mouse_Position"] = Vector3.new(202.14010620117188, -40.04305648803711, -438.01019287109375)
+        ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
     }
 }
 
