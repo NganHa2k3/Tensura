@@ -1117,6 +1117,82 @@ InsertAllCode.MouseButton1Click:Connect(function()
     warn("Code Insertion...")
 end)
 
+local RandomFruitsX1Loops = Instance.new("TextButton")
+RandomFruitsX1Loops.Parent = RandomSelect
+RandomFruitsX1Loops.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruitsX1Loops.BackgroundTransparency = 0.5
+RandomFruitsX1Loops.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RandomFruitsX1Loops.TextScaled = true
+RandomFruitsX1Loops.Position = UDim2.new(0.1, 0, 0.50, 0)  -- Positioned inside the ScrollingFrame
+RandomFruitsX1Loops.TextColor3 = Color3.new(1, 1, 1)
+RandomFruitsX1Loops.Font = Enum.Font.PatrickHand
+RandomFruitsX1Loops.Text = "Loops Random Fruits x1"
+
+local isLoopsRandomFruitsX1 = false
+
+RandomFruitsX1Loops.MouseButton1Click:Connect(function()
+    if isLoopsRandomFruitsX1 then
+        RandomFruitsX1Loops.TextColor3 = Color3.new(1, 1, 1)
+        
+        isLoopsRandomFruitsX1 = false
+    else
+        RandomFruitsX1Loops.TextColor3 = Color3.new(0, 1, 0)
+        
+        isLoopsRandomFruitsX1 = true
+        
+    while isLoopsRandomFruitsX1 do
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Once",
+        ["NPCName"] = "Floppa Gacha",
+        ["GachaType"] = "Money"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    wait(0.02)
+    end
+end)
+
+local RandomFruitsX1Loops1 = Instance.new("TextButton")
+RandomFruitsX1Loops1.Parent = RandomSelect
+RandomFruitsX1Loops1.BackgroundColor3 = Color3.new(0, 0, 0)
+RandomFruitsX1Loops1.BackgroundTransparency = 0.5
+RandomFruitsX1Loops1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RandomFruitsX1Loops1.TextScaled = true
+RandomFruitsX1Loops1.Position = UDim2.new(0.1, 0, 0.57, 0)  -- Positioned inside the ScrollingFrame
+RandomFruitsX1Loops1.TextColor3 = Color3.new(1, 1, 1)
+RandomFruitsX1Loops1.Font = Enum.Font.PatrickHand
+RandomFruitsX1Loops1.Text = "Loops Random Fruits x1"
+
+local isLoopsRandomFruitsX1 = false
+
+RandomFruitsX1Loops1.MouseButton1Click:Connect(function()
+    if isLoopsRandomFruitsX1 then
+        RandomFruitsX1Loops1.TextColor3 = Color3.new(1, 1, 1)
+        
+        isLoopsRandomFruitsX1 = false
+    else
+        RandomFruitsX1Loops1.TextColor3 = Color3.new(1, 0, 1)
+        
+        isLoopsRandomFruitsX1 = true
+        
+    while isLoopsRandomFruitsX1 do
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Once",
+        ["NPCName"] = "Doge Gacha",
+        ["GachaType"] = "Gem"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    wait(0.02)
+    end
+end)
+
 -- Set Spawn Islands ScrollingFrame Data --
 
 local IslandsX1 = Instance.new("TextButton")
