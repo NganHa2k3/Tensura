@@ -398,7 +398,7 @@ local function QuickDoughCombo()
     
     game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-    wait(0.02)
+    wait(0.005)
 
     args = {
         [1] = character,
@@ -422,7 +422,7 @@ local function QuickDoughCombo()
     
     game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-    wait(0.02)
+    wait(0.005)
 
     args = {
         [1] = character,
@@ -445,7 +445,7 @@ local function QuickDoughCombo()
     
     game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-    wait(0.02)
+    wait(0.005)
 
     args = {
         [1] = character,
@@ -469,7 +469,7 @@ local function QuickDoughCombo()
     
     game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-    wait(0.02)
+    wait(0.005)
 end
 
 local function QuickPurpleKatanaCombo()
@@ -515,7 +515,7 @@ local args = {
 
 game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-wait(0.02)
+wait(0.005)
 
 local args = {
     [1] = character,
@@ -539,7 +539,7 @@ local args = {
 
 game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-wait(0.02)
+wait(0.005)
 end
 
 local function RaceActivated()
