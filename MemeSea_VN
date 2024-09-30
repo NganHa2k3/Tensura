@@ -1658,13 +1658,17 @@ local DoughCombo = Instance.new("TextButton")
 DoughCombo.Parent = MemeGui
 DoughCombo.BackgroundColor3 = Color3.new(0, 0, 0)
 DoughCombo.BackgroundTransparency = 0.5
-DoughCombo.Size = UDim2.new(0.1, 0, 0.029, 0)  -- Adjusted size for better visibility
+DoughCombo.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
 DoughCombo.TextScaled = true
-DoughCombo.Position = UDim2.new(0.6, 0, 0.75, 0)  -- Positioned inside the ScrollingFrame
+DoughCombo.Position = UDim2.new(0.6, 0, 0.68, 0)  -- Positioned inside the ScrollingFrame
 DoughCombo.TextColor3 = Color3.new(1, 1, 1)
 DoughCombo.Font = Enum.Font.PatrickHand
 DoughCombo.Text = "Dùng Combo Bột"
 DoughCombo.Visible = false
+
+local DoughComboUICorner = Instance.new("UICorner")
+DoughComboUICorner.Parent = DoughCombo
+DoughComboUICorner.CornerRadius = UDim.new(0.2, 0)
 
 DoughCombo.MouseButton1Click:Connect(function()
     QuickDoughCombo()
@@ -1701,13 +1705,17 @@ local PKatana = Instance.new("TextButton")
 PKatana.Parent = MemeGui
 PKatana.BackgroundColor3 = Color3.new(0, 0, 0)
 PKatana.BackgroundTransparency = 0.5
-PKatana.Size = UDim2.new(0.1, 0, 0.029, 0)  -- Adjusted size for better visibility
+PKatana.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
 PKatana.TextScaled = true
-PKatana.Position = UDim2.new(0.6, 0, 0.65, 0)  -- Positioned inside the ScrollingFrame
+PKatana.Position = UDim2.new(0.655, 0, 0.68, 0)  -- Positioned inside the ScrollingFrame
 PKatana.TextColor3 = Color3.new(1, 1, 1)
 PKatana.Font = Enum.Font.PatrickHand
 PKatana.Text = "Dùng Kiếm Màu Tím"
 PKatana.Visible = false
+
+local PKatanaUICorner = Instance.new("UICorner")
+PKatanaUICorner.Parent = PKatana
+PKatanaUICorner.CornerRadius = UDim.new(0.2, 0)
 
 PKatana.MouseButton1Click:Connect(function()
     QuickPurpleKatanaCombo()
