@@ -1172,7 +1172,8 @@ RandomFruitsX1Loops.MouseButton1Click:Connect(function()
         LoopsRandomFCash()
         wait(0.02)
         end
-    end)
+    end
+end)
 
 local RandomFruitsX1Loops1 = Instance.new("TextButton")
 RandomFruitsX1Loops1.Parent = RandomSelect
@@ -1201,7 +1202,8 @@ RandomFruitsX1Loops1.MouseButton1Click:Connect(function()
         LoopsRandomFGem()
         wait(0.02)
         end
-    end)
+    end
+end)
 
 -- Set Spawn Islands ScrollingFrame Data --
 
