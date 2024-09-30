@@ -357,10 +357,10 @@ local function TeleportMemeBeast()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Monster["Meme Beast"].HumanoidRootPart.CFrame
 end
 
-local function QuickDoughCombo()
+local function findNearestPlayer()
     local localPlayer = game:GetService("Players").LocalPlayer
     local character = localPlayer.Character
-    if not character then return end
+    if not character then return nil end
     
     local nearestPlayer = nil
     local shortestDistance = math.huge
@@ -375,7 +375,16 @@ local function QuickDoughCombo()
         end
     end
 
-    if not nearestPlayer then return end
+    return nearestPlayer
+end
+
+local function QuickDoughCombo()
+    local localPlayer = game:GetService("Players").LocalPlayer
+    local character = localPlayer.Character
+    if not character then return end
+
+    local nearestPlayer = findNearestPlayer()
+    local targetPosition = nearestPlayer and nearestPlayer.Character.HumanoidRootPart.Position or character.HumanoidRootPart.Position
 
     local args = {
         [1] = character,
@@ -392,13 +401,13 @@ local function QuickDoughCombo()
         [3] = "C",
         [4] = "Release",
         [5] = {
-            ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+            ["Mouse_Position"] = targetPosition
         }
     }
     
     game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-    wait(0.005)
+    wait(0.02)
 
     args = {
         [1] = character,
@@ -415,14 +424,14 @@ local function QuickDoughCombo()
         [3] = "X",
         [4] = "Release",
         [5] = {
-            ["Hit_Position"] = nearestPlayer.Character.HumanoidRootPart.Position,
-            ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+            ["Hit_Position"] = targetPosition,
+            ["Mouse_Position"] = targetPosition
         }
     }
     
     game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-    wait(0.005)
+    wait(0.02)
 
     args = {
         [1] = character,
@@ -439,13 +448,13 @@ local function QuickDoughCombo()
         [3] = "Z",
         [4] = "Release",
         [5] = {
-            ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+            ["Mouse_Position"] = targetPosition
         }
     }
     
     game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-    wait(0.005)
+    wait(0.02)
 
     args = {
         [1] = character,
@@ -462,35 +471,23 @@ local function QuickDoughCombo()
         [3] = "V",
         [4] = "Release",
         [5] = {
-            ["Hit_Position"] = nearestPlayer.Character.HumanoidRootPart.Position,
-            ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+            ["Hit_Position"] = targetPosition,
+            ["Mouse_Position"] = targetPosition
         }
     }
     
     game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-    wait(0.005)
+    wait(0.02)
 end
 
 local function QuickPurpleKatanaCombo()
     local localPlayer = game:GetService("Players").LocalPlayer
     local character = localPlayer.Character
     if not character then return end
-    
-    local nearestPlayer = nil
-    local shortestDistance = math.huge
 
-    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-        if player ~= localPlayer and player.Character then
-            local distance = (player.Character.HumanoidRootPart.Position - character.HumanoidRootPart.Position).magnitude
-            if distance < shortestDistance then
-                shortestDistance = distance
-                nearestPlayer = player
-            end
-        end
-    end
-
-    if not nearestPlayer then return end
+    local nearestPlayer = findNearestPlayer()
+    local targetPosition = nearestPlayer and nearestPlayer.Character.HumanoidRootPart.Position or character.HumanoidRootPart.Position
 
 local args = {
     [1] = character,
@@ -508,14 +505,14 @@ local args = {
     [3] = "X",
     [4] = "Release",
     [5] = {
-        ["Hit_Position"] = nearestPlayer.Character.HumanoidRootPart.Position,
-        ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+        ["Hit_Position"] = targetPosition,
+        ["Mouse_Position"] = targetPosition
     }
 }
 
 game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-wait(0.005)
+wait(0.02)
 
 local args = {
     [1] = character,
@@ -533,13 +530,13 @@ local args = {
     [3] = "Z",
     [4] = "Release",
     [5] = {
-        ["Mouse_Position"] = nearestPlayer.Character.HumanoidRootPart.Position
+        ["Mouse_Position"] = targetPosition
     }
 }
 
 game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
 
-wait(0.005)
+wait(0.02)
 end
 
 local function RaceActivated()
@@ -1658,13 +1655,43 @@ end)
 
 -- Auto Combo Selecting Data Box --
 
+local NearestTargetCFrame = Instance.new("TextButton")
+NearestTargetCFrame.Parent = AutoCombo
+NearestTargetCFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+NearestTargetCFrame.BackgroundTransparency = 0.5
+NearestTargetCFrame.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+NearestTargetCFrame.TextScaled = true
+NearestTargetCFrame.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+NearestTargetCFrame.TextColor3 = Color3.new(1, 1, 1)
+NearestTargetCFrame.Font = Enum.Font.PatrickHand
+NearestTargetCFrame.Text = "Tự động nhắm"
+
+local isButtonAutoAimsX0 = false
+
+NearestTargetCFrame.MouseButton1Click:Connect(function()
+    if isButtonAutoAimsX0 then
+        NearestTargetCFrame.TextColor3 = Color3.new(1, 1, 1)
+        
+        isButtonAutoAimsX0 = false
+    else
+        NearestTargetCFrame.TextColor3 = Color3.new(0, 1, 0)
+        
+        isButtonAutoAimsX0 = true
+        
+        while isButtonAutoAimsX0 do
+            findNearestPlayer()
+            wait(0.005)
+        end
+    end
+end)
+
 local RaceAbility = Instance.new("TextButton")
 RaceAbility.Parent = AutoCombo
 RaceAbility.BackgroundColor3 = Color3.new(0, 0, 0)
 RaceAbility.BackgroundTransparency = 0.5
 RaceAbility.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
 RaceAbility.TextScaled = true
-RaceAbility.Position = UDim2.new(0.1, 0, 0.01, 0)  -- Positioned inside the ScrollingFrame
+RaceAbility.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
 RaceAbility.TextColor3 = Color3.new(1, 1, 1)
 RaceAbility.Font = Enum.Font.PatrickHand
 RaceAbility.Text = "Tự dùng tộc V2"
@@ -1714,7 +1741,7 @@ Dough.BackgroundColor3 = Color3.new(0, 0, 0)
 Dough.BackgroundTransparency = 0.5
 Dough.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
 Dough.TextScaled = true
-Dough.Position = UDim2.new(0.1, 0, 0.08, 0)  -- Positioned inside the ScrollingFrame
+Dough.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
 Dough.TextColor3 = Color3.new(1, 1, 1)
 Dough.Font = Enum.Font.PatrickHand
 Dough.Text = "Trái Bột"
@@ -1761,7 +1788,7 @@ PurpleKatana.BackgroundColor3 = Color3.new(0, 0, 0)
 PurpleKatana.BackgroundTransparency = 0.5
 PurpleKatana.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
 PurpleKatana.TextScaled = true
-PurpleKatana.Position = UDim2.new(0.1, 0, 0.15, 0)  -- Positioned inside the ScrollingFrame
+PurpleKatana.Position = UDim2.new(0.1, 0, 0.22, 0)  -- Positioned inside the ScrollingFrame
 PurpleKatana.TextColor3 = Color3.new(1, 1, 1)
 PurpleKatana.Font = Enum.Font.PatrickHand
 PurpleKatana.Text = "Kiếm Màu Tím"
