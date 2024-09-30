@@ -29,6 +29,34 @@ local CoreGui = game:GetService("StarterGui")
         })
 end
 
+local function LoopsRandomFGem()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Once",
+        ["NPCName"] = "Doge Gacha",
+        ["GachaType"] = "Gem"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+wait(0.01)
+end
+
+local function LoopsRandomFCash()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Once",
+        ["NPCName"] = "Floppa Gacha",
+        ["GachaType"] = "Money"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+wait(0.01)
+end
+
 local function GiftCode()
 local args = {
     [1] = "UPDATE4"
@@ -1141,16 +1169,7 @@ RandomFruitsX1Loops.MouseButton1Click:Connect(function()
         isLoopsRandomFruitsX1 = true
         
     while isLoopsRandomFruitsX1 do
-    local args = {
-    [1] = "Random_Power",
-    [2] = {
-        ["Type"] = "Once",
-        ["NPCName"] = "Floppa Gacha",
-        ["GachaType"] = "Money"
-    }
-}
-
-game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    LoopsRandomFCash()
     wait(0.02)
     end
 end)
@@ -1166,29 +1185,20 @@ RandomFruitsX1Loops1.TextColor3 = Color3.new(1, 1, 1)
 RandomFruitsX1Loops1.Font = Enum.Font.PatrickHand
 RandomFruitsX1Loops1.Text = "Loops Random Fruits x1"
 
-local isLoopsRandomFruitsX1 = false
+local isLoopsRandomFruitsX1G = false
 
 RandomFruitsX1Loops1.MouseButton1Click:Connect(function()
-    if isLoopsRandomFruitsX1 then
+    if isLoopsRandomFruitsX1G then
         RandomFruitsX1Loops1.TextColor3 = Color3.new(1, 1, 1)
         
-        isLoopsRandomFruitsX1 = false
+        isLoopsRandomFruitsX1G = false
     else
         RandomFruitsX1Loops1.TextColor3 = Color3.new(1, 0, 1)
         
-        isLoopsRandomFruitsX1 = true
+        isLoopsRandomFruitsX1G = true
         
-    while isLoopsRandomFruitsX1 do
-    local args = {
-    [1] = "Random_Power",
-    [2] = {
-        ["Type"] = "Once",
-        ["NPCName"] = "Doge Gacha",
-        ["GachaType"] = "Gem"
-    }
-}
-
-game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+    while isLoopsRandomFruitsX1G do
+    LoopsRandomFGem()
     wait(0.02)
     end
 end)
