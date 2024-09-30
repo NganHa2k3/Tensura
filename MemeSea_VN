@@ -29,6 +29,34 @@ local CoreGui = game:GetService("StarterGui")
         })
 end
 
+local function LoopsRandomFGem()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Once",
+        ["NPCName"] = "Doge Gacha",
+        ["GachaType"] = "Gem"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+wait(0.01)
+end
+
+local function LoopsRandomFCash()
+    local args = {
+    [1] = "Random_Power",
+    [2] = {
+        ["Type"] = "Once",
+        ["NPCName"] = "Floppa Gacha",
+        ["GachaType"] = "Money"
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+wait(0.01)
+end
+
 local function GiftCode()
 local args = {
     [1] = "UPDATE4"
@@ -1140,20 +1168,11 @@ RandomFruitsX1Loops.MouseButton1Click:Connect(function()
         
         isLoopsRandomFruitsX1 = true
         
-    while isLoopsRandomFruitsX1 do
-    local args = {
-    [1] = "Random_Power",
-    [2] = {
-        ["Type"] = "Once",
-        ["NPCName"] = "Floppa Gacha",
-        ["GachaType"] = "Money"
-    }
-}
-
-game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
-    wait(0.02)
-    end
-end)
+        while isLoopsRandomFruitsX1 do
+        LoopsRandomFCash()
+        wait(0.02)
+        end
+    end)
 
 local RandomFruitsX1Loops1 = Instance.new("TextButton")
 RandomFruitsX1Loops1.Parent = RandomSelect
@@ -1178,20 +1197,11 @@ RandomFruitsX1Loops1.MouseButton1Click:Connect(function()
         
         isLoopsRandomFruitsX1 = true
         
-    while isLoopsRandomFruitsX1 do
-    local args = {
-    [1] = "Random_Power",
-    [2] = {
-        ["Type"] = "Once",
-        ["NPCName"] = "Doge Gacha",
-        ["GachaType"] = "Gem"
-    }
-}
-
-game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
-    wait(0.02)
-    end
-end)
+        while isLoopsRandomFruitsX1 do
+        LoopsRandomFGem()
+        wait(0.02)
+        end
+    end)
 
 -- Set Spawn Islands ScrollingFrame Data --
 
