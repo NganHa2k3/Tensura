@@ -29,6 +29,38 @@ local CoreGui = game:GetService("StarterGui")
         })
 end
 
+local function CheemsTeams()
+local args = {
+    [1] = "Change_Team",
+    [2] = "Cheems Recruiter"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+wait(0.05)
+end
+
+local function FloppaTeams()
+local args = {
+    [1] = "Change_Team",
+    [2] = "Floppa Recruiter"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+wait(0.05)
+end
+
+local function GojoRerollingAura()
+local args = {
+    [1] = "Reroll_Color",
+    [2] = "Halfed Sorcerer"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+wait(0.01)
+end
+
+-- Still more --
+
 local function LoopsRandomFGem()
     local args = {
     [1] = "Random_Power",
@@ -970,6 +1002,39 @@ end)
 
 -- 10 --
 
+local TeamSwitch = Instance.new("TextButton")
+TeamSwitch.Parent = MemeTools
+TeamSwitch.BackgroundColor3 = Color3.new(0, 0, 0)
+TeamSwitch.BackgroundTransparency = 0.5
+TeamSwitch.Size = UDim2.new(0.03, 0, 0.9, 0)
+TeamSwitch.TextScaled = true
+TeamSwitch.Position = UDim2.new(0.405, 0, 0, 0)
+TeamSwitch.TextColor3 = Color3.new(1, 1, 1)
+TeamSwitch.Font = Enum.Font.PatrickHand
+TeamSwitch.Text = "Con mèo"
+
+local SwitchTeams = false
+
+TeamSwitch.MouseButton1Click:Connect(function()
+    if SwitchTeams then
+        TeamSwitch.Text = "Con mèo"
+        TeamSwitch.TextColor3 = Color3.new(1, 0, 0)
+        
+        FloppaTeams()
+        
+        SwitchTeams = false
+    else
+        TeamSwitch.Text = "Con Chó"
+        TeamSwitch.TextColor3 = Color3.new(0, 1, 1)
+        
+        CheemsTeams()
+        
+        SwitchTeams = true
+    end
+end)
+
+-- 11 --
+
 -- Random Fruit Select ScrollingFrame Data --
 
 local RandomFruitsX1 = Instance.new("TextButton")
@@ -1203,6 +1268,97 @@ RandomFruitsX1Loops1.MouseButton1Click:Connect(function()
         wait(0.02)
         end
     end
+end)
+
+local RerollingAuraQuickly = Instance.new("TextButton")
+RerollingAuraQuickly.Parent = RandomSelect
+RerollingAuraQuickly.BackgroundColor3 = Color3.new(0, 0, 0)
+RerollingAuraQuickly.BackgroundTransparency = 0.5
+RerollingAuraQuickly.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RerollingAuraQuickly.TextScaled = true
+RerollingAuraQuickly.Position = UDim2.new(0.1, 0, 0.64, 0)  -- Positioned inside the ScrollingFrame
+RerollingAuraQuickly.TextColor3 = Color3.new(1, 1, 1)
+RerollingAuraQuickly.Font = Enum.Font.PatrickHand
+RerollingAuraQuickly.Text = "Tự động Random Haki Màu"
+
+local isRerollingAura = false
+
+RerollingAuraQuickly.MouseButton1Click:Connect(function()
+    if isRerollingAura then
+        RerollingAuraQuickly.TextColor3 = Color3.new(1, 1, 1)
+        
+        isRerollingAura = false
+    else
+        RerollingAuraQuickly.TextColor3 = Color3.new(0, 1, 1)
+        
+        isRerollingAura = true
+        
+        while isRerollingAura do
+        GojoRerollingAura()
+        wait(0.01)
+        end
+    end
+end)
+
+local RerollingRace = Instance.new("TextButton")
+RerollingRace.Parent = RandomSelect
+RerollingRace.BackgroundColor3 = Color3.new(0, 0, 0)
+RerollingRace.BackgroundTransparency = 0.5
+RerollingRace.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+RerollingRace.TextScaled = true
+RerollingRace.Position = UDim2.new(0.1, 0, 0.71, 0)  -- Positioned inside the ScrollingFrame
+RerollingRace.TextColor3 = Color3.new(1, 1, 1)
+RerollingRace.Font = Enum.Font.PatrickHand
+RerollingRace.Text = "Random Tộc"
+
+RerollingRace.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Reroll_Race",
+    [2] = "Watermelon Man"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+wait(0.5)
+end)
+
+local QuicklyLearnAllHaki = Instance.new("TextButton")
+QuicklyLearnAllHaki.Parent = RandomSelect
+QuicklyLearnAllHaki.BackgroundColor3 = Color3.new(0, 0, 0)
+QuicklyLearnAllHaki.BackgroundTransparency = 0.5
+QuicklyLearnAllHaki.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+QuicklyLearnAllHaki.TextScaled = true
+QuicklyLearnAllHaki.Position = UDim2.new(0.1, 0, 0.78, 0)  -- Positioned inside the ScrollingFrame
+QuicklyLearnAllHaki.TextColor3 = Color3.new(1, 1, 1)
+QuicklyLearnAllHaki.Font = Enum.Font.PatrickHand
+QuicklyLearnAllHaki.Text = "Mua hết Haki"
+
+QuicklyLearnAllHaki.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Ability_Teacher",
+    [2] = "Nugget Man"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+wait(0.1)
+
+local args = {
+    [1] = "Ability_Teacher",
+    [2] = "Aura Master"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+wait(0.1)
+
+local args = {
+    [1] = "Ability_Teacher",
+    [2] = "Giga Chad"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.MainEvents.Modules:FireServer(unpack(args))
+
+wait(0.1)
 end)
 
 -- Set Spawn Islands ScrollingFrame Data --
