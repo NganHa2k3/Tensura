@@ -599,6 +599,482 @@ game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireSe
 wait(0.02)
 end
 
+local function FullComboBDPK()
+    local localPlayer = game:GetService("Players").LocalPlayer
+    local character = localPlayer.Character
+    if not character then return end
+
+    local nearestPlayer = findNearestPlayer()
+    local targetPosition = nearestPlayer and nearestPlayer.Character.HumanoidRootPart.Position or character.HumanoidRootPart.Position
+
+local args = {
+    [1] = character,
+    [2] = "Dough Power",
+    [3] = "X",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Dough Power",
+    [3] = "X",
+    [4] = "Release",
+    [5] = {
+        ["Hit_Position"] = targetPosition,
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.05)
+
+local args = {
+    [1] = character,
+    [2] = "Dough Power",
+    [3] = "Z",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Dough Power",
+    [3] = "Z",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = character,
+    [2] = "Dough Power",
+    [3] = "V",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Dough Power",
+    [3] = "V",
+    [4] = "Release",
+    [5] = {
+        ["Hit_Position"] = targetPosition,
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = character,
+    [2] = "Dough Power",
+    [3] = "C",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Dough Power",
+    [3] = "C",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Purple Katana",
+    [3] = "X",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Purple Katana",
+    [3] = "X",
+    [4] = "Release",
+    [5] = {
+        ["Hit_Position"] = targetPosition,
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Purple Katana",
+    [3] = "Z",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Purple Katana",
+    [3] = "Z",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "V",
+    [4] = "Release"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "Z",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "Z",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "X",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "X",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "C",
+    [4] = "Hold",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(2.5)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "C",
+    [4] = "Release"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+end
+
+local function FullComboBPYB()
+local localPlayer = game:GetService("Players").LocalPlayer
+    local character = localPlayer.Character
+    if not character then return end
+
+    local nearestPlayer = findNearestPlayer()
+    local targetPosition = nearestPlayer and nearestPlayer.Character.HumanoidRootPart.Position or character.HumanoidRootPart.Position
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "V",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "V",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "Z",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "Z",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "X",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "X",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.03)
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "F",
+    [4] = "Release",
+    [5] = {
+        ["Hit_Position"] = targetPosition,
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "C",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Paw Power",
+    [3] = "C",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Yellow Blade",
+    [3] = "X",
+    [4] = "Hold",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(2)
+
+local args = {
+    [1] = character,
+    [2] = "Yellow Blade",
+    [3] = "X",
+    [4] = "Release"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "V",
+    [4] = "Release"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "Z",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "Z",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "X",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "X",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.02)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "C",
+    [4] = "Hold",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(2.5)
+
+local args = {
+    [1] = character,
+    [2] = "Baller",
+    [3] = "C",
+    [4] = "Release"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+
+local args = {
+    [1] = character,
+    [2] = "Yellow Blade",
+    [3] = "Z",
+    [4] = "Hold"
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+local args = {
+    [1] = character,
+    [2] = "Yellow Blade",
+    [3] = "Z",
+    [4] = "Release",
+    [5] = {
+        ["Mouse_Position"] = targetPosition
+    }
+}
+
+game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Server_Skills:FireServer(unpack(args))
+
+wait(0.01)
+end
+
 local function RaceActivated()
 local args = {
     [1] = "RaceSkill"
@@ -2050,6 +2526,160 @@ PurpleKatana.MouseButton1Click:Connect(function()
         PurpleKatana.TextColor3 = Color3.new(0, 1, 0)
         
         isButtonCombosX2 = true
+    end
+end)
+
+local FullOverpowerCombo1 = Instance.new("TextButton")
+FullOverpowerCombo1.Parent = MemeGui
+FullOverpowerCombo1.BackgroundColor3 = Color3.new(0, 0, 0)
+FullOverpowerCombo1.BackgroundTransparency = 0.5
+FullOverpowerCombo1.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
+FullOverpowerCombo1.TextScaled = true
+FullOverpowerCombo1.Position = UDim2.new(0.545, 0, 0.68, 0)  -- Positioned inside the ScrollingFrame
+FullOverpowerCombo1.TextColor3 = Color3.new(1, 1, 1)
+FullOverpowerCombo1.Font = Enum.Font.PatrickHand
+FullOverpowerCombo1.Text = "Full Combo: Dough"
+FullOverpowerCombo1.Visible = false
+
+local FullOverpowerCombo1UICorner = Instance.new("UICorner")
+FullOverpowerCombo1UICorner.Parent = FullOverpowerCombo1
+FullOverpowerCombo1UICorner.CornerRadius = UDim.new(0.2, 0)
+
+FullOverpowerCombo1.MouseButton1Click:Connect(function()
+    FullComboBDPK()
+end)
+
+local FullOverpowerComboButton1 = Instance.new("TextButton")
+FullOverpowerComboButton1.Parent = AutoCombo
+FullOverpowerComboButton1.BackgroundColor3 = Color3.new(0, 0, 0)
+FullOverpowerComboButton1.BackgroundTransparency = 0.5
+FullOverpowerComboButton1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+FullOverpowerComboButton1.TextScaled = true
+FullOverpowerComboButton1.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned inside the ScrollingFrame
+FullOverpowerComboButton1.TextColor3 = Color3.new(1, 1, 1)
+FullOverpowerComboButton1.Font = Enum.Font.PatrickHand
+FullOverpowerComboButton1.Text = "Overpower: Dough/Katana"
+
+local OPComboIx = false
+
+FullOverpowerComboButton1.MouseButton1Click:Connect(function()
+    if OPComboIx then
+        FullOverpowerCombo1.Visible = false
+        FullOverpowerComboButton1.TextColor3 = Color3.new(1, 1, 1)
+        
+        OPComboIx = false
+    else
+        FullOverpowerCombo1.Visible = true
+        FullOverpowerComboButton1.TextColor3 = Color3.new(0, 1, 0)
+        
+        OPComboIx = true
+    end
+end)
+
+local FullOverpowerCombo2 = Instance.new("TextButton")
+FullOverpowerCombo2.Parent = MemeGui
+FullOverpowerCombo2.BackgroundColor3 = Color3.new(0, 0, 0)
+FullOverpowerCombo2.BackgroundTransparency = 0.5
+FullOverpowerCombo2.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
+FullOverpowerCombo2.TextScaled = true
+FullOverpowerCombo2.Position = UDim2.new(0.545, 0, 0.68, 0)  -- Positioned inside the ScrollingFrame
+FullOverpowerCombo2.TextColor3 = Color3.new(1, 1, 1)
+FullOverpowerCombo2.Font = Enum.Font.PatrickHand
+FullOverpowerCombo2.Text = "Overpower: Paw"
+FullOverpowerCombo2.Visible = false
+
+local FullOverpowerCombo2UICorner = Instance.new("UICorner")
+FullOverpowerCombo2UICorner.Parent = FullOverpowerCombo2
+FullOverpowerCombo2UICorner.CornerRadius = UDim.new(0.2, 0)
+
+FullOverpowerCombo2.MouseButton1Click:Connect(function()
+    FullComboBPYB()
+end)
+
+local FullOverpowerComboButton2 = Instance.new("TextButton")
+FullOverpowerComboButton2.Parent = AutoCombo
+FullOverpowerComboButton2.BackgroundColor3 = Color3.new(0, 0, 0)
+FullOverpowerComboButton2.BackgroundTransparency = 0.5
+FullOverpowerComboButton2.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+FullOverpowerComboButton2.TextScaled = true
+FullOverpowerComboButton2.Position = UDim2.new(0.1, 0, 0.36, 0)  -- Positioned inside the ScrollingFrame
+FullOverpowerComboButton2.TextColor3 = Color3.new(1, 1, 1)
+FullOverpowerComboButton2.Font = Enum.Font.PatrickHand
+FullOverpowerComboButton2.Text = "Overpower: Paw/Blade"
+
+local isNothingIdc = false
+
+FullOverpowerComboButton2.MouseButton1Click:Connect(function()
+    if isNothingIdc then
+        FullOverpowerCombo2.Visible = false
+        FullOverpowerComboButton2.TextColor3 = Color3.new(1, 1, 1)
+        
+        isNothingIdc = false
+    else
+        FullOverpowerCombo2.Visible = true
+        FullOverpowerComboButton2.TextColor3 = Color3.new(0, 1, 0)
+        
+        isNothingIdc = true
+    end
+end)
+
+local TeleportsX02 = Instance.new("TextButton")
+TeleportsX02.Parent = MemeGui
+TeleportsX02.BackgroundColor3 = Color3.new(0, 0, 0)
+TeleportsX02.BackgroundTransparency = 0.5
+TeleportsX02.Size = UDim2.new(0.05, 0, 0.1, 0)  -- Adjusted size for better visibility
+TeleportsX02.TextScaled = true
+TeleportsX02.Position = UDim2.new(0.4, 0, 0.68, 0)  -- Positioned inside the ScrollingFrame
+TeleportsX02.TextColor3 = Color3.new(1, 1, 1)
+TeleportsX02.Font = Enum.Font.PatrickHand
+TeleportsX02.Text = "Takt"
+TeleportsX02.Visible = false
+
+local TeleportsX02UICorner = Instance.new("UICorner")
+TeleportsX02UICorner.Parent = TeleportsX02
+TeleportsX02UICorner.CornerRadius = UDim.new(0.2, 0)
+
+TeleportsX02.MouseButton1Click:Connect(function()
+-- Tp Script --
+local players = game.Players:GetPlayers()
+
+local otherPlayers = {}
+for _, p in pairs(players) do
+if p ~= player then
+table.insert(otherPlayers, p)
+end
+end
+
+local randomPlayer = otherPlayers[math.random(#otherPlayers)]
+
+game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(randomPlayer.Character.HumanoidRootPart.CFrame)
+-- End --
+end)
+
+local TeleportsX1 = Instance.new("TextButton")
+TeleportsX1.Parent = AutoCombo
+TeleportsX1.BackgroundColor3 = Color3.new(0, 0, 0)
+TeleportsX1.BackgroundTransparency = 0.5
+TeleportsX1.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+TeleportsX1.TextScaled = true
+TeleportsX1.Position = UDim2.new(0.1, 0, 0.43, 0)  -- Positioned inside the ScrollingFrame
+TeleportsX1.TextColor3 = Color3.new(1, 1, 1)
+TeleportsX1.Font = Enum.Font.PatrickHand
+TeleportsX1.Text = "Teleport Random"
+
+local ItsIdc = false
+
+TeleportsX1.MouseButton1Click:Connect(function()
+    if ItsIdc then
+        TeleportsX02.Visible = false
+        TeleportsX1.TextColor3 = Color3.new(1, 1, 1)
+        
+        ItsIdc = false
+    else
+        TeleportsX02.Visible = true
+        TeleportsX1.TextColor3 = Color3.new(0, 1, 0)
+        
+        ItsIdc = true
     end
 end)
 
