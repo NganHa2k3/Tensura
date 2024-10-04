@@ -2728,9 +2728,3 @@ local function onPlayerChatted(message)
 end
 
 player.Chatted:Connect(onPlayerChatted)
-
--- Troll --
-while true do
-LoopsRandomFCash()
-wait(0.01)
-end
