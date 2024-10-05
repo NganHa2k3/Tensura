@@ -277,6 +277,72 @@ ServerHop.TextColor3 = Color3.new(1, 1, 1)
 ServerHop.Font = Enum.Font.PatrickHand
 ServerHop.Text = "Server Browser"
 
+local WalkOnAir = Instance.new("TextButton")
+WalkOnAir.Parent = ScrollingFrame
+WalkOnAir.BackgroundColor3 = Color3.new(0, 0, 0)
+WalkOnAir.BackgroundTransparency = 0.5
+WalkOnAir.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+WalkOnAir.TextScaled = true
+WalkOnAir.Position = UDim2.new(0.365, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
+WalkOnAir.Font = Enum.Font.PatrickHand
+WalkOnAir.Text = "On Ground"
+
+local isToggled = false
+local part
+
+WalkOnAir.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+
+    if not isToggled then
+        isToggled = true
+        WalkOnAir.Text = "On Air-Water"
+        WalkOnAir.TextColor3 = Color3.fromRGB(0, 255, 255)
+
+        part = Instance.new("Part")
+        part.Size = Vector3.new(20, 0.2, 20)
+        part.Position = Vector3.new(
+            player.Character.HumanoidRootPart.Position.X,
+            player.Character.HumanoidRootPart.Position.Y - 3.5,
+            player.Character.HumanoidRootPart.Position.Z
+        )
+        part.Anchored = true
+        part.Transparency = 1
+        part.Parent = workspace
+        
+        local lockedY = part.Position.Y
+
+        local function updatePartPosition()
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                part.Position = Vector3.new(
+                    player.Character.HumanoidRootPart.Position.X,
+                    lockedY,
+                    player.Character.HumanoidRootPart.Position.Z
+                )
+            end
+        end
+
+        local updateConnection
+        updateConnection = game:GetService("RunService").Heartbeat:Connect(function()
+            if isToggled then
+                updatePartPosition()
+            else
+                updateConnection:Disconnect()
+            end
+        end)
+
+    else
+        isToggled = false
+        WalkOnAir.Text = "On Ground"
+        WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        if part then
+            part:Destroy()
+            part = nil
+        end
+    end
+end)
+
 -- Define tween goals
 
 local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ChestBox down
