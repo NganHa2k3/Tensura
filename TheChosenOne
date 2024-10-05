@@ -1392,11 +1392,7 @@ local function sendRandomMessagesa()
         "Hello " .. nearestPlayer.Name .. ", I'm is " .. localPlayer.Name .. " !",
         "You're Cute " .. nearestPlayer.Name .. " , 🄸 🄻🄾🅅🄴 🅈🄾🅄 :> !",
         "It's Beautiful, right " .. nearestPlayer.Name .. " !?",
-        "Hiiii, You're " .. nearestPlayer.Name .. " Ahahaha.. " .. localPlayer.Name .. ".",
-        "Don't Try to Annoyed me.... " .. nearestPlayer.Name .. " Vs " .. localPlayer.Name .. ", 🅈🄾🅄 🄳🄴🄳 !",
-        "🄸 🄻🄾🅅🄴 🅈🄾🅄" .. nearestPlayer.Name .. "🩸",
-        "🄰🄻🄾🅃 🄰🄷🄰🄷🄰",
-        "🄸 Wanna 🄰🅃🄴 You" .. nearestPlayer.Name .. "Ahaha 😋"
+        "Hiiii, You're " .. nearestPlayer.Name .. " Ahahaha.. " .. localPlayer.Name .. "."
     }
 
     local randomIndex = math.random(1, #msga)
