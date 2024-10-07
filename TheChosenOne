@@ -153,7 +153,7 @@ local function announcePlayersWithTool()
 
     local message
     if #currentPlayersWithTool > 0 then
-        message = table.concat(currentPlayersWithTool, ", ") .. " have " .. toolName
+        message = "『" .. table.concat(currentPlayersWithTool, "』, 『") .. " Stored " .. toolName .. " !"
     else
         message = "No one has " .. toolName
     end
@@ -761,7 +761,7 @@ end
 local function sendChatMessage(player)
     local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
     if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
-        local message = player.Name .. " have The Arkenstone, His is Abuser !"
+        local message = "『" .. player.Name .. " have The Arkenstone, His is Abuser !』"
         local args = { message, "All" } -- Message first, then channel
         chatEvent.SayMessageRequest:FireServer(unpack(args))
     else
@@ -829,7 +829,7 @@ end
 local function sendChatMessage(player)
     local chatEvent = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
     if chatEvent and chatEvent:FindFirstChild("SayMessageRequest") then
-        local message = player.Name .. ", Enlighten me !"
+        local message = "『" .. player.Name .. ", Enlighten me !』"
         local args = { message, "All" } -- Message first, then channel
         chatEvent.SayMessageRequest:FireServer(unpack(args))
     else
@@ -1302,14 +1302,14 @@ WalkOnAir.MouseButton1Click:Connect(function()
         WalkOnAir.TextColor3 = Color3.fromRGB(0, 255, 255)
 
         part = Instance.new("Part")
-        part.Size = Vector3.new(20, 0.2, 20)
+        part.Size = Vector3.new(5, 0.2, 5)
         part.Position = Vector3.new(
             player.Character.HumanoidRootPart.Position.X,
             player.Character.HumanoidRootPart.Position.Y - 3.5,
             player.Character.HumanoidRootPart.Position.Z
         )
         part.Anchored = true
-        part.Transparency = 1
+        part.Transparency = 0.9
         part.Parent = workspace
         
         local lockedY = part.Position.Y
@@ -1389,10 +1389,10 @@ local function sendRandomMessagesa()
     end
 
     local msga = {
-        "Hello " .. nearestPlayer.Name .. ", I'm is " .. localPlayer.Name .. " !",
-        "You're Cute " .. nearestPlayer.Name .. " , 🄸 🄻🄾🅅🄴 🅈🄾🅄 :> !",
-        "It's Beautiful, right " .. nearestPlayer.Name .. " !?",
-        "Hiiii, You're " .. nearestPlayer.Name .. " Ahahaha.. " .. localPlayer.Name .. "."
+        "『Correct Reality was not found』",
+        "『ERR_REALITY_NOT" .. nearestPlayer .. "_INCLUDED』",
+        "『ERR_EMPTY_" .. localPlayer .. "_FOUNDED』",
+        "『ERR_" .. nearestPlayer .. "_N_FOUNDED』"
     }
 
     local randomIndex = math.random(1, #msga)
