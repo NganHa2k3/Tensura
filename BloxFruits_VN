@@ -359,6 +359,32 @@ WalkOnAir.MouseButton1Click:Connect(function()
     end
 end)
 
+local GetQuestHunter = Instance.new("TextButton")
+GetQuestHunter.Parent = ScrollingFrame
+GetQuestHunter.BackgroundColor3 = Color3.new(0, 0, 0)
+GetQuestHunter.BackgroundTransparency = 0.5
+GetQuestHunter.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+GetQuestHunter.TextScaled = true
+GetQuestHunter.Position = UDim2.new(0.445, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+GetQuestHunter.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetQuestHunter.Font = Enum.Font.PatrickHand
+GetQuestHunter.Text = "Lấy nhiệm vụ thợ săn"
+
+GetQuestHunter.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "PlayerHunter"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+    
+    local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Nhiệm vụ thợ săn",
+            Text = "Đã lấy nhiệm vụ thợ săn, Tìm nó và hủy diệt cho phần thưởng !",
+            Duration = 2,
+        })
+end)
+
 -- Define tween goals
 
 local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ChestBox down
