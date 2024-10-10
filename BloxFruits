@@ -517,6 +517,71 @@ end)
 
 -- Chest TP Function --
 
+local function IfNotFoundGChest()
+local chest = game:GetService("Workspace"):FindFirstChild("Chest1")
+    if chest then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = chest.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Chest Auto Farm",
+            Text = "Successfully Collected All Chest Existing !",
+            Duration = 2,
+        })
+    end
+end
+
+local function IfNotFoundDChest()
+local chestg = game:GetService("Workspace"):FindFirstChild("Chest2")
+    if chestg then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = chestg.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestg.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        IfNotFoundGChest()
+    end
+end
+
+local function CollectChest()
+local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
+    if chestd then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = chestd.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestd.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        IfNotFoundDChest()
+    end
+end
+
 local function AutoChest3Farm()
 local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
     if chestd then
@@ -689,6 +754,36 @@ DChestF.MouseButton1Click:Connect(function()
         while DChest do
             AutoChest3Farm()
             wait(0.5)
+        end
+    end
+end)
+
+local AChestF = Instance.new("TextButton")
+AChestF.Parent = ChestBox
+AChestF.BackgroundColor3 = Color3.new(0, 0, 0)
+AChestF.BackgroundTransparency = 0.5
+AChestF.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+AChestF.TextScaled = true
+AChestF.Position = UDim2.new(0.1, 0, 0.405, 0)  -- Positioned inside the ScrollingFrame
+AChestF.TextColor3 = Color3.new(1, 1, 1)
+AChestF.Font = Enum.Font.PatrickHand
+AChestF.Text = "Loops All Chest"
+
+local AChest = false
+
+AChestF.MouseButton1Click:Connect(function()
+    if AChest then
+        AChestF.TextColor3 = Color3.new(1, 1, 1)
+        
+        AChest = false
+    else
+        AChestF.TextColor3 = Color3.new(0, 1, 0)
+        
+        AChest = true
+        
+        while AChest do
+            CollectChest()
+            wait(1)
         end
     end
 end)
