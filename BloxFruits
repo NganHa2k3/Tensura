@@ -788,6 +788,85 @@ AChestF.MouseButton1Click:Connect(function()
     end
 end)
 
+local CheckF = Instance.new("TextButton")
+CheckF.Parent = ScreenGui
+CheckF.BackgroundColor3 = Color3.new(0, 0, 0)
+CheckF.BackgroundTransparency = 0.5
+CheckF.Size = UDim2.new(0.05, 0, 0.1, 0)
+CheckF.TextScaled = true
+CheckF.Position = UDim2.new(0.3, 0, 0.6, 0)
+CheckF.TextColor3 = Color3.new(1, 1, 1)
+CheckF.Font = Enum.Font.PatrickHand
+CheckF.Text = ""
+CheckF.Visible = false
+
+local CheckFUICorner = Instance.new("UICorner")
+CheckFUICorner.Parent = CheckF
+CheckFUICorner.CornerRadius = UDim.new(0.1, 0)
+
+local function checkForFruit()
+    local fruit = game:GetService("Workspace"):FindFirstChild("Fruit")
+    if fruit and fruit:FindFirstChild("Handle") then
+        CheckF.Text = "Fruit Spawned"
+    else
+        CheckF.Text = "No Fruit Spawned"
+    end
+end
+
+local ACheckF = Instance.new("TextButton")
+ACheckF.Parent = ChestBox
+ACheckF.BackgroundColor3 = Color3.new(0, 0, 0)
+ACheckF.BackgroundTransparency = 0.5
+ACheckF.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+ACheckF.TextScaled = true
+ACheckF.Position = UDim2.new(0.1, 0, 0.485, 0)  -- Positioned inside the ScrollingFrame
+ACheckF.TextColor3 = Color3.new(1, 1, 1)
+ACheckF.Font = Enum.Font.PatrickHand
+ACheckF.Text = "Check Fruit Spawn"
+
+local ACheckFSet = false
+
+ACheckF.MouseButton1Click:Connect(function()
+    if ACheckFSet then
+        ACheckF.TextColor3 = Color3.new(1, 1, 1)
+        
+        ACheckFSet = false
+        
+        CheckF.Visible = false
+    else
+        ACheckF.TextColor3 = Color3.new(0, 1, 0)
+        
+        ACheckFSet = true
+        
+        CheckF.Visible = true
+        
+        while ACheckFSet do
+            checkForFruit()
+            wait(0.1)
+        end
+    end
+end)
+
+CheckF.MouseButton1Click:Connect(function()
+    local fruitcheckx = game:GetService("Workspace")["Fruit "].Handle
+    if fruitcheckx then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = fruitcheckx.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitcheckx.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        warn("Chest not found: Fruit")
+    end
+end)
+
 -- Shop --
 
 local BuyItem1 = Instance.new("TextButton")
