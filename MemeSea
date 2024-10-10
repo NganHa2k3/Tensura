@@ -1084,165 +1084,30 @@ game:GetService("ReplicatedStorage").OtherEvent.SkillEvents.Movement:FireServer(
 wait(0.01)
 end
 
-local function CF1()
-local Common1 = game:GetService("Workspace").Dropped_Items["Invisible Power"].Handle
-    if Common1 then
-        Common1.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+local function moveItem(itemName)
+    local droppedItems = game:GetService("Workspace"):FindFirstChild("Dropped_Items")
+    if droppedItems then
+        local item = droppedItems:FindFirstChild(itemName)
+        if item and item:FindFirstChild("Handle") then
+            item.Handle.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        else
+            warn(itemName .. " not found in the game!")
+        end
     else
-        warn("No Fruit Founded to be Existing inGame !")
+        warn("Dropped_Items not found in Workspace!")
     end
 end
 
-local function CF2()
-local Common2 = game:GetService("Workspace").Dropped_Items["Fly Power"].Handle
-    if Common2 then
-        Common2.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        CF1()
-    end
-end
+local function collectItems()
+    local itemNames = {
+        "Invisible Power", "Fly Power", "Bomb Power", "Spin Power", "Barrier Power",
+        "Diamond Power", "Paw Power", "Water Power", "Gold Power", "Sand Power",
+        "Flame Power", "Snow Power", "Ice Power", "Moai Power",
+        "Dough Power", "Dog Power", "Dark Power", "Floppa Power"
+    }
 
-local function UF1()
-local Uncommon1 = game:GetService("Workspace").Dropped_Items["Bomb Power"].Handle
-    if Uncommon1 then
-        Uncommon1.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        CF2()
-    end
-end
-
-local function UF2()
-local Uncommon2 = game:GetService("Workspace").Dropped_Items["Spin Power"].Handle
-    if Uncommon2 then
-        Uncommon2.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        UF1()
-    end
-end
-
-local function UF3()
-local Uncommon3 = game:GetService("Workspace").Dropped_Items["Barrier Power"].Handle
-    if Uncommon3 then
-        Uncommon3.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        UF2()
-    end
-end
-
-local function UF4()
-local Uncommon4 = game:GetService("Workspace").Dropped_Items["Diamond Power"].Handle
-    if Uncommon4 then
-        Uncommon4.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        UF3()
-    end
-end
-
-local function RF1()
-local Rare1 = game:GetService("Workspace").Dropped_Items["Paw Power"].Handle
-    if Rare1 then
-        Rare1.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        UF4()
-    end
-end
-
-local function RF2()
-local Rare2 = game:GetService("Workspace").Dropped_Items["Water Power"].Handle
-    if Rare2 then
-        Rare2.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        RF1()
-    end
-end
-
-local function RF3()
-local Rare3 = game:GetService("Workspace").Dropped_Items["Gold Power"].Handle
-    if Rare3 then
-        Rare3.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        RF2()
-    end
-end
-
-local function RF4()
-local Rare4 = game:GetService("Workspace").Dropped_Items["Sand Power"].Handle
-    if Rare4 then
-        Rare4.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        RF3()
-    end
-end
-
-local function EF1()
-local Epic1 = game:GetService("Workspace").Dropped_Items["Flame Power"].Handle
-    if Epic1 then
-        Epic1.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        RF4()
-    end
-end
-
-local function EF2()
-local Epic2 = game:GetService("Workspace").Dropped_Items["Snow Power"].Handle
-    if Epic2 then
-        Epic2.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        EF1()
-    end
-end
-
-local function EF3()
-local Epic3 = game:GetService("Workspace").Dropped_Items["Ice Power"].Handle
-    if Epic3 then
-        Epic3.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        EF2()
-    end
-end
-
-local function EF4()
-local Epic4 = game:GetService("Workspace").Dropped_Items["Moai Power"].Handle
-    if Epic4 then
-        Epic4.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        EF3()
-    end
-end
-
-local function LF1()
-local Legendary1 = game:GetService("Workspace").Dropped_Items["Dough Power"].Handle
-    if Legendary1 then
-        Legendary1.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        EF4()
-    end
-end
-
-local function LF2()
-local Legendary2 = game:GetService("Workspace").Dropped_Items["Dog Power"].Handle
-    if Legendary2 then
-        Legendary2.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        LF1()
-    end
-end
-
-local function LF3()
-local Legendary3 = game:GetService("Workspace").Dropped_Items["Dark Power"].Handle
-    if Legendary3 then
-        Legendary3.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        LF2()
-    end
-end
-
-local function MemeFruitCollect()
-local Legendary4 = game:GetService("Workspace").Dropped_Items["Floppa Power"].Handle
-    if Legendary4 then
-        Legendary4.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    else
-        LF3()
+    for _, itemName in ipairs(itemNames) do
+        moveItem(itemName)
     end
 end
 
@@ -1765,7 +1630,7 @@ OF.MouseButton1Click:Connect(function()
         OFx = true
         
         while OFx do
-            MemeFruitCollect()
+            collectItems()
             wait(0.05)
         end
     end
