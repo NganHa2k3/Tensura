@@ -515,6 +515,28 @@ CoreGui:SetCore("SendNotification", {
 })
 end)
 
+-- Chest TP Function --
+
+local function AutoChest3Farm()
+local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
+    if chestd then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = chestd.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestd.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        warn("Chest not found: Chest3")
+    end
+end
+
 -- Chest TP --
 
 local SilverChest = Instance.new("TextButton")
@@ -638,6 +660,36 @@ Boat.MouseButton1Click:Connect(function()
         end
     else
         warn("Chest not found: Fruit")
+    end
+end)
+
+local DChestF = Instance.new("TextButton")
+DChestF.Parent = ChestBox
+DChestF.BackgroundColor3 = Color3.new(0, 0, 0)
+DChestF.BackgroundTransparency = 0.5
+DChestF.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+DChestF.TextScaled = true
+DChestF.Position = UDim2.new(0.1, 0, 0.325, 0)  -- Positioned inside the ScrollingFrame
+DChestF.TextColor3 = Color3.new(1, 1, 1)
+DChestF.Font = Enum.Font.PatrickHand
+DChestF.Text = "Loops D Chest"
+
+local DChest = false
+
+DChestF.MouseButton1Click:Connect(function()
+    if DChest then
+        DChestF.TextColor3 = Color3.new(1, 1, 1)
+        
+        DChest = false
+    else
+        DChestF.TextColor3 = Color3.new(0, 1, 0)
+        
+        DChest = true
+        
+        while DChest do
+            AutoChest3Farm()
+            wait(0.5)
+        end
     end
 end)
 
