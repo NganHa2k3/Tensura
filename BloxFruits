@@ -467,6 +467,59 @@ LoopsPlayers.MouseButton1Click:Connect(function()
     end
 end)
 
+local me = game:GetService("Players")
+local myLocalPlayer = me.LocalPlayer
+
+local function findNearestEnemy()
+    local nearestEnemy = nil
+    local nearestDistance = math.huge
+    local maxDistance = 200
+
+    for _, enemy in pairs(game.Workspace.Enemies:GetChildren()) do
+        if enemy:IsA("Model") and enemy:FindFirstChild("HumanoidRootPart") then
+            local distance = (myLocalPlayer.Character.HumanoidRootPart.Position - enemy.HumanoidRootPart.Position).magnitude
+            
+            if distance < nearestDistance and distance <= maxDistance then
+                nearestDistance = distance
+                nearestEnemy = enemy
+            end
+        end
+    end
+    
+    if nearestEnemy then
+        nearestEnemy.Humanoid.Health = 0
+    end
+end
+
+local EnemiesHealthZero = Instance.new("TextButton")
+EnemiesHealthZero.Parent = ScrollingFrame
+EnemiesHealthZero.BackgroundColor3 = Color3.new(0, 0, 0)
+EnemiesHealthZero.BackgroundTransparency = 0.5
+EnemiesHealthZero.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+EnemiesHealthZero.TextScaled = true
+EnemiesHealthZero.Position = UDim2.new(0.565, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+EnemiesHealthZero.TextColor3 = Color3.fromRGB(255, 255, 255)
+EnemiesHealthZero.Font = Enum.Font.PatrickHand
+EnemiesHealthZero.Text = "Kill Mobs"
+
+local EnemiesHP = false
+EnemiesHealthZero.MouseButton1Click:Connect(function()
+    if EnemiesHP then
+        EnemiesHealthZero.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        EnemiesHP = false
+    else
+        EnemiesHealthZero.TextColor3 = Color3.fromRGB(0, 255, 0)
+        
+        EnemiesHP = true
+        
+        while EnemiesHP do
+            findNearestEnemy()
+            wait(0.005)
+        end
+    end
+end)
+
 -- Define tween goals
 
 local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ChestBox down
