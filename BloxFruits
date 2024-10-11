@@ -383,7 +383,7 @@ ChangeDashLength.ClearTextOnFocus = true
 
 local myself = game.Players.LocalPlayer
 ChangeDashLength.FocusLost:Connect(function(enterPressed)
-    local inputValue = tonumber(textBox.Text)
+    local inputValue = tonumber(ChangeDashLength.Text)
     if inputValue then
         local character = game.Workspace.Characters[myself.Name]
         character:SetAttribute("DashLength", inputValue)
@@ -406,7 +406,7 @@ ChangeSpeedMultiplier.ClearTextOnFocus = true
 
 local myself0 = game.Players.LocalPlayer
 ChangeSpeedMultiplier.FocusLost:Connect(function(enterPressed)
-    local inputValue = tonumber(textBox.Text)
+    local inputValue = tonumber(ChangeSpeedMultiplier.Text)
     if inputValue then
         local character = game.Workspace.Characters[myself0.Name]
         character:SetAttribute("SpeedMultiplier", inputValue)
