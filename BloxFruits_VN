@@ -620,23 +620,88 @@ local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
     end
 end
 
-local function AutoChest3Farm()
-local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
-    if chestd then
+local function FindingSilverChest()
+local SearchingSilverChest = game:GetService("Workspace"):FindFirstChild("Chest1")
+    if SearchingSilverChest then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
-            local goal = {CFrame = chestd.CFrame + Vector3.new(0, 2, 0)}
+            local goal = {CFrame = SearchingSilverChest.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
         else
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestd.CFrame + Vector3.new(0, 2, 0)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SearchingSilverChest.CFrame + Vector3.new(0, 2, 0)
         end
     else
-        warn("Chest not found: Chest3")
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Thông báo tự động nhặt trái và rương",
+            Text = "Đã thành công tự động nhặt hết trái và rương có trong trò chơi !",
+            Duration = 1,
+        })
+    end
+end
+
+local function FindingGoldenChest()
+local SearchingGoldenChest = game:GetService("Workspace"):FindFirstChild("Chest2")
+    if SearchingGoldenChest then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = SearchingGoldenChest.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SearchingGoldenChest.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        FindingSilverChest()
+    end
+end
+
+local function FindingDiamondChest()
+local SearchingDiamondChest = game:GetService("Workspace"):FindFirstChild("Chest3")
+    if SearchingDiamondChest then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = SearchingDiamondChest.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SearchingDiamondChest.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        FindingGoldenChest()
+    end
+end
+
+local function CollectFruitandChest()
+    local SearchingFruit = game:GetService("Workspace")["Fruit "].Handle
+    if SearchingFruit then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = SearchingFruit.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SearchingFruit.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        FindingDiamondChest()
     end
 end
 
@@ -775,7 +840,7 @@ DChestF.TextScaled = true
 DChestF.Position = UDim2.new(0.1, 0, 0.325, 0)  -- Positioned inside the ScrollingFrame
 DChestF.TextColor3 = Color3.new(1, 1, 1)
 DChestF.Font = Enum.Font.PatrickHand
-DChestF.Text = "Nhặt hết rương kim cương"
+DChestF.Text = "Nhặt trái và tất cả rương"
 
 local DChest = false
 
@@ -785,13 +850,13 @@ DChestF.MouseButton1Click:Connect(function()
         
         DChest = false
     else
-        DChestF.TextColor3 = Color3.new(0, 1, 0)
+        DChestF.TextColor3 = Color3.new(1, 1, 0)
         
         DChest = true
         
         while DChest do
-            AutoChest3Farm()
-            wait(0.5)
+            CollectFruitandChest()
+            wait(1)
         end
     end
 end)
