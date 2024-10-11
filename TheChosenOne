@@ -1346,8 +1346,11 @@ WalkOnAir.MouseButton1Click:Connect(function()
 end)
 
 local function PosArkenstone()
-    game:GetService("Workspace")["The Arkenstone"].Handle.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-wait(0.01)
+    local arkenstone = game:GetService("Workspace"):FindFirstChild("The Arkenstone")
+    if arkenstone and arkenstone:FindFirstChild("Handle") then
+        arkenstone.Handle.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    end
+    wait(0.01)
 end
 
 local GetArkenstone = Instance.new("TextButton")
