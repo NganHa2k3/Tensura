@@ -648,9 +648,12 @@ local SearchingDiamondChest = game:GetService("Workspace"):FindFirstChild("Chest
 end
 
 local function CollectFruitandChest()
-    local SearchingFruit = game:GetService("Workspace")["Fruit "].Handle
-    if SearchingFruit then
+    local fruit = game:GetService("Workspace"):FindFirstChild("Fruit")
+    
+    if fruit and fruit:FindFirstChild("Handle") then
+        local SearchingFruit = fruit.Handle
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
