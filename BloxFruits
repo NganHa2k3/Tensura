@@ -415,6 +415,58 @@ ChangeSpeedMultiplier.FocusLost:Connect(function(enterPressed)
     end
 end)
 
+local function LoopsTPP()
+    local username = button4.Text
+    local player = game:GetService("Players"):FindFirstChild(username)
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+
+            local goal = {CFrame = CFrame.new(targetPosition)}
+            local tweenInfo = createTweenInfo(playerPos, targetPosition)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    else
+        warn("Player not found: " .. username)
+    end
+end
+
+local LoopsPlayers = Instance.new("TextButton")
+LoopsPlayers.Parent = ScrollingFrame
+LoopsPlayers.BackgroundColor3 = Color3.new(0, 0, 0)
+LoopsPlayers.BackgroundTransparency = 0.5
+LoopsPlayers.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+LoopsPlayers.TextScaled = true
+LoopsPlayers.Position = UDim2.new(0.525, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+LoopsPlayers.TextColor3 = Color3.fromRGB(255, 255, 255)
+LoopsPlayers.Font = Enum.Font.PatrickHand
+LoopsPlayers.Text = "Loop Players"
+
+local LPlayers = false
+LoopsPlayers.MouseButton1Click:Connect(function()
+    if LPlayers then
+        LoopsPlayers.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        LPlayers = false
+    else
+        LoopsPlayers.TextColor3 = Color3.fromRGB(0, 255, 0)
+        
+        LPlayers = true
+        
+        while LPlayers do
+            LoopsTPP()
+            wait(0.01)
+        end
+    end
+end)
+
 -- Define tween goals
 
 local goalPosition3 = UDim2.new(0, 0, 0.2, 0)  -- Move ChestBox down
