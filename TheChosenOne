@@ -1345,6 +1345,42 @@ WalkOnAir.MouseButton1Click:Connect(function()
     end
 end)
 
+local function PosArkenstone()
+    game:GetService("Workspace")["The Arkenstone"].Handle.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+wait(0.01)
+end
+
+local GetArkenstone = Instance.new("TextButton")
+GetArkenstone.Parent = ScrollingFrame
+GetArkenstone.BackgroundColor3 = Color3.new(0, 0, 0)
+GetArkenstone.BackgroundTransparency = 0.5
+GetArkenstone.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+GetArkenstone.TextScaled = true
+GetArkenstone.Position = UDim2.new(0.525, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+GetArkenstone.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetArkenstone.Font = Enum.Font.PatrickHand
+GetArkenstone.Text = "Arkenstone: OFF"
+
+local GArkenstoneC = false
+GetArkenstone.MouseButton1Click:Connect(function()
+    if GArkenstoneC then
+        GetArkenstone.TextColor3 = Color3.fromRGB(255, 255, 255)
+        GetArkenstone.Text = "Arkenstone: OFF"
+        
+        GArkenstoneC = false
+    else
+        GetArkenstone.TextColor3 = Color3.fromRGB(0, 255, 255)
+        GetArkenstone.Text = "Arkenstone: ON"
+        
+        GArkenstoneC = true
+        
+        while GArkenstoneC do
+            PosArkenstone()
+            wait(0.04)
+        end
+    end
+end)
+
 -- WC message --
 
 local CoreGui = game:GetService("StarterGui")
@@ -1392,7 +1428,7 @@ local function sendRandomMessagesa()
         "『Correct Reality was not found』",
         "『ERR_REALITY_NOT" .. nearestPlayer .. "_INCLUDED』",
         "『ERR_EMPTY_" .. localPlayer .. "_FOUNDED』",
-        "『ERR_" .. nearestPlayer .. "_N_FOUNDED』"
+        "『ERR_USERNAME_N_FOUNDED』"
     }
 
     local randomIndex = math.random(1, #msga)
