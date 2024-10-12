@@ -1742,7 +1742,7 @@ local player = Players.LocalPlayer
 local function onPlayerChatted(message)
     local words = string.split(message, " ")
 
-    if words[1] == "/i" and words[2] then
+    if words[1] == "Buy" and words[2] then
         local itemName = words[2]
         wait(0.2)
         local args = {
@@ -1751,7 +1751,7 @@ local function onPlayerChatted(message)
         }
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 
-    elseif words[1] == "/l" and words[2] then
+    elseif words[1] == "Get" and words[2] then
         local toolName = words[2]
         wait(0.2)
         local args = {
@@ -1760,7 +1760,7 @@ local function onPlayerChatted(message)
         }
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 
-    elseif words[1] == "/f" and words[2] then
+    elseif words[1] == "BuyF" and words[2] then
         local fruitName = words[2]
         wait(0.1)
         local args = {
@@ -1769,6 +1769,13 @@ local function onPlayerChatted(message)
             [3] = false
         }
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+    elseif words[1] == "Shop" then
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShop.Visible = true
+    elseif words[1] == "Awk" then
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
+    elseif words[1] == "Titles" then
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
     end
 end
 
