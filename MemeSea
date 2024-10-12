@@ -1638,6 +1638,86 @@ end)
 
 -- 13 --
 
+local function ClickFloppa1k()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Island.FloppaIsland["Lava Floppa"].ClickPart.CFrame
+    fireproximityprompt(workspace.Island.FloppaIsland["Lava Floppa"].ClickPart.ProximityPrompt)
+wait(0.0005)
+end
+
+local FloppaQuest = Instance.new("TextButton")
+FloppaQuest.Parent = MemeTools
+FloppaQuest.BackgroundColor3 = Color3.new(0, 0, 0)
+FloppaQuest.BackgroundTransparency = 0.5
+FloppaQuest.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+FloppaQuest.TextScaled = true
+FloppaQuest.Position = UDim2.new(0.525, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+FloppaQuest.TextColor3 = Color3.fromRGB(255, 255, 255)
+FloppaQuest.Font = Enum.Font.PatrickHand
+FloppaQuest.Text = "Get Floppa Weapon"
+
+local EnemiesCF = false
+FloppaQuest.MouseButton1Click:Connect(function()
+    if EnemiesCF then
+        FloppaQuest.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        EnemiesCF = false
+    else
+        FloppaQuest.TextColor3 = Color3.fromRGB(255, 255, 0)
+        
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.NPCs.Quests_Npc["Cool Floppa Quest"].Block.CFrame
+        
+        fireproximityprompt(workspace.NPCs.Quests_Npc["Cool Floppa Quest"].Block.QuestPrompt)
+        
+        task.wait(0.1)
+        
+        EnemiesCF = true
+        
+        while EnemiesCF do
+            ClickFloppa1k()
+            wait(0.0005)
+        end
+    end
+end)
+
+-- 14 --
+
+local function PopPop()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Island.FloppaIsland.Popcat_Clickable.CFrame
+    fireproximityprompt(workspace.Island.FloppaIsland.Popcat_Clickable.Part.ClickDetector)
+wait(0.0005)
+end
+
+local PopCatClick = Instance.new("TextButton")
+PopCatClick.Parent = MemeTools
+PopCatClick.BackgroundColor3 = Color3.new(0, 0, 0)
+PopCatClick.BackgroundTransparency = 0.5
+PopCatClick.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+PopCatClick.TextScaled = true
+PopCatClick.Position = UDim2.new(0.565, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+PopCatClick.TextColor3 = Color3.fromRGB(255, 255, 255)
+PopCatClick.Font = Enum.Font.PatrickHand
+PopCatClick.Text = "AutoClick Pop Cat"
+
+local PopCatCF = false
+PopCatClick.MouseButton1Click:Connect(function()
+    if PopCatCF then
+        PopCatClick.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        PopCatCF = false
+    else
+        PopCatClick.TextColor3 = Color3.fromRGB(255, 255, 0)
+        
+        PopCatCF = true
+        
+        while PopCatCF do
+            PopPop()
+            wait(0.0005)
+        end
+    end
+end)
+
+-- 15 --
+
 -- Random Fruit Select ScrollingFrame Data --
 
 local RandomFruitsX1 = Instance.new("TextButton")
