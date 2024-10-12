@@ -1665,10 +1665,12 @@ FloppaQuest.MouseButton1Click:Connect(function()
         FloppaQuest.TextColor3 = Color3.fromRGB(255, 255, 0)
         
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.NPCs.Quests_Npc["Cool Floppa Quest"].Block.CFrame
+
+        task.wait(1)
         
         fireproximityprompt(workspace.NPCs.Quests_Npc["Cool Floppa Quest"].Block.QuestPrompt)
         
-        task.wait(0.1)
+        task.wait(1)
         
         EnemiesCF = true
         
@@ -1682,8 +1684,8 @@ end)
 -- 14 --
 
 local function PopPop()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.workspace.Island.FloppaIsland.Popcat_Clickable.CFrame
-    fireproximityprompt(workspace.Island.FloppaIsland.Popcat_Clickable.Part.ClickDetector)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Island.FloppaIsland.Popcat_Clickable.CFrame
+    fireclickdetector(workspace.Island.FloppaIsland.Popcat_Clickable.Part.ClickDetector)
 wait(0.0005)
 end
 
