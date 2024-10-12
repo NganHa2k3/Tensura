@@ -266,13 +266,58 @@ BoatButton.TextColor3 = Color3.new(1, 1, 1)
 BoatButton.Font = Enum.Font.PatrickHand
 BoatButton.Text = "Boat/Ship"
 
+local RaidChip = Instance.new("TextBox")
+RaidChip.Parent = ScrollingFrame
+RaidChip.BackgroundColor3 = Color3.new(0, 0, 0)
+RaidChip.BackgroundTransparency = 0.5
+RaidChip.Size = UDim2.new(0.03, 0, 0.9, 0)
+RaidChip.TextScaled = true
+RaidChip.Position = UDim2.new(0.325, 0, 0, 0)
+RaidChip.TextColor3 = Color3.new(1, 1, 1)
+RaidChip.Font = Enum.Font.PatrickHand
+RaidChip.Text = "Raid Chip Name"
+RaidChip.ClearTextOnFocus = true
+
+RaidChip.FocusLost:Connect(function(enterPressed)
+    local chip = RaidChip.Text
+    print("Chip value:", chip)  -- Debugging line
+
+    local args = {
+        [1] = "RaidsNpc",
+        [2] = "Select",
+        [3] = chip
+    }
+
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+task.wait(0.1)
+
+    local CoreGui = game:GetService("StarterGui")
+    CoreGui:SetCore("SendNotification", {
+        Title = "Raid Chip Notification",
+        Text = "You Have Buy It, Raid Chip: " .. chip .. ", If no that means you does not have enough level/money !",
+        Duration = 1,
+    })
+
+task.wait(1)
+
+    fireclickdetector(workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+
+local CoreGui = game:GetService("StarterGui")
+    CoreGui:SetCore("SendNotification", {
+        Title = "Raid Chip Used",
+        Text = "Loading Map: " .. chip .. ", Please Wait !",
+        Duration = 1,
+    })
+end)
+
 local ServerHop = Instance.new("TextButton")
 ServerHop.Parent = ScrollingFrame
 ServerHop.BackgroundColor3 = Color3.new(0, 0, 0)
 ServerHop.BackgroundTransparency = 0.5
 ServerHop.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 ServerHop.TextScaled = true
-ServerHop.Position = UDim2.new(0.325, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+ServerHop.Position = UDim2.new(0.365, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 ServerHop.TextColor3 = Color3.new(1, 1, 1)
 ServerHop.Font = Enum.Font.PatrickHand
 ServerHop.Text = "Server Browser"
@@ -283,7 +328,7 @@ WalkOnAir.BackgroundColor3 = Color3.new(0, 0, 0)
 WalkOnAir.BackgroundTransparency = 0.5
 WalkOnAir.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 WalkOnAir.TextScaled = true
-WalkOnAir.Position = UDim2.new(0.365, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+WalkOnAir.Position = UDim2.new(0.405, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
 WalkOnAir.Font = Enum.Font.PatrickHand
 WalkOnAir.Text = "On Ground"
@@ -349,7 +394,7 @@ GetQuestHunter.BackgroundColor3 = Color3.new(0, 0, 0)
 GetQuestHunter.BackgroundTransparency = 0.5
 GetQuestHunter.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 GetQuestHunter.TextScaled = true
-GetQuestHunter.Position = UDim2.new(0.405, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+GetQuestHunter.Position = UDim2.new(0.445, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 GetQuestHunter.TextColor3 = Color3.fromRGB(255, 255, 255)
 GetQuestHunter.Font = Enum.Font.PatrickHand
 GetQuestHunter.Text = "Get Hunter Quest"
@@ -375,7 +420,7 @@ ChangeDashLength.BackgroundColor3 = Color3.new(0, 0, 0)
 ChangeDashLength.BackgroundTransparency = 0.5
 ChangeDashLength.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 ChangeDashLength.TextScaled = true
-ChangeDashLength.Position = UDim2.new(0.445, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+ChangeDashLength.Position = UDim2.new(0.485, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 ChangeDashLength.TextColor3 = Color3.fromRGB(255, 255, 255)
 ChangeDashLength.Font = Enum.Font.PatrickHand
 ChangeDashLength.Text = "Dash Distance"
@@ -398,7 +443,7 @@ ChangeSpeedMultiplier.BackgroundColor3 = Color3.new(0, 0, 0)
 ChangeSpeedMultiplier.BackgroundTransparency = 0.5
 ChangeSpeedMultiplier.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 ChangeSpeedMultiplier.TextScaled = true
-ChangeSpeedMultiplier.Position = UDim2.new(0.485, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+ChangeSpeedMultiplier.Position = UDim2.new(0.525, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 ChangeSpeedMultiplier.TextColor3 = Color3.fromRGB(255, 255, 255)
 ChangeSpeedMultiplier.Font = Enum.Font.PatrickHand
 ChangeSpeedMultiplier.Text = "Running Speed"
@@ -444,7 +489,7 @@ LoopsPlayers.BackgroundColor3 = Color3.new(0, 0, 0)
 LoopsPlayers.BackgroundTransparency = 0.5
 LoopsPlayers.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 LoopsPlayers.TextScaled = true
-LoopsPlayers.Position = UDim2.new(0.525, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+LoopsPlayers.Position = UDim2.new(0.565, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 LoopsPlayers.TextColor3 = Color3.fromRGB(255, 255, 255)
 LoopsPlayers.Font = Enum.Font.PatrickHand
 LoopsPlayers.Text = "Loop Players"
@@ -462,7 +507,7 @@ LoopsPlayers.MouseButton1Click:Connect(function()
         
         while LPlayers do
             LoopsTPP()
-            wait(0.01)
+            wait(0.0001)
         end
     end
 end)
@@ -497,7 +542,7 @@ EnemiesHealthZero.BackgroundColor3 = Color3.new(0, 0, 0)
 EnemiesHealthZero.BackgroundTransparency = 0.5
 EnemiesHealthZero.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 EnemiesHealthZero.TextScaled = true
-EnemiesHealthZero.Position = UDim2.new(0.565, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+EnemiesHealthZero.Position = UDim2.new(0.605, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 EnemiesHealthZero.TextColor3 = Color3.fromRGB(255, 255, 255)
 EnemiesHealthZero.Font = Enum.Font.PatrickHand
 EnemiesHealthZero.Text = "Kill Mobs"
@@ -515,8 +560,48 @@ EnemiesHealthZero.MouseButton1Click:Connect(function()
         
         while EnemiesHP do
             findNearestEnemy()
-            wait(0.005)
+            wait(0.0001)
         end
+    end
+end)
+
+local SwitchedTeams = Instance.new("TextButton")
+SwitchedTeams.Parent = ScrollingFrame
+SwitchedTeams.BackgroundColor3 = Color3.new(0, 0, 0)
+SwitchedTeams.BackgroundTransparency = 0.5
+SwitchedTeams.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+SwitchedTeams.TextScaled = true
+SwitchedTeams.Position = UDim2.new(0.645, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+SwitchedTeams.TextColor3 = Color3.fromRGB(0, 255, 255)
+SwitchedTeams.Font = Enum.Font.PatrickHand
+SwitchedTeams.Text = "Marines"
+
+local SwitchedT = false
+SwitchedTeams.MouseButton1Click:Connect(function()
+    if SwitchedT then
+        SwitchedTeams.TextColor3 = Color3.fromRGB(0, 255, 255)
+        SwitchedTeams.Text = "Marines"
+        
+        SwitchedT = false
+        
+        local args = {
+    [1] = "SetTeam",
+    [2] = "Marines"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+    else
+        SwitchedTeams.TextColor3 = Color3.fromRGB(240, 190, 0)
+        SwitchedTeams.Text = "Pirates"
+        
+        SwitchedT = true
+        
+        local args = {
+    [1] = "SetTeam",
+    [2] = "Pirates"
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
     end
 end)
 
@@ -986,7 +1071,7 @@ AChestF.TextScaled = true
 AChestF.Position = UDim2.new(0.1, 0, 0.405, 0)  -- Positioned inside the ScrollingFrame
 AChestF.TextColor3 = Color3.new(1, 1, 1)
 AChestF.Font = Enum.Font.PatrickHand
-AChestF.Text = "Loops All Chest"
+AChestF.Text = "Loops All Chest (Chance of get Kicked)"
 
 local AChest = false
 
@@ -1002,7 +1087,12 @@ AChestF.MouseButton1Click:Connect(function()
         
         while AChest do
             CollectChest()
-            wait(1)
+            wait(0.0001)
+        end
+
+        while AChest do
+            game.Players.LocalPlayer.Character.Humanoid.Health = 0
+            wait(5)
         end
     end
 end)
