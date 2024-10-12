@@ -531,7 +531,7 @@ EnemiesHealthZero.MouseButton1Click:Connect(function()
         
         while EnemiesHP do
             findNearestEnemy()
-            wait(0.005)
+            wait(0.0001)
         end
     end
 end)
@@ -688,6 +688,17 @@ task.wait(0.1)
     CoreGui:SetCore("SendNotification", {
         Title = "Chìa Khóa Tập Kích",
         Text = "Bạn đã mua, Chìa Khóa Tập Kích: " .. chip .. ", nếu không có nghĩa là bạn không có đủ tiền random!",
+        Duration = 2,
+    })
+
+task.wait(1)
+
+    fireclickdetector(workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+
+local CoreGui = game:GetService("StarterGui")
+    CoreGui:SetCore("SendNotification", {
+        Title = "Đang Tải Bản Đồ",
+        Text = "Đang Gia Nhập Tập Kích: " .. chip .. ", Xin Hãy Đợi 1 Chút !",
         Duration = 2,
     })
 end)
@@ -1040,7 +1051,7 @@ AChestF.MouseButton1Click:Connect(function()
         
         while AChest do
             CollectChest()
-            wait(1)
+            wait(0.0001)
         end
     end
 end)
