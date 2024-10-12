@@ -536,13 +536,66 @@ EnemiesHealthZero.MouseButton1Click:Connect(function()
     end
 end)
 
+local Im = game:GetService("Players")
+local ILocalPlayer = Im.LocalPlayer
+
+local function trackNearestEnemy()
+    local nearestEnemy = nil
+    local nearestDistance = math.huge
+    local maxDistance = 100
+
+    for _, enemy in pairs(game.Workspace.Enemies:GetChildren()) do
+        if enemy:IsA("Model") and enemy:FindFirstChild("HumanoidRootPart") then
+            local distance = (ILocalPlayer.Character.HumanoidRootPart.Position - enemy.HumanoidRootPart.Position).magnitude
+            
+            if distance < nearestDistance and distance <= maxDistance then
+                nearestDistance = distance
+                nearestEnemy = enemy
+            end
+        end
+    end
+    
+    if nearestEnemy then
+        nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, 1, 0)
+    end
+end
+
+local EnemiesCFrameTo = Instance.new("TextButton")
+EnemiesCFrameTo.Parent = ScrollingFrame
+EnemiesCFrameTo.BackgroundColor3 = Color3.new(0, 0, 0)
+EnemiesCFrameTo.BackgroundTransparency = 0.5
+EnemiesCFrameTo.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+EnemiesCFrameTo.TextScaled = true
+EnemiesCFrameTo.Position = UDim2.new(0.645, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 255)
+EnemiesCFrameTo.Font = Enum.Font.PatrickHand
+EnemiesCFrameTo.Text = "Kéo Quái (Gần Nhất)"
+
+local EnemiesCF = false
+EnemiesCFrameTo.MouseButton1Click:Connect(function()
+    if EnemiesCF then
+        EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        EnemiesCF = false
+    else
+        EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 0)
+        
+        EnemiesCF = true
+        
+        while EnemiesCF do
+            trackNearestEnemy()
+            wait(0.001)
+        end
+    end
+end)
+
 local SwitchedTeams = Instance.new("TextButton")
 SwitchedTeams.Parent = ScrollingFrame
 SwitchedTeams.BackgroundColor3 = Color3.new(0, 0, 0)
 SwitchedTeams.BackgroundTransparency = 0.5
 SwitchedTeams.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 SwitchedTeams.TextScaled = true
-SwitchedTeams.Position = UDim2.new(0.645, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+SwitchedTeams.Position = UDim2.new(0.685, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 SwitchedTeams.TextColor3 = Color3.fromRGB(0, 255, 255)
 SwitchedTeams.Font = Enum.Font.PatrickHand
 SwitchedTeams.Text = "Hải Quân"
