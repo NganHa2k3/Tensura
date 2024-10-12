@@ -1684,8 +1684,8 @@ end)
 -- 14 --
 
 local function PopPop()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Island.FloppaIsland.Popcat_Clickable.CFrame
-    fireclickdetector(workspace.Island.FloppaIsland.Popcat_Clickable.Part.ClickDetector)
+     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(400, -34, -584)
+     fireclickdetector(workspace.Island.FloppaIsland.Popcat_Clickable.Part.ClickDetector)
 wait(0.0005)
 end
 
