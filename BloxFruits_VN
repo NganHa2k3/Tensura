@@ -985,20 +985,30 @@ local function trackNearestEnemy()
         end
     end
 
-    if nearestEnemy then
-        local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(30, 10, 30)
-        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-
+    if nearestEnemy and nearestEnemy:FindFirstChild("Humanoid") then
+        local humanoid = nearestEnemy.Humanoid
+        
         if isTweenMode then
-            if currentTween then
-                currentTween:Cancel()
+            if humanoid.Health > 0 then
+                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(30, 10, 30)
+                local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                if currentTween then
+                    currentTween:Cancel()
+                end
+                local goal = {CFrame = CFrame.new(targetPosition)}
+                local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+                currentTween = tweenService:Create(ILocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+                currentTween:Play()
+            else
+                nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
             end
-            local goal = {CFrame = CFrame.new(targetPosition)}
-            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
-            currentTween = tweenService:Create(ILocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
-            currentTween:Play()
         else
-            ILocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+            if humanoid.Health > 0 then
+                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(30, 10, 30)
+                ILocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+            else
+                nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
+            end
         end
     end
 end
