@@ -1384,6 +1384,49 @@ GetArkenstone.MouseButton1Click:Connect(function()
     end
 end)
 
+local function GetARK()
+local handle = workspace["The Arkenstone"].Handle
+local player = game.Players.LocalPlayer.Character
+local humanoidRootPart = player and player:FindFirstChild("HumanoidRootPart")
+
+if handle and humanoidRootPart then
+    firetouchinterest(humanoidRootPart, handle, 1)
+    wait(0.1)
+    firetouchinterest(humanoidRootPart, handle, 0)
+end
+end
+
+local GARK0 = Instance.new("TextButton")
+GARK0.Parent = ScrollingFrame
+GARK0.BackgroundColor3 = Color3.new(0, 0, 0)
+GARK0.BackgroundTransparency = 0.5
+GARK0.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+GARK0.TextScaled = true
+GARK0.Position = UDim2.new(0.565, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+GARK0.TextColor3 = Color3.fromRGB(255, 255, 255)
+GARK0.Font = Enum.Font.PatrickHand
+GARK0.Text = "TouchinArkenstone: OFF"
+
+local GARKX0 = false
+GARK0.MouseButton1Click:Connect(function()
+    if GARKX0 then
+        GARK0.TextColor3 = Color3.fromRGB(255, 255, 255)
+        GARK0.Text = "TouchinArkenstone: OFF"
+        
+        GARKX0 = false
+    else
+        GARK0.TextColor3 = Color3.fromRGB(0, 255, 255)
+        GARK0.Text = "TouchinArkenstone: ON"
+        
+        GARKX0 = true
+        
+        while GARKX0 do
+            GetARK()
+            wait(0.04)
+        end
+    end
+end)
+
 -- WC message --
 
 local CoreGui = game:GetService("StarterGui")
