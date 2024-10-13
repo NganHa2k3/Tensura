@@ -567,6 +567,12 @@ end)
 
 local Im = game:GetService("Players")
 local ILocalPlayer = Im.LocalPlayer
+local tweenService = game:GetService("TweenService")
+local currentTween = nil
+
+local function createTweenInfo(startPos, endPos)
+    return TweenInfo.new((startPos - endPos).magnitude / 50, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+end
 
 local function trackNearestEnemy()
     local nearestEnemy = nil
@@ -583,9 +589,21 @@ local function trackNearestEnemy()
             end
         end
     end
-    
+
     if nearestEnemy then
-        nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, 1, 0)
+        local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 10, 0)
+
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = CFrame.new(targetPosition)}
+            local tweenInfo = createTweenInfo(ILocalPlayer.Character.HumanoidRootPart.Position, goal.CFrame.Position)
+            currentTween = tweenService:Create(ILocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            ILocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
     end
 end
 
