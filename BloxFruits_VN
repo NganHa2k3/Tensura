@@ -743,31 +743,23 @@ button4.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local username = button4.Text
         local player = game:GetService("Players"):FindFirstChild(username)
-        
         if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
             local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
-
+            local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
             if isTweenMode then
                 if currentTween then
                     currentTween:Cancel()
                 end
 
-                local originalAnchored = player.Character.HumanoidRootPart.Anchored
-                player.Character.HumanoidRootPart.Anchored = true
-                
                 local goal = {CFrame = CFrame.new(targetPosition)}
-                local tweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
-                currentTween = tweenService:Create(player.Character.HumanoidRootPart, tweenInfo, goal)
-                
+                local tweenInfo = createTweenInfo(playerPos, targetPosition)
+                currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
                 currentTween:Play()
-                currentTween.Completed:Wait()
-                
-                player.Character.HumanoidRootPart.Anchored = originalAnchored
             else
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
             end
         else
-            warn("Player not found or character invalid: " .. username)
+            warn("Player not found: " .. username)
         end
     end
 end)
