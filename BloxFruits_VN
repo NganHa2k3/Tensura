@@ -972,7 +972,7 @@ local ILocalPlayer = Im.LocalPlayer
 local function trackNearestEnemy()
     local nearestEnemy = nil
     local nearestDistance = math.huge
-    local maxDistance = 100
+    local maxDistance = 600
 
     for _, enemy in pairs(game.Workspace.Enemies:GetChildren()) do
         if enemy:IsA("Model") and enemy:FindFirstChild("HumanoidRootPart") then
@@ -986,7 +986,7 @@ local function trackNearestEnemy()
     end
 
     if nearestEnemy then
-        local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
+        local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(50, 50, 0)
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 
         if isTweenMode then
