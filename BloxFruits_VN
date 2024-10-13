@@ -589,13 +589,67 @@ EnemiesCFrameTo.MouseButton1Click:Connect(function()
     end
 end)
 
+local Ix = game:GetService("Players")
+local IoLocalPlayer = Ix.LocalPlayer
+
+local function HitBoxNearestEnemy()
+    local nearestEnemy = nil
+    local nearestDistance = math.huge
+    local maxDistance = 200
+
+    for _, enemy in pairs(game.Workspace.Enemies:GetChildren()) do
+        if enemy:IsA("Model") and enemy:FindFirstChild("HumanoidRootPart") then
+            local distance = (IoLocalPlayer.Character.HumanoidRootPart.Position - enemy.HumanoidRootPart.Position).magnitude
+            
+            if distance < nearestDistance and distance <= maxDistance then
+                nearestDistance = distance
+                nearestEnemy = enemy
+            end
+        end
+    end
+    
+    if nearestEnemy then
+        nearestEnemy.HumanoidRootPart.Size = Vector3.new(20, 20, 20)
+        nearestEnemy.HumanoidRootPart.CanCollide = false
+    end
+end
+
+local EnemiesHitBoxChanged = Instance.new("TextButton")
+EnemiesHitBoxChanged.Parent = ScrollingFrame
+EnemiesHitBoxChanged.BackgroundColor3 = Color3.new(0, 0, 0)
+EnemiesHitBoxChanged.BackgroundTransparency = 0.5
+EnemiesHitBoxChanged.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+EnemiesHitBoxChanged.TextScaled = true
+EnemiesHitBoxChanged.Position = UDim2.new(0.685, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+EnemiesHitBoxChanged.TextColor3 = Color3.fromRGB(255, 255, 255)
+EnemiesHitBoxChanged.Font = Enum.Font.PatrickHand
+EnemiesHitBoxChanged.Text = "Tầm đánh rộng (Gần nhất)"
+
+local EnemiesHBox = false
+EnemiesHitBoxChanged.MouseButton1Click:Connect(function()
+    if EnemiesHBox then
+        EnemiesHitBoxChanged.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        EnemiesHBox = false
+    else
+        EnemiesHitBoxChanged.TextColor3 = Color3.fromRGB(255, 255, 0)
+        
+        EnemiesHBox = true
+        
+        while EnemiesHBox do
+            HitBoxNearestEnemy()
+            wait(0.01)
+        end
+    end
+end)
+
 local SwitchedTeams = Instance.new("TextButton")
 SwitchedTeams.Parent = ScrollingFrame
 SwitchedTeams.BackgroundColor3 = Color3.new(0, 0, 0)
 SwitchedTeams.BackgroundTransparency = 0.5
 SwitchedTeams.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
 SwitchedTeams.TextScaled = true
-SwitchedTeams.Position = UDim2.new(0.685, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+SwitchedTeams.Position = UDim2.new(0.725, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 SwitchedTeams.TextColor3 = Color3.fromRGB(0, 255, 255)
 SwitchedTeams.Font = Enum.Font.PatrickHand
 SwitchedTeams.Text = "Hải Quân"
