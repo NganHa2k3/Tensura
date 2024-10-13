@@ -982,7 +982,7 @@ local function trackNearestEnemy()
     end
 
     if nearestEnemy then
-        local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 10, 0)
+        local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
 
         if isTweenMode then
             if currentTween then
