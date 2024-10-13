@@ -964,16 +964,10 @@ local function CollectFruitandChest()
     end
 end
 
--- CFrame Mobs TP --
+-- CFrame Mob TP --
 
 local Im = game:GetService("Players")
 local ILocalPlayer = Im.LocalPlayer
-local tweenService = game:GetService("TweenService")
-local currentTween = nil
-
-local function createTweenInfo(startPos, endPos)
-    return TweenInfo.new((startPos - endPos).magnitude / 50, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
-end
 
 local function trackNearestEnemy()
     local nearestEnemy = nil
@@ -992,14 +986,14 @@ local function trackNearestEnemy()
     end
 
     if nearestEnemy then
-        local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 10, 0)
+        local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
 
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
             local goal = {CFrame = CFrame.new(targetPosition)}
-            local tweenInfo = createTweenInfo(ILocalPlayer.Character.HumanoidRootPart.Position, goal.CFrame.Position)
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(ILocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
         else
@@ -1017,7 +1011,7 @@ EnemiesCFrameTo.TextScaled = true
 EnemiesCFrameTo.Position = UDim2.new(0.645, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 255)
 EnemiesCFrameTo.Font = Enum.Font.PatrickHand
-EnemiesCFrameTo.Text = "Bay tới quái (Gần nhất)"
+EnemiesCFrameTo.Text = "Bay tới Quái (Con Gần Nhất)"
 
 local EnemiesCF = false
 EnemiesCFrameTo.MouseButton1Click:Connect(function()
