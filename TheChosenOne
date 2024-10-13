@@ -1427,6 +1427,52 @@ GARK0.MouseButton1Click:Connect(function()
     end
 end)
 
+local FlyingSettings = Instance.new("TextButton")
+FlyingSettings.Parent = ScrollingFrame
+FlyingSettings.BackgroundColor3 = Color3.new(0, 0, 0)
+FlyingSettings.BackgroundTransparency = 0.5
+FlyingSettings.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+FlyingSettings.TextScaled = true
+FlyingSettings.Position = UDim2.new(0.605, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+FlyingSettings.TextColor3 = Color3.fromRGB(255, 255, 255)
+FlyingSettings.Font = Enum.Font.PatrickHand
+FlyingSettings.Text = "FLY: DISABLE"
+
+local FlyingAt = false
+FlyingSettings.MouseButton1Click:Connect(function()
+    if FlyingAt then
+        FlyingSettings.TextColor3 = Color3.fromRGB(255, 255, 255)
+        FlyingSettings.Text = "FLY: DISABLE"
+        
+        FlyingAt = false
+        
+        game:GetService("Players").LocalPlayer:SetAttribute("Flying", false)
+        
+        local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Settings Changed Successfully",
+    Text = "Flying: Disable",
+    Duration = 2,
+})
+    else
+        FlyingSettings.TextColor3 = Color3.fromRGB(0, 255, 255)
+        FlyingSettings.Text = "FLY: ENABLE"
+        
+        FlyingAt = true
+        
+        game:GetService("Players").LocalPlayer:SetAttribute("Flying", true)
+        
+        local CoreGui = game:GetService("StarterGui")
+
+CoreGui:SetCore("SendNotification", {
+    Title = "Settings Changed Successfully",
+    Text = "Flying: Enable",
+    Duration = 2,
+})
+    end
+end)
+
 -- WC message --
 
 local CoreGui = game:GetService("StarterGui")
