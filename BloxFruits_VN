@@ -434,6 +434,18 @@ end)
 local function LoopsTPP()
     local username = button4.Text
     local player = game:GetService("Players"):FindFirstChild(username)
+    local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+    local bodyVelocity = Instance.new("BodyVelocity")
+    
+    local function createBodyVelocity()
+        bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+        bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+        bodyVelocity.Parent = humanoidRootPart
+    end
+    
+    local function removeBodyVelocity()
+        bodyVelocity:Destroy()
+    end
     
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
@@ -443,10 +455,16 @@ local function LoopsTPP()
                 currentTween:Cancel()
             end
             
+            createBodyVelocity()
+            
             local goal = {CFrame = CFrame.new(targetPosition)}
             local tweenInfo = createTweenInfo(playerPos, targetPosition)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
         end
@@ -467,32 +485,15 @@ LoopsPlayers.Font = Enum.Font.PatrickHand
 LoopsPlayers.Text = "Liên tục dịch chuyển"
 
 local LPlayers = false
-local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
-local bodyVelocity = Instance.new("BodyVelocity")
-        
-local function createBodyVelocity()
-    bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
-    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-    bodyVelocity.Parent = humanoidRootPart
-end
-        
-local function removeBodyVelocity()
-    bodyVelocity:Destroy()
-end
-
 LoopsPlayers.MouseButton1Click:Connect(function()
     if LPlayers then
         LoopsPlayers.TextColor3 = Color3.fromRGB(255, 255, 255)
         
         LPlayers = false
-
-        removeBodyVelocity()
     else
         LoopsPlayers.TextColor3 = Color3.fromRGB(0, 255, 0)
         
         LPlayers = true
-
-        createBodyVelocity()
         
         while LPlayers do
             LoopsTPP()
@@ -1197,24 +1198,43 @@ local function trackNearestEnemy()
 
     if nearestEnemy and nearestEnemy:FindFirstChild("Humanoid") then
         local humanoid = nearestEnemy.Humanoid
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if humanoid.Health > 0 then
-                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
+                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(30, 0, 30)
                 local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                 if currentTween then
                     currentTween:Cancel()
                 end
                 
+                createBodyVelocity()
+                
                 local goal = {CFrame = CFrame.new(targetPosition)}
                 local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
                 currentTween = tweenService:Create(ILocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
                 currentTween:Play()
+                
+                currentTween.Completed:Connect(function()
+                    removeBodyVelocity()
+                end)
             else
                 nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
             end
         else
             if humanoid.Health > 0 then
-                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
+                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(30, 10, 30)
                 ILocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
             else
                 nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
@@ -1235,32 +1255,15 @@ EnemiesCFrameTo.Font = Enum.Font.PatrickHand
 EnemiesCFrameTo.Text = "Bay tới Quái (Con Gần Nhất)"
 
 local EnemiesCF = false
-local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
-local bodyVelocity = Instance.new("BodyVelocity")
-        
-local function createBodyVelocity()
-    bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
-    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-    bodyVelocity.Parent = humanoidRootPart
-end
-        
-local function removeBodyVelocity()
-    bodyVelocity:Destroy()
-end
-
 EnemiesCFrameTo.MouseButton1Click:Connect(function()
     if EnemiesCF then
         EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 255)
         
         EnemiesCF = false
-
-        removeBodyVelocity()
     else
         EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 0)
         
         EnemiesCF = true
-
-        createBodyVelocity()
         
         while EnemiesCF do
             trackNearestEnemy()
@@ -1518,32 +1521,16 @@ AChestF.Font = Enum.Font.PatrickHand
 AChestF.Text = "Nhặt hết tất cả rương (Xui là bị kick)"
 
 local AChest = false
-local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
-local bodyVelocity = Instance.new("BodyVelocity")
-        
-local function createBodyVelocity()
-    bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
-    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
-    bodyVelocity.Parent = humanoidRootPart
-end
-        
-local function removeBodyVelocity()
-    bodyVelocity:Destroy()
-end
 
 AChestF.MouseButton1Click:Connect(function()
     if AChest then
         AChestF.TextColor3 = Color3.new(1, 1, 1)
         
         AChest = false
-
-        removeBodyVelocity()
     else
         AChestF.TextColor3 = Color3.new(0, 1, 0)
         
         AChest = true
-
-        createBodyVelocity()
         
         while AChest do
             CollectChest()
