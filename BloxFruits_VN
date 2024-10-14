@@ -2015,19 +2015,19 @@ end)
 local function BetaTesting()
     local username = button4.Text
     local player = game:GetService("Players"):FindFirstChild(username)
-    
+
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-        
+
         -- If tweening mode is enabled
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
-            
-            -- Calculate the target CFrame keeping the character upright (ignoring the Y rotation)
-            local targetCFrame = CFrame.new(targetPosition, player.Character.HumanoidRootPart.Position + player.Character.HumanoidRootPart.Velocity)
+
+            -- Calculate the target position but keep Y position the same as player's current Y to avoid falling
+            local targetCFrame = CFrame.new(targetPosition.X, playerPos.Y, targetPosition.Z)  -- Preserve Y position
             
             -- Create tween information (duration, easing style, etc.)
             local tweenInfo = TweenInfo.new(
