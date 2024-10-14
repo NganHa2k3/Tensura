@@ -1213,7 +1213,7 @@ local function trackNearestEnemy()
         
         if isTweenMode then
             if humanoid.Health > 0 then
-                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(30, 0, 30)
+                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
                 local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                 if currentTween then
                     currentTween:Cancel()
@@ -1234,7 +1234,7 @@ local function trackNearestEnemy()
             end
         else
             if humanoid.Health > 0 then
-                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(30, 10, 30)
+                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
                 ILocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
             else
                 nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
@@ -2401,24 +2401,27 @@ LockBody.Text = "Khóa cơ thể: Tắt"
 LockBody.TextColor3 = Color3.new(1, 1, 1)
 
 local IsBodyCute = false
+local IsPXL = false
 
 LockBody.MouseButton1Click:Connect(function()
     if IsBodyCute then
         LockBody.Text = "Khóa cơ thể: Tắt"
         LockBody.TextColor3 = Color3.new(1, 1, 1)
-        removeBodyVelocity()
         
         IsBodyCute = false
-        
-        EntFrame.Visible = false
+        IsPXL = false
     else
         LockBody.Text = "Khóa cơ thể: Bật"
         LockBody.TextColor3 = Color3.new(0, 1, 0)
-        createBodyVelocity()
         
         IsBodyCute = true
-        
-        EntFrame.Visible = true
+        IsPXL = true
+
+        if IsPXL then
+            createBodyVelocity()
+        else
+            removeBodyVelocity()
+        end
     end
 end)
 
