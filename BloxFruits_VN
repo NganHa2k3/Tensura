@@ -1091,22 +1091,47 @@ SilverChest.Text = "Lấy Rương Bạc"
 
 SilverChest.MouseButton1Click:Connect(function()
     local chest = game:GetService("Workspace"):FindFirstChild("Chest1")
-    if chest then
-        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-        if isTweenMode then
-            if currentTween then
-                currentTween:Cancel()
-            end
-            local goal = {CFrame = chest.CFrame + Vector3.new(0, 2, 0)}
-            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
-            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
-            currentTween:Play()
-        else
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 2, 0)
-        end
-    else
-        warn("Chest not found: Chest1")
+if chest then
+    local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+    local bodyVelocity = Instance.new("BodyVelocity")
+
+    -- Function to create BodyVelocity
+    local function createBodyVelocity()
+        bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)  -- Adjust as needed to keep the character suspended
+        bodyVelocity.Velocity = Vector3.new(0, 0, 0)  -- No movement, just preventing gravity
+        bodyVelocity.Parent = humanoidRootPart
     end
+
+    -- Function to remove BodyVelocity
+    local function removeBodyVelocity()
+        bodyVelocity:Destroy()
+    end
+
+    if isTweenMode then
+        if currentTween then
+            currentTween:Cancel()
+        end
+
+        -- Add BodyVelocity to prevent falling
+        createBodyVelocity()
+
+        local goal = {CFrame = chest.CFrame + Vector3.new(0, 2, 0)}
+        local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+        currentTween = tweenService:Create(humanoidRootPart, tweenInfo, goal)
+        currentTween:Play()
+
+        -- Remove BodyVelocity after the tween finishes
+        currentTween.Completed:Connect(function()
+            removeBodyVelocity()
+        end)
+
+    else
+        humanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 2, 0)
+    end
+else
+    warn("Chest not found: Chest1")
+end
 end)
 
 local GoldenChest = Instance.new("TextButton")
@@ -1958,8 +1983,6 @@ local args = {
 }
 
 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-
-wait(0.1)
 end
 
 local function TPent0()
@@ -1994,11 +2017,12 @@ EntityNumber0.MouseButton1Click:Connect(function()
         ent0 = false
     else
         EntityNumber0.TextColor3 = Color3.new(0, 1, 0)
+
+        ent0 = true
+        
         GetQuestJungle3()
 
         task.wait(0.5)
-        
-        ent0 = true
         
         while ent0 do
             TPent0()
