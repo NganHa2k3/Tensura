@@ -434,6 +434,19 @@ end)
 local function LoopsTPP()
     local username = button4.Text
     local player = game:GetService("Players"):FindFirstChild(username)
+    local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+    local bodyVelocity = Instance.new("BodyVelocity")
+    
+    local function createBodyVelocity()
+        bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+        bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+        bodyVelocity.Parent = humanoidRootPart
+    end
+    
+    local function removeBodyVelocity()
+        bodyVelocity:Destroy()
+    end
+    
     if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
         local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
@@ -441,11 +454,17 @@ local function LoopsTPP()
             if currentTween then
                 currentTween:Cancel()
             end
-
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = CFrame.new(targetPosition)}
             local tweenInfo = createTweenInfo(playerPos, targetPosition)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
         end
@@ -777,6 +796,19 @@ button4.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local username = button4.Text
         local player = game:GetService("Players"):FindFirstChild(username)
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
             local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
             local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
@@ -784,11 +816,17 @@ button4.FocusLost:Connect(function(enterPressed)
                 if currentTween then
                     currentTween:Cancel()
                 end
-
+                
+                createBodyVelocity()
+                
                 local goal = {CFrame = CFrame.new(targetPosition)}
                 local tweenInfo = createTweenInfo(playerPos, targetPosition)
                 currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
                 currentTween:Play()
+                
+                currentTween.Completed:Connect(function()
+                    removeBodyVelocity()
+                end)
             else
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
             end
@@ -849,14 +887,34 @@ local function IfNotFoundGChest()
 local chest = game:GetService("Workspace"):FindFirstChild("Chest1")
     if chest then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = chest.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 2, 0)
         end
@@ -874,14 +932,34 @@ local function IfNotFoundDChest()
 local chestg = game:GetService("Workspace"):FindFirstChild("Chest2")
     if chestg then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = chestg.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestg.CFrame + Vector3.new(0, 2, 0)
         end
@@ -894,14 +972,34 @@ local function CollectChest()
 local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
     if chestd then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = chestd.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestd.CFrame + Vector3.new(0, 2, 0)
         end
@@ -914,14 +1012,34 @@ local function FindingSilverChest()
 local SearchingSilverChest = game:GetService("Workspace"):FindFirstChild("Chest1")
     if SearchingSilverChest then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = SearchingSilverChest.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SearchingSilverChest.CFrame + Vector3.new(0, 2, 0)
         end
@@ -939,14 +1057,34 @@ local function FindingGoldenChest()
 local SearchingGoldenChest = game:GetService("Workspace"):FindFirstChild("Chest2")
     if SearchingGoldenChest then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = SearchingGoldenChest.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SearchingGoldenChest.CFrame + Vector3.new(0, 2, 0)
         end
@@ -959,14 +1097,34 @@ local function FindingDiamondChest()
 local SearchingDiamondChest = game:GetService("Workspace"):FindFirstChild("Chest3")
     if SearchingDiamondChest then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = SearchingDiamondChest.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SearchingDiamondChest.CFrame + Vector3.new(0, 2, 0)
         end
@@ -981,15 +1139,34 @@ local function CollectFruitandChest()
     if fruit and fruit:FindFirstChild("Handle") then
         local SearchingFruit = fruit.Handle
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
         
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = SearchingFruit.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = SearchingFruit.CFrame + Vector3.new(0, 2, 0)
         end
@@ -1021,6 +1198,18 @@ local function trackNearestEnemy()
 
     if nearestEnemy and nearestEnemy:FindFirstChild("Humanoid") then
         local humanoid = nearestEnemy.Humanoid
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
         
         if isTweenMode then
             if humanoid.Health > 0 then
@@ -1029,10 +1218,17 @@ local function trackNearestEnemy()
                 if currentTween then
                     currentTween:Cancel()
                 end
+                
+                createBodyVelocity()
+                
                 local goal = {CFrame = CFrame.new(targetPosition)}
                 local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
                 currentTween = tweenService:Create(ILocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
                 currentTween:Play()
+                
+                currentTween.Completed:Connect(function()
+                    removeBodyVelocity()
+                end)
             else
                 nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
             end
@@ -1096,14 +1292,12 @@ if chest then
     local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
     local bodyVelocity = Instance.new("BodyVelocity")
 
-    -- Function to create BodyVelocity
     local function createBodyVelocity()
         bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)  -- Adjust as needed to keep the character suspended
         bodyVelocity.Velocity = Vector3.new(0, 0, 0)  -- No movement, just preventing gravity
         bodyVelocity.Parent = humanoidRootPart
     end
 
-    -- Function to remove BodyVelocity
     local function removeBodyVelocity()
         bodyVelocity:Destroy()
     end
@@ -1113,7 +1307,6 @@ if chest then
             currentTween:Cancel()
         end
 
-        -- Add BodyVelocity to prevent falling
         createBodyVelocity()
 
         local goal = {CFrame = chest.CFrame + Vector3.new(0, 2, 0)}
@@ -1121,7 +1314,6 @@ if chest then
         currentTween = tweenService:Create(humanoidRootPart, tweenInfo, goal)
         currentTween:Play()
 
-        -- Remove BodyVelocity after the tween finishes
         currentTween.Completed:Connect(function()
             removeBodyVelocity()
         end)
@@ -1149,14 +1341,34 @@ GoldenChest.MouseButton1Click:Connect(function()
     local chestg = game:GetService("Workspace"):FindFirstChild("Chest2")
     if chestg then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = chestg.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestg.CFrame + Vector3.new(0, 2, 0)
         end
@@ -1180,14 +1392,34 @@ DiamondChest.MouseButton1Click:Connect(function()
     local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
     if chestd then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = chestd.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestd.CFrame + Vector3.new(0, 2, 0)
         end
@@ -1211,14 +1443,34 @@ Boat.MouseButton1Click:Connect(function()
     local fruitx = game:GetService("Workspace")["Fruit "].Handle
     if fruitx then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = fruitx.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitx.CFrame + Vector3.new(0, 2, 0)
         end
@@ -1350,14 +1602,34 @@ CheckF.MouseButton1Click:Connect(function()
     local fruitcheckx = game:GetService("Workspace")["Fruit "].Handle
     if fruitcheckx then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = fruitcheckx.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitcheckx.CFrame + Vector3.new(0, 2, 0)
         end
@@ -1962,9 +2234,24 @@ EntNum0UI.CornerRadius = UDim.new(0.1, 0)
 -- Entity Button Action --
 
 local function GetQuestJungle3()
+local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+local bodyVelocity = Instance.new("BodyVelocity")
+
+local function createBodyVelocity()
+    bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.Parent = humanoidRootPart
+end
+
+local function removeBodyVelocity()
+    bodyVelocity:Destroy()
+end
+
 if currentTween then
     currentTween:Cancel()
 end
+
+createBodyVelocity()
 
 local goalPosition = Vector3.new(-1099, 30, -463)
 local goal = {CFrame = CFrame.new(goalPosition)}
@@ -1972,6 +2259,10 @@ local tweenInfo = createTweenInfo(playerPos, goalPosition)
 currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
 
 currentTween:Play()
+currentTween.Completed:Connect(function()
+    removeBodyVelocity()
+end)
+
 currentTween.Completed:Wait()
 
 task.wait(0.5)
@@ -1989,14 +2280,34 @@ local function TPent0()
     local EntGorillaKing = game.Workspace.Enemies["The Gorilla King"].HumanoidRootPart
     if EntGorillaKing then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+        local bodyVelocity = Instance.new("BodyVelocity")
+        
+        local function createBodyVelocity()
+            bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+            bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+            bodyVelocity.Parent = humanoidRootPart
+        end
+        
+        local function removeBodyVelocity()
+            bodyVelocity:Destroy()
+        end
+        
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
+            
+            createBodyVelocity()
+            
             local goal = {CFrame = EntGorillaKing.CFrame + Vector3.new(30, 0, 30)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                removeBodyVelocity()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = EntGorillaKing.CFrame + Vector3.new(30, 0, 30)
         end
