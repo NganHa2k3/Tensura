@@ -2012,6 +2012,45 @@ EnemyHRPSelection.MouseButton1Click:Connect(function()
     end
 end)
 
+local function BetaTesting()
+    local username = button4.Text
+    local player = game:GetService("Players"):FindFirstChild(username)
+    
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        
+        -- If tweening mode is enabled
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            
+            -- Calculate the target CFrame keeping the character upright (ignoring the Y rotation)
+            local targetCFrame = CFrame.new(targetPosition, player.Character.HumanoidRootPart.Position + player.Character.HumanoidRootPart.Velocity)
+            
+            -- Create tween information (duration, easing style, etc.)
+            local tweenInfo = TweenInfo.new(
+                (playerPos - targetPosition).Magnitude / tweenSpeed,  -- Duration based on distance and speed
+                Enum.EasingStyle.Linear,  -- Smooth movement
+                Enum.EasingDirection.Out
+            )
+            
+            -- Create tween goal: the new CFrame to move the character to the target position
+            local goal = {CFrame = targetCFrame}
+            
+            -- Create and play the tween
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            -- Directly set the CFrame if no tweening mode
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    else
+        warn("Player not found: " .. username)
+    end
+end
+
 local BetaTest = Instance.new("TextButton")
 BetaTest.Parent = ScrollingFrame
 BetaTest.Size = UDim2.new(0.03, 0, 0.9, 0)
@@ -2023,38 +2062,21 @@ BetaTest.Font = Enum.Font.PatrickHand
 BetaTest.Text = "[Thử nghiệm Beta]"
 BetaTest.TextColor3 = Color3.new(1, 1, 1)
 
-local PlHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
 local isBeta = false
-local Holder = nil  -- Initialize Holder to nil
 
 BetaTest.MouseButton1Click:Connect(function()
     if not isBeta then
         BetaTest.TextColor3 = Color3.new(1, 1, 1)
         
-        isBeta = true
-        
-        Holder = Instance.new("Part")
-        Holder.Parent = Workspace
-        Holder.Size = Vector3.new(5, 1, 5)
-        Holder.Name = "HoldingPl"
-        Holder.Anchored = true
-        Holder.Color = Color3.new(1, 1, 1)
-        
-        -- Update Holder's position
-        game:GetService("RunService").Heartbeat:Connect(function()
-            if Holder and isBeta then
-                Holder.Position = PlHRP.Position
-            end
-        end)
-
+        isBeta = false
     else
         BetaTest.TextColor3 = Color3.new(0, 1, 0)
         
-        isBeta = false
+        isBeta = true
         
-        if Holder then
-            Holder:Destroy()
-            Holder = nil
+        while isBeta do
+            BetaTesting()
+            wait(0.001)
         end
     end
 end)
