@@ -2012,6 +2012,53 @@ EnemyHRPSelection.MouseButton1Click:Connect(function()
     end
 end)
 
+local BetaTest = Instance.new("TextButton")
+BetaTest.Parent = ScrollingFrame
+BetaTest.Size = UDim2.new(0.03, 0, 0.9, 0)
+BetaTest.Position = UDim2.new(0.845, 0, 0, 0)
+BetaTest.BackgroundColor3 = Color3.new(0, 0, 0)
+BetaTest.BackgroundTransparency = 0.5
+BetaTest.TextScaled = true
+BetaTest.Font = Enum.Font.PatrickHand
+BetaTest.Text = "[Thử nghiệm Beta]"
+BetaTest.TextColor3 = Color3.new(1, 1, 1)
+
+local PlHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
+local isBeta = false
+local Holder = nil  -- Initialize Holder to nil
+
+BetaTest.MouseButton1Click:Connect(function()
+    if not isBeta then
+        BetaTest.TextColor3 = Color3.new(1, 1, 1)
+        
+        isBeta = true
+        
+        Holder = Instance.new("Part")
+        Holder.Parent = Workspace
+        Holder.Size = Vector3.new(5, 1, 5)
+        Holder.Name = "HoldingPl"
+        Holder.Anchored = true
+        Holder.Color = Color3.new(1, 1, 1)
+        
+        -- Update Holder's position
+        game:GetService("RunService").Heartbeat:Connect(function()
+            if Holder and isBeta then
+                Holder.Position = PlHRP.Position
+            end
+        end)
+
+    else
+        BetaTest.TextColor3 = Color3.new(0, 1, 0)
+        
+        isBeta = false
+        
+        if Holder then
+            Holder:Destroy()
+            Holder = nil
+        end
+    end
+end)
+
 -- Welcome message --
 
 local CoreGui = game:GetService("StarterGui")
