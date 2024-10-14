@@ -2376,6 +2376,52 @@ EnemyHRPSelection.MouseButton1Click:Connect(function()
     end
 end)
 
+local humanoidRootPart = game.Players.LocalPlayer.Character.HumanoidRootPart
+local bodyVelocity = Instance.new("BodyVelocity")
+
+local function createBodyVelocity()
+    bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+    bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+    bodyVelocity.Parent = humanoidRootPart
+end
+
+local function removeBodyVelocity()
+    bodyVelocity:Destroy()
+end
+
+local LockBody = Instance.new("TextButton")
+LockBody.Parent = ScrollingFrame
+LockBody.Size = UDim2.new(0.03, 0, 0.9, 0)
+LockBody.Position = UDim2.new(0.845, 0, 0, 0)
+LockBody.BackgroundColor3 = Color3.new(0, 0, 0)
+LockBody.BackgroundTransparency = 0.5
+LockBody.TextScaled = true
+LockBody.Font = Enum.Font.PatrickHand
+LockBody.Text = "Khóa cơ thể: Tắt"
+LockBody.TextColor3 = Color3.new(1, 1, 1)
+
+local IsBodyCute = false
+
+LockBody.MouseButton1Click:Connect(function()
+    if IsBodyCute then
+        LockBody.Text = "Khóa cơ thể: Tắt"
+        LockBody.TextColor3 = Color3.new(1, 1, 1)
+        removeBodyVelocity()
+        
+        IsBodyCute = false
+        
+        EntFrame.Visible = false
+    else
+        LockBody.Text = "Khóa cơ thể: Bật"
+        LockBody.TextColor3 = Color3.new(0, 1, 0)
+        createBodyVelocity()
+        
+        IsBodyCute = true
+        
+        EntFrame.Visible = true
+    end
+end)
+
 -- Welcome message --
 
 local CoreGui = game:GetService("StarterGui")
