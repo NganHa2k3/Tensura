@@ -1024,7 +1024,7 @@ local function trackNearestEnemy()
         
         if isTweenMode then
             if humanoid.Health > 0 then
-                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(30, 0, 30)
+                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 50, 0)
                 local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                 if currentTween then
                     currentTween:Cancel()
@@ -1062,10 +1062,12 @@ local EnemiesCF = false
 EnemiesCFrameTo.MouseButton1Click:Connect(function()
     if EnemiesCF then
         EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 255)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
         
         EnemiesCF = false
     else
         EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 0)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
         
         EnemiesCF = true
         
@@ -1198,7 +1200,7 @@ Boat.MouseButton1Click:Connect(function()
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitx.CFrame + Vector3.new(0, 2, 0)
         end
     else
-        warn("Chest not found: Fruit")
+        warn("Part not found: Fruit")
     end
 end)
 
@@ -1218,10 +1220,12 @@ local DChest = false
 DChestF.MouseButton1Click:Connect(function()
     if DChest then
         DChestF.TextColor3 = Color3.new(1, 1, 1)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
         
         DChest = false
     else
         DChestF.TextColor3 = Color3.new(1, 1, 0)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
         
         DChest = true
         
@@ -1248,10 +1252,12 @@ local AChest = false
 AChestF.MouseButton1Click:Connect(function()
     if AChest then
         AChestF.TextColor3 = Color3.new(1, 1, 1)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
         
         AChest = false
     else
         AChestF.TextColor3 = Color3.new(0, 1, 0)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
         
         AChest = true
         
@@ -2009,64 +2015,6 @@ EnemyHRPSelection.MouseButton1Click:Connect(function()
         IsEnemyHRPS = true
         
         EntFrame.Visible = true
-    end
-end)
-
-local function BetaTesting()
-    local username = button4.Text
-    local player = game:GetService("Players"):FindFirstChild(username)
-    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-        local targetPosition = player.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
-        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-        if isTweenMode then
-            if currentTween then
-                currentTween:Cancel()
-            end
-
-            local goal = {CFrame = CFrame.new(targetPosition)}
-            local tweenInfo = createTweenInfo(playerPos, targetPosition)
-            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
-            currentTween:Play()
-        else
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
-        end
-    else
-        warn("Player not found: " .. username)
-    end
-end
-
-local BetaTest = Instance.new("TextButton")
-BetaTest.Parent = ScrollingFrame
-BetaTest.Size = UDim2.new(0.03, 0, 0.9, 0)
-BetaTest.Position = UDim2.new(0.845, 0, 0, 0)
-BetaTest.BackgroundColor3 = Color3.new(0, 0, 0)
-BetaTest.BackgroundTransparency = 0.5
-BetaTest.TextScaled = true
-BetaTest.Font = Enum.Font.PatrickHand
-BetaTest.Text = "[Thử nghiệm Beta]"
-BetaTest.TextColor3 = Color3.new(1, 1, 1)
-
-local isBeta = false
-local LPHRP = game.Players.LocalPlayer.Character.HumanoidRootPart
-
-BetaTest.MouseButton1Click:Connect(function()
-    if isBeta then
-        BetaTest.TextColor3 = Color3.new(1, 1, 1)
-        
-        isBeta = false
-
-        LPHRP.Anchored = false
-    else
-        BetaTest.TextColor3 = Color3.new(0, 1, 0)
-        
-        isBeta = true
-
-        LPHRP.Anchored = true
-        
-        while isBeta do
-            BetaTesting()
-            wait(0.001)
-        end
     end
 end)
 
