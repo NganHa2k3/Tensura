@@ -2065,7 +2065,7 @@ BetaTest.TextColor3 = Color3.new(1, 1, 1)
 local isBeta = false
 
 BetaTest.MouseButton1Click:Connect(function()
-    if not isBeta then
+    if isBeta then
         BetaTest.TextColor3 = Color3.new(1, 1, 1)
         
         isBeta = false
