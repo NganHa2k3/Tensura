@@ -1890,6 +1890,128 @@ Guardian.MouseButton1Click:Connect(function()
     isSelected = not isSelected
 end)
 
+-- BOSS SEA123 --
+
+local EntFrame = Instance.new("Frame")
+EntFrame.Parent = ScreenGui
+EntFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+EntFrame.BackgroundTransparency = 0.5
+EntFrame.Size = UDim2.new(0.4, 0, 0.6, 0)
+EntFrame.Position = UDim2.new(0.05, 0, 0.1, 0)
+EntFrame.Active = true
+EntFrame.Draggable = true
+EntFrame.Visible = false
+
+local EntFrameUICorner = Instance.new("UICorner")
+EntFrameUICorner.Parent = EntFrame
+EntFrameUICorner.CornerRadius = UDim.new(0.1, 0)
+
+local EntitySF = Instance.new("ScrollingFrame")
+EntitySF.Parent = EntFrame
+EntitySF.BackgroundColor3 = Color3.new(0, 0, 0)
+EntitySF.BackgroundTransparency = 0.5
+EntitySF.Size = UDim2.new(0.9, 0, 0.8, 0)
+EntitySF.Position = UDim2.new(0.05, 0, 0.1, 0)
+EntitySF.ScrollBarThickness = 0.1
+EntitySF.CanvasSize = UDim2.new(0, 0, 2, 0)
+
+-- Entity Button Holder --
+
+local EntityNumber0 = Instance.new("TextButton")
+EntityNumber0.Parent = EntitySF
+EntityNumber0.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+EntityNumber0.BackgroundTransparency = 0
+EntityNumber0.Size = UDim2.new(0.9, 0, 0.05, 0)
+EntityNumber0.Position = UDim2.new(0.05, 0, 0.02, 0)
+EntityNumber0.TextScaled = true
+EntityNumber0.TextColor3 = Color3.new(0, 1, 0)
+EntityNumber0.Font = Enum.Font.PatrickHand
+EntityNumber0.Text = "Đi tới Trùm Vua Khỉ Đột [Lvl.20]"
+
+local EntNum0UI = Instance.new("UICorner")
+EntNum0UI.Parent = EntityNumber0
+EntNum0UI.CornerRadius = UDim.new(0.1, 0)
+
+-- 1 --
+
+-- Entity Button Action --
+
+local function TPent0()
+    local EntGorillaKing = game.Workspace.Enemies["The Gorilla King"].HumanoidRootPart
+    if EntGorillaKing then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = EntGorillaKing.CFrame + Vector3.new(30, 0, 30)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = EntGorillaKing.CFrame + Vector3.new(30, 0, 30)
+        end
+    else
+        print("Not Found: Gorilla King [Lvl.20]")
+    end
+end
+
+-- Boss Gorilla King --
+
+-- Entity Button Connect To --
+
+local ent0 = false
+EntityNumber0.MouseButton1Click:Connect(function()
+    if ent0 then
+        EntityNumber0.TextColor3 = Color3.new(1, 0, 0)
+        
+        ent0 = false
+    else
+        EntityNumber0.TextColor3 = Color3.new(0, 1, 0)
+        
+        ent0 = true
+        
+        while ent0 do
+            TPent0()
+            wait(0.005)
+        end
+    end
+end)
+
+-- Closed Box --
+
+-- Hide Frame Button --
+
+local EnemyHRPSelection = Instance.new("TextButton")
+EnemyHRPSelection.Parent = ScrollingFrame
+EnemyHRPSelection.Size = UDim2.new(0.03, 0, 0.9, 0)
+EnemyHRPSelection.Position = UDim2.new(0.805, 0, 0, 0)
+EnemyHRPSelection.BackgroundColor3 = Color3.new(0, 0, 0)
+EnemyHRPSelection.BackgroundTransparency = 0.5
+EnemyHRPSelection.TextScaled = true
+EnemyHRPSelection.Font = Enum.Font.PatrickHand
+EnemyHRPSelection.Text = "Chọn Quái GUI: Tắt"
+EnemyHRPSelection.TextColor3 = Color3.new(1, 1, 1)
+
+local IsEnemyHRPS = false
+EnemyHRPSelection.MouseButton1Click:Connect(function()
+    if IsEnemyHRPS then
+        EnemyHRPSelection.Text = "Chọn Quái GUI: Tắt"
+        EnemyHRPSelection.TextColor3 = Color3.new(1, 1, 1)
+        
+        IsEnemyHRPS = false
+        
+        EntFrame.Visible = false
+    else
+        EnemyHRPSelection.Text = "Chọn Quái GUI: Bật"
+        EnemyHRPSelection.TextColor3 = Color3.new(0, 1, 0)
+        
+        IsEnemyHRPS = true
+        
+        EntFrame.Visible = true
+    end
+end)
+
 -- Welcome message --
 
 local CoreGui = game:GetService("StarterGui")
