@@ -1062,12 +1062,12 @@ local EnemiesCF = false
 EnemiesCFrameTo.MouseButton1Click:Connect(function()
     if EnemiesCF then
         EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 255)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+        game.Players.LocalPlayer.Character.Head.Anchored = false
         
         EnemiesCF = false
     else
         EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 0)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.Head.Anchored = true
         
         EnemiesCF = true
         
