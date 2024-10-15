@@ -2230,7 +2230,7 @@ TrueFruitDetector.MouseButton1Click:Connect(function()
         while FruitChestTrueSpawned do
             updateLabels()
             wait(1)
-        end)
+        end
     end
 end)
 
