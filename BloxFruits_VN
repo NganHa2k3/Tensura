@@ -1133,10 +1133,10 @@ if chest then
         end
         local goal = {CFrame = chest.CFrame + Vector3.new(0, 2, 0)}
         local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
-        currentTween = tweenService:Create(humanoidRootPart, tweenInfo, goal)
+        currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
         currentTween:Play()
     else
-        humanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 2, 0)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 2, 0)
     end
 else
     warn("Chest not found: Chest1")
