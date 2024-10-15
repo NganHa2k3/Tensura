@@ -1127,6 +1127,7 @@ SilverChest.MouseButton1Click:Connect(function()
     local chest = game:GetService("Workspace"):FindFirstChild("Chest1")
 if chest then
     local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    USEBV()
     if isTweenMode then
         if currentTween then
             currentTween:Cancel()
@@ -1135,8 +1136,13 @@ if chest then
         local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
         currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
         currentTween:Play()
+        
+        currentTween.Completed:Connect(function()
+            REBV()
+        end)
     else
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chest.CFrame + Vector3.new(0, 2, 0)
+        REBV()
     end
 else
     warn("Chest not found: Chest1")
@@ -1158,6 +1164,7 @@ GoldenChest.MouseButton1Click:Connect(function()
     local chestg = game:GetService("Workspace"):FindFirstChild("Chest2")
     if chestg then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        USEBV()
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
@@ -1166,8 +1173,13 @@ GoldenChest.MouseButton1Click:Connect(function()
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                REBV()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestg.CFrame + Vector3.new(0, 2, 0)
+            REBV()
         end
     else
         warn("Chest not found: Chest2")
@@ -1189,6 +1201,7 @@ DiamondChest.MouseButton1Click:Connect(function()
     local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
     if chestd then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        USEBV()
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
@@ -1197,8 +1210,13 @@ DiamondChest.MouseButton1Click:Connect(function()
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                REBV()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = chestd.CFrame + Vector3.new(0, 2, 0)
+            REBV()
         end
     else
         warn("Chest not found: Chest3")
@@ -1220,6 +1238,7 @@ Boat.MouseButton1Click:Connect(function()
     local fruitx = game:GetService("Workspace")["Fruit "].Handle
     if fruitx then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        USEBV()
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
@@ -1228,8 +1247,13 @@ Boat.MouseButton1Click:Connect(function()
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                REBV()
+            end)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitx.CFrame + Vector3.new(0, 2, 0)
+            REBV()
         end
     else
         warn("Chest not found: Fruit")
