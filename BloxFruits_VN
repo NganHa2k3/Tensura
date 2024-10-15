@@ -2040,6 +2040,112 @@ EnemyHRPSelection.MouseButton1Click:Connect(function()
     end
 end)
 
+-- Button Started From Here --
+local Itsme = game.Players
+local ImHere = Itsme.LocalPlayer
+local BHRP
+
+-- Action --
+
+local function getHumanoidRootPart()
+    local character = ImHere.Character
+    if character then
+        return character:FindFirstChild("HumanoidRootPart")
+    end
+    return nil
+end
+
+local function USEBV()
+    local PLHRP = getHumanoidRootPart()
+    if PLHRP then
+        BHRP = Instance.new("BodyVelocity")
+        BHRP.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+        BHRP.Velocity = Vector3.new(0, 0, 0)
+        BHRP.Parent = PLHRP
+    end
+end
+
+local function REBV()
+    if BHRP then
+        BHRP:Destroy()
+        BHRP = nil
+    end
+end
+
+-- Quickly Changed Zero Gravity --
+
+local ZeroGravity = Instance.new("TextButton")
+ZeroGravity.Parent = ScreenGui
+ZeroGravity.BackgroundColor3 = Color3.new(0, 0, 0)
+ZeroGravity.BackgroundTransparency = 0.5
+ZeroGravity.Size = UDim2.new(0.05, 0, 0.1, 0)
+ZeroGravity.TextScaled = true
+ZeroGravity.Position = UDim2.new(0.4, 0, 0.68, 0)
+ZeroGravity.TextColor3 = Color3.new(1, 1, 1)
+ZeroGravity.Font = Enum.Font.Code
+ZeroGravity.Text = "Bay Mượt[Tắt]"
+ZeroGravity.Visible = false
+
+local ZeroGravityUICorner = Instance.new("UICorner")
+ZeroGravityUICorner.Parent = ZeroGravity
+ZeroGravityUICorner.CornerRadius = UDim.new(0.1, 0)
+
+local AntiGravity = false
+ZeroGravity.MouseButton1Click:Connect(function()
+    if AntiGravity then
+        ZeroGravity.Text = "Bay Mượt[Tắt]"
+        ZeroGravity.TextColor3 = Color3.new(1, 1, 1)
+        REBV()
+        AntiGravity = false
+    else
+        ZeroGravity.Text = "Bay Mượt[Bật]"
+        ZeroGravity.TextColor3 = Color3.new(0, 1, 1)
+        USEBV()
+        AntiGravity = true
+    end
+end)
+
+-- True Zero Gravity Button Toggler --
+
+local TrueZeroGravity = Instance.new("TextButton")
+TrueZeroGravity.Parent = ScrollingFrame
+TrueZeroGravity.Size = UDim2.new(0.03, 0, 0.9, 0)
+TrueZeroGravity.Position = UDim2.new(0.845, 0, 0, 0)
+TrueZeroGravity.BackgroundColor3 = Color3.new(0, 0, 0)
+TrueZeroGravity.BackgroundTransparency = 0.5
+TrueZeroGravity.TextScaled = true
+TrueZeroGravity.Font = Enum.Font.PatrickHand
+TrueZeroGravity.Text = "Không trọng lực [Giấu]"
+TrueZeroGravity.TextColor3 = Color3.new(1, 1, 1)
+
+local AntiZGravity = false
+TrueZeroGravity.MouseButton1Click:Connect(function()
+    if AntiZGravity then
+        TrueZeroGravity.Text = "Không trọng lực [Giấu]"
+        TrueZeroGravity.TextColor3 = Color3.new(1, 1, 1)
+        
+        AntiZGravity = false
+        
+        ZeroGravity.Visible = false
+    else
+        TrueZeroGravity.Text = "Không trọng lực [Khoe ra]"
+        TrueZeroGravity.TextColor3 = Color3.new(0, 1, 0)
+        
+        AntiZGravity = true
+        
+        ZeroGravity.Visible = true
+    end
+end)
+
+-- When Character Reset --
+ImHere.CharacterAdded:Connect(function()
+    ZeroGravity.Text = "Bay Mượt[Tắt]"
+    ZeroGravity.TextColor3 = Color3.new(1, 1, 1)
+    AntiGravity = false
+    REBV()
+end)
+-- When Character Reset --
+
 -- Welcome message --
 
 local CoreGui = game:GetService("StarterGui")
