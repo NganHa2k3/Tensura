@@ -1473,6 +1473,62 @@ CoreGui:SetCore("SendNotification", {
     end
 end)
 
+local ArkenstoneCounter = Instance.new("TextLabel")
+ArkenstoneCounter.Parent = ScreenGui
+ArkenstoneCounter.BackgroundColor3 = Color3.new(0, 0, 0)
+ArkenstoneCounter.BackgroundTransparency = 0.8
+ArkenstoneCounter.Size = UDim2.new(0.1, 0, 0.05, 0)
+ArkenstoneCounter.Position = UDim2.new(0, 0, 0.01, 0)
+ArkenstoneCounter.TextScaled = true
+ArkenstoneCounter.Font = Enum.Font.Code
+ArkenstoneCounter.TextColor3 = Color3.new(1, 1, 1)
+ArkenstoneCounter.Text = ""
+ArkenstoneCounter.Visible = false
+
+local function countItems(itemName)
+    local itemCount = 0
+    local item = game:GetService("Workspace"):FindFirstChild(itemName)
+    if item and item:IsA("Model") and item:FindFirstChild("Handle") then
+        itemCount = itemCount + 1
+    end
+    return itemCount
+end
+
+local function UpdateArkenstoneCounter()
+    ArkenstoneCounter.Text = "Arkenstone Dropped: " .. countItems("The Arkenstone")
+end
+
+local ConfigArkenstone = Instance.new("TextButton")
+ConfigArkenstone.Parent = ScrollingFrame
+ConfigArkenstone.BackgroundColor3 = Color3.new(0, 0, 0)
+ConfigArkenstone.BackgroundTransparency = 0.5
+ConfigArkenstone.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+ConfigArkenstone.TextScaled = true
+ConfigArkenstone.Position = UDim2.new(0.645, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+ConfigArkenstone.TextColor3 = Color3.fromRGB(255, 255, 255)
+ConfigArkenstone.Font = Enum.Font.PatrickHand
+ConfigArkenstone.Text = "Check Arkenstone"
+
+local ConfigState = false
+ConfigArkenstone.MouseButton1Click:Connect(function()
+    if ConfigState then
+        ConfigArkenstone.TextColor3 = Color3.fromRGB(255, 255, 255)
+        ArkenstoneCounter.Visible = false
+        
+        ConfigState = false
+    else
+        ConfigArkenstone.TextColor3 = Color3.fromRGB(200, 190, 0)
+        ArkenstoneCounter.Visible = true
+        
+        ConfigState = true
+        
+        while ConfigState do
+            UpdateArkenstoneCounter()
+            wait(0.01)
+        end
+    end
+end)
+
 -- WC message --
 
 local CoreGui = game:GetService("StarterGui")
