@@ -2119,6 +2119,118 @@ ImHere.CharacterAdded:Connect(function()
 end)
 -- When Character Reset --
 
+-- Starting From Here --
+
+local CounterofChest1 = Instance.new("TextLabel")
+CounterofChest1.Parent = ScreenGui
+CounterofChest1.BackgroundColor3 = Color3.new(0, 0, 0)
+CounterofChest1.BackgroundTransparency = 0.8
+CounterofChest1.Size = UDim2.new(0.2, 0, 0.05, 0)
+CounterofChest1.Position = UDim2.new(0.21, 0, 0.01, 0)
+CounterofChest1.TextScaled = true
+CounterofChest1.Font = Enum.Font.Code
+CounterofChest1.TextColor3 = Color3.new(1, 1, 1)
+CounterofChest1.Text = ""
+CounterofChest1.Visible = true
+
+local CoC1 = Instance.new("UICorner")
+CoC1.Parent = CounterofChest1
+CoC1.CornerRadius = UDim.new(0.1, 0)
+
+-- 1 --
+
+local CounterofChest2 = Instance.new("TextLabel")
+CounterofChest2.Parent = ScreenGui
+CounterofChest2.BackgroundColor3 = Color3.new(0, 0, 0)
+CounterofChest2.BackgroundTransparency = 0.8
+CounterofChest2.Size = UDim2.new(0.2, 0, 0.05, 0)
+CounterofChest2.Position = UDim2.new(0, 0, 0.07, 0)
+CounterofChest2.TextScaled = true
+CounterofChest2.Font = Enum.Font.Code
+CounterofChest2.TextColor3 = Color3.new(1, 1, 1)
+CounterofChest2.Text = ""
+CounterofChest2.Visible = true
+
+local CoC2 = Instance.new("UICorner")
+CoC2.Parent = CounterofChest2
+CoC2.CornerRadius = UDim.new(0.1, 0)
+
+-- 2 --
+
+local CounterofChest3 = Instance.new("TextLabel")
+CounterofChest3.Parent = ScreenGui
+CounterofChest3.BackgroundColor3 = Color3.new(0, 0, 0)
+CounterofChest3.BackgroundTransparency = 0.8
+CounterofChest3.Size = UDim2.new(0.2, 0, 0.05, 0)
+CounterofChest3.Position = UDim2.new(0.21, 0, 0.07, 0)
+CounterofChest3.TextScaled = true
+CounterofChest3.Font = Enum.Font.Code
+CounterofChest3.TextColor3 = Color3.new(1, 1, 1)
+CounterofChest3.Text = ""
+CounterofChest3.Visible = true
+
+local CoC3 = Instance.new("UICorner")
+CoC3.Parent = CounterofChest3
+CoC3.CornerRadius = UDim.new(0.1, 0)
+
+-- 3 --
+
+local CounterofFruitSpawn = Instance.new("TextLabel")
+CounterofFruitSpawn.Parent = ScreenGui
+CounterofFruitSpawn.BackgroundColor3 = Color3.new(0, 0, 0)
+CounterofFruitSpawn.BackgroundTransparency = 0.8
+CounterofFruitSpawn.Size = UDim2.new(0.2, 0, 0.05, 0)
+CounterofFruitSpawn.Position = UDim2.new(0, 0, 0.01, 0)
+CounterofFruitSpawn.TextScaled = true
+CounterofFruitSpawn.Font = Enum.Font.Code
+CounterofFruitSpawn.TextColor3 = Color3.new(1, 1, 1)
+CounterofFruitSpawn.Text = ""
+CounterofFruitSpawn.Visible = true
+
+local CoFS = Instance.new("UICorner")
+CoFS.Parent = CounterofFruitSpawn
+CoFS.CornerRadius = UDim.new(0.1, 0)
+
+-- 4 --
+
+-- Action Count --
+
+local function countParts(partName)
+    local count = 0
+    for _, obj in pairs(game:GetService("Workspace"):GetChildren()) do
+        if obj.Name == partName and obj:IsA("BasePart") then
+            count = count + 1
+        end
+    end
+    return count
+end
+
+local function countItems(itemName)
+    local itemCount = 0
+    local item = game:GetService("Workspace"):FindFirstChild(itemName)
+    if item and item:IsA("Model") and item:FindFirstChild("Handle") then
+        itemCount = itemCount + 1
+    end
+    return itemCount
+end
+
+local function updateLabels()
+    CounterofChest1.Text = "Silver Chest: " .. countParts("Chest1")
+    CounterofChest2.Text = "Golden Chest: " .. countParts("Chest2")
+    CounterofChest3.Text = "Diamond Chest: " .. countParts("Chest3")
+    CounterofFruitSpawn.Text = "Fruit Spawned: " .. countItems("Fruit ")
+    -- More Down Here --
+end
+
+-- Always Updated Chest Fruit Counters --
+
+updateLabels()
+
+while true do
+    updateLabels()
+    wait(1)
+end
+
 -- Welcome message --
 
 local CoreGui = game:GetService("StarterGui")
