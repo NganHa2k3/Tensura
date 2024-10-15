@@ -2119,7 +2119,7 @@ ImHere.CharacterAdded:Connect(function()
 end)
 -- When Character Reset --
 
--- Starting From Here --
+-- Fruit/Chest Detector --
 
 local CounterofChest1 = Instance.new("TextLabel")
 CounterofChest1.Parent = ScreenGui
@@ -2131,13 +2131,7 @@ CounterofChest1.TextScaled = true
 CounterofChest1.Font = Enum.Font.Code
 CounterofChest1.TextColor3 = Color3.new(1, 1, 1)
 CounterofChest1.Text = ""
-CounterofChest1.Visible = true
-
-local CoC1 = Instance.new("UICorner")
-CoC1.Parent = CounterofChest1
-CoC1.CornerRadius = UDim.new(0.1, 0)
-
--- 1 --
+CounterofChest1.Visible = false
 
 local CounterofChest2 = Instance.new("TextLabel")
 CounterofChest2.Parent = ScreenGui
@@ -2149,13 +2143,7 @@ CounterofChest2.TextScaled = true
 CounterofChest2.Font = Enum.Font.Code
 CounterofChest2.TextColor3 = Color3.new(1, 1, 1)
 CounterofChest2.Text = ""
-CounterofChest2.Visible = true
-
-local CoC2 = Instance.new("UICorner")
-CoC2.Parent = CounterofChest2
-CoC2.CornerRadius = UDim.new(0.1, 0)
-
--- 2 --
+CounterofChest2.Visible = false
 
 local CounterofChest3 = Instance.new("TextLabel")
 CounterofChest3.Parent = ScreenGui
@@ -2167,13 +2155,7 @@ CounterofChest3.TextScaled = true
 CounterofChest3.Font = Enum.Font.Code
 CounterofChest3.TextColor3 = Color3.new(1, 1, 1)
 CounterofChest3.Text = ""
-CounterofChest3.Visible = true
-
-local CoC3 = Instance.new("UICorner")
-CoC3.Parent = CounterofChest3
-CoC3.CornerRadius = UDim.new(0.1, 0)
-
--- 3 --
+CounterofChest3.Visible = false
 
 local CounterofFruitSpawn = Instance.new("TextLabel")
 CounterofFruitSpawn.Parent = ScreenGui
@@ -2185,15 +2167,7 @@ CounterofFruitSpawn.TextScaled = true
 CounterofFruitSpawn.Font = Enum.Font.Code
 CounterofFruitSpawn.TextColor3 = Color3.new(1, 1, 1)
 CounterofFruitSpawn.Text = ""
-CounterofFruitSpawn.Visible = true
-
-local CoFS = Instance.new("UICorner")
-CoFS.Parent = CounterofFruitSpawn
-CoFS.CornerRadius = UDim.new(0.1, 0)
-
--- 4 --
-
--- Action Count --
+CounterofFruitSpawn.Visible = false
 
 local function countParts(partName)
     local count = 0
@@ -2215,21 +2189,50 @@ local function countItems(itemName)
 end
 
 local function updateLabels()
-    CounterofChest1.Text = "Silver Chest: " .. countParts("Chest1")
-    CounterofChest2.Text = "Golden Chest: " .. countParts("Chest2")
-    CounterofChest3.Text = "Diamond Chest: " .. countParts("Chest3")
-    CounterofFruitSpawn.Text = "Fruit Spawned: " .. countItems("Fruit ")
-    -- More Down Here --
+    CounterofChest1.Text = "Silver Chest Have: " .. countParts("Chest1")
+    CounterofChest2.Text = "Golden Chest Have: " .. countParts("Chest2")
+    CounterofChest3.Text = "Diamond Chest Have: " .. countParts("Chest3")
+    CounterofFruitSpawn.Text = "Fruit Spawned Have: " .. countItems("Fruit ")
 end
 
--- Always Updated Chest Fruit Counters --
+local TrueFruitDetector = Instance.new("TextButton")
+TrueFruitDetector.Parent = ScrollingFrame
+TrueFruitDetector.Size = UDim2.new(0.03, 0, 0.9, 0)
+TrueFruitDetector.Position = UDim2.new(0.885, 0, 0, 0)
+TrueFruitDetector.BackgroundColor3 = Color3.new(0, 0, 0)
+TrueFruitDetector.BackgroundTransparency = 0.5
+TrueFruitDetector.TextScaled = true
+TrueFruitDetector.Font = Enum.Font.PatrickHand
+TrueFruitDetector.Text = "View Fruit/Chest [Hide]"
+TrueFruitDetector.TextColor3 = Color3.new(1, 1, 1)
 
-updateLabels()
-
-while true do
-    updateLabels()
-    wait(1)
-end
+local FruitChestTrueSpawned = false
+TrueFruitDetector.MouseButton1Click:Connect(function()
+    if FruitChestTrueSpawned then
+        TrueFruitDetector.Text = "View Fruit/Chest [Hide]"
+        TrueFruitDetector.TextColor3 = Color3.new(1, 1, 1)
+        CounterofChest1.Visible = false
+        CounterofChest2.Visible = false
+        CounterofChest3.Visible = false
+        CounterofFruitSpawn.Visible = false
+        
+        FruitChestTrueSpawned = false
+    else
+        TrueFruitDetector.Text = "View Fruit/Chest [Show]"
+        TrueFruitDetector.TextColor3 = Color3.new(0, 1, 0)
+        CounterofChest1.Visible = true
+        CounterofChest2.Visible = true
+        CounterofChest3.Visible = true
+        CounterofFruitSpawn.Visible = true
+        
+        FruitChestTrueSpawned = true
+        
+        while FruitChestTrueSpawned do
+            updateLabels()
+            wait(1)
+        end)
+    end
+end)
 
 -- Welcome message --
 
