@@ -23,7 +23,10 @@ local gameScripts = {
     [3756501373] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript_1/main/MemeSea_Language",
 
     -- No Jump Obbies --
-    [5926583186] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript/item/NoJumpObby"
+    [5926583186] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript/item/NoJumpObby",
+
+    -- Hide And Seek Exetreme --
+    [205224386] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/HideAndSeek_Exetreme_English"
 }
 
 local function loadGameScript(gameId)
