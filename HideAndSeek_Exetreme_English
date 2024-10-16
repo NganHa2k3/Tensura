@@ -1,0 +1,507 @@
+-- Hide And Seek Exetreme Script --
+
+-- Variable --
+local HaSEGui = Instance.new("ScreenGui")
+HaSEGui.Parent = game.CoreGui
+local Players = game:GetService("Players")
+local playerCount = 0
+local playersAlive = {}
+local Workspace = game:GetService("Workspace")
+local player = Players.LocalPlayer
+local mouse = player:GetMouse()
+local character = player.Character or player.CharacterAdded:Wait()
+local currentBall = nil
+local scriptDisabled = true
+
+-- Frame --
+local MovingHaSEFrame = Instance.new("Frame")
+MovingHaSEFrame.Parent = HaSEGui
+MovingHaSEFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MovingHaSEFrame.BackgroundTransparency = 0
+MovingHaSEFrame.Size = UDim2.new(0.2, 0, 0.05, 0)
+MovingHaSEFrame.Position = UDim2.new(0.4, 0, 0.4, 0)
+MovingHaSEFrame.Active = true
+MovingHaSEFrame.Draggable = true
+MovingHaSEFrame.Visible = true
+
+-- Selection Size Frame --
+local SelectionHaSEFrame = Instance.new("Frame")
+SelectionHaSEFrame.Parent = MovingHaSEFrame
+SelectionHaSEFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+SelectionHaSEFrame.BackgroundTransparency = 0.5
+SelectionHaSEFrame.Size = UDim2.new(1, 0, 4.95, 0)
+SelectionHaSEFrame.Position = UDim2.new(0, 0, 1, 0)
+SelectionHaSEFrame.Active = true
+SelectionHaSEFrame.Visible = false
+
+-- TextLabel of Coin Counters --
+local ItsTextLabel4CoinCounters = Instance.new("TextLabel")
+ItsTextLabel4CoinCounters.Parent = SelectionHaSEFrame
+ItsTextLabel4CoinCounters.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ItsTextLabel4CoinCounters.BackgroundTransparency = 0
+ItsTextLabel4CoinCounters.Size = UDim2.new(0.1, 0, 0.2, 0)
+ItsTextLabel4CoinCounters.Position = UDim2.new(0.02, 0, 0.05, 0)
+ItsTextLabel4CoinCounters.TextScaled = true
+ItsTextLabel4CoinCounters.TextColor3 = Color3.fromRGB(255, 255, 255)
+ItsTextLabel4CoinCounters.Font = Enum.Font.Code
+ItsTextLabel4CoinCounters.Text = ""
+
+-- Coin Counters XFunction --
+local function countParts(partName)
+    local count = 0
+    for _, obj in pairs(game:GetService("Workspace").GameObjects:GetChildren()) do
+        if obj.Name == partName and obj:IsA("BasePart") then
+            count = count + 1
+        end
+    end
+    return count
+end
+
+-- Updated Text XFunction Coin Counters --
+local function totalCoinExisting()
+    ItsTextLabel4CoinCounters.Text = ":" .. countParts("Credit")
+end
+
+-- CFrame Coins to Players XFunction --
+local function bringCoins()
+    local gameObjects = game:GetService("Workspace").GameObjects
+
+    if gameObjects then
+        local creditCount = 0
+        
+        for _, credit in ipairs(gameObjects:GetChildren()) do
+            if credit.Name == "Credit" then
+                credit.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                creditCount = creditCount + 1
+            end
+        end
+        
+        if creditCount > 0 then
+            warn("Earned Coins: +" .. creditCount)
+        else
+            print("No Credits Found")
+        end
+    else
+        print("GameObjects not found")
+    end
+end
+
+-- Button On SelectionHaSEFrame --
+local Detecting_Coin = Instance.new("TextButton")
+Detecting_Coin.Parent = SelectionHaSEFrame
+Detecting_Coin.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Detecting_Coin.BackgroundTransparency = 0.8
+Detecting_Coin.Size = UDim2.new(0.6, 0, 0.2, 0)
+Detecting_Coin.Position = UDim2.new(0.16, 0, 0.05, 0)
+Detecting_Coin.TextScaled = true
+Detecting_Coin.TextColor3 = Color3.fromRGB(255, 255, 255)
+Detecting_Coin.Font = Enum.Font.Code
+Detecting_Coin.Text = "Check Map Coin Value[OFF]"
+
+local isDetecting = false
+Detecting_Coin.MouseButton1Click:Connect(function()
+    if isDetecting then
+        Detecting_Coin.Text = "Check Map Coin Value[OFF]"
+        Detecting_Coin.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        isDetecting = false
+    else
+        Detecting_Coin.Text = "Check Map Coin Value[ON]"
+        Detecting_Coin.TextColor3 = Color3.fromRGB(255, 255, 0)
+        
+        isDetecting = true
+        
+        while isDetecting do
+            totalCoinExisting()
+            wait(0.1)
+        end
+    end
+end)
+
+-- Bring Existing Coins --
+local GetCredits = Instance.new("TextButton")
+GetCredits.Parent = SelectionHaSEFrame
+GetCredits.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+GetCredits.BackgroundTransparency = 0.8
+GetCredits.Size = UDim2.new(0.1, 0, 0.2, 0)
+GetCredits.Position = UDim2.new(0.8, 0, 0.05, 0)
+GetCredits.TextScaled = true
+GetCredits.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetCredits.Font = Enum.Font.Code
+GetCredits.Text = "[OFF]"
+
+local onGetCredits = false
+GetCredits.MouseButton1Click:Connect(function()
+    if onGetCredits then
+        GetCredits.Text = "[OFF]"
+        GetCredits.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        onGetCredits = false
+    else
+        GetCredits.Text = "[ON]"
+        GetCredits.TextColor3 = Color3.fromRGB(255, 0, 255)
+        
+        onGetCredits = true
+        
+        coroutine.wrap(function()
+            while onGetCredits do
+                bringCoins()
+                wait(1)
+            end
+        end)()
+    end
+end)
+
+local Player_Coin = Instance.new("TextButton")
+Player_Coin.Parent = SelectionHaSEFrame
+Player_Coin.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Player_Coin.BackgroundTransparency = 0.8
+Player_Coin.Size = UDim2.new(0.6, 0, 0.2, 0)
+Player_Coin.Position = UDim2.new(0.16, 0, 0.27, 0)
+Player_Coin.TextScaled = true
+Player_Coin.TextColor3 = Color3.fromRGB(255, 255, 255)
+Player_Coin.Font = Enum.Font.Code
+Player_Coin.Text = "Player[OFF]"
+
+local ItsTextLabel4PlayerCounters = Instance.new("TextLabel")
+ItsTextLabel4PlayerCounters.Parent = SelectionHaSEFrame
+ItsTextLabel4PlayerCounters.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ItsTextLabel4PlayerCounters.BackgroundTransparency = 0
+ItsTextLabel4PlayerCounters.Size = UDim2.new(0.1, 0, 0.2, 0)
+ItsTextLabel4PlayerCounters.Position = UDim2.new(0.02, 0, 0.27, 0)
+ItsTextLabel4PlayerCounters.TextScaled = true
+ItsTextLabel4PlayerCounters.TextColor3 = Color3.fromRGB(255, 255, 255)
+ItsTextLabel4PlayerCounters.Font = Enum.Font.Code
+ItsTextLabel4PlayerCounters.Text = ""
+
+local isPlayerCounting = false
+
+local function updatePlayerCount()
+    local allPlayersDead = true
+    playerCount = 0
+
+    for _, player in pairs(Players:GetPlayers()) do
+        if playersAlive[player.UserId] then
+            allPlayersDead = false
+            playerCount = playerCount + 1
+        end
+    end
+
+    if allPlayersDead then
+        playerCount = 0
+    end
+
+    ItsTextLabel4PlayerCounters.Text = tostring(playerCount)
+end
+
+local function onPlayerAdded(player)
+    playersAlive[player.UserId] = false
+
+    player.CharacterAdded:Connect(function(character)
+        playersAlive[player.UserId] = true
+        updatePlayerCount()
+
+        character:WaitForChild("Humanoid").Died:Connect(function()
+            playersAlive[player.UserId] = false
+            updatePlayerCount()
+        end)
+    end)
+
+    if player.Character then
+        playersAlive[player.UserId] = true
+        updatePlayerCount()
+    end
+end
+
+Players.PlayerAdded:Connect(onPlayerAdded)
+for _, player in pairs(Players:GetPlayers()) do
+    onPlayerAdded(player)
+end
+
+Player_Coin.MouseButton1Click:Connect(function()
+    if isPlayerCounting then
+        Player_Coin.Text = "Player[OFF]"
+        Player_Coin.TextColor3 = Color3.fromRGB(255, 255, 255)
+        isPlayerCounting = false
+    else
+        Player_Coin.Text = "Player[ON]"
+        Player_Coin.TextColor3 = Color3.fromRGB(255, 255, 0)
+        isPlayerCounting = true
+        
+        while isPlayerCounting do
+            updatePlayerCount()
+            wait(0.1)
+        end
+    end
+end)
+
+local GetPlayerss = Instance.new("TextButton")
+GetPlayerss.Parent = SelectionHaSEFrame
+GetPlayerss.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+GetPlayerss.BackgroundTransparency = 0.8
+GetPlayerss.Size = UDim2.new(0.1, 0, 0.2, 0)
+GetPlayerss.Position = UDim2.new(0.8, 0, 0.27, 0)
+GetPlayerss.TextScaled = true
+GetPlayerss.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetPlayerss.Font = Enum.Font.Code
+GetPlayerss.Text = "[OFF]"
+
+local onGetPlayerss = false
+GetPlayerss.MouseButton1Click:Connect(function()
+    if onGetPlayerss then
+        GetPlayerss.Text = "[OFF]"
+        GetPlayerss.TextColor3 = Color3.fromRGB(255, 255, 255)
+        onGetPlayerss = false
+    else
+        GetPlayerss.Text = "[ON]"
+        GetPlayerss.TextColor3 = Color3.fromRGB(255, 0, 255)
+        onGetPlayerss = true
+        
+        while onGetPlayerss do
+            local localPlayer = Players.LocalPlayer
+            if localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                local targetPosition = localPlayer.Character.HumanoidRootPart.Position
+                
+                for _, player in pairs(Players:GetPlayers()) do
+                    if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+                    end
+                end
+            end
+            wait(1)
+        end
+    end
+end)
+
+-- Sky Walking Ability --
+local WalkOnAir = Instance.new("TextButton")
+WalkOnAir.Parent = SelectionHaSEFrame
+WalkOnAir.BackgroundColor3 = Color3.new(0, 0, 0)
+WalkOnAir.BackgroundTransparency = 0.8
+WalkOnAir.Size = UDim2.new(0.65, 0, 0.2, 0)
+WalkOnAir.TextScaled = true
+WalkOnAir.Position = UDim2.new(0.02, 0, 0.5, 0)
+WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
+WalkOnAir.Font = Enum.Font.Code
+WalkOnAir.Text = "Sky Walking[OFF]"
+
+local isToggled = false
+local part
+
+WalkOnAir.MouseButton1Click:Connect(function()
+    if not isToggled then
+        isToggled = true
+        WalkOnAir.Text = "Sky Walking[ON]"
+        WalkOnAir.TextColor3 = Color3.fromRGB(0, 255, 255)
+
+        part = Instance.new("Part")
+        part.Size = Vector3.new(20, 0.2, 20)
+        part.Position = Vector3.new(
+            player.Character.HumanoidRootPart.Position.X,
+            player.Character.HumanoidRootPart.Position.Y - 3.5,
+            player.Character.HumanoidRootPart.Position.Z
+        )
+        part.Anchored = true
+        part.Transparency = 0.9
+        part.Color = Color3.fromRGB(255, 0, 255)
+        part.Parent = workspace
+        
+        local lockedY = part.Position.Y
+
+        local function updatePartPosition()
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                part.Position = Vector3.new(
+                    player.Character.HumanoidRootPart.Position.X,
+                    lockedY,
+                    player.Character.HumanoidRootPart.Position.Z
+                )
+            end
+        end
+
+        local updateConnection
+        updateConnection = game:GetService("RunService").Heartbeat:Connect(function()
+            if isToggled then
+                updatePartPosition()
+            else
+                updateConnection:Disconnect()
+            end
+        end)
+
+    else
+        isToggled = false
+        WalkOnAir.Text = "Sky Walking[OFF]"
+        WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        if part then
+            part:Destroy()
+            part = nil
+        end
+    end
+end)
+
+-- Clicked or Touched to Teleportation/CFrame to Specifics Position --
+local CFrameClicked = Instance.new("TextButton")
+CFrameClicked.Parent = SelectionHaSEFrame
+CFrameClicked.BackgroundColor3 = Color3.new(0, 0, 0)
+CFrameClicked.BackgroundTransparency = 0.8
+CFrameClicked.Size = UDim2.new(0.65, 0, 0.2, 0)
+CFrameClicked.TextScaled = true
+CFrameClicked.Position = UDim2.new(0.02, 0, 0.73, 0)
+CFrameClicked.TextColor3 = Color3.fromRGB(255, 255, 255)
+CFrameClicked.Font = Enum.Font.Code
+CFrameClicked.Text = "Teleportation Click[OFF]"
+
+-- XFunction of CFrameClicked --
+local function createBall(position)
+    if scriptDisabled then return end
+
+    if currentBall then
+        currentBall:Destroy()
+    end
+
+    local ballSize = 1
+
+    local function isPositionOccupied(pos)
+        local region = Region3.new(
+            pos - Vector3.new(ballSize / 2, ballSize / 2, ballSize / 2),
+            pos + Vector3.new(ballSize / 2, ballSize / 2, ballSize / 2)
+        )
+        local parts = Workspace:FindPartsInRegion3(region, nil, math.huge)
+        for _, part in ipairs(parts) do
+            if part:IsA("Part") and part.Shape == Enum.PartType.Ball and part.Size == Vector3.new(ballSize, ballSize, ballSize) then
+                return true
+            end
+        end
+        return false
+    end
+
+    local function findFreePosition(basePosition)
+        local offset = 0
+        local step = ballSize + 1
+        while isPositionOccupied(basePosition) do
+            offset = offset + step
+            basePosition = basePosition + Vector3.new(step, 0, 0)
+            if isPositionOccupied(basePosition) then
+                basePosition = basePosition + Vector3.new(-step, step, 0)
+            end
+            if isPositionOccupied(basePosition) then
+                basePosition = basePosition + Vector3.new(0, -step, step)
+            end
+        end
+        return basePosition
+    end
+
+    local adjustedPosition = findFreePosition(position)
+
+    local ball = Instance.new("Part")
+    ball.Size = Vector3.new(ballSize, ballSize, ballSize)
+    ball.Shape = Enum.PartType.Ball
+    ball.Position = adjustedPosition
+    ball.Anchored = true
+    ball.BrickColor = BrickColor.new("Bright red")
+    ball.Parent = Workspace
+
+    local sound = Instance.new("Sound")
+    sound.SoundId = "rbxassetid://YOUR_SOUND_ID"
+    sound.Parent = ball
+    sound.Volume = 1
+
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if humanoidRootPart then
+        humanoidRootPart.CFrame = CFrame.new(ball.Position)
+    end
+
+    local function onTouch(hit)
+        if hit.Parent == character then
+            ball:Destroy()
+            currentBall = nil
+        end
+    end
+
+    ball.Touched:Connect(onTouch)
+
+    currentBall = ball
+end
+
+local function onMouseClick()
+    if not scriptDisabled then
+        local clickPosition = mouse.Hit.Position
+        createBall(clickPosition)
+    end
+end
+
+mouse.Button1Down:Connect(onMouseClick)
+
+local function onCharacterAdded(newCharacter)
+    character = newCharacter
+
+    if currentBall then
+        currentBall:Destroy()
+        currentBall = nil
+    end
+
+    local humanoid = character:WaitForChild("Humanoid")
+
+    humanoid.Died:Connect(function()
+        if currentBall then
+            currentBall:Destroy()
+        end
+        scriptDisabled = true -- Disable spawning when the character dies
+        CFrameClicked.Text = "Teleportation Click[OFF]" -- Update button text
+    end)
+end
+
+player.CharacterAdded:Connect(onCharacterAdded)
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+
+CFrameClicked.MouseButton1Click:Connect(function()
+    scriptDisabled = not scriptDisabled
+    if scriptDisabled then
+        CFrameClicked.Text = "Teleportation Click[OFF]"
+    else
+        CFrameClicked.Text = "Teleportation Click[ON]"
+    end
+end)
+
+-- Toggle Button --
+local OpenClosedGui = Instance.new("TextButton")
+OpenClosedGui.Parent = MovingHaSEFrame
+OpenClosedGui.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+OpenClosedGui.BackgroundTransparency = 0
+OpenClosedGui.Size = UDim2.new(0.8, 0, 0.8, 0)
+OpenClosedGui.Position = UDim2.new(0, 0, 0.1, 0)
+OpenClosedGui.TextScaled = true
+OpenClosedGui.TextColor3 = Color3.fromRGB(0, 255, 255)
+OpenClosedGui.Font = Enum.Font.Code
+OpenClosedGui.Text = "Activated[NO]"
+OpenClosedGui.Visible = true
+
+local isOCG = false
+OpenClosedGui.MouseButton1Click:Connect(function()
+    if isOCG then
+        OpenClosedGui.Text = "Activated[NO]"
+        OpenClosedGui.TextColor3 = Color3.fromRGB(0, 255, 255)
+        SelectionHaSEFrame.Visible = false
+        
+        isOCG = false
+    else
+        OpenClosedGui.Text = "Activated[YES]"
+        OpenClosedGui.TextColor3 = Color3.fromRGB(255, 0, 0)
+        SelectionHaSEFrame.Visible = true
+        
+        isOCG = true
+    end
+end)
+
+-- Welcome message --
+
+local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Welcome to my NganHa2k3 Script",
+            Text = "Collecting Coin, Quickly Find out all Players, Sky Walking, Teleportation And More... In Future, hehe!",
+            Duration = 2,
+        })
+
+-- Ended Here 4 Now I Guess --
