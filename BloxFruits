@@ -1,6 +1,6 @@
 -- Remove Existed One --
 local player = game.Players.LocalPlayer
-local screenGuiName = "BloxFruitsMyUI"
+local screenGuiName = "BloxFruitsMyUIEN"
 
 for _, gui in ipairs(player:WaitForChild("PlayerGui"):GetChildren()) do
     if gui:IsA("ScreenGui") and gui.Name == screenGuiName then
@@ -8,7 +8,7 @@ for _, gui in ipairs(player:WaitForChild("PlayerGui"):GetChildren()) do
     end
 end
 
--- Blox Fruits UI V4 Rework --
+-- Blox Fruits UI V4 EN --
 
 local ScreenGui = Instance.new("ScreenGui")
 local OpenClose = Instance.new("TextButton")
@@ -21,7 +21,7 @@ local BoatSelection = Instance.new("ScrollingFrame")
 
 
 ScreenGui.Parent = game.CoreGui
-ScreenGui.Name = "BloxFruitsMyUI"
+ScreenGui.Name = "BloxFruitsMyUIEN"
 
 -- More ScrollingFrame --
 
@@ -120,7 +120,7 @@ OpenClose.TextScaled = true
 OpenClose.Position = UDim2.new(0.84, 0, -0.1, 0)  -- Positioned outside the ScrollingFrame
 OpenClose.TextColor3 = Color3.new(1, 1, 1)
 OpenClose.Font = Enum.Font.PatrickHand
-OpenClose.Text = "+"
+OpenClose.Text = "Ⓗ"
 
 local OpenCloseCorner = Instance.new("UICorner")
 OpenCloseCorner.Parent = OpenClose
@@ -134,7 +134,7 @@ HoldBoatName.TextScaled = true
 HoldBoatName.Position = UDim2.new(0.64, 0, -0.1, 0)  -- Positioned outside the ScrollingFrame
 HoldBoatName.TextColor3 = Color3.new(1, 1, 1)
 HoldBoatName.Font = Enum.Font.PatrickHand
-HoldBoatName.Text = "No Boat"
+HoldBoatName.Text = "No Boat Selected"
 
 local HoldBoatNameCorner = Instance.new("UICorner")
 HoldBoatNameCorner.Parent = HoldBoatName
@@ -162,8 +162,12 @@ local isToggled = false
 OpenClose.MouseButton1Click:Connect(function()
     if isToggled then
         tween2:Play()
+        OpenClose.Text = "ⓧ"
+        OpenClose.TextColor3 = Color3.new(0, 1, 0)
     else
         tween1:Play()
+        OpenClose.Text = "Ⓗ"
+        OpenClose.TextColor3 = Color3.new(1, 1, 1)
     end
     isToggled = not isToggled
 end)
@@ -181,7 +185,7 @@ button1.TextScaled = true
 button1.Position = UDim2.new(0.005, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 button1.TextColor3 = Color3.fromRGB(255, 255, 255)
 button1.Font = Enum.Font.PatrickHand
-button1.Text = "Chest Farm"
+button1.Text = "Loots Chest/Fruit"
 
 local button2 = Instance.new("TextButton")
 button2.Parent = ScrollingFrame
@@ -215,7 +219,7 @@ button4.TextScaled = true
 button4.Position = UDim2.new(0.125, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 button4.TextColor3 = Color3.fromRGB(255, 255, 255)
 button4.Font = Enum.Font.PatrickHand
-button4.Text = "Username In"
+button4.Text = "Enter Username"
 button4.ClearTextOnFocus = false
 
 local Reset = Instance.new("TextButton")
@@ -227,7 +231,7 @@ Reset.TextScaled = true
 Reset.Position = UDim2.new(0.165, 0, 0, 0)
 Reset.TextColor3 = Color3.new(1, 1, 1)
 Reset.Font = Enum.Font.PatrickHand
-Reset.Text = "Reset Character"
+Reset.Text = "Self Destruction"
 
 Reset.MouseButton1Click:Connect(function()
     game.Players.LocalPlayer.Character.Humanoid.Health = 0
@@ -242,7 +246,7 @@ Shop.TextScaled = true
 Shop.Position = UDim2.new(0.205, 0, 0, 0)
 Shop.TextColor3 = Color3.new(1, 1, 1)
 Shop.Font = Enum.Font.PatrickHand
-Shop.Text = "Shop Items"
+Shop.Text = "Quicks Shopping"
 
 local FightingStyle = Instance.new("TextButton")
 FightingStyle.Parent = ScrollingFrame
@@ -253,7 +257,7 @@ FightingStyle.TextScaled = true
 FightingStyle.Position = UDim2.new(0.245, 0, 0, 0)
 FightingStyle.TextColor3 = Color3.new(1, 1, 1)
 FightingStyle.Font = Enum.Font.PatrickHand
-FightingStyle.Text = "FightingStyle Switch"
+FightingStyle.Text = "Switching FightingStyle (Melee)"
 
 local BoatButton = Instance.new("TextButton")
 BoatButton.Parent = ScrollingFrame
@@ -264,7 +268,7 @@ BoatButton.TextScaled = true
 BoatButton.Position = UDim2.new(0.285, 0, 0, 0)
 BoatButton.TextColor3 = Color3.new(1, 1, 1)
 BoatButton.Font = Enum.Font.PatrickHand
-BoatButton.Text = "Boat/Ship"
+BoatButton.Text = "Summoning Boat/Ship"
 
 local RaidChip = Instance.new("TextBox")
 RaidChip.Parent = ScrollingFrame
@@ -275,41 +279,8 @@ RaidChip.TextScaled = true
 RaidChip.Position = UDim2.new(0.325, 0, 0, 0)
 RaidChip.TextColor3 = Color3.new(1, 1, 1)
 RaidChip.Font = Enum.Font.PatrickHand
-RaidChip.Text = "Raid Chip Name"
+RaidChip.Text = "Enter Raid Chip Name"
 RaidChip.ClearTextOnFocus = true
-
-RaidChip.FocusLost:Connect(function(enterPressed)
-    local chip = RaidChip.Text
-    print("Chip value:", chip)  -- Debugging line
-
-    local args = {
-        [1] = "RaidsNpc",
-        [2] = "Select",
-        [3] = chip
-    }
-
-    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-
-task.wait(0.1)
-
-    local CoreGui = game:GetService("StarterGui")
-    CoreGui:SetCore("SendNotification", {
-        Title = "Raid Chip Notification",
-        Text = "You Have Buy It, Raid Chip: " .. chip .. ", If no that means you does not have enough level/money !",
-        Duration = 1,
-    })
-
-task.wait(1)
-
-    fireclickdetector(workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
-
-local CoreGui = game:GetService("StarterGui")
-    CoreGui:SetCore("SendNotification", {
-        Title = "Raid Chip Used",
-        Text = "Loading Map: " .. chip .. ", Please Wait !",
-        Duration = 1,
-    })
-end)
 
 local ServerHop = Instance.new("TextButton")
 ServerHop.Parent = ScrollingFrame
@@ -320,7 +291,7 @@ ServerHop.TextScaled = true
 ServerHop.Position = UDim2.new(0.365, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 ServerHop.TextColor3 = Color3.new(1, 1, 1)
 ServerHop.Font = Enum.Font.PatrickHand
-ServerHop.Text = "Server Browser"
+ServerHop.Text = "Server List (Serverhop)"
 
 local WalkOnAir = Instance.new("TextButton")
 WalkOnAir.Parent = ScrollingFrame
@@ -331,7 +302,7 @@ WalkOnAir.TextScaled = true
 WalkOnAir.Position = UDim2.new(0.405, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
 WalkOnAir.Font = Enum.Font.PatrickHand
-WalkOnAir.Text = "On Ground"
+WalkOnAir.Text = "OnGround"
 
 local isToggled = false
 local part
@@ -341,7 +312,7 @@ WalkOnAir.MouseButton1Click:Connect(function()
 
     if not isToggled then
         isToggled = true
-        WalkOnAir.Text = "On Air-Water"
+        WalkOnAir.Text = "On Air/Water"
         WalkOnAir.TextColor3 = Color3.fromRGB(0, 255, 255)
 
         part = Instance.new("Part")
@@ -378,7 +349,7 @@ WalkOnAir.MouseButton1Click:Connect(function()
 
     else
         isToggled = false
-        WalkOnAir.Text = "On Ground"
+        WalkOnAir.Text = "OnGround"
         WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
         
         if part then
@@ -397,7 +368,7 @@ GetQuestHunter.TextScaled = true
 GetQuestHunter.Position = UDim2.new(0.445, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 GetQuestHunter.TextColor3 = Color3.fromRGB(255, 255, 255)
 GetQuestHunter.Font = Enum.Font.PatrickHand
-GetQuestHunter.Text = "Get Hunter Quest"
+GetQuestHunter.Text = "Players Hunter (Sea 3 Quest)"
 
 GetQuestHunter.MouseButton1Click:Connect(function()
     local args = {
@@ -408,8 +379,8 @@ game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
     
     local CoreGui = game:GetService("StarterGui")
         CoreGui:SetCore("SendNotification", {
-            Title = "Hunter Quest",
-            Text = "Successfully Get A Player Quest, Find And Destroyed Him To Earn Reward !",
+            Title = "Players Hunter Notification",
+            Text = "Successfully claimed, Find and destroyed his for EXP/Lvl",
             Duration = 2,
         })
 end)
@@ -423,7 +394,7 @@ ChangeDashLength.TextScaled = true
 ChangeDashLength.Position = UDim2.new(0.485, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 ChangeDashLength.TextColor3 = Color3.fromRGB(255, 255, 255)
 ChangeDashLength.Font = Enum.Font.PatrickHand
-ChangeDashLength.Text = "Dash Distance"
+ChangeDashLength.Text = "Dash Distance (Length)"
 ChangeDashLength.ClearTextOnFocus = true
 
 local myself = game.Players.LocalPlayer
@@ -446,7 +417,7 @@ ChangeSpeedMultiplier.TextScaled = true
 ChangeSpeedMultiplier.Position = UDim2.new(0.525, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 ChangeSpeedMultiplier.TextColor3 = Color3.fromRGB(255, 255, 255)
 ChangeSpeedMultiplier.Font = Enum.Font.PatrickHand
-ChangeSpeedMultiplier.Text = "Running Speed"
+ChangeSpeedMultiplier.Text = "Speed Multiplier (Walkspeed x2)"
 ChangeSpeedMultiplier.ClearTextOnFocus = true
 
 local myself0 = game.Players.LocalPlayer
@@ -492,7 +463,7 @@ LoopsPlayers.TextScaled = true
 LoopsPlayers.Position = UDim2.new(0.565, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 LoopsPlayers.TextColor3 = Color3.fromRGB(255, 255, 255)
 LoopsPlayers.Font = Enum.Font.PatrickHand
-LoopsPlayers.Text = "Loop Players"
+LoopsPlayers.Text = "Locked In Username"
 
 local LPlayers = false
 LoopsPlayers.MouseButton1Click:Connect(function()
@@ -545,7 +516,7 @@ EnemiesHealthZero.TextScaled = true
 EnemiesHealthZero.Position = UDim2.new(0.605, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 EnemiesHealthZero.TextColor3 = Color3.fromRGB(255, 255, 255)
 EnemiesHealthZero.Font = Enum.Font.PatrickHand
-EnemiesHealthZero.Text = "Kill Mobs"
+EnemiesHealthZero.Text = "Kill Aura"
 
 local EnemiesHP = false
 EnemiesHealthZero.MouseButton1Click:Connect(function()
@@ -599,7 +570,7 @@ EnemiesHitBoxChanged.TextScaled = true
 EnemiesHitBoxChanged.Position = UDim2.new(0.685, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 EnemiesHitBoxChanged.TextColor3 = Color3.fromRGB(255, 255, 255)
 EnemiesHitBoxChanged.Font = Enum.Font.PatrickHand
-EnemiesHitBoxChanged.Text = "Big Hitbox Mobs"
+EnemiesHitBoxChanged.Text = "HitBox Changed (Nearest Mobs)"
 
 local EnemiesHBox = false
 EnemiesHitBoxChanged.MouseButton1Click:Connect(function()
@@ -628,13 +599,13 @@ SwitchedTeams.TextScaled = true
 SwitchedTeams.Position = UDim2.new(0.725, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 SwitchedTeams.TextColor3 = Color3.fromRGB(0, 255, 255)
 SwitchedTeams.Font = Enum.Font.PatrickHand
-SwitchedTeams.Text = "Marines"
+SwitchedTeams.Text = "Teams: Marines"
 
 local SwitchedT = false
 SwitchedTeams.MouseButton1Click:Connect(function()
     if SwitchedT then
         SwitchedTeams.TextColor3 = Color3.fromRGB(0, 255, 255)
-        SwitchedTeams.Text = "Marines"
+        SwitchedTeams.Text = "Teams: Marines"
         
         SwitchedT = false
         
@@ -646,7 +617,7 @@ SwitchedTeams.MouseButton1Click:Connect(function()
 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
     else
         SwitchedTeams.TextColor3 = Color3.fromRGB(240, 190, 0)
-        SwitchedTeams.Text = "Pirates"
+        SwitchedTeams.Text = "Teams: Pirates"
         
         SwitchedT = true
         
@@ -667,7 +638,7 @@ ClickToggler.BackgroundColor3 = Color3.new(0, 0, 0)
 ClickToggler.BackgroundTransparency = 0.5
 ClickToggler.TextScaled = true
 ClickToggler.Font = Enum.Font.PatrickHand
-ClickToggler.Text = "AutoClick: OFF"
+ClickToggler.Text = "Auto Click: OFF"
 ClickToggler.TextColor3 = Color3.new(1, 1, 1)
 
 local VU = game:GetService("VirtualUser")
@@ -675,12 +646,12 @@ local VU = game:GetService("VirtualUser")
 local IsClick = false
 ClickToggler.MouseButton1Click:Connect(function()
     if IsClick then
-        ClickToggler.Text = "AutoClick: OFF"
+        ClickToggler.Text = "Auto Click: OFF"
         ClickToggler.TextColor3 = Color3.new(1, 1, 1)
         
         IsClick = false
     else
-        ClickToggler.Text = "AutoClick: ON"
+        ClickToggler.Text = "Auto Click: ON"
         ClickToggler.TextColor3 = Color3.new(1, 0, 0)
         
         IsClick = true
@@ -783,7 +754,7 @@ end)
 
 button2.MouseButton1Click:Connect(function()
     isTweenMode = not isTweenMode
-    button2.Text = isTweenMode and "Mode: Tweening" or "Mode: Teleportation"
+    button2.Text = isTweenMode and "Chế độ: Mọc cánh và bay đi" or "Chế độ: Dịch chuyển tức thời"
     button2.TextColor3 = isTweenMode and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(255, 255, 255)
     
     if not isTweenMode and currentTween then
@@ -827,15 +798,48 @@ button4.FocusLost:Connect(function(enterPressed)
     end
 end)
 
+RaidChip.FocusLost:Connect(function(enterPressed)
+    local chip = RaidChip.Text
+    print("Chip Name:", chip)  -- Debugging line
+
+    local args = {
+        [1] = "RaidsNpc",
+        [2] = "Select",
+        [3] = chip
+    }
+
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+task.wait(0.1)
+
+    local CoreGui = game:GetService("StarterGui")
+    CoreGui:SetCore("SendNotification", {
+        Title = "Raid Chip Notification",
+        Text = "You Have Buy It, Raid Chip Selected: " .. chip .. ", If not means your lvl isn't enough or money !",
+        Duration = 2,
+    })
+
+task.wait(1)
+
+    fireclickdetector(workspace.Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+
+local CoreGui = game:GetService("StarterGui")
+    CoreGui:SetCore("SendNotification", {
+        Title = "Loading Map...",
+        Text = "On Joined Into: " .. chip .. " Raid, Please wait for a moments !",
+        Duration = 2,
+    })
+end)
+
 ServerHop.MouseButton1Click:Connect(function()
     loadstring(game:HttpGet("https://www.scriptblox.com/raw/Server-Browser_80", true))()
     
     local CoreGui = game:GetService("StarterGui")
 
 CoreGui:SetCore("SendNotification", {
-    Title = "Notification Report",
-    Text = "Server Browser - Successfully Activated (Wait for it loaded).",
-    Duration = 2,
+    Title = "System Notification",
+    Text = "Server List - Activated (Loading In....).",
+    Duration = 10,
 })
 end)
 
@@ -859,8 +863,8 @@ local chest = game:GetService("Workspace"):FindFirstChild("Chest1")
     else
         local CoreGui = game:GetService("StarterGui")
         CoreGui:SetCore("SendNotification", {
-            Title = "Chest Auto Farm",
-            Text = "Successfully Collected All Chest Existing !",
+            Title = "Chest Farm Report",
+            Text = "Successfully claimed all existing Chest !",
             Duration = 2,
         })
     end
@@ -924,8 +928,8 @@ local SearchingSilverChest = game:GetService("Workspace"):FindFirstChild("Chest1
     else
         local CoreGui = game:GetService("StarterGui")
         CoreGui:SetCore("SendNotification", {
-            Title = "Chest and Fruit Auto Farm Notification",
-            Text = "Successfully Collected All Chest/Fruit Existing !",
+            Title = "System Report: Quicks Farm Chest/Fruits",
+            Text = "Successfully collecting all existing Chest and Fruits !",
             Duration = 1,
         })
     end
@@ -1052,7 +1056,7 @@ EnemiesCFrameTo.TextScaled = true
 EnemiesCFrameTo.Position = UDim2.new(0.645, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 255)
 EnemiesCFrameTo.Font = Enum.Font.PatrickHand
-EnemiesCFrameTo.Text = "CFrame Mobs"
+EnemiesCFrameTo.Text = "TP to Mobs (Nearest Mobs)"
 
 local EnemiesCF = false
 EnemiesCFrameTo.MouseButton1Click:Connect(function()
@@ -1081,9 +1085,9 @@ SilverChest.BackgroundTransparency = 0.5
 SilverChest.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
 SilverChest.TextScaled = true
 SilverChest.Position = UDim2.new(0.1, 0, 0.005, 0)  -- Positioned inside the ScrollingFrame
-SilverChest.TextColor3 = Color3.new(1, 1, 1)
+SilverChest.TextColor3 = Color3.fromRGB(192, 192, 192)
 SilverChest.Font = Enum.Font.PatrickHand
-SilverChest.Text = "Silver Chest"
+SilverChest.Text = "Get: Silver Chest"
 
 SilverChest.MouseButton1Click:Connect(function()
     local chest = game:GetService("Workspace"):FindFirstChild("Chest1")
@@ -1112,9 +1116,9 @@ GoldenChest.BackgroundTransparency = 0.5
 GoldenChest.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
 GoldenChest.TextScaled = true
 GoldenChest.Position = UDim2.new(0.1, 0, 0.085, 0)  -- Positioned inside the ScrollingFrame
-GoldenChest.TextColor3 = Color3.new(1, 1, 1)
+GoldenChest.TextColor3 = Color3.new(1, 1, 0)
 GoldenChest.Font = Enum.Font.PatrickHand
-GoldenChest.Text = "Golden Chest"
+GoldenChest.Text = "Get: Golden Chest"
 
 GoldenChest.MouseButton1Click:Connect(function()
     local chestg = game:GetService("Workspace"):FindFirstChild("Chest2")
@@ -1143,9 +1147,9 @@ DiamondChest.BackgroundTransparency = 0.5
 DiamondChest.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
 DiamondChest.TextScaled = true
 DiamondChest.Position = UDim2.new(0.1, 0, 0.165, 0)  -- Positioned inside the ScrollingFrame
-DiamondChest.TextColor3 = Color3.new(1, 1, 1)
+DiamondChest.TextColor3 = Color3.new(0, 0, 1)
 DiamondChest.Font = Enum.Font.PatrickHand
-DiamondChest.Text = "Diamond Chest"
+DiamondChest.Text = "Get: Diamond Chest"
 
 DiamondChest.MouseButton1Click:Connect(function()
     local chestd = game:GetService("Workspace"):FindFirstChild("Chest3")
@@ -1174,9 +1178,9 @@ Boat.BackgroundTransparency = 0.5
 Boat.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
 Boat.TextScaled = true
 Boat.Position = UDim2.new(0.1, 0, 0.245, 0)  -- Positioned inside the ScrollingFrame
-Boat.TextColor3 = Color3.new(1, 1, 1)
+Boat.TextColor3 = Color3.new(1, 0, 1)
 Boat.Font = Enum.Font.PatrickHand
-Boat.Text = "Fruit Spawn"
+Boat.Text = "Get: Fruits Spawned"
 
 Boat.MouseButton1Click:Connect(function()
     local fruitx = game:GetService("Workspace")["Fruit "].Handle
@@ -1194,7 +1198,7 @@ Boat.MouseButton1Click:Connect(function()
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitx.CFrame + Vector3.new(0, 2, 0)
         end
     else
-        warn("Chest not found: Fruit")
+        warn("Fruits not found: Fruit")
     end
 end)
 
@@ -1207,7 +1211,7 @@ DChestF.TextScaled = true
 DChestF.Position = UDim2.new(0.1, 0, 0.325, 0)  -- Positioned inside the ScrollingFrame
 DChestF.TextColor3 = Color3.new(1, 1, 1)
 DChestF.Font = Enum.Font.PatrickHand
-DChestF.Text = "Collect Fruit and All Chest"
+DChestF.Text = "Collect all Chest (1s Delay)"
 
 local DChest = false
 
@@ -1217,7 +1221,7 @@ DChestF.MouseButton1Click:Connect(function()
         
         DChest = false
     else
-        DChestF.TextColor3 = Color3.new(0, 1, 0)
+        DChestF.TextColor3 = Color3.new(1, 1, 0)
         
         DChest = true
         
@@ -1237,7 +1241,7 @@ AChestF.TextScaled = true
 AChestF.Position = UDim2.new(0.1, 0, 0.405, 0)  -- Positioned inside the ScrollingFrame
 AChestF.TextColor3 = Color3.new(1, 1, 1)
 AChestF.Font = Enum.Font.PatrickHand
-AChestF.Text = "Loops All Chest (Chance of get Kicked)"
+AChestF.Text = "Collect all Chest/Fruits (Chance of getting kicked)"
 
 local AChest = false
 
@@ -1254,11 +1258,6 @@ AChestF.MouseButton1Click:Connect(function()
         while AChest do
             CollectChest()
             wait(0.0001)
-        end
-
-        while AChest do
-            game.Players.LocalPlayer.Character.Humanoid.Health = 0
-            wait(5)
         end
     end
 end)
@@ -1281,10 +1280,10 @@ CheckFUICorner.CornerRadius = UDim.new(0.1, 0)
 
 local function checkForFruit()
     local fruit = game:GetService("Workspace"):FindFirstChild("Fruit")
-    if fruit and fruit:FindFirstChild("Handle") then
-        CheckF.Text = "Fruit Spawned"
+    if fruit then
+        CheckF.Text = "Fruits Spawned"
     else
-        CheckF.Text = "No Fruit Spawned"
+        CheckF.Text = "Fruits Not Spawned"
     end
 end
 
@@ -1297,7 +1296,7 @@ ACheckF.TextScaled = true
 ACheckF.Position = UDim2.new(0.1, 0, 0.485, 0)  -- Positioned inside the ScrollingFrame
 ACheckF.TextColor3 = Color3.new(1, 1, 1)
 ACheckF.Font = Enum.Font.PatrickHand
-ACheckF.Text = "Check Fruit Spawn"
+ACheckF.Text = "Check for Fruits Spawned (old)"
 
 local ACheckFSet = false
 
@@ -1338,7 +1337,7 @@ CheckF.MouseButton1Click:Connect(function()
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruitcheckx.CFrame + Vector3.new(0, 2, 0)
         end
     else
-        warn("Chest not found: Fruit")
+        warn("Fruits not found: Fruit")
     end
 end)
 
@@ -1353,7 +1352,7 @@ BuyItem1.TextScaled = true
 BuyItem1.Position = UDim2.new(0.1, 0, 0.005, 0)
 BuyItem1.TextColor3 = Color3.new(1, 1, 1)
 BuyItem1.Font = Enum.Font.PatrickHand
-BuyItem1.Text = "Buy: Geppo/Air Jump"
+BuyItem1.Text = "Buy: Air Jump Haki"
 
 BuyItem1.MouseButton1Click:Connect(function()
     local args = {
@@ -1373,7 +1372,7 @@ BuyItem2.TextScaled = true
 BuyItem2.Position = UDim2.new(0.1, 0, 0.085, 0)
 BuyItem2.TextColor3 = Color3.new(1, 1, 1)
 BuyItem2.Font = Enum.Font.PatrickHand
-BuyItem2.Text = "Buy: Buso Haki/Weapon"
+BuyItem2.Text = "Buy: Buso Haki"
 
 BuyItem2.MouseButton1Click:Connect(function()
     local args = {
@@ -1393,7 +1392,7 @@ BuyItem3.TextScaled = true
 BuyItem3.Position = UDim2.new(0.1, 0, 0.165, 0)
 BuyItem3.TextColor3 = Color3.new(1, 1, 1)
 BuyItem3.Font = Enum.Font.PatrickHand
-BuyItem3.Text = "Buy: Soru/Flash Step"
+BuyItem3.Text = "Buy: Soru"
 
 BuyItem3.MouseButton1Click:Connect(function()
     local args = {
@@ -1425,8 +1424,8 @@ game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 
     local CoreGui = game:GetService("StarterGui")
         CoreGui:SetCore("SendNotification", {
-            Title = "Random Fruit",
-            Text = "You've just roll a fruit, if no mean you does not have money !",
+            Title = "Random Fruits Notification",
+            Text = "You're have been buying a random fruits, If not then lvl not enough or money !",
             Duration = 2,
         })
 end)
@@ -1442,7 +1441,7 @@ DarkLeg.TextScaled = true
 DarkLeg.Position = UDim2.new(0.1, 0, 0.005, 0)
 DarkLeg.TextColor3 = Color3.new(1, 1, 1)
 DarkLeg.Font = Enum.Font.PatrickHand
-DarkLeg.Text = "Sanji: Black Leg"
+DarkLeg.Text = "Switched: Dark Legs"
 
 DarkLeg.MouseButton1Click:Connect(function()
     local args = {
@@ -1461,7 +1460,7 @@ ElectricClaw.TextScaled = true
 ElectricClaw.Position = UDim2.new(0.1, 0, 0.085, 0)
 ElectricClaw.TextColor3 = Color3.new(1, 1, 1)
 ElectricClaw.Font = Enum.Font.PatrickHand
-ElectricClaw.Text = "Mink: Electric"
+ElectricClaw.Text = "Switched: Electro"
 
 ElectricClaw.MouseButton1Click:Connect(function()
     local args = {
@@ -1480,7 +1479,7 @@ FishKungFu.TextScaled = true
 FishKungFu.Position = UDim2.new(0.1, 0, 0.165, 0)
 FishKungFu.TextColor3 = Color3.new(1, 1, 1)
 FishKungFu.Font = Enum.Font.PatrickHand
-FishKungFu.Text = "Fishman: Karate"
+FishKungFu.Text = "Switched: Fishman Karate"
 
 FishKungFu.MouseButton1Click:Connect(function()
     local args = {
@@ -1499,7 +1498,7 @@ DragonBreath.TextScaled = true
 DragonBreath.Position = UDim2.new(0.1, 0, 0.245, 0)
 DragonBreath.TextColor3 = Color3.new(1, 1, 1)
 DragonBreath.Font = Enum.Font.PatrickHand
-DragonBreath.Text = "Sabo: Dragon Breath"
+DragonBreath.Text = "Switched: Dragon Breath"
 
 DragonBreath.MouseButton1Click:Connect(function()
     local args = {
@@ -1520,7 +1519,7 @@ SuperHuman.TextScaled = true
 SuperHuman.Position = UDim2.new(0.1, 0, 0.325, 0)
 SuperHuman.TextColor3 = Color3.new(1, 1, 1)
 SuperHuman.Font = Enum.Font.PatrickHand
-SuperHuman.Text = "Ciper Pol: Super Human"
+SuperHuman.Text = "Switched: Superhuman"
 
 SuperHuman.MouseButton1Click:Connect(function()
     warn("Empty for now")
@@ -1535,7 +1534,7 @@ DarkStep.TextScaled = true
 DarkStep.Position = UDim2.new(0.1, 0, 0.405, 0)
 DarkStep.TextColor3 = Color3.new(1, 1, 1)
 DarkStep.Font = Enum.Font.PatrickHand
-DarkStep.Text = "Sanji: Death Step"
+DarkStep.Text = "Switched: Death Step"
 
 DarkStep.MouseButton1Click:Connect(function()
     warn("Empty for now")
@@ -1550,7 +1549,7 @@ ElectricPaw.TextScaled = true
 ElectricPaw.Position = UDim2.new(0.1, 0, 0.485, 0)
 ElectricPaw.TextColor3 = Color3.new(1, 1, 1)
 ElectricPaw.Font = Enum.Font.PatrickHand
-ElectricPaw.Text = "Mink: Electric Claw"
+ElectricPaw.Text = "Switched: Electric Claws"
 
 ElectricPaw.MouseButton1Click:Connect(function()
     warn("Empty for now")
@@ -1565,7 +1564,7 @@ SharkmanKarate.TextScaled = true
 SharkmanKarate.Position = UDim2.new(0.1, 0, 0.565, 0)
 SharkmanKarate.TextColor3 = Color3.new(1, 1, 1)
 SharkmanKarate.Font = Enum.Font.PatrickHand
-SharkmanKarate.Text = "Sharkman: Karate"
+SharkmanKarate.Text = "Switched: Sharkman Karate"
 
 SharkmanKarate.MouseButton1Click:Connect(function()
     warn("Empty for now")
@@ -1580,7 +1579,7 @@ InfernoDragonBreath.TextScaled = true
 InfernoDragonBreath.Position = UDim2.new(0.1, 0, 0.645, 0)
 InfernoDragonBreath.TextColor3 = Color3.new(1, 1, 1)
 InfernoDragonBreath.Font = Enum.Font.PatrickHand
-InfernoDragonBreath.Text = "Inferno: Dragon Breath"
+InfernoDragonBreath.Text = "Switched: Dragon Talon"
 
 InfernoDragonBreath.MouseButton1Click:Connect(function()
     warn("Empty for now")
@@ -1595,7 +1594,7 @@ GodHuman.TextScaled = true
 GodHuman.Position = UDim2.new(0.1, 0, 0.725, 0)
 GodHuman.TextColor3 = Color3.new(1, 1, 1)
 GodHuman.Font = Enum.Font.PatrickHand
-GodHuman.Text = "Ciper Pol 0: God Human"
+GodHuman.Text = "Switched: Godhuman"
 
 GodHuman.MouseButton1Click:Connect(function()
     warn("Empty for now")
@@ -1612,7 +1611,7 @@ SpawnPart.TextScaled = true
 SpawnPart.Position = UDim2.new(0.1, 0, 0.005, 0)
 SpawnPart.TextColor3 = Color3.new(1, 1, 1)
 SpawnPart.Font = Enum.Font.PatrickHand
-SpawnPart.Text = "Set this at Boat Dealer"
+SpawnPart.Text = "Placing Brought Points"
 
 SpawnPart.MouseButton1Click:Connect(function()
     local existingPart = workspace:FindFirstChild("Check")
@@ -1637,7 +1636,7 @@ BuyBoat.TextScaled = true
 BuyBoat.Position = UDim2.new(0.1, 0, 0.165, 0)
 BuyBoat.TextColor3 = Color3.new(1, 1, 1)
 BuyBoat.Font = Enum.Font.PatrickHand
-BuyBoat.Text = "Buy Selected Boat"
+BuyBoat.Text = "Buy Selected Boat/Ship"
 
 BuyBoat.MouseButton1Click:Connect(function()
     local part = workspace:FindFirstChild("Check")
@@ -1666,7 +1665,7 @@ BringBoat.TextScaled = true
 BringBoat.Position = UDim2.new(0.1, 0, 0.085, 0)
 BringBoat.TextColor3 = Color3.new(1, 1, 1)
 BringBoat.Font = Enum.Font.PatrickHand
-BringBoat.Text = "Bring Boat"
+BringBoat.Text = "Summoning Boat (Bring Boat)"
 
 BringBoat.MouseButton1Click:Connect(function()
     local getboat = HoldBoatName.Text
@@ -1680,7 +1679,7 @@ BringBoat.MouseButton1Click:Connect(function()
                 warn("No VehicleSeat found in " .. getboat)
             end
         else
-            warn("No boat named " .. getboat .. " found.")
+            warn("No Boat/Ship named " .. getboat .. " found.")
         end
 end)
 
@@ -1699,7 +1698,7 @@ local isSelected = false
 Dinghy.MouseButton1Click:Connect(function()
     if isSelected then
         Dinghy.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         Dinghy.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "Dinghy"
@@ -1714,15 +1713,15 @@ PirateSloop.BackgroundTransparency = 0.5
 PirateSloop.Size = UDim2.new(0.8, 0, 0.05, 0)
 PirateSloop.TextScaled = true
 PirateSloop.Position = UDim2.new(0.1, 0, 0.325, 0)
-PirateSloop.TextColor3 = Color3.new(1, 1, 1)
+PirateSloop.TextColor3 = Color3.new(1, 0, 0)
 PirateSloop.Font = Enum.Font.PatrickHand
-PirateSloop.Text = "Pirate Sloop"
+PirateSloop.Text = "Pirates Sloop"
 
 local isSelected = false
 PirateSloop.MouseButton1Click:Connect(function()
     if isSelected then
         PirateSloop.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         PirateSloop.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "PirateSloop"
@@ -1737,15 +1736,15 @@ PirateBrigade.BackgroundTransparency = 0.5
 PirateBrigade.Size = UDim2.new(0.8, 0, 0.05, 0)
 PirateBrigade.TextScaled = true
 PirateBrigade.Position = UDim2.new(0.1, 0, 0.405, 0)
-PirateBrigade.TextColor3 = Color3.new(1, 1, 1)
+PirateBrigade.TextColor3 = Color3.new(1, 0, 0)
 PirateBrigade.Font = Enum.Font.PatrickHand
-PirateBrigade.Text = "Pirate Brigade"
+PirateBrigade.Text = "Pirates Brigade"
 
 local isSelected = false
 PirateBrigade.MouseButton1Click:Connect(function()
     if isSelected then
         PirateBrigade.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         PirateBrigade.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "PirateBrigade"
@@ -1760,15 +1759,15 @@ PirateGrandBrigade.BackgroundTransparency = 0.5
 PirateGrandBrigade.Size = UDim2.new(0.8, 0, 0.05, 0)
 PirateGrandBrigade.TextScaled = true
 PirateGrandBrigade.Position = UDim2.new(0.1, 0, 0.485, 0)
-PirateGrandBrigade.TextColor3 = Color3.new(1, 1, 1)
+PirateGrandBrigade.TextColor3 = Color3.new(1, 0, 0)
 PirateGrandBrigade.Font = Enum.Font.PatrickHand
-PirateGrandBrigade.Text = "Pirate Grand Brigade"
+PirateGrandBrigade.Text = "Huge Pirates Brigade"
 
 local isSelected = false
 PirateGrandBrigade.MouseButton1Click:Connect(function()
     if isSelected then
         PirateGrandBrigade.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         PirateGrandBrigade.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "PirateGrandBrigade"
@@ -1783,15 +1782,15 @@ MarineSloop.BackgroundTransparency = 0.5
 MarineSloop.Size = UDim2.new(0.8, 0, 0.05, 0)
 MarineSloop.TextScaled = true
 MarineSloop.Position = UDim2.new(0.1, 0, 0.565, 0)
-MarineSloop.TextColor3 = Color3.new(1, 1, 1)
+MarineSloop.TextColor3 = Color3.new(0, 1, 1)
 MarineSloop.Font = Enum.Font.PatrickHand
-MarineSloop.Text = "Marine Sloop"
+MarineSloop.Text = "Marines Sloop"
 
 local isSelected = false
 MarineSloop.MouseButton1Click:Connect(function()
     if isSelected then
         MarineSloop.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         MarineSloop.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "MarineSloop"
@@ -1806,15 +1805,15 @@ MarineBrigade.BackgroundTransparency = 0.5
 MarineBrigade.Size = UDim2.new(0.8, 0, 0.05, 0)
 MarineBrigade.TextScaled = true
 MarineBrigade.Position = UDim2.new(0.1, 0, 0.645, 0)
-MarineBrigade.TextColor3 = Color3.new(1, 1, 1)
+MarineBrigade.TextColor3 = Color3.new(0, 1, 1)
 MarineBrigade.Font = Enum.Font.PatrickHand
-MarineBrigade.Text = "Marine Brigade"
+MarineBrigade.Text = "Marines Brigade"
 
 local isSelected = false
 MarineBrigade.MouseButton1Click:Connect(function()
     if isSelected then
         MarineBrigade.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         MarineBrigade.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "MarineBrigade"
@@ -1829,15 +1828,15 @@ MarineGrandBrigade.BackgroundTransparency = 0.5
 MarineGrandBrigade.Size = UDim2.new(0.8, 0, 0.05, 0)
 MarineGrandBrigade.TextScaled = true
 MarineGrandBrigade.Position = UDim2.new(0.1, 0, 0.725, 0)
-MarineGrandBrigade.TextColor3 = Color3.new(1, 1, 1)
+MarineGrandBrigade.TextColor3 = Color3.new(0, 1, 1)
 MarineGrandBrigade.Font = Enum.Font.PatrickHand
-MarineGrandBrigade.Text = "Marine Grand Brigade"
+MarineGrandBrigade.Text = "Huge Marines Brigade"
 
 local isSelected = false
 MarineGrandBrigade.MouseButton1Click:Connect(function()
     if isSelected then
         MarineGrandBrigade.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         MarineGrandBrigade.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "MarineGrandBrigade"
@@ -1852,15 +1851,15 @@ Lantern.BackgroundTransparency = 0.5
 Lantern.Size = UDim2.new(0.8, 0, 0.05, 0)
 Lantern.TextScaled = true
 Lantern.Position = UDim2.new(0.1, 0, 0.805, 0)
-Lantern.TextColor3 = Color3.new(1, 1, 1)
+Lantern.TextColor3 = Color3.new(1, 1, 0)
 Lantern.Font = Enum.Font.PatrickHand
-Lantern.Text = "Lantern"
+Lantern.Text = "Latern"
 
 local isSelected = false
 Lantern.MouseButton1Click:Connect(function()
     if isSelected then
         Lantern.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         Lantern.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "Lantern"
@@ -1875,7 +1874,7 @@ Guardian.BackgroundTransparency = 0.5
 Guardian.Size = UDim2.new(0.8, 0, 0.05, 0)
 Guardian.TextScaled = true
 Guardian.Position = UDim2.new(0.1, 0, 0.885, 0)
-Guardian.TextColor3 = Color3.new(1, 1, 1)
+Guardian.TextColor3 = Color3.new(0, 0, 1)
 Guardian.Font = Enum.Font.PatrickHand
 Guardian.Text = "Guardian"
 
@@ -1883,7 +1882,7 @@ local isSelected = false
 Guardian.MouseButton1Click:Connect(function()
     if isSelected then
         Guardian.TextColor3 = Color3.new(1, 1, 1)
-        HoldBoatName.Text = "No Boat"
+        HoldBoatName.Text = "UnSelected Boat"
     else
         Guardian.TextColor3 = Color3.new(0, 1, 0)
         HoldBoatName.Text = "Guardian"
@@ -1891,7 +1890,7 @@ Guardian.MouseButton1Click:Connect(function()
     isSelected = not isSelected
 end)
 
--- Moving To BOSS SEA123 --
+-- BOSS SEA123 --
 
 local EntFrame = Instance.new("Frame")
 EntFrame.Parent = ScreenGui
@@ -1925,9 +1924,9 @@ EntityNumber0.BackgroundTransparency = 0
 EntityNumber0.Size = UDim2.new(0.9, 0, 0.05, 0)
 EntityNumber0.Position = UDim2.new(0.05, 0, 0.02, 0)
 EntityNumber0.TextScaled = true
-EntityNumber0.TextColor3 = Color3.new(0, 1, 0)
+EntityNumber0.TextColor3 = Color3.new(0, 0, 0)
 EntityNumber0.Font = Enum.Font.PatrickHand
-EntityNumber0.Text = "TP to Grollia King [Lvl.20]"
+EntityNumber0.Text = "Boss Gorilla King [Lvl.20]"
 
 local EntNum0UI = Instance.new("UICorner")
 EntNum0UI.Parent = EntityNumber0
@@ -1937,45 +1936,62 @@ EntNum0UI.CornerRadius = UDim.new(0.1, 0)
 
 -- Entity Button Action --
 
-local function TPent0()
-    local EntGorillaKing = game.Workspace.Enemies["The Gorilla King"].HumanoidRootPart
-    if EntGorillaKing then
+-- Part touched to get quest --
+local Lvl20Boss_Dialog = Instance.new("Part")
+Lvl20Boss_Dialog.Parent = game.Workspace
+Lvl20Boss_Dialog.Name = "QuestCube_Lvl20"
+Lvl20Boss_Dialog.Size = Vector3.new(1, 1, 1)
+Lvl20Boss_Dialog.Color = Color3.fromRGB(255, 0, 255)
+Lvl20Boss_Dialog.Transparency = 0.9
+Lvl20Boss_Dialog.Anchored = true
+Lvl20Boss_Dialog.CanCollide = false
+Lvl20Boss_Dialog.Position = Vector3.new(-1122, 40, -505)
+
+-- Part function ontouched to get quest --
+local function Mission_0()
+    print("[You Picked Quest: Lvl.20 Boss]")
+    wait(0.02)
+    local args = {
+    [1] = "StartQuest",
+    [2] = "JungleQuest",
+    [3] = 3
+}
+
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+wait(0.02)
+end
+
+-- Activated when part being touched by me --
+Lvl20Boss_Dialog.Touched:Connect(Mission_0)
+
+-- Box Closed Here --
+
+-- Entity Button Connect To --
+
+EntityNumber0.MouseButton1Click:Connect(function()
+    local EntPosition_Lvl20Boss = game:GetService("Workspace").QuestCube_Lvl20
+    if EntPosition_Lvl20Boss then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
-            local goal = {CFrame = EntGorillaKing.CFrame + Vector3.new(30, 0, 30)}
+            local goal = {CFrame = EntPosition_Lvl20Boss.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 0)
+                EnemiesCF = true
+            end)
         else
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = EntGorillaKing.CFrame + Vector3.new(30, 0, 30)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = EntPosition_Lvl20Boss.CFrame + Vector3.new(0, 0, 0)
+            wait(0.01)
+            game.Players.LocalPlayer.Character.Humanoid.Health = 0
         end
     else
-        print("Not Found: Gorilla King [Lvl.20]")
-    end
-end
-
--- Boss Gorilla King --
-
--- Entity Button Connect To --
-
-local ent0 = false
-EntityNumber0.MouseButton1Click:Connect(function()
-    if ent0 then
-        EntityNumber0.TextColor3 = Color3.new(1, 0, 0)
-        
-        ent0 = false
-    else
-        EntityNumber0.TextColor3 = Color3.new(0, 1, 0)
-        
-        ent0 = true
-        
-        while ent0 do
-            TPent0()
-            wait(0.005)
-        end
+        print("Part not found: Can't taking quest !")
     end
 end)
 
@@ -1991,20 +2007,20 @@ EnemyHRPSelection.BackgroundColor3 = Color3.new(0, 0, 0)
 EnemyHRPSelection.BackgroundTransparency = 0.5
 EnemyHRPSelection.TextScaled = true
 EnemyHRPSelection.Font = Enum.Font.PatrickHand
-EnemyHRPSelection.Text = "Selecting Mobs: OFF"
+EnemyHRPSelection.Text = "Mobs Select: OFF"
 EnemyHRPSelection.TextColor3 = Color3.new(1, 1, 1)
 
 local IsEnemyHRPS = false
 EnemyHRPSelection.MouseButton1Click:Connect(function()
     if IsEnemyHRPS then
-        EnemyHRPSelection.Text = "Selecting Mobs: OFF"
+        EnemyHRPSelection.Text = "Mobs Select: OFF"
         EnemyHRPSelection.TextColor3 = Color3.new(1, 1, 1)
         
         IsEnemyHRPS = false
         
         EntFrame.Visible = false
     else
-        EnemyHRPSelection.Text = "Selecting Mobs: ON"
+        EnemyHRPSelection.Text = "Mobs Select: ON"
         EnemyHRPSelection.TextColor3 = Color3.new(0, 1, 0)
         
         IsEnemyHRPS = true
@@ -2088,20 +2104,20 @@ TrueZeroGravity.BackgroundColor3 = Color3.new(0, 0, 0)
 TrueZeroGravity.BackgroundTransparency = 0.5
 TrueZeroGravity.TextScaled = true
 TrueZeroGravity.Font = Enum.Font.PatrickHand
-TrueZeroGravity.Text = "Zero Gravity [Hide]"
+TrueZeroGravity.Text = "Body Velocity [Hide]"
 TrueZeroGravity.TextColor3 = Color3.new(1, 1, 1)
 
 local AntiZGravity = false
 TrueZeroGravity.MouseButton1Click:Connect(function()
     if AntiZGravity then
-        TrueZeroGravity.Text = "Zero Gravity [Hide]"
+        TrueZeroGravity.Text = "Body Velocity [Hide]"
         TrueZeroGravity.TextColor3 = Color3.new(1, 1, 1)
         
         AntiZGravity = false
         
         ZeroGravity.Visible = false
     else
-        TrueZeroGravity.Text = "Zero Gravity [Show]"
+        TrueZeroGravity.Text = "Body Velocity [Show]"
         TrueZeroGravity.TextColor3 = Color3.new(0, 1, 0)
         
         AntiZGravity = true
@@ -2189,10 +2205,10 @@ local function countItems(itemName)
 end
 
 local function updateLabels()
-    CounterofChest1.Text = "Silver Chest Have: " .. countParts("Chest1")
-    CounterofChest2.Text = "Golden Chest Have: " .. countParts("Chest2")
-    CounterofChest3.Text = "Diamond Chest Have: " .. countParts("Chest3")
-    CounterofFruitSpawn.Text = "Fruit Spawned Have: " .. countItems("Fruit ")
+    CounterofChest1.Text = "Silver Chest: " .. countParts("Chest1")
+    CounterofChest2.Text = "Golden Chest: " .. countParts("Chest2")
+    CounterofChest3.Text = "Diamond Chest: " .. countParts("Chest3")
+    CounterofFruitSpawn.Text = "Fruits Spawned: " .. countItems("Fruit ")
 end
 
 local TrueFruitDetector = Instance.new("TextButton")
@@ -2203,13 +2219,13 @@ TrueFruitDetector.BackgroundColor3 = Color3.new(0, 0, 0)
 TrueFruitDetector.BackgroundTransparency = 0.5
 TrueFruitDetector.TextScaled = true
 TrueFruitDetector.Font = Enum.Font.PatrickHand
-TrueFruitDetector.Text = "View Fruit/Chest [Hide]"
+TrueFruitDetector.Text = "Fruit/Chest Notifier [OFF]"
 TrueFruitDetector.TextColor3 = Color3.new(1, 1, 1)
 
 local FruitChestTrueSpawned = false
 TrueFruitDetector.MouseButton1Click:Connect(function()
     if FruitChestTrueSpawned then
-        TrueFruitDetector.Text = "View Fruit/Chest [Hide]"
+        TrueFruitDetector.Text = "Fruit/Chest Notifier [OFF]"
         TrueFruitDetector.TextColor3 = Color3.new(1, 1, 1)
         CounterofChest1.Visible = false
         CounterofChest2.Visible = false
@@ -2218,7 +2234,7 @@ TrueFruitDetector.MouseButton1Click:Connect(function()
         
         FruitChestTrueSpawned = false
     else
-        TrueFruitDetector.Text = "View Fruit/Chest [Show]"
+        TrueFruitDetector.Text = "Fruit/Chest Notifier [ON]"
         TrueFruitDetector.TextColor3 = Color3.new(0, 1, 0)
         CounterofChest1.Visible = true
         CounterofChest2.Visible = true
@@ -2234,12 +2250,59 @@ TrueFruitDetector.MouseButton1Click:Connect(function()
     end
 end)
 
+-- Helper Box --
+
+local msgframe_0 = {
+    "----- How to use -----",
+    "Body Velocity: is a button make you're movement",
+    "becoming smoother, like flying progress you can turn it",
+    "on while in (Tweening Progress) and while you can turn it",
+    "off to... if you're died or reset character while it's",
+    "on then whenever you're respawning it always set to off",
+    "preventing bugs or glitched on my script gonna happened",
+    "Turned this on it will create a shortcut button for you",
+    "at on top of the tools Hotbar, that's all Bye !"
+}
+
+local msglistfix_0 = table.concat(msgframe_0, "\n")
+
+local TutorialFrame_0 = Instance.new("TextLabel")
+TutorialFrame_0.Parent = ScreenGui
+TutorialFrame_0.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TutorialFrame_0.BackgroundTransparency = 0.8
+TutorialFrame_0.Size = UDim2.new(0.5, 0, 0.5, 0)
+TutorialFrame_0.Position = UDim2.new(0.25, 0, 0.25, 0)
+TutorialFrame_0.TextWrapped = true
+TutorialFrame_0.TextScaled = true
+TutorialFrame_0.TextColor3 = Color3.fromRGB(255, 0, 255)
+TutorialFrame_0.Font = Enum.Font.PatrickHand
+TutorialFrame_0.Text = msglistfix_0
+TutorialFrame_0.Visible = false
+
+-- Button Animation --
+
+OpenClose.MouseEnter:Connect(function()
+    OpenClose.TextColor3 = Color3.new(1, 1, 0)
+end)
+
+OpenClose.MouseLeave:Connect(function()
+    OpenClose.TextColor3 = Color3.new(1, 1, 1)
+end)
+
+TrueZeroGravity.MouseEnter:Connect(function()
+    TutorialFrame_0.Visible = true
+end)
+
+TrueZeroGravity.MouseLeave:Connect(function()
+    TutorialFrame_0.Visible = false
+end)
+
 -- Welcome message --
 
 local CoreGui = game:GetService("StarterGui")
         CoreGui:SetCore("SendNotification", {
             Title = "Welcome to NganHa2k3 Script",
-            Text = "Blox Fruits collect chest, quicks change weapon !",
+            Text = "Blox Fruits: Auto Farm, Quickly Buy Items, Shopping, Random Fruits, Troll, Collecting Fruit and Chest, It maybe have more feature in future update so right now, Bye !",
             Duration = 2,
         })
 
