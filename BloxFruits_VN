@@ -1924,7 +1924,7 @@ EntityNumber0.BackgroundTransparency = 0
 EntityNumber0.Size = UDim2.new(0.9, 0, 0.05, 0)
 EntityNumber0.Position = UDim2.new(0.05, 0, 0.02, 0)
 EntityNumber0.TextScaled = true
-EntityNumber0.TextColor3 = Color3.new(0, 1, 0)
+EntityNumber0.TextColor3 = Color3.new(0, 0, 0)
 EntityNumber0.Font = Enum.Font.PatrickHand
 EntityNumber0.Text = "Đi tới Trùm Vua Khỉ Đột [Lvl.20]"
 
@@ -1936,73 +1936,60 @@ EntNum0UI.CornerRadius = UDim.new(0.1, 0)
 
 -- Entity Button Action --
 
-local function GetQuestJungle3()
-if currentTween then
-    currentTween:Cancel()
-end
+-- Part touched to get quest --
+local Lvl20Boss_Dialog = Instance.new("Part")
+Lvl20Boss_Dialog.Parent = game.Workspace
+Lvl20Boss_Dialog.Size = Vector3.new(1, 1, 1)
+Lvl20Boss_Dialog.Color = Color3.fromRGB(255, 0, 255)
+Lvl20Boss_Dialog.Anchored = true
+Lvl20Boss_Dialog.CanCollide = false
+Lvl20Boss_Dialog.Position = Vector3.new(-1122, 40, -505)
 
-local goalPosition = Vector3.new(-1099, 30, -463)
-local goal = {CFrame = CFrame.new(goalPosition)}
-local tweenInfo = createTweenInfo(playerPos, goalPosition)
-currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
-
-currentTween:Play()
-currentTween.Completed:Wait()
-
-task.wait(0.5)
-
-local args = {
+-- Part function ontouched to get quest --
+local function Mission_0()
+    print("[You Picked Quest: Lvl.20 Boss]")
+    wait(0.02)
+    local args = {
     [1] = "StartQuest",
     [2] = "JungleQuest",
     [3] = 3
 }
 
 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+wait(0.02)
 end
 
-local function TPent0()
-    local EntGorillaKing = game.Workspace.Enemies["The Gorilla King"].HumanoidRootPart
-    if EntGorillaKing then
+-- Activated when part being touched by me --
+Lvl20Boss_Dialog.Touched:Connect(Mission_0)
+
+-- Box Closed Here --
+
+-- Entity Button Connect To --
+
+EntityNumber0.MouseButton1Click:Connect(function()
+    local EntPosition_Lvl20Boss = game:GetService("Workspace").FindFirstChild("Lvl20Boss_Dialog")
+    if EntPosition_Lvl20Boss then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
             end
-            local goal = {CFrame = EntGorillaKing.CFrame + Vector3.new(30, 0, 30)}
+            local goal = {CFrame = EntPosition_Lvl20Boss.CFrame + Vector3.new(0, 2, 0)}
             local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
             currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
             currentTween:Play()
+            
+            currentTween.Completed:Connect(function()
+                EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 0)
+                EnemiesCF = true
+            end)
         else
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = EntGorillaKing.CFrame + Vector3.new(30, 0, 30)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = EntPosition_Lvl20Boss.CFrame + Vector3.new(0, 0, 0)
+            wait(0.01)
+            game.Players.LocalPlayer.Character.Humanoid.Health = 0
         end
     else
-        print("Not Found: Gorilla King [Lvl.20]")
-    end
-end
-
--- Boss Gorilla King --
-
--- Entity Button Connect To --
-
-local ent0 = false
-EntityNumber0.MouseButton1Click:Connect(function()
-    if ent0 then
-        EntityNumber0.TextColor3 = Color3.new(1, 0, 0)
-        
-        ent0 = false
-    else
-        EntityNumber0.TextColor3 = Color3.new(0, 1, 0)
-
-        ent0 = true
-        
-        GetQuestJungle3()
-
-        task.wait(0.5)
-        
-        while ent0 do
-            TPent0()
-            wait(0.005)
-        end
+        print("Part not found: Can't taking quest !")
     end
 end)
 
@@ -2259,6 +2246,53 @@ TrueFruitDetector.MouseButton1Click:Connect(function()
             wait(1)
         end
     end
+end)
+
+-- Helper Box --
+
+local msgframe_0 = {
+    "----- Cách sử dụng nút này -----",
+    "Bay mượt: là nút giúp cho chuyển động",
+    "của bạn trở nên mượt mà hơn trong quá trình",
+    "bay (Tweening Progress), khi bạn ấn nó sẽ tạo",
+    "ra một cái nút hình vuông nhỏ trên thanh công cụ",
+    "của bạn ấn vào đó nó sẽ bật.. và bạn cũng có thể tắt",
+    "hoặc khi bạn chết nghĩa là nhân vật máu về 0, hoặc reset",
+    "character khi hồi sinh nó sẽ tự động tắt, để làm gì hả",
+    "để tránh trường hợp có thể gặp lỗi trong script chưa sửa được. ok tạm biệt !"
+}
+
+local msglistfix_0 = table.concat(msgframe_0, "\n")
+
+local TutorialFrame_0 = Instance.new("TextLabel")
+TutorialFrame_0.Parent = LanguageSGui
+TutorialFrame_0.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TutorialFrame_0.BackgroundTransparency = 0.8
+TutorialFrame_0.Size = UDim2.new(0.5, 0, 0.5, 0)
+TutorialFrame_0.Position = UDim2.new(0.25, 0, 0.25, 0)
+TutorialFrame_0.TextWrapped = true
+TutorialFrame_0.TextScaled = true
+TutorialFrame_0.TextColor3 = Color3.fromRGB(255, 0, 255)
+TutorialFrame_0.Font = Enum.Font.PatrickHand
+TutorialFrame_0.Text = msglistfix_0
+TutorialFrame_0.Visible = false
+
+-- Button Animation --
+
+OpenClose.MouseEnter:Connect(function()
+    OpenClose.TextColor3 = Color3.new(1, 1, 0)
+end)
+
+OpenClose.MouseLeave:Connect(function()
+    OpenClose.TextColor3 = Color3.new(1, 1, 1)
+end)
+
+TrueZeroGravity.MouseEnter:Connect(function()
+    TutorialFrame_0.Visible = true
+end)
+
+TrueZeroGravity.MouseLeave:Connect(function()
+    TutorialFrame_0.Visible = false
 end)
 
 -- Welcome message --
