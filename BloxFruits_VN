@@ -1939,8 +1939,10 @@ EntNum0UI.CornerRadius = UDim.new(0.1, 0)
 -- Part touched to get quest --
 local Lvl20Boss_Dialog = Instance.new("Part")
 Lvl20Boss_Dialog.Parent = game.Workspace
+Lvl20Boss_Dialog.Name = "QuestCube_Lvl20"
 Lvl20Boss_Dialog.Size = Vector3.new(1, 1, 1)
 Lvl20Boss_Dialog.Color = Color3.fromRGB(255, 0, 255)
+Lvl20Boss_Dialog.Transparency = 0.9
 Lvl20Boss_Dialog.Anchored = true
 Lvl20Boss_Dialog.CanCollide = false
 Lvl20Boss_Dialog.Position = Vector3.new(-1122, 40, -505)
@@ -1967,7 +1969,7 @@ Lvl20Boss_Dialog.Touched:Connect(Mission_0)
 -- Entity Button Connect To --
 
 EntityNumber0.MouseButton1Click:Connect(function()
-    local EntPosition_Lvl20Boss = game:GetService("Workspace"):FindFirstChild("Lvl20Boss_Dialog")
+    local EntPosition_Lvl20Boss = game:GetService("Workspace").QuestCube_Lvl20
     if EntPosition_Lvl20Boss then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
         if isTweenMode then
