@@ -1967,7 +1967,7 @@ Lvl20Boss_Dialog.Touched:Connect(Mission_0)
 -- Entity Button Connect To --
 
 EntityNumber0.MouseButton1Click:Connect(function()
-    local EntPosition_Lvl20Boss = game:GetService("Workspace").FindFirstChild("Lvl20Boss_Dialog")
+    local EntPosition_Lvl20Boss = game:GetService("Workspace"):FindFirstChild("Lvl20Boss_Dialog")
     if EntPosition_Lvl20Boss then
         local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
         if isTweenMode then
@@ -2265,7 +2265,7 @@ local msgframe_0 = {
 local msglistfix_0 = table.concat(msgframe_0, "\n")
 
 local TutorialFrame_0 = Instance.new("TextLabel")
-TutorialFrame_0.Parent = LanguageSGui
+TutorialFrame_0.Parent = ScreenGui
 TutorialFrame_0.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 TutorialFrame_0.BackgroundTransparency = 0.8
 TutorialFrame_0.Size = UDim2.new(0.5, 0, 0.5, 0)
