@@ -754,7 +754,7 @@ end)
 
 button2.MouseButton1Click:Connect(function()
     isTweenMode = not isTweenMode
-    button2.Text = isTweenMode and "Chế độ: Mọc cánh và bay đi" or "Chế độ: Dịch chuyển tức thời"
+    button2.Text = isTweenMode and "Mode: Tweening Progress" or "Mode: Teleportation"
     button2.TextColor3 = isTweenMode and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(255, 255, 255)
     
     if not isTweenMode and currentTween then
