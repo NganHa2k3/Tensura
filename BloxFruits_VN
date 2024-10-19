@@ -2250,9 +2250,26 @@ TrueFruitDetector.MouseButton1Click:Connect(function()
     end
 end)
 
--- Quickly Taking Our Quest4Level --
+-- OVERKILL/Lappy Just a Music I Liked In --
 
+local TrueQuestTaking = Instance.new("TextButton")
+TrueQuestTaking.Parent = ScrollingFrame
+TrueQuestTaking.Size = UDim2.new(0.03, 0, 0.9, 0)
+TrueQuestTaking.Position = UDim2.new(0.925, 0, 0, 0)
+TrueQuestTaking.BackgroundColor3 = Color3.new(0, 0, 0)
+TrueQuestTaking.BackgroundTransparency = 0.5
+TrueQuestTaking.TextScaled = true
+TrueQuestTaking.Font = Enum.Font.Code
+TrueQuestTaking.Text = "Khởi động[Tự động Nhiệm Vụ]"
+TrueQuestTaking.TextColor3 = Color3.new(1, 1, 0)
+TrueQuestTaking.Visible = true
 
+TrueQuestTaking.MouseButton1Click:Connect(function()
+    print("-- Auto Taking Quest: Loaded In --")
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/main/BloxFruits_AutoQuest_I"))()
+    task.wait(0.02)
+    TrueQuestTaking.Visible = false
+end)
 
 -- Helper Box --
 
