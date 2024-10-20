@@ -1,0 +1,59 @@
+local Fruit_DetectorNotification = Instance.new("ScreenGui")
+Fruit_DetectorNotification.Parent = game.CoreGui
+
+local HoldOurValue = Instance.new("TextBox")
+HoldOurValue.Parent = Fruit_DetectorNotification
+HoldOurValue.BackgroundColor3 = Color3.new(0, 0, 0)
+HoldOurValue.BackgroundTransparency = 0.9
+HoldOurValue.Size = UDim2.new(0.05, 0, 0.05, 0)
+HoldOurValue.Position = UDim2.new(0, 0, 0.4, 0)
+HoldOurValue.TextScaled = true
+HoldOurValue.TextColor3 = Color3.new(1, 1, 1)
+HoldOurValue.Font = Enum.Font.Code
+HoldOurValue.Text = ""
+HoldOurValue.Visible = true
+
+local NotifyToOurPlayers = Instance.new("TextLabel")
+NotifyToOurPlayers.Parent = Fruit_DetectorNotification
+NotifyToOurPlayers.BackgroundColor3 = Color3.new(0, 0, 0)
+NotifyToOurPlayers.BackgroundTransparency = 0.5
+NotifyToOurPlayers.Size = UDim2.new(0.5, 0, 0.2, 0)
+NotifyToOurPlayers.Position = UDim2.new(0.25, 0, 0.3, 0)
+NotifyToOurPlayers.TextScaled = true
+NotifyToOurPlayers.TextColor3 = Color3.new(1, 1, 0)
+NotifyToOurPlayers.Font = Enum.Font.Code
+NotifyToOurPlayers.Text = "[Đang nhặt trái ác quỷ xuất hiện nha]"
+NotifyToOurPlayers.Visible = false
+
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local me = character:WaitForChild("HumanoidRootPart")
+
+local function countItems(itemName)
+    local itemCount = 0
+    for _, item in ipairs(game.Workspace:GetChildren()) do
+        if item.Name == itemName and item:IsA("Model") and item:FindFirstChild("Handle") then
+            itemCount = itemCount + 1
+        end
+    end
+    return itemCount
+end
+
+local function UPDTLBFF()
+    HoldOurValue.Text = tostring(countItems("Fruit "))
+end
+
+local function NotifyFSpawnedTrue()
+    if HoldOurValue.Text == "1" then
+        NotifyToOurPlayers.Visible = true
+        me.CFrame = game.Workspace:FindFirstChild("Fruit ").Handle.CFrame + Vector3.new(0, 1, 0)
+    elseif HoldOurValue.Text == "0" then
+        NotifyToOurPlayers.Visible = false
+    end
+end
+
+while true do
+    UPDTLBFF()
+    NotifyFSpawnedTrue()
+    wait(0.001)
+end
