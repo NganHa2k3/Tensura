@@ -1,0 +1,19 @@
+local Anima1 = game:GetService("Players")
+local Anima2 = Anima1.LocalPlayer
+local Anima3 = Anima2.Character or Anima2.CharacterAdded:Wait()
+local Anima4 = Anima3:WaitForChild("Humanoid")
+local Anima5 = "17275798442"
+
+local animation = Instance.new("Animation")
+animation.AnimationId = "rbxassetid://" .. Anima5
+
+local animationTrack = Anima4:LoadAnimation(animation)
+
+local function playAnimation()
+    for _, track in pairs(Anima4:GetPlayingAnimationTracks()) do
+        track:Stop()
+    end
+    animationTrack:Play()
+end
+
+playAnimation()
