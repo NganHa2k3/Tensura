@@ -205,6 +205,41 @@ Button5Corner.CornerRadius = UDim.new(0, 10)
 
 -- 5 --
 
+local function loadScript()
+    _G.settings = {
+    ["RedStartupId"] = "rbxassetid://1177475221",
+    ["RedHitId"] = "rbxassetid://8625377966",
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/skibiditoiletfan2007/BaldyToSorcerer/main/Latest.lua"))()
+end
+
+local GojoScript = Instance.new("TextButton")
+GojoScript.Parent = ScrollingFrame
+GojoScript.BackgroundColor3 = Color3.new(0, 0, 0)
+GojoScript.BackgroundTransparency = 0.5
+GojoScript.Size = UDim2.new(0.03, 0, 0.9, 0)  -- Adjusted size for better visibility
+GojoScript.TextScaled = true
+GojoScript.Position = UDim2.new(0.38, 0, 0, 0)  -- Positioned inside the ScrollingFrame
+GojoScript.TextColor3 = Color3.new(1, 1, 1)
+GojoScript.Font = Enum.Font.PatrickHand
+GojoScript.Text = "[Biến Saitama thành Gojo]"
+GojoScript.Visible = true
+
+local GojoScriptCorner = Instance.new("UICorner")
+GojoScriptCorner.Parent = GojoScript
+GojoScriptCorner.CornerRadius = UDim.new(0.1, 0)
+
+GojoScript.MouseButton1Click:Connect(function()
+    GojoScript.Visible = false
+    loadScript()
+end)
+
+localPlayer.CharacterAdded:Connect(function(character)
+    GojoScript.Visible = true
+end)
+
+-- button 6 [Thầy Gojo script bởi người khác] --
+
 -- Scrolling Box --
 
 ScrollingEmote.Parent = ScreenGui
