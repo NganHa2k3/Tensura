@@ -1453,3 +1453,6 @@ local function sendRandomMessagesa()
 end
 
 sendRandomMessagesa()
+
+-- Starter Animation --
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/main/TSB_StartAnimation"))()
