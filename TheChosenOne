@@ -410,6 +410,22 @@ CoreGui:SetCore("SendNotification", {
 })
 end)
 
+local NearestPlayersInventoryInfo = Instance.new("TextButton")
+NearestPlayersInventoryInfo.Parent = ScrollingS
+NearestPlayersInventoryInfo.BackgroundColor3 = Color3.new(0, 0, 0)
+NearestPlayersInventoryInfo.BackgroundTransparency = 0.5
+NearestPlayersInventoryInfo.Size = UDim2.new(0.8, 0, 0.05, 0)
+NearestPlayersInventoryInfo.TextScaled = true
+NearestPlayersInventoryInfo.Position = UDim2.new(0.1, 0, 0.245, 0)
+NearestPlayersInventoryInfo.TextColor3 = Color3.new(0, 1, 1)
+NearestPlayersInventoryInfo.Font = Enum.Font.PatrickHand
+NearestPlayersInventoryInfo.Text = "Listed Item (nearest players)"
+
+NearestPlayersInventoryInfo.MouseButton1Click:Connect(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/searching/Tools_Listed"))()
+    print("Successfully Listed Nearest Players All Existed Item In Inventory")
+end)
+
 -- Server Browser --
 
 local ServerHop = Instance.new("TextButton")
