@@ -773,8 +773,29 @@ button3.FocusLost:Connect(function(enterPressed)
     end
 end)
 
+local ixcaq = game:GetService("Players")
+local function autocorrectUsername()
+    local input = button4.Text:lower()
+    local matchedPlayer = nil
+
+    for _, player in ipairs(ixcaq:GetPlayers()) do
+        if player.Name:lower():sub(1, #input) == input then
+            matchedPlayer = player.Name
+            break
+        end
+    end
+
+    if matchedPlayer then
+        button4.Text = matchedPlayer
+    else
+        button4.Text = ""
+    end
+end
+
 button4.FocusLost:Connect(function(enterPressed)
     if enterPressed then
+        autocorrectUsername()
+        button4:ReleaseFocus()
         local username = button4.Text
         local player = game:GetService("Players"):FindFirstChild(username)
         if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
