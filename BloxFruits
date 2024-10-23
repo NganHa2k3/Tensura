@@ -795,7 +795,7 @@ end
 button4.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         autocorrectUsername()
-        button4.ReleaseFocus()
+        button4:ReleaseFocus()
         local username = button4.Text
         local player = game:GetService("Players"):FindFirstChild(username)
         if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
