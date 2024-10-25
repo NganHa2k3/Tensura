@@ -2370,7 +2370,7 @@ local function AllPlayersLevelCheckF(player, messageColor)
     textLabel.TextScaled = true
 end
 
-local function BeliCheckF(player, messageColor)
+local function BeliCheckF(player, messageColor1)
     local character = player.Character or player.CharacterAdded:Wait()
     local head = character:WaitForChild("Head")
 
