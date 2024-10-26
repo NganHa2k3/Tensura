@@ -2345,7 +2345,7 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
-local function AllPlayersLevelCheckF(player, messageColor)
+local function AllPlayersLevelCheckF(player, levelColor)
     local character = player.Character or player.CharacterAdded:Wait()
     local head = character:WaitForChild("Head")
 
@@ -2364,13 +2364,13 @@ local function AllPlayersLevelCheckF(player, messageColor)
     local textLabel = Instance.new("TextLabel", billboardGui)
     textLabel.Size = UDim2.new(0.4, 0, 0.3, 0)
     textLabel.BackgroundTransparency = 1
-    textLabel.TextColor3 = messageColor
+    textLabel.TextColor3 = levelColor
     textLabel.TextStrokeTransparency = 0.5
     textLabel.Text = "Cấp độ: " .. level
     textLabel.TextScaled = true
 end
 
-local function BeliCheckF(player, messageColor1)
+local function BeliCheckF(player, beliColor)
     local character = player.Character or player.CharacterAdded:Wait()
     local head = character:WaitForChild("Head")
 
@@ -2379,7 +2379,7 @@ local function BeliCheckF(player, messageColor1)
         existingBillboard:Destroy()
     end
 
-    local level = player:FindFirstChild("Data") and player.Data:FindFirstChild("Beli") and player.Data.Level.Value or "N/A"
+    local beli = player:FindFirstChild("Data") and player.Data:FindFirstChild("Beli") and player.Data.Beli.Value or "N/A"
 
     local billboardGui = Instance.new("BillboardGui", head)
     billboardGui.Size = UDim2.new(0, 200, 0, 50)
@@ -2389,9 +2389,9 @@ local function BeliCheckF(player, messageColor1)
     local textLabel = Instance.new("TextLabel", billboardGui)
     textLabel.Size = UDim2.new(0.4, 0, 0.3, 0)
     textLabel.BackgroundTransparency = 1
-    textLabel.TextColor3 = messageColor1
+    textLabel.TextColor3 = beliColor
     textLabel.TextStrokeTransparency = 0.5
-    textLabel.Text = "Tiền: " .. level
+    textLabel.Text = "Tiền: " .. beli
     textLabel.TextScaled = true
 end
 
@@ -2410,7 +2410,7 @@ local function clearNameTags()
     end
 end
 
-local LevelCheckF = Instance.new("TextButton", ScrollingFrame)
+local LevelCheckF = Instance.new("TextButton", playerGui)
 LevelCheckF.BackgroundColor3 = Color3.new(0, 0, 0)
 LevelCheckF.BackgroundTransparency = 0.5
 LevelCheckF.Size = UDim2.new(0.03, 0, 0.9, 0)
@@ -2418,30 +2418,30 @@ LevelCheckF.Position = UDim2.new(0.965, 0, 0, 0)
 LevelCheckF.TextScaled = true
 LevelCheckF.TextColor3 = Color3.new(1, 1, 1)
 LevelCheckF.Font = Enum.Font.PatrickHand
-LevelCheckF.Text = "Kiểm tra đồ: Tắt"
+LevelCheckF.Text = "Hiển thị đồ: Tắt"
 
 local isLevelDisplayOn = false
-local messageColor = Color3.new(1, 1, 0)
-local messageColor1 = Color3.new(0, 1, 0)
+local levelColor = Color3.new(1, 1, 0)  -- Yellow for level
+local beliColor = Color3.new(0, 1, 0)   -- Green for Beli
 
 LevelCheckF.MouseButton1Click:Connect(function()
     isLevelDisplayOn = not isLevelDisplayOn
 
     if isLevelDisplayOn then
-        LevelCheckF.Text = "Kiểm tra đồ: Bật"
+        LevelCheckF.Text = "Hiển thị đồ: Mở"
         LevelCheckF.TextColor3 = Color3.new(0, 1, 0)
         
         for _, player in ipairs(Players:GetPlayers()) do
-            AllPlayersLevelCheckF(player, messageColor)
-            BeliCheckF(player, messageColor1)
+            AllPlayersLevelCheckF(player, levelColor)
+            BeliCheckF(player, beliColor)
         end
         
-        Players.PlayerAdded:Connect(function(player)
-            AllPlayersLevelCheckF(player, messageColor)
-            BeliCheckF(player, messageColor1)
+        Players.PlayerAdded:Connect(function(newPlayer)
+            AllPlayersLevelCheckF(newPlayer, levelColor)
+            BeliCheckF(newPlayer, beliColor)
         end)
     else
-        LevelCheckF.Text = "Kiểm tra đồ: Tắt"
+        LevelCheckF.Text = "Hiển thị đồ: Tắt"
         LevelCheckF.TextColor3 = Color3.new(1, 1, 1)
         clearNameTags()
     end
@@ -2449,15 +2449,15 @@ end)
 
 for _, player in ipairs(Players:GetPlayers()) do
     if isLevelDisplayOn then
-        AllPlayersLevelCheckF(player, messageColor)
-        BeliCheckF(player, messageColor1)
+        AllPlayersLevelCheckF(player, levelColor)
+        BeliCheckF(player, beliColor)
     end
 end
 
-Players.PlayerAdded:Connect(function(player)
+Players.PlayerAdded:Connect(function(newPlayer)
     if isLevelDisplayOn then
-        AllPlayersLevelCheckF(player, messageColor)
-        BeliCheckF(player, messageColor1)
+        AllPlayersLevelCheckF(newPlayer, levelColor)
+        BeliCheckF(newPlayer, beliColor)
     end
 end)
 
