@@ -2411,6 +2411,7 @@ local function clearNameTags()
 end
 
 local LevelCheckF = Instance.new("TextButton", playerGui)
+LevelCheckF.Parent = ScrollingFrame
 LevelCheckF.BackgroundColor3 = Color3.new(0, 0, 0)
 LevelCheckF.BackgroundTransparency = 0.5
 LevelCheckF.Size = UDim2.new(0.03, 0, 0.9, 0)
