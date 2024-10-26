@@ -2342,75 +2342,9 @@ end)
 -- [[ Level Check Displayed ]] --
 
 local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local LocalPlayer = Players.LocalPlayer
 
-local function AllPlayersLevelCheckF(player, levelColor)
-    local character = player.Character or player.CharacterAdded:Wait()
-    local head = character:WaitForChild("Head")
-
-    local existingBillboard = head:FindFirstChild("BillboardGui")
-    if existingBillboard then
-        existingBillboard:Destroy()
-    end
-
-    local level = player:FindFirstChild("Data") and player.Data:FindFirstChild("Level") and player.Data.Level.Value or "N/A"
-
-    local billboardGui = Instance.new("BillboardGui", head)
-    billboardGui.Size = UDim2.new(0, 200, 0, 50)
-    billboardGui.StudsOffset = Vector3.new(0, -6, 0)
-    billboardGui.AlwaysOnTop = true
-
-    local textLabel = Instance.new("TextLabel", billboardGui)
-    textLabel.Size = UDim2.new(0.4, 0, 0.3, 0)
-    textLabel.BackgroundTransparency = 1
-    textLabel.TextColor3 = levelColor
-    textLabel.TextStrokeTransparency = 0.5
-    textLabel.Text = "Cấp độ: " .. level
-    textLabel.TextScaled = true
-end
-
-local function BeliCheckF(player, beliColor)
-    local character = player.Character or player.CharacterAdded:Wait()
-    local head = character:WaitForChild("Head")
-
-    local existingBillboard = head:FindFirstChild("BillboardGui")
-    if existingBillboard then
-        existingBillboard:Destroy()
-    end
-
-    local beli = player:FindFirstChild("Data") and player.Data:FindFirstChild("Beli") and player.Data.Beli.Value or "N/A"
-
-    local billboardGui = Instance.new("BillboardGui", head)
-    billboardGui.Size = UDim2.new(0, 200, 0, 50)
-    billboardGui.StudsOffset = Vector3.new(0, -7, 0)
-    billboardGui.AlwaysOnTop = true
-
-    local textLabel = Instance.new("TextLabel", billboardGui)
-    textLabel.Size = UDim2.new(0.4, 0, 0.3, 0)
-    textLabel.BackgroundTransparency = 1
-    textLabel.TextColor3 = beliColor
-    textLabel.TextStrokeTransparency = 0.5
-    textLabel.Text = "Tiền: " .. beli
-    textLabel.TextScaled = true
-end
-
-local function clearNameTags()
-    for _, player in ipairs(Players:GetPlayers()) do
-        local character = player.Character
-        if character then
-            local head = character:FindFirstChild("Head")
-            if head then
-                local billboardGui = head:FindFirstChild("BillboardGui")
-                if billboardGui then
-                    billboardGui:Destroy()
-                end
-            end
-        end
-    end
-end
-
-local LevelCheckF = Instance.new("TextButton", playerGui)
+local LevelCheckF = Instance.new("TextButton", SG)
 LevelCheckF.Parent = ScrollingFrame
 LevelCheckF.BackgroundColor3 = Color3.new(0, 0, 0)
 LevelCheckF.BackgroundTransparency = 0.5
@@ -2419,46 +2353,164 @@ LevelCheckF.Position = UDim2.new(0.965, 0, 0, 0)
 LevelCheckF.TextScaled = true
 LevelCheckF.TextColor3 = Color3.new(1, 1, 1)
 LevelCheckF.Font = Enum.Font.PatrickHand
-LevelCheckF.Text = "Hiển thị đồ: Tắt"
+LevelCheckF.Text = "Kiểm tra đồ: [Tắt]"
 
-local isLevelDisplayOn = false
-local levelColor = Color3.new(1, 1, 0)  -- Yellow for level
-local beliColor = Color3.new(0, 1, 0)   -- Green for Beli
+local isToggledOn = false
+local billboardGuis = {}
 
-LevelCheckF.MouseButton1Click:Connect(function()
-    isLevelDisplayOn = not isLevelDisplayOn
+local function createBillboardGui(player)
+    if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then return end
+    
+    local head = player.Character:WaitForChild("Head")
+    local distance = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+    local level = player:FindFirstChild("Data") and player.Data:FindFirstChild("Level") and player.Data.Level.Value or "N/A"
+    local beli = player:FindFirstChild("Data") and player.Data:FindFirstChild("Beli") and player.Data.Beli.Value or "N/A"
+    local devilf = player:FindFirstChild("Data") and player.Data:FindFirstChild("DevilFruit") and player.Data.DevilFruit.Value or "N/A"
+    local playersDisplayName = player.DisplayName or "Unknown"
+    local username = player.Name
 
-    if isLevelDisplayOn then
-        LevelCheckF.Text = "Hiển thị đồ: Mở"
-        LevelCheckF.TextColor3 = Color3.new(0, 1, 0)
+    local billboard = Instance.new("BillboardGui")
+    billboard.Size = UDim2.new(0, 200, 0, 120)
+    billboard.StudsOffset = Vector3.new(-8, 0, 0)
+    billboard.AlwaysOnTop = true
+    billboard.Parent = head
+
+    local distanceLabel = Instance.new("TextLabel")
+    distanceLabel.Size = UDim2.new(1, 0, 0, 25)
+    distanceLabel.BackgroundTransparency = 1
+    distanceLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    distanceLabel.TextStrokeTransparency = 0.5
+    distanceLabel.Text = "[" .. math.floor(distance) .. "m]"
+    distanceLabel.TextScaled = false
+    distanceLabel.TextSize = 5
+    distanceLabel.Parent = billboard
+
+    local levelLabel = Instance.new("TextLabel")
+    levelLabel.Size = UDim2.new(1, 0, 0, 25)
+    levelLabel.Position = UDim2.new(0, 0, 0, 9)
+    levelLabel.BackgroundTransparency = 1
+    levelLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+    levelLabel.TextStrokeTransparency = 0.5
+    levelLabel.Text = "[" .. level .. "]"
+    levelLabel.TextScaled = false
+    levelLabel.TextSize = 5
+    levelLabel.Parent = billboard
+
+    local beliLabel = Instance.new("TextLabel")
+    beliLabel.Size = UDim2.new(1, 0, 0, 25)
+    beliLabel.Position = UDim2.new(0, 0, 0, 18)
+    beliLabel.BackgroundTransparency = 1
+    beliLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+    beliLabel.TextStrokeTransparency = 0.5
+    beliLabel.Text = "[" .. beli .. "]"
+    beliLabel.TextScaled = false
+    beliLabel.TextSize = 5
+    beliLabel.Parent = billboard
+
+    local devilfLabel = Instance.new("TextLabel")
+    devilfLabel.Size = UDim2.new(1, 0, 0, 25)
+    devilfLabel.Position = UDim2.new(0, 0, 0, 27)
+    devilfLabel.BackgroundTransparency = 1
+    devilfLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
+    devilfLabel.TextStrokeTransparency = 0.5
+    devilfLabel.Text = "[" .. devilf .. "]"
+    devilfLabel.TextScaled = false
+    devilfLabel.TextSize = 5
+    devilfLabel.Parent = billboard
+
+    local playersLabel = Instance.new("TextLabel")
+    playersLabel.Size = UDim2.new(1, 0, 0, 25)
+    playersLabel.Position = UDim2.new(0, 0, 0, 36)
+    playersLabel.BackgroundTransparency = 1
+    playersLabel.TextColor3 = Color3.fromRGB(255, 165, 0)
+    playersLabel.TextStrokeTransparency = 0.5
+    playersLabel.Text = "[" .. playersDisplayName .. "]"
+    playersLabel.TextScaled = false
+    playersLabel.TextSize = 5
+    playersLabel.Parent = billboard
+
+    local userLabel = Instance.new("TextLabel")
+    userLabel.Size = UDim2.new(1, 0, 0, 25)
+    userLabel.Position = UDim2.new(0, 0, 0, 45)
+    userLabel.BackgroundTransparency = 1
+    userLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    userLabel.TextStrokeTransparency = 0.5
+    userLabel.Text = "[" .. username .. "]"
+    userLabel.TextScaled = false
+    userLabel.TextSize = 5
+    userLabel.Parent = billboard
+
+    billboardGuis[player.UserId] = {billboard, distanceLabel, levelLabel, beliLabel, devilfLabel, playersLabel, userLabel}
+end
+
+local function updateBillboardGui(player)
+    if billboardGuis[player.UserId] then
+        local billboard, distanceLabel, levelLabel, beliLabel, devilfLabel, playersLabel, userLabel = unpack(billboardGuis[player.UserId])
         
-        for _, player in ipairs(Players:GetPlayers()) do
-            AllPlayersLevelCheckF(player, levelColor)
-            BeliCheckF(player, beliColor)
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+            local level = player:FindFirstChild("Data") and player.Data:FindFirstChild("Level") and player.Data.Level.Value or "N/A"
+            local beli = player:FindFirstChild("Data") and player.Data:FindFirstChild("Beli") and player.Data.Beli.Value or "N/A"
+            local devilf = player:FindFirstChild("Data") and player.Data:FindFirstChild("DevilFruit") and player.Data.DevilFruit.Value or "N/A"
+            local playersDisplayName = player.DisplayName or "Unknown"
+            local username = player.Name
+
+            distanceLabel.Text = "[" .. math.floor(distance) .. "m]"
+            levelLabel.Text = "[" .. level .. "]"
+            beliLabel.Text = "[" .. beli .. "]"
+            devilfLabel.Text = "[" .. devilf .. "]"
+            playersLabel.Text = "[" .. playersDisplayName .. "]"
+            userLabel.Text = "[" .. username .. "]"
         end
-        
-        Players.PlayerAdded:Connect(function(newPlayer)
-            AllPlayersLevelCheckF(newPlayer, levelColor)
-            BeliCheckF(newPlayer, beliColor)
-        end)
-    else
-        LevelCheckF.Text = "Hiển thị đồ: Tắt"
-        LevelCheckF.TextColor3 = Color3.new(1, 1, 1)
-        clearNameTags()
+    end
+end
+
+local function toggleBillboards()
+    isToggledOn = not isToggledOn
+    LevelCheckF.Text = isToggledOn and "Kiểm tra đồ: [Tắt]" or "Kiểm tra đồ: [Mở]"
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            if isToggledOn then
+                createBillboardGui(player)
+            else
+                if billboardGuis[player.UserId] then
+                    billboardGuis[player.UserId][1]:Destroy()
+                    billboardGuis[player.UserId] = nil
+                end
+            end
+        end
+    end
+end
+
+LevelCheckF.MouseButton1Click:Connect(toggleBillboards)
+
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        if isToggledOn then
+            createBillboardGui(player)
+        end
+    end)
+
+    if isToggledOn then
+        createBillboardGui(player)
     end
 end)
 
 for _, player in ipairs(Players:GetPlayers()) do
-    if isLevelDisplayOn then
-        AllPlayersLevelCheckF(player, levelColor)
-        BeliCheckF(player, beliColor)
+    if isToggledOn then
+        createBillboardGui(player)
     end
 end
 
-Players.PlayerAdded:Connect(function(newPlayer)
-    if isLevelDisplayOn then
-        AllPlayersLevelCheckF(newPlayer, levelColor)
-        BeliCheckF(newPlayer, beliColor)
+task.spawn(function()
+    while true do
+        wait(0.01)
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                updateBillboardGui(player)
+            end
+        end
     end
 end)
 
