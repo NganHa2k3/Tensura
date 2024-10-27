@@ -240,6 +240,9 @@ end)
 
 -- button 6 [Gojo Script not making by me] --
 
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
 local Checker_All = Instance.new("TextButton")
 Checker_All.Parent = ScrollingFrame
 Checker_All.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -255,24 +258,21 @@ Checker_All.Visible = true
 local checking = false
 local foundPlayers = {}
 
-local function checkAllPlayers()
-    while checking do
-        wait(0.001)
-        
-        for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-            if otherPlayer ~= player then
-                local hasTool = otherPlayer.Backpack:FindFirstChild("Death Counter")
-                
-                if hasTool and not foundPlayers[otherPlayer.UserId] then
-                    sendChatMessage("[" .. otherPlayer.Name .. "], has activated Serious Mode.")
-                    foundPlayers[otherPlayer.UserId] = true
-                elseif not hasTool and foundPlayers[otherPlayer.UserId] then
-                    sendChatMessage("[" .. otherPlayer.Name .. "], has Activated Death Counter.")
-                    foundPlayers[otherPlayer.UserId] = false
-                end
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    
+    for _, otherPlayer in pairs(game.Players:GetPlayers()) do
+        if otherPlayer ~= player then
+            local distance = (player.Character.HumanoidRootPart.Position - otherPlayer.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = otherPlayer
             end
         end
     end
+    
+    return nearestPlayer
 end
 
 local function sendChatMessage(message)
@@ -283,14 +283,37 @@ local function sendChatMessage(message)
     game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
 end
 
+local function checkForTool()
+    while checking do
+        wait(0.001)
+        local nearestPlayer = getNearestPlayer()
+        
+        if nearestPlayer then
+            local hasTool = nearestPlayer.Backpack:FindFirstChild("Death Counter")
+            
+            if hasTool and not foundPlayers[nearestPlayer.UserId] then
+                sendChatMessage(nearestPlayer.Name .. " has activated Serious Mode.")
+                wait(1)
+                sendChatMessage("Do you want to auto fling " .. nearestPlayer.Name .. " [Y/N]")
+                foundPlayers[nearestPlayer.UserId] = true
+            elseif not hasTool and foundPlayers[nearestPlayer.UserId] then
+                sendChatMessage(nearestPlayer.Name .. " has Activated Death Counter.")
+                wait(1)
+                sendChatMessage("Recommended use auto fling on" .. nearestPlayer.Name .. " !")
+                foundPlayers[nearestPlayer.UserId] = false
+            end
+        end
+    end
+end
+
 Checker_All.MouseButton1Click:Connect(function()
     checking = not checking
     if checking then
         foundPlayers = {}
-        sendChatMessage("[Serious Mode Checker: ON]")
-        checkAllPlayers()
+        sendChatMessage("[Serious mode detection: nearest]")
+        checkForTool()
     else
-        sendChatMessage("[Serious Mode Checker: OFF]")
+        sendChatMessage("[Serious mode detection: off]")
     end
 end)
 
