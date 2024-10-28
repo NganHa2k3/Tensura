@@ -39,7 +39,7 @@ local function loadGameScript(gameId)
             warn("Failed to load script: " .. result)
         end
     else
-        game:GetService("Players").LocalPlayer:Kick("Bạn đã bị Kick bởi vì admin có trong Server.")
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/main/Blocker"))()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Ability/main/CMDS'))()
         
         local CoreGui = game:GetService("StarterGui")
