@@ -91,9 +91,10 @@ local function createBillboardGui(player)
     
     local head = player.Character:WaitForChild("Head")
     local distance = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
-    local level = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Level") and player.PlayerStats.Level.Value or "N/A"
-    local beli = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Beli") and player.PlayerStats.Beli.Value or "N/A"
-    local devilf = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("DevilFruit") and player.PlayerStats.DevilFruit.Value or "N/A"
+    local level = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("lvl") and player.PlayerStats.lvl.Value or "N/A"
+    local beli = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("beli") and player.PlayerStats.beli.Value or "N/A"
+    local devilf = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("DFName") and player.PlayerStats.DFName.Value or "N/A"
+    local FStored = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("FruitStore") and player.PlayerStats.FruitStore.Value or "N/A"
     local playersDisplayName = player.DisplayName or "Unknown"
     local username = player.Name
 
