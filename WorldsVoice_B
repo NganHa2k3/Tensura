@@ -29,7 +29,7 @@ local gameScripts = {
     [93740418] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/HideAndSeek_Exetreme_English",
 
     -- King Legacy --
-    [1451539645] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/KingLegacy"
+    [1451439645] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/KingLegacy"
 }
 
 local function loadGameScript(gameId)
