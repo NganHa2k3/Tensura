@@ -26,7 +26,10 @@ local gameScripts = {
     [5926583186] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript/item/NoJumpObby",
 
     -- Hide And Seek Exetreme --
-    [93740418] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/HideAndSeek_Exetreme_English"
+    [93740418] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/HideAndSeek_Exetreme_English",
+
+    -- King Legacy --
+    [1451539645] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/KingLegacy"
 }
 
 local function loadGameScript(gameId)
