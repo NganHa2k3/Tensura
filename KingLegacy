@@ -1,0 +1,256 @@
+local player = game.Players.LocalPlayer
+local screenGuiName = "King_Legacy_UI_Cheat"
+local Itsme = game.Players
+local ImHere = Itsme.LocalPlayer
+local BHRP
+
+for _, gui in ipairs(player:WaitForChild("PlayerGui"):GetChildren()) do
+    if gui:IsA("ScreenGui") and gui.Name == screenGuiName then
+        gui:Destroy()
+    end
+end
+
+local KingLegacySG = Instance.new("ScreenGui")
+KingLegacySG.Parent = game.CoreGui
+KingLegacySG.Name = "King_Legacy_UI_Cheat"
+
+local OPENCLOSEDGUI = Instance.new("TextButton")
+local KingLegacyTools = Instance.new("ScrollingFrame")
+
+OPENCLOSEDGUI.Parent = KingLegacySG
+OPENCLOSEDGUI.BackgroundColor3 = Color3.new(0, 0, 0)
+OPENCLOSEDGUI.BackgroundTransparency = 0.5
+OPENCLOSEDGUI.Size = UDim2.new(0.05, 0, 0.1, 0)
+OPENCLOSEDGUI.TextScaled = true
+OPENCLOSEDGUI.Position = UDim2.new(0.84, 0, -0.1, 0)
+OPENCLOSEDGUI.TextColor3 = Color3.new(1, 1, 1)
+OPENCLOSEDGUI.Font = Enum.Font.Code
+OPENCLOSEDGUI.Text = "×"
+
+local OPENCLOSEDGUICorner = Instance.new("UICorner")
+OPENCLOSEDGUICorner.Parent = OPENCLOSEDGUI
+OPENCLOSEDGUICorner.CornerRadius = UDim.new(0, 10)
+
+KingLegacyTools.Parent = KingLegacySG
+KingLegacyTools.Size = UDim2.new(0.3, 0, 0.1, 0)
+KingLegacyTools.Position = UDim2.new(1.2, 0, 0.28, 0)
+KingLegacyTools.BackgroundColor3 = Color3.new(0, 0, 0)
+KingLegacyTools.BackgroundTransparency = 0.5
+KingLegacyTools.CanvasSize = UDim2.new(2, 0, 0, 0)
+KingLegacyTools.ScrollBarThickness = 0.1
+
+local KingLegacyToolsCorner = Instance.new("UICorner")
+KingLegacyToolsCorner.Parent = KingLegacyTools
+KingLegacyToolsCorner.CornerRadius = UDim.new(0.2, 0)
+
+local TweenService = game:GetService("TweenService")
+local tweenSpeedd = 1  -- Duration in seconds
+local tweenInfo = TweenInfo.new(tweenSpeedd, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
+
+local goalPosition1 = UDim2.new(0.6, 0, 0.28, 0)  -- Move KingLegacyTools
+local goalPosition2 = UDim2.new(1.2, 0, 0.28, 0)  -- Original position
+
+local tween1 = TweenService:Create(KingLegacyTools, tweenInfo, {Position = goalPosition1})
+local tween2 = TweenService:Create(KingLegacyTools, tweenInfo, {Position = goalPosition2})
+
+local isToggled = false
+OPENCLOSEDGUI.MouseButton1Click:Connect(function()
+    if isToggled then
+        tween2:Play()
+        OPENCLOSEDGUI.Text = "+"
+        OPENCLOSEDGUI.TextColor3 = Color3.new(0, 1, 0)
+    else
+        tween1:Play()
+        OPENCLOSEDGUI.Text = "×"
+        OPENCLOSEDGUI.TextColor3 = Color3.new(1, 1, 1)
+    end
+    isToggled = not isToggled
+end)
+
+-- [[ Now Focus on button inside KingLegacyTools ScrollingFrame ]] --
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local PlayerStatsCheckF = Instance.new("TextButton", SG)
+PlayerStatsCheckF.Parent = KingLegacyTools
+PlayerStatsCheckF.BackgroundColor3 = Color3.new(0, 0, 0)
+PlayerStatsCheckF.BackgroundTransparency = 0.5
+PlayerStatsCheckF.Size = UDim2.new(0.03, 0, 0.9, 0)
+PlayerStatsCheckF.Position = UDim2.new(0.005, 0, 0, 0)
+PlayerStatsCheckF.TextScaled = true
+PlayerStatsCheckF.TextColor3 = Color3.new(1, 1, 1)
+PlayerStatsCheckF.Font = Enum.Font.PatrickHand
+PlayerStatsCheckF.Text = "Data ESP: [OFF]"
+
+local isToggledOn = false
+local billboardGuis = {}
+
+local function createBillboardGui(player)
+    if not player.Character or not player.Character:FindFirstChild("HumanoidRootPart") then return end
+    
+    local head = player.Character:WaitForChild("Head")
+    local distance = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+    local level = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Level") and player.PlayerStats.Level.Value or "N/A"
+    local beli = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Beli") and player.PlayerStats.Beli.Value or "N/A"
+    local devilf = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("DevilFruit") and player.PlayerStats.DevilFruit.Value or "N/A"
+    local playersDisplayName = player.DisplayName or "Unknown"
+    local username = player.Name
+
+    local billboard = Instance.new("BillboardGui")
+    billboard.Size = UDim2.new(0, 200, 0, 120)
+    billboard.StudsOffset = Vector3.new(-8, 0, 0)
+    billboard.AlwaysOnTop = true
+    billboard.Parent = head
+
+    local distanceLabel = Instance.new("TextLabel")
+    distanceLabel.Size = UDim2.new(1, 0, 0, 25)
+    distanceLabel.BackgroundTransparency = 1
+    distanceLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    distanceLabel.TextStrokeTransparency = 0.5
+    distanceLabel.Text = "[Distance:" .. math.floor(distance) .. "m]"
+    distanceLabel.TextScaled = false
+    distanceLabel.TextSize = 5
+    distanceLabel.Parent = billboard
+
+    local levelLabel = Instance.new("TextLabel")
+    levelLabel.Size = UDim2.new(1, 0, 0, 25)
+    levelLabel.Position = UDim2.new(0, 0, 0, 9)
+    levelLabel.BackgroundTransparency = 1
+    levelLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+    levelLabel.TextStrokeTransparency = 0.5
+    levelLabel.Text = "[Level:" .. level .. "]"
+    levelLabel.TextScaled = false
+    levelLabel.TextSize = 5
+    levelLabel.Parent = billboard
+
+    local beliLabel = Instance.new("TextLabel")
+    beliLabel.Size = UDim2.new(1, 0, 0, 25)
+    beliLabel.Position = UDim2.new(0, 0, 0, 18)
+    beliLabel.BackgroundTransparency = 1
+    beliLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
+    beliLabel.TextStrokeTransparency = 0.5
+    beliLabel.Text = "[Beli:" .. beli .. "]"
+    beliLabel.TextScaled = false
+    beliLabel.TextSize = 5
+    beliLabel.Parent = billboard
+
+    local devilfLabel = Instance.new("TextLabel")
+    devilfLabel.Size = UDim2.new(1, 0, 0, 25)
+    devilfLabel.Position = UDim2.new(0, 0, 0, 27)
+    devilfLabel.BackgroundTransparency = 1
+    devilfLabel.TextColor3 = Color3.fromRGB(0, 255, 255)
+    devilfLabel.TextStrokeTransparency = 0.5
+    devilfLabel.Text = "[Fruit Used:" .. devilf .. "]"
+    devilfLabel.TextScaled = false
+    devilfLabel.TextSize = 5
+    devilfLabel.Parent = billboard
+
+    local playersLabel = Instance.new("TextLabel")
+    playersLabel.Size = UDim2.new(1, 0, 0, 25)
+    playersLabel.Position = UDim2.new(0, 0, 0, 36)
+    playersLabel.BackgroundTransparency = 1
+    playersLabel.TextColor3 = Color3.fromRGB(255, 165, 0)
+    playersLabel.TextStrokeTransparency = 0.5
+    playersLabel.Text = "[Display Name:" .. playersDisplayName .. "]"
+    playersLabel.TextScaled = false
+    playersLabel.TextSize = 5
+    playersLabel.Parent = billboard
+
+    local userLabel = Instance.new("TextLabel")
+    userLabel.Size = UDim2.new(1, 0, 0, 25)
+    userLabel.Position = UDim2.new(0, 0, 0, 45)
+    userLabel.BackgroundTransparency = 1
+    userLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    userLabel.TextStrokeTransparency = 0.5
+    userLabel.Text = "[Username:" .. username .. "]"
+    userLabel.TextScaled = false
+    userLabel.TextSize = 5
+    userLabel.Parent = billboard
+
+    local FSLabel = Instance.new("TextLabel")
+    FSLabel.Size = UDim2.new(1, 0, 0, 25)
+    FSLabel.Position = UDim2.new(0, 6, 0, 45)
+    FSLabel.BackgroundTransparency = 1
+    FSLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FSLabel.TextStrokeTransparency = 0.5
+    FSLabel.Text = "[Fruit Stored:" .. FStored .. "]"
+    FSLabel.TextScaled = false
+    FSLabel.TextSize = 5
+    FSLabel.Parent = billboard
+
+    billboardGuis[player.UserId] = {billboard, distanceLabel, levelLabel, beliLabel, devilfLabel, playersLabel, userLabel, FSLabel}
+end
+
+local function updateBillboardGui(player)
+    if billboardGuis[player.UserId] then
+        local billboard, distanceLabel, levelLabel, beliLabel, devilfLabel, playersLabel, userLabel, FSLabel = unpack(billboardGuis[player.UserId])
+        
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
+            local level = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("lvl") and player.PlayerStats.lvl.Value or "N/A"
+            local beli = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("beli") and player.PlayerStats.beli.Value or "N/A"
+            local devilf = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("DFName") and player.PlayerStats.DFName.Value or "N/A"
+            local FStored = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("FruitStore") and player.PlayerStats.FruitStore.Value or "N/A"
+            local playersDisplayName = player.DisplayName or "Unknown"
+            local username = player.Name
+
+            distanceLabel.Text = "[Distance:" .. math.floor(distance) .. "m]"
+            levelLabel.Text = "[Level:" .. level .. "]"
+            beliLabel.Text = "[Beli:" .. beli .. "]"
+            devilfLabel.Text = "[Fruit Used:" .. devilf .. "]"
+            FStored.Text = "[Fruit Stored:" .. FStored .. "]"
+            playersLabel.Text = "[Display Name:" .. playersDisplayName .. "]"
+            userLabel.Text = "[Username:" .. username .. "]"
+        end
+    end
+end
+
+local function toggleBillboards()
+    isToggledOn = not isToggledOn
+    PlayerStatsCheckF.Text = isToggledOn and "PlayerStats ESP: [OFF]" or "PlayerStats ESP: [ON]"
+
+    for _, player in ipairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            if isToggledOn then
+                createBillboardGui(player)
+            else
+                if billboardGuis[player.UserId] then
+                    billboardGuis[player.UserId][1]:Destroy()
+                    billboardGuis[player.UserId] = nil
+                end
+            end
+        end
+    end
+end
+
+PlayerStatsCheckF.MouseButton1Click:Connect(toggleBillboards)
+
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        if isToggledOn then
+            createBillboardGui(player)
+        end
+    end)
+
+    if isToggledOn then
+        createBillboardGui(player)
+    end
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+    if isToggledOn then
+        createBillboardGui(player)
+    end
+end
+
+task.spawn(function()
+    while true do
+        wait(0.01)
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                updateBillboardGui(player)
+            end
+        end
+    end
+end)
