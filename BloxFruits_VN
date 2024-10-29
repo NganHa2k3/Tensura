@@ -2565,6 +2565,8 @@ local function onPlayerChatted(message)
         game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
     elseif words[1] == "Titles" then
         game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
+    elseif words[1] == "Atc" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame"))()
     end
 end
 
