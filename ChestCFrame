@@ -69,7 +69,8 @@ local function NotifyFSpawnedTrue()
         end
     else
         NotifyToOurPlayers.Visible = false
-        game:GetService("Workspace").FarmChestFastHehe:Destroy()
+        wait(1)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/RobloxScript/item/ServerHop"))()
         print("Đã nhặt hết rương rồi nha, nên nó tự động tắt script đó execute lại nha nếu muốn farm nhanh tiếp hehe")
     end
 end
