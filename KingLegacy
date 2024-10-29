@@ -94,6 +94,7 @@ local function createBillboardGui(player)
     local level = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("lvl") and player.PlayerStats.lvl.Value or "N/A"
     local beli = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("beli") and player.PlayerStats.beli.Value or "N/A"
     local devilf = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("DFName") and player.PlayerStats.DFName.Value or "N/A"
+    local Fragments = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Gem") and player.PlayerStats.Gem.Value or "N/A"
     local FStored = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("FruitStore") and player.PlayerStats.FruitStore.Value or "N/A"
     local playersDisplayName = player.DisplayName or "Unknown"
     local username = player.Name
@@ -169,9 +170,20 @@ local function createBillboardGui(player)
     userLabel.TextSize = 5
     userLabel.Parent = billboard
 
+    local GemLabel = Instance.new("TextLabel")
+    GemLabel.Size = UDim2.new(1, 0, 0, 25)
+    GemLabel.Position = UDim2.new(0, 0, 0, 54)
+    GemLabel.BackgroundTransparency = 1
+    GemLabel.TextColor3 = Color3.fromRGB(255, 0, 255)
+    GemLabel.TextStrokeTransparency = 0.5
+    GemLabel.Text = "[Gem:" .. Fragments .. "]"
+    GemLabel.TextScaled = false
+    GemLabel.TextSize = 5
+    GemLabel.Parent = billboard
+
     local FSLabel = Instance.new("TextLabel")
     FSLabel.Size = UDim2.new(1, 0, 0, 25)
-    FSLabel.Position = UDim2.new(0, 0, 0, 54)
+    FSLabel.Position = UDim2.new(0, 0, 0, 63)
     FSLabel.BackgroundTransparency = 1
     FSLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
     FSLabel.TextStrokeTransparency = 0.5
@@ -180,18 +192,19 @@ local function createBillboardGui(player)
     FSLabel.TextSize = 5
     FSLabel.Parent = billboard
 
-    billboardGuis[player.UserId] = {billboard, distanceLabel, levelLabel, beliLabel, devilfLabel, playersLabel, userLabel, FSLabel}
+    billboardGuis[player.UserId] = {billboard, distanceLabel, levelLabel, beliLabel, devilfLabel, playersLabel, userLabel, GemLabel, FSLabel}
 end
 
 local function updateBillboardGui(player)
     if billboardGuis[player.UserId] then
-        local billboard, distanceLabel, levelLabel, beliLabel, devilfLabel, playersLabel, userLabel, FSLabel = unpack(billboardGuis[player.UserId])
+        local billboard, distanceLabel, levelLabel, beliLabel, devilfLabel, playersLabel, userLabel, GemLabel, FSLabel = unpack(billboardGuis[player.UserId])
         
         if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
             local distance = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
             local level = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("lvl") and player.PlayerStats.lvl.Value or "N/A"
             local beli = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("beli") and player.PlayerStats.beli.Value or "N/A"
             local devilf = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("DFName") and player.PlayerStats.DFName.Value or "N/A"
+            local Fragments = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("Gem") and player.PlayerStats.Gem.Value or "N/A"
             local FStored = player:FindFirstChild("PlayerStats") and player.PlayerStats:FindFirstChild("FruitStore") and player.PlayerStats.FruitStore.Value or "N/A"
             local playersDisplayName = player.DisplayName or "Unknown"
             local username = player.Name
@@ -200,6 +213,7 @@ local function updateBillboardGui(player)
             levelLabel.Text = "[Level:" .. level .. "]"
             beliLabel.Text = "[Beli:" .. beli .. "]"
             devilfLabel.Text = "[Fruit Used:" .. devilf .. "]"
+            GemLabel.Text = "[Gem:" .. Fragments .. "]"
             FStored.Text = "[Fruit Stored:" .. FStored .. "]"
             playersLabel.Text = "[Display Name:" .. playersDisplayName .. "]"
             userLabel.Text = "[Username:" .. username .. "]"
