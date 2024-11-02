@@ -335,3 +335,312 @@ WalkOnAir.MouseButton1Click:Connect(function()
         end
     end
 end)
+
+local SpawnPointsCS = false
+
+local function LvlUPQuest()
+    local his = game:GetService("Players").LocalPlayer
+    local squareb = his.Character.HumanoidRootPart
+    local squareh = his.Character.Humanoid.Health
+    local crlvl = his:FindFirstChild("PlayerStats") and his.PlayerStats:FindFirstChild("lvl") and his.PlayerStats.lvl.Value or "N/A"
+        if crlvl < 50 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-2053, 17, -4080)
+            else
+                squareb.CFrame = CFrame.new(-2076, 49, -4557)
+            end
+        elseif crlvl < 100 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-849, 17, -3193)
+            else
+                squareb.CFrame = CFrame.new(-686, 52, -3445)
+            end
+        elseif crlvl < 180 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-2243, 25, -2749)
+            else
+                squareb.CFrame = CFrame.new(-2420, 49, -2645)
+            end
+        elseif crlvl < 250 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-865, 24, -1404)
+            else
+                squareb.CFrame = CFrame.new(-743, 24, -1372)
+            end
+        elseif crlvl < 400 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-4115, 17, -3044)
+            else
+                squareb.CFrame = CFrame.new(-4148, 17, -3065)
+            end
+        elseif crlvl < 525 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-5281, 28, -1458)
+            else
+                squareb.CFrame = CFrame.new(-5433, 29, -1298)
+            end
+        elseif crlvl < 800 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-2706, 17, -780)
+            else
+                squareb.CFrame = CFrame.new(-2743, 41, -751)
+            end
+        elseif crlvl < 1000 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-4195, 369, 1240)
+            else
+                squareb.CFrame = CFrame.new(-4320, 385, 1243)
+            end
+        elseif crlvl < 1200 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(1345, 18, 925)
+            else
+                squareb.CFrame = CFrame.new(1532, 21, 943)
+            end
+        elseif crlvl < 1500 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-1298, 12, 1813)
+            else
+                squareb.CFrame = CFrame.new(-1216, 21, 2106)
+            end
+        elseif crlvl < 1750 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-2558, 15, 3635)
+            else
+                squareb.CFrame = CFrame.new(-2809, 19, 4237)
+            end
+        elseif crlvl < 2000 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(1898, 8, -2013)
+            else
+                squareb.CFrame = CFrame.new(2272, 55, -1824)
+            end
+        elseif crlvl < 2250 then
+            if not SpawnPointsCS then
+                squareb.CFrame = CFrame.new(-1152, 5, 6076)
+            else
+                squareb.CFrame = CFrame.new(-1716, 40, 6318)
+            end
+        end
+end
+
+local tb2 = Instance.new("TextButton")
+tb2.Parent = KingLegacySG
+tb2.Size = UDim2.new(0.05, 0, 0.1, 0)
+tb2.Position = UDim2.new(0, 0, 0.3, 0)
+tb2.Text = "Switch"
+tb2.Font = Enum.Font.Code
+tb2.TextScaled = true
+tb2.TextColor3 = Color3.new(1, 1, 1)
+tb2.BackgroundColor3 = Color3.new(0, 0, 0)
+tb2.BackgroundTransparency = 0.5
+tb2.Visible = false
+
+local isfalse = false
+tb2.MouseButton1Click:Connect(function()
+    if isfalse then
+        tb2.TextColor3 = Color3.new(1, 1, 1)
+        SpawnPointsCS = false
+        isfalse = false
+    else
+        tb2.TextColor3 = Color3.new(0, 1, 0)
+        SpawnPointsCS = true
+        isfalse = true
+    end
+end)
+
+local tb3 = Instance.new("TextButton")
+tb3.Parent = KingLegacySG
+tb3.Size = UDim2.new(0.05, 0, 0.1, 0)
+tb3.Position = UDim2.new(0.06, 0, 0.3, 0)
+tb3.Text = "Takt"
+tb3.Font = Enum.Font.Code
+tb3.TextScaled = true
+tb3.TextColor3 = Color3.new(1, 1, 1)
+tb3.BackgroundColor3 = Color3.new(0, 0, 0)
+tb3.BackgroundTransparency = 0.5
+tb3.Visible = false
+
+tb3.MouseButton1Click:Connect(LvlUPQuest)
+
+local IslandsTP = Instance.new("TextButton")
+IslandsTP.Parent = KingLegacyTools
+IslandsTP.BackgroundColor3 = Color3.new(0, 0, 0)
+IslandsTP.BackgroundTransparency = 0.5
+IslandsTP.Size = UDim2.new(0.03, 0, 0.9, 0)
+IslandsTP.TextScaled = true
+IslandsTP.Position = UDim2.new(0.085, 0, 0, 0)
+IslandsTP.TextColor3 = Color3.fromRGB(255, 255, 255)
+IslandsTP.Font = Enum.Font.Code
+IslandsTP.Text = "Next Islands"
+
+local isIslandsTPON = false
+IslandsTP.MouseButton1Click:Connect(function()
+    if isIslandsTPON then
+        IslandsTP.TextColor3 = Color3.fromRGB(255, 255, 255)
+        tb2.Visible = false
+        tb3.Visible = false
+        isIslandsTPON = false
+    else
+        IslandsTP.TextColor3 = Color3.fromRGB(0, 255, 0)
+        tb2.Visible = true
+        tb3.Visible = true
+        isIslandsTPON = true
+    end
+end)
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+
+local function findNearestHumanoidRootPart(position)
+    local nearestHumanoidRootPart = nil
+    local nearestDistance = math.huge
+
+    local function searchFolder(folder)
+        for _, object in ipairs(folder:GetChildren()) do
+            if object:IsA("Model") and object:FindFirstChild("HumanoidRootPart") then
+                local humanoidRootPart = object.HumanoidRootPart
+                local distance = (humanoidRootPart.Position - position).magnitude
+
+                if distance < nearestDistance then
+                    nearestDistance = distance
+                    nearestHumanoidRootPart = humanoidRootPart
+                end
+            end
+
+            if object:IsA("Folder") then
+                searchFolder(object)
+            end
+        end
+    end
+
+    searchFolder(Workspace.Monster)
+
+    return nearestHumanoidRootPart
+end
+
+local function abilityfire(nearestHumanoidRootPart)
+    local args = {
+        [1] = "DF_SandSand_Z",
+        [2] = {
+            ["Type"] = "Down",
+            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+        }
+    }
+
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+    wait(0.01)
+
+    local args = {
+        [1] = "DF_SandSand_Z",
+        [2] = {
+            ["Type"] = "Up",
+            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+        }
+    }
+
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+    wait(0.01)
+
+    local args = {
+        [1] = "DF_SandSand_V",
+        [2] = {
+            ["Type"] = "Down",
+            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+        }
+    }
+
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+    wait(0.01)
+
+    local args = {
+        [1] = "DF_SandSand_V",
+        [2] = {
+            ["Type"] = "Up",
+            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+        }
+    }
+
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+    wait(0.01)
+
+    local args = {
+        [1] = "DF_SandSand_X",
+        [2] = {
+            ["Type"] = "Down",
+            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+        }
+    }
+
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+    wait(0.01)
+
+    local args = {
+        [1] = "DF_SandSand_X",
+        [2] = {
+            ["Type"] = "Up",
+            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+        }
+    }
+
+    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+    wait(0.01)
+end
+
+local playerPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
+
+local SandSandQuickly = Instance.new("TextButton")
+SandSandQuickly.Parent = KingLegacySG
+SandSandQuickly.Size = UDim2.new(0.05, 0, 0.1, 0)
+SandSandQuickly.Position = UDim2.new(0.15, 0, 0.3, 0)
+SandSandQuickly.Text = "Use[Sand Ability]"
+SandSandQuickly.Font = Enum.Font.Code
+SandSandQuickly.TextScaled = true
+SandSandQuickly.TextColor3 = Color3.new(1, 0, 1)
+SandSandQuickly.BackgroundColor3 = Color3.new(0, 0, 0)
+SandSandQuickly.BackgroundTransparency = 0.5
+SandSandQuickly.Visible = false
+
+SandSandQuickly.MouseButton1Click:Connect(function()
+    if playerPosition then
+        local nearestHumanoidRootPart = findNearestHumanoidRootPart(playerPosition)
+
+        if nearestHumanoidRootPart then
+            abilityfire(nearestHumanoidRootPart)
+        else
+            print("No HumanoidRootPart found.")
+        end
+    else
+        print("Player's HumanoidRootPart not found.")
+    end
+end)
+
+local QCombo = Instance.new("TextButton")
+QCombo.Parent = KingLegacyTools
+QCombo.BackgroundColor3 = Color3.new(0, 0, 0)
+QCombo.BackgroundTransparency = 0.5
+QCombo.Size = UDim2.new(0.03, 0, 0.9, 0)
+QCombo.TextScaled = true
+QCombo.Position = UDim2.new(0.125, 0, 0, 0)
+QCombo.TextColor3 = Color3.fromRGB(255, 255, 255)
+QCombo.Font = Enum.Font.Code
+QCombo.Text = "Fast Skill"
+
+local isIfQC = false
+QCombo.MouseButton1Click:Connect(function()
+    if isIfQC then
+        QCombo.TextColor3 = Color3.fromRGB(255, 255, 255)
+        SandSandQuickly.Visible = false
+        isIfQC = false
+    else
+        QCombo.TextColor3 = Color3.fromRGB(0, 255, 0)
+        SandSandQuickly.Visible = true
+        isIfQC = true
+    end
+end)
