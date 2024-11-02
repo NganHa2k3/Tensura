@@ -588,19 +588,7 @@ local function abilityfire(targetHumanoidRootPart)
     wait(0.01)
 end
 
-local SandSandQuickly = Instance.new("TextButton")
-SandSandQuickly.Parent = KingLegacySG
-SandSandQuickly.Size = UDim2.new(0.05, 0, 0.1, 0)
-SandSandQuickly.Position = UDim2.new(0.15, 0, 0.3, 0)
-SandSandQuickly.Text = "Use[Sand Ability]"
-SandSandQuickly.Font = Enum.Font.Code
-SandSandQuickly.TextScaled = true
-SandSandQuickly.TextColor3 = Color3.new(1, 0, 1)
-SandSandQuickly.BackgroundColor3 = Color3.new(0, 0, 0)
-SandSandQuickly.BackgroundTransparency = 0.5
-SandSandQuickly.Visible = false
-
-SandSandQuickly.MouseButton1Click:Connect(function()
+local function FireAbility()
     local playerHumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
     local playerPosition = playerHumanoidRootPart and playerHumanoidRootPart.Position
 
@@ -614,6 +602,35 @@ SandSandQuickly.MouseButton1Click:Connect(function()
         end
     else
         print("Player's HumanoidRootPart not found.")
+    end
+    wait(0.01)
+end
+
+local SandSandQuickly = Instance.new("TextButton")
+SandSandQuickly.Parent = KingLegacySG
+SandSandQuickly.Size = UDim2.new(0.05, 0, 0.1, 0)
+SandSandQuickly.Position = UDim2.new(0.15, 0, 0.28, 0)
+SandSandQuickly.Text = "Not Used[Sand Ability]"
+SandSandQuickly.Font = Enum.Font.Code
+SandSandQuickly.TextScaled = true
+SandSandQuickly.TextColor3 = Color3.new(1, 1, 1)
+SandSandQuickly.BackgroundColor3 = Color3.new(0, 0, 0)
+SandSandQuickly.BackgroundTransparency = 0.5
+SandSandQuickly.Visible = false
+
+local isRunning = false
+SandSandQuickly.MouseButton1Click:Connect(function()
+    if isRunning then
+        SandSandQuickly.Text = "Not Used[Sand Ability]"
+        isRunning = false
+    else
+        SandSandQuickly.Text = "Use[Sand Ability]"
+        isRunning = true
+        
+        while isRunning do
+            FireAbility()
+            wait(1.5)
+        end
     end
 end)
 
