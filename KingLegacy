@@ -494,7 +494,7 @@ local Workspace = game:GetService("Workspace")
 
 local function findNearestHumanoidRootPart(position)
     local nearestHumanoidRootPart = nil
-    local nearestDistance = math.huge
+    local nearestDistance = 90
 
     local function searchFolder(folder)
         for _, object in ipairs(folder:GetChildren()) do
