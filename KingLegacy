@@ -495,10 +495,11 @@ local Workspace = game:GetService("Workspace")
 local function findNearestHumanoidRootPart(position)
     local nearestHumanoidRootPart = nil
     local nearestDistance = 90
+    local playerCharacter = player.Character
 
     local function searchFolder(folder)
         for _, object in ipairs(folder:GetChildren()) do
-            if object:IsA("Model") and object:FindFirstChild("HumanoidRootPart") then
+            if object:IsA("Model") and object:FindFirstChild("HumanoidRootPart") and object ~= playerCharacter then
                 local humanoidRootPart = object.HumanoidRootPart
                 local distance = (humanoidRootPart.Position - position).magnitude
 
@@ -514,86 +515,78 @@ local function findNearestHumanoidRootPart(position)
         end
     end
 
-    searchFolder(Workspace.Monster)
+    searchFolder(Workspace)
 
     return nearestHumanoidRootPart
 end
 
-local function abilityfire(nearestHumanoidRootPart)
+local function abilityfire(targetHumanoidRootPart)
     local args = {
         [1] = "DF_SandSand_Z",
         [2] = {
             ["Type"] = "Down",
-            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
         }
     }
 
     ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-
     wait(0.01)
 
     local args = {
         [1] = "DF_SandSand_Z",
         [2] = {
             ["Type"] = "Up",
-            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
         }
     }
 
     ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-
     wait(0.01)
 
     local args = {
         [1] = "DF_SandSand_V",
         [2] = {
             ["Type"] = "Down",
-            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
         }
     }
 
     ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-
     wait(0.01)
 
     local args = {
         [1] = "DF_SandSand_V",
         [2] = {
             ["Type"] = "Up",
-            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
         }
     }
 
     ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-
     wait(0.01)
 
     local args = {
         [1] = "DF_SandSand_X",
         [2] = {
             ["Type"] = "Down",
-            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
         }
     }
 
     ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-
     wait(0.01)
 
     local args = {
         [1] = "DF_SandSand_X",
         [2] = {
             ["Type"] = "Up",
-            ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
         }
     }
 
     ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-
     wait(0.01)
 end
-
-local playerPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart").Position
 
 local SandSandQuickly = Instance.new("TextButton")
 SandSandQuickly.Parent = KingLegacySG
@@ -608,13 +601,16 @@ SandSandQuickly.BackgroundTransparency = 0.5
 SandSandQuickly.Visible = false
 
 SandSandQuickly.MouseButton1Click:Connect(function()
+    local playerHumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    local playerPosition = playerHumanoidRootPart and playerHumanoidRootPart.Position
+
     if playerPosition then
         local nearestHumanoidRootPart = findNearestHumanoidRootPart(playerPosition)
 
         if nearestHumanoidRootPart then
             abilityfire(nearestHumanoidRootPart)
         else
-            print("No HumanoidRootPart found.")
+            abilityfire(playerHumanoidRootPart)
         end
     else
         print("Player's HumanoidRootPart not found.")
