@@ -558,6 +558,7 @@ local function HitBoxNearestEnemy()
     if nearestEnemy then
         nearestEnemy.HumanoidRootPart.Size = Vector3.new(120, 120, 120)
         nearestEnemy.HumanoidRootPart.CanCollide = false
+        nearestEnemy.HumanoidRootPart.Anchored = true
     end
 end
 
