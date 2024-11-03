@@ -520,79 +520,228 @@ local function findNearestHumanoidRootPart(position)
     return nearestHumanoidRootPart
 end
 
-local function abilityfire(targetHumanoidRootPart)
-    local args = {
-        [1] = "DF_SandSand_Z",
-        [2] = {
-            ["Type"] = "Down",
-            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
-        }
-    }
+-- Checking Fruits Currently In Use --
+local function abilityfire(nearestHumanoidRootPart)
+    local function checkTools()
+        local player = game:GetService("Players").LocalPlayer
+        local backpack = player.Backpack
+        local character = player.Character or player.CharacterAdded:Wait()
+        local workspaceCharacter = game.Workspace.PlayerCharacters:FindFirstChild(player.Name)
 
-    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-    wait(0.01)
+        local function findTool(toolName)
+            for _, tool in ipairs(backpack:GetChildren()) do
+                if tool:IsA("Tool") and tool.Name == toolName then
+                    return true
+                end
+            end
 
-    local args = {
-        [1] = "DF_SandSand_Z",
-        [2] = {
-            ["Type"] = "Up",
-            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
-        }
-    }
+            for _, tool in ipairs(character:GetChildren()) do
+                if tool:IsA("Tool") and tool.Name == toolName then
+                    return true
+                end
+            end
+            
+            if workspaceCharacter then
+                for _, tool in ipairs(workspaceCharacter:GetChildren()) do
+                    if tool:IsA("Tool") and tool.Name == toolName then
+                        return true
+                    end
+                end
+            end
 
-    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-    wait(0.01)
+            return false
+        end
 
-    local args = {
-        [1] = "DF_SandSand_V",
-        [2] = {
-            ["Type"] = "Down",
-            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
-        }
-    }
+        local found = false
 
-    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-    wait(0.01)
+        if findTool("SandSand") then
+            local args = {
+                [1] = "DF_SandSand_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+                }
+            }
 
-    local args = {
-        [1] = "DF_SandSand_V",
-        [2] = {
-            ["Type"] = "Up",
-            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
-        }
-    }
+            ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
 
-    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-    wait(0.01)
+            wait(0.5)
 
-    local args = {
-        [1] = "DF_SandSand_X",
-        [2] = {
-            ["Type"] = "Down",
-            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
-        }
-    }
+            local args = {
+                [1] = "DF_SandSand_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+                }
+            }
 
-    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-    wait(0.01)
+            ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
 
-    local args = {
-        [1] = "DF_SandSand_X",
-        [2] = {
-            ["Type"] = "Up",
-            ["MouseHit"] = CFrame.new(targetHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
-        }
-    }
+            wait(0.01)
 
-    ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
-    wait(0.01)
+            local args = {
+                [1] = "DF_SandSand_V",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+                }
+            }
+
+            ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_SandSand_V",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+                }
+            }
+
+            ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_SandSand_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+                }
+            }
+
+            ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_SandSand_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(0, 0, 0)
+                }
+            }
+
+            ReplicatedStorage.Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+        end
+
+        if findTool("SpiritSpirit") then
+            local args = {
+                [1] = "DF_SpiritSpirit_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_SpiritSpirit_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_SpiritSpirit_C",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_SpiritSpirit_C",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_SpiritSpirit_V",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_SpiritSpirit_V",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_SpiritSpirit_B",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_SpiritSpirit_B",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+        end
+
+        if not found then
+            print("not found")
+        end
+    end
+
+    checkTools()
 end
+-- End/Closed/Closing Box --
 
 local SandSandQuickly = Instance.new("TextButton")
 SandSandQuickly.Parent = KingLegacySG
 SandSandQuickly.Size = UDim2.new(0.05, 0, 0.1, 0)
 SandSandQuickly.Position = UDim2.new(0.15, 0, 0.28, 0)
-SandSandQuickly.Text = "Not Used[Sand Ability]"
+SandSandQuickly.Text = "Not Used[Fruits Ability]"
 SandSandQuickly.Font = Enum.Font.Code
 SandSandQuickly.TextScaled = true
 SandSandQuickly.TextColor3 = Color3.new(1, 1, 1)
@@ -603,10 +752,10 @@ SandSandQuickly.Visible = false
 local isRunning = false
 SandSandQuickly.MouseButton1Click:Connect(function()
     if isRunning then
-        SandSandQuickly.Text = "Not Used[Sand Ability]"
+        SandSandQuickly.Text = "Not Used[Fruits Ability]"
         isRunning = false
     else
-        SandSandQuickly.Text = "Use[Sand Ability]"
+        SandSandQuickly.Text = "Use[Fruits Ability]"
         isRunning = true
         
         while isRunning do
