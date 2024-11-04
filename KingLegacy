@@ -1144,7 +1144,7 @@ end
 local Automatically_ComboFS = Instance.new("TextButton")
 Automatically_ComboFS.Parent = KingLegacySG
 Automatically_ComboFS.Size = UDim2.new(0.05, 0, 0.1, 0)
-Automatically_ComboFS.Position = UDim2.new(0.26, 0, 0.28, 0)
+Automatically_ComboFS.Position = UDim2.new(0.20, 0, 0.28, 0)
 Automatically_ComboFS.Text = "Not Used[FS Ability]"
 Automatically_ComboFS.Font = Enum.Font.Code
 Automatically_ComboFS.TextScaled = true
