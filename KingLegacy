@@ -728,6 +728,81 @@ local function fruits_abilityfire(nearestHumanoidRootPart)
             found = true
         end
 
+        if findTool("HumanHuman") then
+            local args = {
+                [1] = "DF_HumanHuman_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_HumanHuman_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_HumanHuman_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_HumanHuman_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_HumanHuman_C",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_HumanHuman_C",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+        end
+
         if not found then
             print("not found")
         end
@@ -1144,7 +1219,7 @@ end
 local Automatically_ComboFS = Instance.new("TextButton")
 Automatically_ComboFS.Parent = KingLegacySG
 Automatically_ComboFS.Size = UDim2.new(0.05, 0, 0.1, 0)
-Automatically_ComboFS.Position = UDim2.new(0.20, 0, 0.28, 0)
+Automatically_ComboFS.Position = UDim2.new(0.22, 0, 0.28, 0)
 Automatically_ComboFS.Text = "Not Used[FS Ability]"
 Automatically_ComboFS.Font = Enum.Font.Code
 Automatically_ComboFS.TextScaled = true
@@ -1247,6 +1322,52 @@ CuteGirl_Gacha.MouseButton1Click:Connect(function()
                 CuteGirl_Gacha.TextColor3 = Color3.fromRGB(255, 255, 255)
             end
             wait(0.01)
+        end
+    end
+end)
+
+local function toDroppedF()
+    local allDroppedFruit = game.Workspace:FindFirstChild("AllDroppedFruit")
+    local weare = game.Players.LocalPlayer
+    local chipx = weare.Character:FindFirstChild("HumanoidRootPart")
+
+    if allDroppedFruit then
+        for _, fruit in ipairs(allDroppedFruit:GetChildren()) do
+            local handle = fruit:FindFirstChild("Handle")
+            if handle then
+                handle.Position = chipx.Position
+                return
+            end
+        end
+    end
+    print("No Fruits Dropped Found !?")
+end
+
+local GetFDropped = Instance.new("TextButton")
+GetFDropped.Parent = KingLegacyTools
+GetFDropped.BackgroundColor3 = Color3.new(0, 0, 0)
+GetFDropped.BackgroundTransparency = 0.5
+GetFDropped.Size = UDim2.new(0.03, 0, 0.9, 0)
+GetFDropped.TextScaled = true
+GetFDropped.Position = UDim2.new(0.245, 0, 0, 0)
+GetFDropped.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetFDropped.Font = Enum.Font.Code
+GetFDropped.Text = "Bring Dropped Fruits"
+
+local IsAutoGetFDropped = false
+GetFDropped.MouseButton1Click:Connect(function()
+    if IsAutoGetFDropped then
+        GetFDropped.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+        IsAutoGetFDropped = false
+    else
+        GetFDropped.TextColor3 = Color3.fromRGB(0, 255, 0)
+
+        IsAutoGetFDropped = true
+        
+        while IsAutoGetFDropped do
+            toDroppedF()
+            wait(0.001)
         end
     end
 end)
