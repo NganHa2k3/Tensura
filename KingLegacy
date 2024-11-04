@@ -803,6 +803,105 @@ local function fruits_abilityfire(nearestHumanoidRootPart)
             found = true
         end
 
+        if findTool("GumGum") then
+            local args = {
+                [1] = "DF_GumGum_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestGumoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_GumGum_M1",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestGumoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_GumGum_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestGumoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_GumGum_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestGumoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_GumGum_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestGumoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_GumGum_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestGumoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "DF_GumGum_C",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestGumoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_GumGum_C",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestGumoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+        end
+
         if not found then
             print("not found")
         end
@@ -1371,3 +1470,92 @@ GetFDropped.MouseButton1Click:Connect(function()
         end
     end
 end)
+
+-- Auto Buy Randomizer Fruits Copper Key --
+local function autoBuyCopperKey()
+    local mymoneybruh = game.Players.LocalPlayer:FindFirstChild("PlayerStats") and game.Players.LocalPlayer.PlayerStats:FindFirstChild("beli") and game.Players.LocalPlayer.PlayerStats.beli.Value or "N/A"
+        if mymoneybruh < 26000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 1
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 1 Copper Key !")
+        elseif mymoneybruh < 51000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 2
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 2 Copper Key")
+        elseif mymoneybruh < 76000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 3
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 3 Copper Key")
+        elseif mymoneybruh < 101000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 4
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 4 Copper Key")
+        elseif mymoneybruh < 126000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 5
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 5 Copper Key")
+        elseif mymoneybruh < 151000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 6
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 6 Copper Key")
+        elseif mymoneybruh < 176000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 7
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 7 Copper Key")
+        elseif mymoneybruh < 201000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 8
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 8 Copper Key")
+        elseif mymoneybruh < 226000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 9
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 9 Copper Key")
+        elseif mymoneybruh >= 251000 then
+            local args = {
+                [1] = "Copper Key",
+                [2] = 10
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
+            print("Buy 10 Copper Key, Return Later to buy more !")
+        end
+end
+
+autoBuyCopperKey()
+-- End/Closing Scripting Box --
