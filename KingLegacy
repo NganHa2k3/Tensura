@@ -521,8 +521,8 @@ local function findNearestHumanoidRootPart(position)
 end
 
 -- Checking Fruits Currently In Use --
-local function abilityfire(nearestHumanoidRootPart)
-    local function checkTools()
+local function fruits_abilityfire(nearestHumanoidRootPart)
+    local function checkF()
         local player = game:GetService("Players").LocalPlayer
         local backpack = player.Backpack
         local character = player.Character or player.CharacterAdded:Wait()
@@ -733,29 +733,29 @@ local function abilityfire(nearestHumanoidRootPart)
         end
     end
 
-    checkTools()
+    checkF()
 end
 -- End/Closed/Closing Box --
 
-local SandSandQuickly = Instance.new("TextButton")
-SandSandQuickly.Parent = KingLegacySG
-SandSandQuickly.Size = UDim2.new(0.05, 0, 0.1, 0)
-SandSandQuickly.Position = UDim2.new(0.15, 0, 0.28, 0)
-SandSandQuickly.Text = "Not Used[Fruits Ability]"
-SandSandQuickly.Font = Enum.Font.Code
-SandSandQuickly.TextScaled = true
-SandSandQuickly.TextColor3 = Color3.new(1, 1, 1)
-SandSandQuickly.BackgroundColor3 = Color3.new(0, 0, 0)
-SandSandQuickly.BackgroundTransparency = 0.5
-SandSandQuickly.Visible = false
+local Automatically_ComboF = Instance.new("TextButton")
+Automatically_ComboF.Parent = KingLegacySG
+Automatically_ComboF.Size = UDim2.new(0.05, 0, 0.1, 0)
+Automatically_ComboF.Position = UDim2.new(0.15, 0, 0.28, 0)
+Automatically_ComboF.Text = "Not Used[Fruits Ability]"
+Automatically_ComboF.Font = Enum.Font.Code
+Automatically_ComboF.TextScaled = true
+Automatically_ComboF.TextColor3 = Color3.new(1, 1, 1)
+Automatically_ComboF.BackgroundColor3 = Color3.new(0, 0, 0)
+Automatically_ComboF.BackgroundTransparency = 0.5
+Automatically_ComboF.Visible = false
 
 local isRunning = false
-SandSandQuickly.MouseButton1Click:Connect(function()
+Automatically_ComboF.MouseButton1Click:Connect(function()
     if isRunning then
-        SandSandQuickly.Text = "Not Used[Fruits Ability]"
+        Automatically_ComboF.Text = "Not Used[Fruits Ability]"
         isRunning = false
     else
-        SandSandQuickly.Text = "Use[Fruits Ability]"
+        Automatically_ComboF.Text = "Use[Fruits Ability]"
         isRunning = true
         
         while isRunning do
@@ -766,9 +766,9 @@ SandSandQuickly.MouseButton1Click:Connect(function()
                 local nearestHumanoidRootPart = findNearestHumanoidRootPart(playerPosition)
 
                 if nearestHumanoidRootPart then
-                    abilityfire(nearestHumanoidRootPart)
+                    fruits_abilityfire(nearestHumanoidRootPart)
                 else
-                    abilityfire(playerHumanoidRootPart)
+                    fruits_abilityfire(playerHumanoidRootPart)
                 end
             else
                 print("Player's HumanoidRootPart not found.")
@@ -778,26 +778,475 @@ SandSandQuickly.MouseButton1Click:Connect(function()
     end
 end)
 
-local QCombo = Instance.new("TextButton")
-QCombo.Parent = KingLegacyTools
-QCombo.BackgroundColor3 = Color3.new(0, 0, 0)
-QCombo.BackgroundTransparency = 0.5
-QCombo.Size = UDim2.new(0.03, 0, 0.9, 0)
-QCombo.TextScaled = true
-QCombo.Position = UDim2.new(0.125, 0, 0, 0)
-QCombo.TextColor3 = Color3.fromRGB(255, 255, 255)
-QCombo.Font = Enum.Font.Code
-QCombo.Text = "Fast Skill"
+local FCombo_X = Instance.new("TextButton")
+FCombo_X.Parent = KingLegacyTools
+FCombo_X.BackgroundColor3 = Color3.new(0, 0, 0)
+FCombo_X.BackgroundTransparency = 0.5
+FCombo_X.Size = UDim2.new(0.03, 0, 0.9, 0)
+FCombo_X.TextScaled = true
+FCombo_X.Position = UDim2.new(0.125, 0, 0, 0)
+FCombo_X.TextColor3 = Color3.fromRGB(255, 255, 255)
+FCombo_X.Font = Enum.Font.Code
+FCombo_X.Text = "Fast Skill[Fruits]"
 
-local isIfQC = false
-QCombo.MouseButton1Click:Connect(function()
-    if isIfQC then
-        QCombo.TextColor3 = Color3.fromRGB(255, 255, 255)
-        SandSandQuickly.Visible = false
-        isIfQC = false
+local IsAutoFEnable = false
+FCombo_X.MouseButton1Click:Connect(function()
+    if IsAutoFEnable then
+        FCombo_X.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Automatically_ComboF.Visible = false
+        IsAutoFEnable = false
     else
-        QCombo.TextColor3 = Color3.fromRGB(0, 255, 0)
-        SandSandQuickly.Visible = true
-        isIfQC = true
+        FCombo_X.TextColor3 = Color3.fromRGB(0, 255, 0)
+        Automatically_ComboF.Visible = true
+        IsAutoFEnable = true
+    end
+end)
+
+-- Checking Fruits Currently In Use --
+local function fightingstyle_abilityfire(nearestHumanoidRootPart)
+    local function checkFS()
+        local player = game:GetService("Players").LocalPlayer
+        local backpack = player.Backpack
+        local character = player.Character or player.CharacterAdded:Wait()
+        local workspaceCharacter = game.Workspace.PlayerCharacters:FindFirstChild(player.Name)
+
+        local function findTool(toolName)
+            for _, tool in ipairs(backpack:GetChildren()) do
+                if tool:IsA("Tool") and tool.Name == toolName then
+                    return true
+                end
+            end
+
+            for _, tool in ipairs(character:GetChildren()) do
+                if tool:IsA("Tool") and tool.Name == toolName then
+                    return true
+                end
+            end
+            
+            if workspaceCharacter then
+                for _, tool in ipairs(workspaceCharacter:GetChildren()) do
+                    if tool:IsA("Tool") and tool.Name == toolName then
+                        return true
+                    end
+                end
+            end
+
+            return false
+        end
+
+        local found = false
+
+        if findTool("DarkLeg") then
+            local args = {
+                [1] = "FS_DarkLeg_C",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_DarkLeg_C",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_DarkLeg_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_DarkLeg_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_DarkLeg_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_DarkLeg_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_DarkLeg_V",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_DarkLeg_V",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+        end
+
+        if findTool("DragonClaw") then
+            local args = {
+                [1] = "FS_DragonClaw_C",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_DragonClaw_C",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_DragonClaw_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_DragonClaw_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_DragonClaw_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_DragonClaw_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_DragonClaw_V",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_DragonClaw_V",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+        end
+
+        if findTool("Cyborg") then
+            local args = {
+                [1] = "FS_Cyborg_V",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_Cyborg_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_Cyborg_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_Cyborg_C",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_Cyborg_C",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_Cyborg_E",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "FS_Cyborg_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "FS_Cyborg_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+        end
+
+        if not found then
+            print("not found")
+        end
+    end
+
+    checkFS()
+end
+-- End/Closed/Closing Box --
+
+local Automatically_ComboFS = Instance.new("TextButton")
+Automatically_ComboFS.Parent = KingLegacySG
+Automatically_ComboFS.Size = UDim2.new(0.05, 0, 0.1, 0)
+Automatically_ComboFS.Position = UDim2.new(0.26, 0, 0.28, 0)
+Automatically_ComboFS.Text = "Not Used[FS Ability]"
+Automatically_ComboFS.Font = Enum.Font.Code
+Automatically_ComboFS.TextScaled = true
+Automatically_ComboFS.TextColor3 = Color3.new(1, 1, 1)
+Automatically_ComboFS.BackgroundColor3 = Color3.new(0, 0, 0)
+Automatically_ComboFS.BackgroundTransparency = 0.5
+Automatically_ComboFS.Visible = false
+
+local isRunning = false
+Automatically_ComboFS.MouseButton1Click:Connect(function()
+    if isRunning then
+        Automatically_ComboFS.Text = "Not Used[FS Ability]"
+        isRunning = false
+    else
+        Automatically_ComboFS.Text = "Use[FS Ability]"
+        isRunning = true
+        
+        while isRunning do
+            local playerHumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+            local playerPosition = playerHumanoidRootPart and playerHumanoidRootPart.Position
+
+            if playerPosition then
+                local nearestHumanoidRootPart = findNearestHumanoidRootPart(playerPosition)
+
+                if nearestHumanoidRootPart then
+                    fightingstyle_abilityfire(nearestHumanoidRootPart)
+                else
+                    fightingstyle_abilityfire(playerHumanoidRootPart)
+                end
+            else
+                print("Player's HumanoidRootPart not found.")
+            end
+            wait(0.005)
+        end
+    end
+end)
+
+local FSCombo_X = Instance.new("TextButton")
+FSCombo_X.Parent = KingLegacyTools
+FSCombo_X.BackgroundColor3 = Color3.new(0, 0, 0)
+FSCombo_X.BackgroundTransparency = 0.5
+FSCombo_X.Size = UDim2.new(0.03, 0, 0.9, 0)
+FSCombo_X.TextScaled = true
+FSCombo_X.Position = UDim2.new(0.165, 0, 0, 0)
+FSCombo_X.TextColor3 = Color3.fromRGB(255, 255, 255)
+FSCombo_X.Font = Enum.Font.Code
+FSCombo_X.Text = "Fast Skill[FS]"
+
+local IsAutoFSEnable = false
+FSCombo_X.MouseButton1Click:Connect(function()
+    if IsAutoFSEnable then
+        FSCombo_X.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Automatically_ComboFS.Visible = false
+        IsAutoFSEnable = false
+    else
+        FSCombo_X.TextColor3 = Color3.fromRGB(0, 255, 0)
+        Automatically_ComboFS.Visible = true
+        IsAutoFSEnable = true
+    end
+end)
+
+local CuteGirl_Gacha = Instance.new("TextButton")
+CuteGirl_Gacha.Parent = KingLegacyTools
+CuteGirl_Gacha.BackgroundColor3 = Color3.new(0, 0, 0)
+CuteGirl_Gacha.BackgroundTransparency = 0.5
+CuteGirl_Gacha.Size = UDim2.new(0.03, 0, 0.9, 0)
+CuteGirl_Gacha.TextScaled = true
+CuteGirl_Gacha.Position = UDim2.new(0.205, 0, 0, 0)
+CuteGirl_Gacha.TextColor3 = Color3.fromRGB(255, 255, 255)
+CuteGirl_Gacha.Font = Enum.Font.Code
+CuteGirl_Gacha.Text = "Gacha"
+
+local IsAutoFSEnable = false
+local CopperKeyLeft = 1
+
+CuteGirl_Gacha.MouseButton1Click:Connect(function()
+    if IsAutoFSEnable then
+        CuteGirl_Gacha.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+        IsAutoFSEnable = false
+    else
+        CuteGirl_Gacha.TextColor3 = Color3.fromRGB(0, 255, 0)
+
+        IsAutoFSEnable = true
+        
+        while IsAutoFSEnable do
+            local args = {
+                [1] = "Copper Key",
+                [2] = "Open1"
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.UseKey:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            CopperKeyLeft = CopperKeyLeft + 1
+            if CopperKeyLeft > 9 then
+                CopperKeyLeft = 1
+                IsAutoFSEnable = false
+                CuteGirl_Gacha.TextColor3 = Color3.fromRGB(255, 255, 255)
+            end
+            wait(0.01)
+        end
     end
 end)
