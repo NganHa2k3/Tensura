@@ -17,6 +17,8 @@ KingLegacySG.Name = "King_Legacy_UI_Cheat"
 local OPENCLOSEDGUI = Instance.new("TextButton")
 local KingLegacyTools = Instance.new("ScrollingFrame")
 
+local SingleSkill_F = false
+
 OPENCLOSEDGUI.Parent = KingLegacySG
 OPENCLOSEDGUI.BackgroundColor3 = Color3.new(0, 0, 0)
 OPENCLOSEDGUI.BackgroundTransparency = 0.5
@@ -804,6 +806,32 @@ local function fruits_abilityfire(nearestHumanoidRootPart)
         end
 
         if findTool("GumGum") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "DF_GumGum_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "DF_GumGum_M1",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
             local args = {
                 [1] = "DF_GumGum_M1",
                 [2] = {
@@ -900,6 +928,7 @@ local function fruits_abilityfire(nearestHumanoidRootPart)
 
             wait(0.01)
             found = true
+            end
         end
 
         if not found then
@@ -1471,91 +1500,52 @@ GetFDropped.MouseButton1Click:Connect(function()
     end
 end)
 
--- Auto Buy Randomizer Fruits Copper Key --
-local function autoBuyCopperKey()
-    local mymoneybruh = game.Players.LocalPlayer:FindFirstChild("PlayerStats") and game.Players.LocalPlayer.PlayerStats:FindFirstChild("beli") and game.Players.LocalPlayer.PlayerStats.beli.Value or "N/A"
-        if mymoneybruh < 26000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 1
-            }
+local SingleClick_F = Instance.new("TextButton")
+SingleClick_F.Parent = KingLegacyTools
+SingleClick_F.BackgroundColor3 = Color3.new(0, 0, 0)
+SingleClick_F.BackgroundTransparency = 0.5
+SingleClick_F.Size = UDim2.new(0.03, 0, 0.9, 0)
+SingleClick_F.TextScaled = true
+SingleClick_F.Position = UDim2.new(0.285, 0, 0, 0)
+SingleClick_F.TextColor3 = Color3.fromRGB(255, 255, 255)
+SingleClick_F.Font = Enum.Font.Code
+SingleClick_F.Text = "Single Skills"
 
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 1 Copper Key !")
-        elseif mymoneybruh < 51000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 2
-            }
+local ItsSingleClick_F = false
+SingleClick_F.MouseButton1Click:Connect(function()
+    if ItsSingleClick_F then
+        SingleClick_F.TextColor3 = Color3.fromRGB(255, 255, 255)
+        SingleSkill_F = false
+        ItsSingleClick_F = false
+    else
+        SingleClick_F.TextColor3 = Color3.fromRGB(0, 255, 0)
+        SingleSkill_F = true
+        ItsSingleClick_F = true
+    end
+end)
 
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 2 Copper Key")
-        elseif mymoneybruh < 76000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 3
-            }
-
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 3 Copper Key")
-        elseif mymoneybruh < 101000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 4
-            }
-
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 4 Copper Key")
-        elseif mymoneybruh < 126000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 5
-            }
-
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 5 Copper Key")
-        elseif mymoneybruh < 151000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 6
-            }
-
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 6 Copper Key")
-        elseif mymoneybruh < 176000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 7
-            }
-
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 7 Copper Key")
-        elseif mymoneybruh < 201000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 8
-            }
-
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 8 Copper Key")
-        elseif mymoneybruh < 226000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 9
-            }
-
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 9 Copper Key")
-        elseif mymoneybruh >= 251000 then
-            local args = {
-                [1] = "Copper Key",
-                [2] = 10
-            }
-
-            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer(unpack(args))
-            print("Buy 10 Copper Key, Return Later to buy more !")
-        end
+-- Changed Sword Style Animation When It Function Being Called --
+local function changedSwordAnims()
+    local ourx = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.ScytheStyle.IdleAnim
+    local ourc = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.ScytheStyle.RunAnim
+    local ourz = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.ScytheStyle.WalkAnim
+    local our_1 = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.ScytheStyle.Dash.AnimationF1
+    local our_2 = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.ScytheStyle.Dash.AnimationF2
+        game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle.IdleAnim:Destroy()
+        game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle.RunAnim:Destroy()
+        game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle.WalkAnim:Destroy()
+        game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle.Dash.AnimationF1:Destroy()
+        game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle.Dash.AnimationF2:Destroy()
+        wait(0.5)
+        ourx.Parent = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle
+        ourc.Parent = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle
+        ourz.Parent = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle
+        our_1.Parent = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle.Dash
+        our_2.Parent = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.KatanaStyle.Dash
+        wait(0.01)
+        print("Successfully Changed Animation of Sword !")
+        wait(0.01)
 end
 
-autoBuyCopperKey()
--- End/Closing Scripting Box --
+changedSwordAnims()
+-- Done Here Right Now I Closed It Here --
