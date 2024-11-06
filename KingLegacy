@@ -426,6 +426,36 @@ local function LvlUPQuest()
         end
 end
 
+local function checkAndMoveHumanoid(player)
+    local character = player.Character
+    if not character then return end
+
+    local characterPosition = character.HumanoidRootPart.Position
+    local nearestHumanoid = nil
+    local nearestDistance = math.huge
+
+    for _, obj in pairs(workspace:GetChildren()) do
+        if obj:IsA("Model") and obj:FindFirstChild("Humanoid") and obj:FindFirstChild("HumanoidRootPart") then
+            local humanoid = obj.Humanoid
+            local humanoidRootPart = obj.HumanoidRootPart
+
+            if humanoid.Health == 0 then
+                local distance = (humanoidRootPart.Position - characterPosition).magnitude
+
+                if distance < nearestDistance then
+                    nearestDistance = distance
+                    nearestHumanoid = humanoid
+                end
+            end
+        end
+    end
+
+    if nearestHumanoid then
+        local targetHumanoidRootPart = nearestHumanoid.Parent.HumanoidRootPart
+        targetHumanoidRootPart.CFrame = CFrame.new(targetHumanoidRootPart.Position.X, 900, targetHumanoidRootPart.Position.Z)
+    end
+end
+
 local tb2 = Instance.new("TextButton")
 tb2.Parent = KingLegacySG
 tb2.Size = UDim2.new(0.05, 0, 0.1, 0)
@@ -1078,7 +1108,9 @@ Automatically_ComboF.MouseButton1Click:Connect(function()
             else
                 print("Player's HumanoidRootPart not found.")
             end
-            wait(0.005)
+            wait(0.004)
+            checkAndMoveHumanoid(game.Players.LocalPlayer)
+            wait(0.002)
         end
     end
 end)
@@ -1779,7 +1811,9 @@ Automatically_ComboSW.MouseButton1Click:Connect(function()
             else
                 print("Player's HumanoidRootPart not found.")
             end
-            wait(0.005)
+            wait(0.004)
+            checkAndMoveHumanoid(game.Players.LocalPlayer)
+            wait(0.002)
         end
     end
 end)
@@ -2184,7 +2218,9 @@ Automatically_ComboFS.MouseButton1Click:Connect(function()
             else
                 print("Player's HumanoidRootPart not found.")
             end
-            wait(0.005)
+            wait(0.004)
+            checkAndMoveHumanoid(game.Players.LocalPlayer)
+            wait(0.002)
         end
     end
 end)
