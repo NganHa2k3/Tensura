@@ -1107,7 +1107,708 @@ FCombo_X.MouseButton1Click:Connect(function()
     end
 end)
 
--- Checking Fruits Currently In Use --
+-- Checking Sword Currently In Use --
+local function swordstyle_abilityfire(nearestHumanoidRootPart)
+    local function checkSW()
+        local player = game:GetService("Players").LocalPlayer
+        local backpack = player.Backpack
+        local character = player.Character or player.CharacterAdded:Wait()
+        local workspaceCharacter = game.Workspace.PlayerCharacters:FindFirstChild(player.Name)
+
+        local function findTool(toolName)
+            for _, tool in ipairs(backpack:GetChildren()) do
+                if tool:IsA("Tool") and tool.Name == toolName then
+                    return true
+                end
+            end
+
+            for _, tool in ipairs(character:GetChildren()) do
+                if tool:IsA("Tool") and tool.Name == toolName then
+                    return true
+                end
+            end
+            
+            if workspaceCharacter then
+                for _, tool in ipairs(workspaceCharacter:GetChildren()) do
+                    if tool:IsA("Tool") and tool.Name == toolName then
+                        return true
+                    end
+                end
+            end
+
+            return false
+        end
+
+        local found = false
+
+        if findTool("Tashi Blade") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Tashi Blade_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Tashi Blade_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Tashi Blade_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Tashi Blade_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Tashi Blade_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if findTool("Jitter") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Jitter_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Jitter_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Jitter_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Jitter_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Jitter_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if findTool("Pondere Blade") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Pondere Blade_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Pondere Blade_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Pondere Blade_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Pondere Blade_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Pondere Blade_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if findTool("Muramasa") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Muramasa_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Muramasa_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Muramasa_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Muramasa_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Muramasa_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if findTool("Hell Sword") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Hell Sword_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Hell Sword_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Hell Sword_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Hell Sword_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Hell Sword_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if findTool("Adventure Knife") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Adventure Knife_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Adventure Knife_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Adventure Knife_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Adventure Knife_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Adventure Knife_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if findTool("Anubis Axe") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Anubis Axe_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Anubis Axe_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Anubis Axe_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Anubis Axe_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Anubis Axe_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if findTool("Pole") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Pole_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Pole_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Pole_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Pole_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Pole_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if findTool("Barbaric Axe") then
+            if SingleSkill_F then
+            local args = {
+                [1] = "SW_Barbaric Axe_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            else
+            local args = {
+                [1] = "SW_Barbaric Axe_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Barbaric Axe_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+
+            local args = {
+                [1] = "SW_Barbaric Axe_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.5)
+
+            local args = {
+                [1] = "SW_Barbaric Axe_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(nearestHumanoidRootPart.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+
+            wait(0.01)
+            found = true
+            end
+        end
+
+        if not found then
+            print("not found")
+        end
+    end
+
+    checkSW()
+end
+
+local Automatically_ComboSW = Instance.new("TextButton")
+Automatically_ComboSW.Parent = KingLegacySG
+Automatically_ComboSW.Size = UDim2.new(0.05, 0, 0.1, 0)
+Automatically_ComboSW.Position = UDim2.new(0.22, 0, 0.28, 0)
+Automatically_ComboSW.Text = "Not Used[SW Ability]"
+Automatically_ComboSW.Font = Enum.Font.Code
+Automatically_ComboSW.TextScaled = true
+Automatically_ComboSW.TextColor3 = Color3.new(1, 1, 1)
+Automatically_ComboSW.BackgroundColor3 = Color3.new(0, 0, 0)
+Automatically_ComboSW.BackgroundTransparency = 0.5
+Automatically_ComboSW.Visible = false
+
+local IsRunningSW = false
+Automatically_ComboSW.MouseButton1Click:Connect(function()
+    if IsRunningSW then
+        Automatically_ComboSW.Text = "Not Used[SW Ability]"
+        IsRunningSW = false
+    else
+        Automatically_ComboSW.Text = "Use[SW Ability]"
+        IsRunningSW = true
+        
+        while IsRunningSW do
+            local playerHumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+            local playerPosition = playerHumanoidRootPart and playerHumanoidRootPart.Position
+
+            if playerPosition then
+                local nearestHumanoidRootPart = findNearestHumanoidRootPart(playerPosition)
+
+                if nearestHumanoidRootPart then
+                    swordstyle_abilityfire(nearestHumanoidRootPart)
+                else
+                    swordstyle_abilityfire(playerHumanoidRootPart)
+                end
+            else
+                print("Player's HumanoidRootPart not found.")
+            end
+            wait(0.005)
+        end
+    end
+end)
+
+local SWCombo_X = Instance.new("TextButton")
+SWCombo_X.Parent = KingLegacyTools
+SWCombo_X.BackgroundColor3 = Color3.new(0, 0, 0)
+SWCombo_X.BackgroundTransparency = 0.5
+SWCombo_X.Size = UDim2.new(0.03, 0, 0.9, 0)
+SWCombo_X.TextScaled = true
+SWCombo_X.Position = UDim2.new(0.165, 0, 0, 0)
+SWCombo_X.TextColor3 = Color3.fromRGB(255, 255, 255)
+SWCombo_X.Font = Enum.Font.Code
+SWCombo_X.Text = "Fast Skill[SW]"
+
+local IsAutoSWEnable = false
+SWCombo_X.MouseButton1Click:Connect(function()
+    if IsAutoSWEnable then
+        SWCombo_X.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Automatically_ComboSW.Visible = false
+        IsAutoSWEnable = false
+    else
+        SWCombo_X.TextColor3 = Color3.fromRGB(0, 255, 0)
+        Automatically_ComboSW.Visible = true
+        IsAutoSWEnable = true
+    end
+end)
+
+-- Checking Fighting Style Currently In Use --
 local function fightingstyle_abilityfire(nearestHumanoidRootPart)
     local function checkFS()
         local player = game:GetService("Players").LocalPlayer
@@ -1435,6 +2136,7 @@ local function fightingstyle_abilityfire(nearestHumanoidRootPart)
             game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
 
             wait(0.01)
+            found = true
         end
 
         if not found then
@@ -1449,7 +2151,7 @@ end
 local Automatically_ComboFS = Instance.new("TextButton")
 Automatically_ComboFS.Parent = KingLegacySG
 Automatically_ComboFS.Size = UDim2.new(0.05, 0, 0.1, 0)
-Automatically_ComboFS.Position = UDim2.new(0.22, 0, 0.28, 0)
+Automatically_ComboFS.Position = UDim2.new(0.29, 0, 0.28, 0)
 Automatically_ComboFS.Text = "Not Used[FS Ability]"
 Automatically_ComboFS.Font = Enum.Font.Code
 Automatically_ComboFS.TextScaled = true
@@ -1493,7 +2195,7 @@ FSCombo_X.BackgroundColor3 = Color3.new(0, 0, 0)
 FSCombo_X.BackgroundTransparency = 0.5
 FSCombo_X.Size = UDim2.new(0.03, 0, 0.9, 0)
 FSCombo_X.TextScaled = true
-FSCombo_X.Position = UDim2.new(0.165, 0, 0, 0)
+FSCombo_X.Position = UDim2.new(0.205, 0, 0, 0)
 FSCombo_X.TextColor3 = Color3.fromRGB(255, 255, 255)
 FSCombo_X.Font = Enum.Font.Code
 FSCombo_X.Text = "Fast Skill[FS]"
@@ -1517,7 +2219,7 @@ CuteGirl_Gacha.BackgroundColor3 = Color3.new(0, 0, 0)
 CuteGirl_Gacha.BackgroundTransparency = 0.5
 CuteGirl_Gacha.Size = UDim2.new(0.03, 0, 0.9, 0)
 CuteGirl_Gacha.TextScaled = true
-CuteGirl_Gacha.Position = UDim2.new(0.205, 0, 0, 0)
+CuteGirl_Gacha.Position = UDim2.new(0.245, 0, 0, 0)
 CuteGirl_Gacha.TextColor3 = Color3.fromRGB(255, 255, 255)
 CuteGirl_Gacha.Font = Enum.Font.Code
 CuteGirl_Gacha.Text = "Gacha"
@@ -1579,7 +2281,7 @@ GetFDropped.BackgroundColor3 = Color3.new(0, 0, 0)
 GetFDropped.BackgroundTransparency = 0.5
 GetFDropped.Size = UDim2.new(0.03, 0, 0.9, 0)
 GetFDropped.TextScaled = true
-GetFDropped.Position = UDim2.new(0.245, 0, 0, 0)
+GetFDropped.Position = UDim2.new(0.285, 0, 0, 0)
 GetFDropped.TextColor3 = Color3.fromRGB(255, 255, 255)
 GetFDropped.Font = Enum.Font.Code
 GetFDropped.Text = "Bring Dropped Fruits"
@@ -1608,7 +2310,7 @@ SingleClick_F.BackgroundColor3 = Color3.new(0, 0, 0)
 SingleClick_F.BackgroundTransparency = 0.5
 SingleClick_F.Size = UDim2.new(0.03, 0, 0.9, 0)
 SingleClick_F.TextScaled = true
-SingleClick_F.Position = UDim2.new(0.285, 0, 0, 0)
+SingleClick_F.Position = UDim2.new(0.325, 0, 0, 0)
 SingleClick_F.TextColor3 = Color3.fromRGB(255, 255, 255)
 SingleClick_F.Font = Enum.Font.Code
 SingleClick_F.Text = "Single Skills"
