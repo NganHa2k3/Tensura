@@ -465,7 +465,7 @@ button4.Font = Enum.Font.PatrickHand
 button4.Text = "Teleportation: Lobby"
 
 button4.MouseButton1Click:Connect(function()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-110.09020233154297, 140.18894958496094, 26.569164276123047)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-110.09020233154297, 250.18894958496094, 26.569164276123047)
 end)
 
 local button5 = Instance.new("TextButton")
@@ -555,6 +555,136 @@ button7.MouseButton1Click:Connect(function()
     MurderSheriffESP()
 wait(0.05)
 end
+    end
+end)
+
+local function movePlayersWithTool(targetToolName, player)
+    local character = player.Character
+    if not character then return end
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+    local humanoid = character:FindFirstChild("Humanoid")
+    if not humanoid then return end
+
+    for _, otherPlayer in ipairs(game.Players:GetPlayers()) do
+        if otherPlayer == player then continue end
+
+        local otherCharacter = otherPlayer.Character
+        if not otherCharacter then return end
+        local otherHumanoidRootPart = otherCharacter:WaitForChild("HumanoidRootPart")
+
+        local tool = otherPlayer.Backpack:FindFirstChild(targetToolName)
+        if tool then
+            local direction = humanoidRootPart.CFrame.LookVector * 5
+            otherHumanoidRootPart.CFrame = humanoidRootPart.CFrame * CFrame.new(direction)
+        end
+    end
+end
+
+local button8 = Instance.new("TextButton")
+button8.Parent = ToolsBox
+button8.BackgroundColor3 = Color3.new(0, 0, 0)
+button8.BackgroundTransparency = 0.5
+button8.Size = UDim2.new(0.03, 0, 0.9, 0)
+button8.TextScaled = true
+button8.Position = UDim2.new(0.285, 0, 0, 0)
+button8.TextColor3 = Color3.fromRGB(255, 255, 255)
+button8.Font = Enum.Font.PatrickHand
+button8.Text = "Gun Trap [Murder Require]"
+
+local IsTrapActivated = false
+button8.MouseButton1Click:Connect(function()
+    if IsTrapActivated then
+        button8.TextColor3 = redColor
+        
+        IsTrapActivated = false
+    else
+        button8.TextColor3 = Color3.fromRGB(255, 255, 255)
+        
+        IsTrapActivated = true
+        
+        while IsTrapActivated do
+            movePlayersWithTool("Gun", player)
+            wait(0.001)
+        end
+    end
+end)
+
+local button9 = Instance.new("TextButton")
+button9.Parent = ToolsBox
+button9.BackgroundColor3 = Color3.new(0, 0, 0)
+button9.BackgroundTransparency = 0.5
+button9.Size = UDim2.new(0.03, 0, 0.9, 0)
+button9.TextScaled = true
+button9.Position = UDim2.new(0.325, 0, 0, 0)
+button9.TextColor3 = Color3.fromRGB(255, 255, 255)
+button9.Font = Enum.Font.PatrickHand
+button9.Text = "View [Gun]"
+
+local main_P = game:GetService("Players").LocalPlayer.Character.Humanoid
+local view_gun = game:GetService("Workspace").CurrentCamera
+local GunPart_View = view_gun.CameraSubject
+
+local function ViewGunDropFunction()
+    local partName = "GunDrop"
+    local teleportSpeed = 1
+
+    -- Function to find only the first instance of the part with the specified name
+    local function findPart(partName, parent)
+        for _, obj in pairs(parent:GetChildren()) do
+            if obj:IsA("Model") or obj:IsA("Folder") then
+                local part = findPart(partName, obj)
+                if part then
+                    return part
+                end
+            elseif obj:IsA("BasePart") and obj.Name == partName then
+                return obj
+            end
+        end
+        return nil
+    end
+
+    local function teleportPlayerToPart(player, part)
+        if player and part and part:IsA("BasePart") then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                -- Set CameraSubject to GunDrop
+                view_gun.CameraSubject = part
+            end
+        end
+    end
+
+    local player = game.Players.LocalPlayer
+    local part = findPart(partName, game.Workspace)
+
+    if part then
+        -- Set CameraSubject to GunDrop if part is found
+        teleportPlayerToPart(player, part)
+        wait(teleportSpeed)
+    else
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Error: No Gun Drop",
+            Text = "Not Found Any Gun Exist!",
+            Duration = 2,
+        })
+        wait(5)
+    end
+end
+
+local IsTrapActivated = false
+local redColor = Color3.fromRGB(255, 0, 0)
+
+button9.MouseButton1Click:Connect(function()
+    if IsTrapActivated then
+        -- If Trap is deactivated, set CameraSubject back to the character's humanoid
+        button9.TextColor3 = Color3.fromRGB(255, 255, 255)
+        view_gun.CameraSubject = game.Players.LocalPlayer.Character.Humanoid
+        IsTrapActivated = false
+    else
+        -- If Trap is activated, set CameraSubject to GunDrop
+        button9.TextColor3 = redColor
+        ViewGunDropFunction()
+        IsTrapActivated = true
     end
 end)
 
