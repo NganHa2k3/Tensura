@@ -2529,6 +2529,16 @@ local CoreGui = game:GetService("StarterGui")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
+local function Display_Username_AutoCorrect(input)
+    for _, player in ipairs(Players:GetPlayers()) do
+        if string.lower(player.Name):sub(1, #input) == string.lower(input) or
+           string.lower(player.DisplayName):sub(1, #input) == string.lower(input) then
+            return player
+        end
+    end
+    return nil
+end
+
 local function onPlayerChatted(message)
     local words = string.split(message, " ")
 
@@ -2568,6 +2578,31 @@ local function onPlayerChatted(message)
         game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
     elseif words[1] == "Atc" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame"))()
+    elseif words[1] == "View" and words[2] then
+        local selected_player = words[2]
+        local targetSelected = Display_Username_AutoCorrect(selected_player)
+        
+        if targetSelected then
+            local targetCharacter = targetSelected.Character
+            if targetCharacter and targetCharacter:FindFirstChild("Humanoid") then
+                local targetH = targetCharacter:FindFirstChild("Humanoid")
+                local Drone_Camera = game:GetService("Workspace").CurrentCamera
+                Drone_Camera.CameraSubject = targetH
+                local CoreGui = game:GetService("StarterGui")
+                CoreGui:SetCore("SendNotification", {
+                    Title = "Spectate Mode",
+                    Text = "Now Spectating Player: " .. targetSelected.Name,
+                    Duration = 2,
+                    })
+            else
+                local CoreGui = game:GetService("StarterGui")
+                CoreGui:SetCore("SendNotification", {
+                    Title = "Spectate Mode",
+                    Text = "Not Found Players",
+                    Duration = 2,
+                    })
+            end
+        end
     end
 end
 
