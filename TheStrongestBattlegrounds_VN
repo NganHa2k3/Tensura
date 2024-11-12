@@ -376,6 +376,8 @@ local code = keymap[choosenkey:lower()]
 PressAButton_K.MouseButton1Click:Connect(function()
     if code then
         keypress(code)
+        wait(0.1)
+        keyrelease(code)
     end
 end)
 
