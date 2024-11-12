@@ -1089,7 +1089,7 @@ local function moveItem(itemName)
     if droppedItems then
         local item = droppedItems:FindFirstChild(itemName)
         if item and item:FindFirstChild("Handle") then
-            item.Handle.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+            firetouchinterest(item.Handle)
         else
             warn(itemName .. " not found in the game!")
         end
