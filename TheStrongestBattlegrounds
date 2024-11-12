@@ -252,69 +252,33 @@ Checker_All.TextScaled = true
 Checker_All.Position = UDim2.new(0.43, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 Checker_All.TextColor3 = Color3.new(1, 1, 1)
 Checker_All.Font = Enum.Font.PatrickHand
-Checker_All.Text = "Notify[DeathCounters]"
+Checker_All.Text = "Tptool"
 Checker_All.Visible = true
 
-local checking = false
-local foundPlayers = {}
-
-local function getNearestPlayer()
-    local nearestPlayer = nil
-    local shortestDistance = math.huge
-    
-    for _, otherPlayer in pairs(game.Players:GetPlayers()) do
-        if otherPlayer ~= player then
-            local distance = (player.Character.HumanoidRootPart.Position - otherPlayer.Character.HumanoidRootPart.Position).magnitude
-            if distance < shortestDistance then
-                shortestDistance = distance
-                nearestPlayer = otherPlayer
-            end
-        end
-    end
-    
-    return nearestPlayer
-end
-
-local function sendChatMessage(message)
-    local args = {
-        [1] = message,
-        [2] = "All"
-    }
-    game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
-end
-
-local function checkForTool()
-    while checking do
-        wait(0.001)
-        local nearestPlayer = getNearestPlayer()
-        
-        if nearestPlayer then
-            local hasTool = nearestPlayer.Backpack:FindFirstChild("Death Counter")
-            
-            if hasTool and not foundPlayers[nearestPlayer.UserId] then
-                sendChatMessage(nearestPlayer.Name .. " has activated Serious Mode.")
-                wait(1)
-                sendChatMessage("Do you want to auto fling " .. nearestPlayer.Name .. " [Y/N]")
-                foundPlayers[nearestPlayer.UserId] = true
-            elseif not hasTool and foundPlayers[nearestPlayer.UserId] then
-                sendChatMessage(nearestPlayer.Name .. " has Activated Death Counter.")
-                wait(1)
-                sendChatMessage("Recommended use auto fling on" .. nearestPlayer.Name .. " !")
-                foundPlayers[nearestPlayer.UserId] = false
-            end
-        end
-    end
-end
-
 Checker_All.MouseButton1Click:Connect(function()
-    checking = not checking
-    if checking then
-        foundPlayers = {}
-        sendChatMessage("[Serious mode detection: nearest]")
-        checkForTool()
-    else
-        sendChatMessage("[Serious mode detection: off]")
+    local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+
+-- Create the teleport tool
+local TpTool = Instance.new("Tool")
+TpTool.Name = "Teleport Tool"
+TpTool.RequiresHandle = false
+TpTool.Parent = player.Backpack
+
+-- When the tool is activated
+TpTool.Activated:Connect(function()
+    local char = player.Character or workspace:FindFirstChild(player.Name)
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    if not char or not hrp then
+        return warn("Failed to find HumanoidRootPart")
     end
+    
+    -- Get the position where the mouse is pointing
+    local targetPosition = mouse.Hit.p
+    
+    -- Teleport the player to the clicked position, offsetting the Y by 3 units to avoid collision
+    hrp.CFrame = CFrame.new(targetPosition.X, targetPosition.Y + 3, targetPosition.Z)
+end)
 end)
 
 -- button 7 [[Notify Death Counters]] --
