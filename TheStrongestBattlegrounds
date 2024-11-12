@@ -503,6 +503,76 @@ Players.PlayerRemoving:Connect(function(player)
     end
 end)
 
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local StareAtNearest = Instance.new("TextButton")
+StareAtNearest.Parent = ScrollingFrame
+StareAtNearest.BackgroundColor3 = Color3.new(0, 0, 0)
+StareAtNearest.BackgroundTransparency = 0.5
+StareAtNearest.Size = UDim2.new(0.03, 0, 0.9, 0)
+StareAtNearest.TextScaled = true
+StareAtNearest.Position = UDim2.new(0.58, 0, 0, 0)
+StareAtNearest.TextColor3 = Color3.new(1, 1, 1)
+StareAtNearest.Font = Enum.Font.PatrickHand
+StareAtNearest.Text = "stare: off"
+
+local isStaring = false
+local stareLoop
+local camera = game:GetService("Workspace").CurrentCamera
+local targetPlayer = nil
+
+local function getNearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= Players.LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            local distance = (Players.LocalPlayer.Character.PrimaryPart.Position - player.Character.HumanoidRootPart.Position).magnitude
+            if distance < shortestDistance then
+                shortestDistance = distance
+                nearestPlayer = player
+            end
+        end
+    end
+    return nearestPlayer
+end
+
+local function stareAtNearest()
+    if not isStaring then
+        if stareLoop then
+            stareLoop:Disconnect()
+            stareLoop = nil
+        end
+        camera.CameraSubject = Players.LocalPlayer.Character.Humanoid
+        StareAtNearest.Text = "stare: off"
+        targetPlayer = nil
+        return
+    end
+
+    if not targetPlayer then
+        targetPlayer = getNearestPlayer()
+    end
+
+    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") then
+        camera.CameraSubject = targetPlayer.Character.Humanoid
+
+        local function stareFunc()
+            if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                camera.CFrame = CFrame.new(camera.CFrame.Position, targetPlayer.Character.HumanoidRootPart.Position)
+            end
+        end
+
+        stareLoop = RunService.RenderStepped:Connect(stareFunc)
+        StareAtNearest.Text = "stare: on"
+    end
+end
+
+StareAtNearest.MouseButton1Click:Connect(function()
+    isStaring = not isStaring
+    stareAtNearest()
+end)
+
 -- Scrolling Box --
 
 ScrollingEmote.Parent = ScreenGui
