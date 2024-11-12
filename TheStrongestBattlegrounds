@@ -344,7 +344,7 @@ local function AnimeCharacter_SeeInv()
                 if not playersWithTool[otherPlayer.Name] then
                     playersWithTool[otherPlayer.Name] = true
                     local args = {
-                        [1] = otherPlayer.Name .. " has tool 'Death Counter'",
+                        [1] = otherPlayer.Name .. " Activated Serious Mode !",
                         [2] = "All"
                     }
                     ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
@@ -353,7 +353,7 @@ local function AnimeCharacter_SeeInv()
                 if playersWithTool[otherPlayer.Name] then
                     playersWithTool[otherPlayer.Name] = false
                     local args = {
-                        [1] = otherPlayer.Name .. " lost tool 'Death Counter'",
+                        [1] = otherPlayer.Name .. " Activated Ability !",
                         [2] = "All"
                     }
                     ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
