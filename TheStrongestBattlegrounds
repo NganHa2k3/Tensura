@@ -518,12 +518,20 @@ local function stareAtNearest()
         targetPlayer = getNearestPlayer()
     end
 
-    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") then
+    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
         camera.CameraSubject = targetPlayer.Character.Humanoid
 
         local function stareFunc()
             if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                camera.CFrame = CFrame.new(camera.CFrame.Position, targetPlayer.Character.HumanoidRootPart.Position)
+                -- Get the position of the target
+                local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
+                local currentCameraPosition = camera.CFrame.Position
+                
+                -- Calculate direction from camera to target
+                local direction = (targetPosition - currentCameraPosition).unit
+                
+                -- Maintain current position, but only change the orientation (rotation) of the camera
+                camera.CFrame = CFrame.new(currentCameraPosition, currentCameraPosition + direction)
             end
         end
 
@@ -535,6 +543,31 @@ end
 StareAtNearest.MouseButton1Click:Connect(function()
     isStaring = not isStaring
     stareAtNearest()
+end)
+
+local PressAButton_K = Instance.new("TextButton")
+PressAButton_K.Parent = ScrollingFrame
+PressAButton_K.BackgroundColor3 = Color3.new(0, 0, 0)
+PressAButton_K.BackgroundTransparency = 0.5
+PressAButton_K.Size = UDim2.new(0.03, 0, 0.9, 0)
+PressAButton_K.TextScaled = true
+PressAButton_K.Position = UDim2.new(0.63, 0, 0, 0)
+PressAButton_K.TextColor3 = Color3.new(1, 1, 1)
+PressAButton_K.Font = Enum.Font.PatrickHand
+PressAButton_K.Text = "Pressed A"
+
+keymap = {
+	["a"] = 0x41,
+}
+
+local choosenkey = "a"
+local code = keymap[choosenkey:lower()]
+PressAButton_K.MouseButton1Click:Connect(function()
+    if code then
+        keypress(code)
+        wait(0.1)
+        keyrelease(code)
+    end
 end)
 
 -- Scrolling Box --
