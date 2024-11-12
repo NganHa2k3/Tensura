@@ -319,6 +319,190 @@ end)
 
 -- button 7 [[Notify Death Counters]] --
 
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+
+local playersWithTool = {}
+local IxL = false
+
+local function AnimeCharacter_SeeInv()
+    local function HasSpecificsTools(character, toolName)
+        for _, item in ipairs(character:GetChildren()) do
+            if item:IsA("Tool") and item.Name == toolName then
+                return true
+            end
+        end
+        return false
+    end
+
+    for _, otherPlayer in ipairs(Players:GetPlayers()) do
+        if otherPlayer ~= Players.LocalPlayer then
+            local character = otherPlayer.Character or otherPlayer.CharacterAdded:Wait()
+            local hasTool = HasSpecificsTools(character, "Death Counter")
+
+            if hasTool then
+                if not playersWithTool[otherPlayer.Name] then
+                    playersWithTool[otherPlayer.Name] = true
+                    local args = {
+                        [1] = otherPlayer.Name .. " has tool 'Death Counter'",
+                        [2] = "All"
+                    }
+                    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+                end
+            else
+                if playersWithTool[otherPlayer.Name] then
+                    playersWithTool[otherPlayer.Name] = false
+                    local args = {
+                        [1] = otherPlayer.Name .. " lost tool 'Death Counter'",
+                        [2] = "All"
+                    }
+                    ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+                end
+            end
+        end
+    end
+end
+
+local SeeInv_All = Instance.new("TextButton")
+SeeInv_All.Parent = ScrollingFrame
+SeeInv_All.BackgroundColor3 = Color3.new(0, 0, 0)
+SeeInv_All.BackgroundTransparency = 0.5
+SeeInv_All.Size = UDim2.new(0.03, 0, 0.9, 0)
+SeeInv_All.TextScaled = true
+SeeInv_All.Position = UDim2.new(0.48, 0, 0, 0)
+SeeInv_All.TextColor3 = Color3.new(1, 1, 1)
+SeeInv_All.Font = Enum.Font.PatrickHand
+SeeInv_All.Text = "Chat[DeathCounters]"
+SeeInv_All.Visible = true
+
+SeeInv_All.MouseButton1Click:Connect(function()
+    if IxL then
+        SeeInv_All.TextColor3 = Color3.new(1, 1, 1)
+        IxL = false
+    else
+        SeeInv_All.TextColor3 = Color3.new(1, 1, 0)
+        IxL = true
+
+        while IxL do
+            AnimeCharacter_SeeInv()
+            wait(0.5)
+        end
+    end
+end)
+
+Players.PlayerAdded:Connect(function(player)
+    if IxL then
+        player.CharacterAdded:Connect(function(character)
+            playersWithTool[player.Name] = nil
+        end)
+    end
+end)
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+
+local playersWithTool = {}
+
+local function CreateBillboard(player, toolName)
+    local character = player.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local billboardGui = Instance.new("BillboardGui")
+        billboardGui.Parent = character.HumanoidRootPart
+        billboardGui.Adornee = character.HumanoidRootPart
+        billboardGui.Size = UDim2.new(0, 200, 0, 50)
+        billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+        
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Parent = billboardGui
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.TextScaled = true
+        
+        if toolName == "Death Counter" then
+            textLabel.Text = "Death Counter"
+            textLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+            wait(10)
+            billboardGui:Destroy()
+        else
+            textLabel.Text = "Serious Mode"
+            textLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+        end
+    end
+end
+
+local function AnimC_GUI()
+    local function UsesTools(character, toolName)
+        for _, item in ipairs(character:GetChildren()) do
+            if item:IsA("Tool") and item.Name == toolName then
+                return true
+            end
+        end
+        return false
+    end
+
+    for _, otherPlayer in ipairs(Players:GetPlayers()) do
+        if otherPlayer ~= Players.LocalPlayer then
+            local character = otherPlayer.Character or otherPlayer.CharacterAdded:Wait()
+            local hasTool = UsesTools(character, "Death Counter")
+
+            if hasTool then
+                if not playersWithTool[otherPlayer.Name] then
+                    playersWithTool[otherPlayer.Name] = true
+                    CreateBillboard(otherPlayer, "Serious Mode")
+                end
+            else
+                if playersWithTool[otherPlayer.Name] then
+                    playersWithTool[otherPlayer.Name] = false
+                    CreateBillboard(otherPlayer, "Death Counter")
+                end
+            end
+        end
+    end
+end
+
+local GUI_AllOnTop = Instance.new("TextButton")
+GUI_AllOnTop.Parent = ScrollingFrame
+GUI_AllOnTop.BackgroundColor3 = Color3.new(0, 0, 0)
+GUI_AllOnTop.BackgroundTransparency = 0.5
+GUI_AllOnTop.Size = UDim2.new(0.03, 0, 0.9, 0)
+GUI_AllOnTop.TextScaled = true
+GUI_AllOnTop.Position = UDim2.new(0.53, 0, 0, 0)
+GUI_AllOnTop.TextColor3 = Color3.new(1, 1, 1)
+GUI_AllOnTop.Font = Enum.Font.PatrickHand
+GUI_AllOnTop.Text = "View[DeathCounters]"
+GUI_AllOnTop.Visible = true
+
+local IxL_I = false
+GUI_AllOnTop.MouseButton1Click:Connect(function()
+    if IxL_I then
+        GUI_AllOnTop.TextColor3 = Color3.new(1, 1, 1)
+        IxL_I = false
+    else
+        GUI_AllOnTop.TextColor3 = Color3.new(1, 1, 0)
+        IxL_I = true
+
+        while IxL_I do
+            AnimC_GUI()
+            wait(0.5)
+        end
+    end
+end)
+
+Players.PlayerAdded:Connect(function(player)
+    if IxL_I then
+        player.CharacterAdded:Connect(function(character)
+            playersWithTool[player.Name] = nil
+            AnimC_GUI()
+        end)
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    if IxL_I then
+        playersWithTool[player.Name] = nil
+    end
+end)
+
 -- Scrolling Box --
 
 ScrollingEmote.Parent = ScreenGui
