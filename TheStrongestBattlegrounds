@@ -567,6 +567,135 @@ PressAButton_K.MouseButton1Click:Connect(function()
     end
 end)
 
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local camera = workspace.CurrentCamera
+
+-- Assuming some predefined constants for speed and other handlers
+local velocityHandlerName = "BodyVelocityHandler"
+local gyroHandlerName = "BodyGyroHandler"
+local vehicleflyspeed = 50 -- Modify as needed
+local iyflyspeed = 25 -- Modify as needed
+
+local isFlying = false
+local mfly1, mfly2
+
+-- Create the Fly Button
+local FlyButton = Instance.new("TextButton")
+FlyButton.Parent = ScrollingFrame -- assuming it's within a frame or ScreenGui
+FlyButton.BackgroundColor3 = Color3.new(0, 0, 0)
+FlyButton.BackgroundTransparency = 0.5
+FlyButton.Size = UDim2.new(0.03, 0, 0.9, 0)
+FlyButton.TextScaled = true
+FlyButton.Position = UDim2.new(0.68, 0, 0, 0)
+FlyButton.TextColor3 = Color3.new(1, 1, 1)
+FlyButton.Font = Enum.Font.PatrickHand
+FlyButton.Text = "Fly: off"
+
+-- Function to get root part of the character
+local function getRoot(character)
+    return character:FindFirstChild("HumanoidRootPart") or character:WaitForChild("HumanoidRootPart")
+end
+
+-- Mobile Fly logic
+local function mobileFly(speaker, vfly)
+    if not speaker.Character or not speaker.Character:FindFirstChild("HumanoidRootPart") then return end
+
+    local root = getRoot(speaker.Character)
+    local camera = workspace.CurrentCamera
+    local v3none = Vector3.new()
+    local v3zero = Vector3.new(0, 0, 0)
+    local v3inf = Vector3.new(9e9, 9e9, 9e9)
+
+    local controlModule = require(speaker.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
+    local bv = Instance.new("BodyVelocity")
+    bv.Name = velocityHandlerName
+    bv.Parent = root
+    bv.MaxForce = v3zero
+    bv.Velocity = v3zero
+
+    local bg = Instance.new("BodyGyro")
+    bg.Name = gyroHandlerName
+    bg.Parent = root
+    bg.MaxTorque = v3inf
+    bg.P = 1000
+    bg.D = 50
+
+    -- Reattach BodyVelocity and BodyGyro if character respawns
+    mfly1 = speaker.CharacterAdded:Connect(function()
+        local bv = Instance.new("BodyVelocity")
+        bv.Name = velocityHandlerName
+        bv.Parent = root
+        bv.MaxForce = v3zero
+        bv.Velocity = v3zero
+
+        local bg = Instance.new("BodyGyro")
+        bg.Name = gyroHandlerName
+        bg.Parent = root
+        bg.MaxTorque = v3inf
+        bg.P = 1000
+        bg.D = 50
+    end)
+
+    -- Update the velocity and gyro based on control
+    mfly2 = RunService.RenderStepped:Connect(function()
+        root = getRoot(speaker.Character)
+        if speaker.Character:FindFirstChildWhichIsA("Humanoid") and root then
+            local humanoid = speaker.Character:FindFirstChildWhichIsA("Humanoid")
+            local VelocityHandler = root:FindFirstChild(velocityHandlerName)
+            local GyroHandler = root:FindFirstChild(gyroHandlerName)
+
+            VelocityHandler.MaxForce = v3inf
+            GyroHandler.MaxTorque = v3inf
+            if not vfly then humanoid.PlatformStand = true end
+            GyroHandler.CFrame = camera.CoordinateFrame
+            VelocityHandler.Velocity = v3none
+
+            local direction = controlModule:GetMoveVector()
+            if direction.X > 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * (vfly and vehicleflyspeed or iyflyspeed))
+            end
+            if direction.X < 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * (vfly and vehicleflyspeed or iyflyspeed))
+            end
+            if direction.Z > 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * (vfly and vehicleflyspeed or iyflyspeed))
+            end
+            if direction.Z < 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * (vfly and vehicleflyspeed or iyflyspeed))
+            end
+        end
+    end)
+end
+
+-- Function to disconnect fly controls
+local function stopFlying()
+    -- Remove BodyVelocity and BodyGyro instances
+    for _, v in pairs(Character:GetChildren()) do
+        if v:IsA("BodyVelocity") or v:IsA("BodyGyro") then
+            v:Destroy()
+        end
+    end
+    -- Disconnect the RenderStepped connection to stop applying velocity
+    if mfly2 then
+        mfly2:Disconnect()
+    end
+end
+
+-- Button Click Functions
+FlyButton.MouseButton1Click:Connect(function()
+    isFlying = not isFlying
+    if isFlying then
+        mobileFly(Player, true)
+        FlyButton.Text = "Fly: on"
+    else
+        stopFlying()
+        FlyButton.Text = "Fly: off"
+    end
+end)
+
 -- Scrolling Box --
 
 ScrollingEmote.Parent = ScreenGui
