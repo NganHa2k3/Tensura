@@ -508,7 +508,6 @@ local function stareAtNearest()
             stareLoop:Disconnect()
             stareLoop = nil
         end
-        camera.CameraSubject = Players.LocalPlayer.Character.Humanoid
         StareAtNearest.Text = "stare: off"
         targetPlayer = nil
         return
@@ -519,8 +518,6 @@ local function stareAtNearest()
     end
 
     if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        camera.CameraSubject = targetPlayer.Character.Humanoid
-
         local function stareFunc()
             if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
                 -- Get the position of the target
