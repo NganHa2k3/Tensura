@@ -68,10 +68,12 @@ local function NotifyFSpawnedTrue()
             player.Character.HumanoidRootPart.CFrame = targetPart.CFrame + Vector3.new(0, 1, 0)
         end
     else
-        NotifyToOurPlayers.Visible = false
+        NotifyToOurPlayers.TextColor3 = Color3.new(0, 1, 1)
+        NotifyToOurPlayers.Text = "[Nhặt Xong Hết Rùi Haha]"
         wait(1)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/RobloxScript/item/ServerHop"))()
-        print("Đã nhặt hết rương rồi nha, nên nó tự động tắt script đó execute lại nha nếu muốn farm nhanh tiếp hehe")
+        NotifyToOurPlayers.TextColor3 = Color3.new(1, 0, 1)
+        NotifyToOurPlayers.Text = "[Đang đổi Server, Đợi Xíu Nha Em]"
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/refs/heads/main/ServerHop_Https"))()
     end
 end
 
