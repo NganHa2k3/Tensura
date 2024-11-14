@@ -3419,10 +3419,10 @@ local function Fruits_AbilityFireEvent(N_HRP)
             found = true
         end
         
-        if FruitUsing("ControlControl") then
+        if FruitUsing("OpOp") then
             if DF_Use_M1 then
             local args = {
-                [1] = "DF_ControlControl_M1",
+                [1] = "DF_OpOp_M1",
                 [2] = {
                     ["Type"] = "Down",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3434,7 +3434,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             wait(0.05)
             
             local args = {
-                [1] = "DF_ControlControl_M1",
+                [1] = "DF_OpOp_M1",
                 [2] = {
                     ["Type"] = "Up",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3448,7 +3448,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             
             if DF_Use_Z then
             local args = {
-                [1] = "DF_ControlControl_Z",
+                [1] = "DF_OpOp_Z",
                 [2] = {
                     ["Type"] = "Down",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3460,7 +3460,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             wait(0.05)
             
             local args = {
-                [1] = "DF_ControlControl_Z",
+                [1] = "DF_OpOp_Z",
                 [2] = {
                     ["Type"] = "Up",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3474,7 +3474,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             
             if DF_Use_X then
             local args = {
-                [1] = "DF_ControlControl_X",
+                [1] = "DF_OpOp_X",
                 [2] = {
                     ["Type"] = "Down",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3486,7 +3486,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             wait(0.05)
             
             local args = {
-                [1] = "DF_ControlControl_X",
+                [1] = "DF_OpOp_X",
                 [2] = {
                     ["Type"] = "Up",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3500,7 +3500,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             
             if DF_Use_C then
             local args = {
-                [1] = "DF_ControlControl_C",
+                [1] = "DF_OpOp_C",
                 [2] = {
                     ["Type"] = "Down",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3512,7 +3512,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             wait(0.05)
             
             local args = {
-                [1] = "DF_ControlControl_C",
+                [1] = "DF_OpOp_C",
                 [2] = {
                     ["Type"] = "Up",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3526,7 +3526,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             
             if DF_Use_V then
             local args = {
-                [1] = "DF_ControlControl_V",
+                [1] = "DF_OpOp_V",
                 [2] = {
                     ["Type"] = "Down",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3538,7 +3538,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             wait(0.05)
             
             local args = {
-                [1] = "DF_ControlControl_V",
+                [1] = "DF_OpOp_V",
                 [2] = {
                     ["Type"] = "Up",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3552,7 +3552,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             
             if DF_Use_E then
             local args = {
-                [1] = "DF_ControlControl_E",
+                [1] = "DF_OpOp_E",
                 [2] = {
                     ["Type"] = "Down",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3564,7 +3564,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             wait(0.05)
             
             local args = {
-                [1] = "DF_ControlControl_E",
+                [1] = "DF_OpOp_E",
                 [2] = {
                     ["Type"] = "Up",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3578,7 +3578,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             
             if DF_Use_B then
             local args = {
-                [1] = "DF_ControlControl_B",
+                [1] = "DF_OpOp_B",
                 [2] = {
                     ["Type"] = "Down",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3590,7 +3590,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             wait(0.05)
             
             local args = {
-                [1] = "DF_ControlControl_B",
+                [1] = "DF_OpOp_B",
                 [2] = {
                     ["Type"] = "Up",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3604,7 +3604,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             
             if DF_Use_F then
             local args = {
-                [1] = "DF_ControlControl_F",
+                [1] = "DF_OpOp_F",
                 [2] = {
                     ["Type"] = "Down",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
@@ -3616,7 +3616,7 @@ local function Fruits_AbilityFireEvent(N_HRP)
             wait(5)
             
             local args = {
-                [1] = "DF_ControlControl_F",
+                [1] = "DF_OpOp_F",
                 [2] = {
                     ["Type"] = "Up",
                     ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
