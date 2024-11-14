@@ -4850,11 +4850,6 @@ B_GKey.MouseButton1Click:Connect(function()
     end
 end)
 
-player.CharacterAdded:Connect(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Hello/refs/heads/GameScript_Activated/KL_ToolTest_1_Activity"))()
-    print("Is Loaded Tool")
-end)
-
 -- Changed Sword Style Animation When It Function Being Called --
 local function changedSwordAnims()
     local ourx = game:GetService("ReplicatedStorage").Chest.Animation.CustomWeaponAnims.ScytheStyle.IdleAnim
