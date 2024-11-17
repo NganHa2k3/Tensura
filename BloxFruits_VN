@@ -94,7 +94,7 @@ end
 -- Execute the printAllPlayerNames function immediately
 printAllPlayerNames()
 
-
+local LoopActivated_AllF = game:GetService("RunService")
 
 -- Close Function --
 
@@ -476,10 +476,11 @@ LoopsPlayers.MouseButton1Click:Connect(function()
         
         LPlayers = true
         
-        while LPlayers do
-            LoopsTPP()
-            wait(0.0001)
-        end
+        LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
+            if LPlayers then
+                LoopsTPP()
+            end
+        end)
     end
 end)
 
@@ -529,10 +530,11 @@ EnemiesHealthZero.MouseButton1Click:Connect(function()
         
         EnemiesHP = true
         
-        while EnemiesHP do
-            findNearestEnemy()
-            wait(0.0001)
-        end
+        LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
+            if EnemiesHP then
+                findNearestEnemy()
+            end
+        end)
     end
 end)
 
@@ -585,10 +587,11 @@ EnemiesHitBoxChanged.MouseButton1Click:Connect(function()
         
         EnemiesHBox = true
         
-        while EnemiesHBox do
-            HitBoxNearestEnemy()
-            wait(0.01)
-        end
+        LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
+            if EnemiesHBox then
+                HitBoxNearestEnemy()
+            end
+        end)
     end
 end)
 
@@ -1092,10 +1095,11 @@ EnemiesCFrameTo.MouseButton1Click:Connect(function()
         
         EnemiesCF = true
         
-        while EnemiesCF do
-            trackNearestEnemy()
-            wait(0.001)
-        end
+        LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
+            if EnemiesCF then
+                trackNearestEnemy()
+            end
+        end)
     end
 end)
 
