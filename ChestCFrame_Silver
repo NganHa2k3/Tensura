@@ -2,6 +2,9 @@ local Fruit_DetectorNotification = Instance.new("ScreenGui")
 Fruit_DetectorNotification.Parent = game.CoreGui
 Fruit_DetectorNotification.Name = "FarmChestFastHehe"
 
+local successfullycollected_all
+successfullycollected_all = true
+
 local HoldOurValue = Instance.new("TextBox")
 HoldOurValue.Parent = Fruit_DetectorNotification
 HoldOurValue.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -76,6 +79,7 @@ local function NotifyFSpawnedTrue()
             player.Character.HumanoidRootPart.CFrame = targetPart.CFrame + Vector3.new(0, 1, 0)
         end
     else
+        successfullycollected_all = false
         NotifyToOurPlayers.TextColor3 = Color3.new(0, 1, 1)
         NotifyToOurPlayers.Text = "[Nhặt Xong Hết Rùi Haha]"
         wait(1)
@@ -112,6 +116,8 @@ end
 local LoopNhanhHonNua = game:GetService("RunService")
 
 LoopNhanhHonNua.RenderStepped:Connect(function(deltaTime)
-    UPDTLBFF()
-    NotifyFSpawnedTrue()
+    if successfullycollected_all then
+        UPDTLBFF()
+        NotifyFSpawnedTrue()
+    end
 end)
