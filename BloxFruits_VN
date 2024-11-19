@@ -858,7 +858,7 @@ local CoreGui = game:GetService("StarterGui")
 end)
 
 ServerHop.MouseButton1Click:Connect(function()
-    loadstring(game:HttpGet("https://www.scriptblox.com/raw/Server-Browser_80", true))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/ServerHop_Https"))()
     
     local CoreGui = game:GetService("StarterGui")
 
