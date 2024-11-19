@@ -27,7 +27,7 @@ NotifyToOurPlayers.Text = "[Đang nhặt hết Rương]"
 NotifyToOurPlayers.Visible = false
 
 local player = game.Players.LocalPlayer
-local initialBeliValue = player.Data.Beli.Value  -- Lưu giá trị Beli ban đầu
+local initialBeliValue = player:FindFirstChild("Data") and player.Data:FindFirstChild("Beli") and player.Data.Beli.Value or "N/A"  -- Lưu giá trị Beli ban đầu
 
 local function countParts()
     local count = 0
@@ -52,7 +52,7 @@ local function NotifyFSpawnedTrue()
         NotifyToOurPlayers.Visible = true
 
         -- Tính số Beli đã nhặt
-        local currentBeliValue = player.Data.Beli.Value
+        local currentBeliValue = player:FindFirstChild("Data") and player.Data:FindFirstChild("Beli") and player.Data.Beli.Value or "N/A"
         local addedBeli = currentBeliValue - initialBeliValue  -- Tính sự thay đổi Beli
 
         -- Hiển thị thông báo với số Beli đã nhặt
