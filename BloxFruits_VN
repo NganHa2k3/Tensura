@@ -2583,6 +2583,10 @@ local function onPlayerChatted(message)
         game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
     elseif words[1] == "Nhặt" and words[2] == "hết" and words[3] == "rương" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame"))()
+    elseif words[1] == "Nhặt" and words[2] == "hết" and words[3] == "rương" and words[4] == "vip" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame_Silver"))()
+    elseif words[1] == "tptool" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/TeleportTool"))()
     elseif words[1] == "Xem" and words[2] then
         local selected_player = words[2]
         local targetSelected = Display_Username_AutoCorrect(selected_player)
