@@ -1,0 +1,117 @@
+local Fruit_DetectorNotification = Instance.new("ScreenGui")
+Fruit_DetectorNotification.Parent = game.CoreGui
+Fruit_DetectorNotification.Name = "FarmChestFastHehe"
+
+local HoldOurValue = Instance.new("TextBox")
+HoldOurValue.Parent = Fruit_DetectorNotification
+HoldOurValue.BackgroundColor3 = Color3.new(0, 0, 0)
+HoldOurValue.BackgroundTransparency = 0.9
+HoldOurValue.Size = UDim2.new(0.05, 0, 0.05, 0)
+HoldOurValue.Position = UDim2.new(0.08, 0, 0.4, 0)
+HoldOurValue.TextScaled = true
+HoldOurValue.TextColor3 = Color3.new(1, 1, 1)
+HoldOurValue.Font = Enum.Font.Code
+HoldOurValue.Text = ""
+HoldOurValue.Visible = true
+
+local NotifyToOurPlayers = Instance.new("TextLabel")
+NotifyToOurPlayers.Parent = Fruit_DetectorNotification
+NotifyToOurPlayers.BackgroundColor3 = Color3.new(0, 0, 0)
+NotifyToOurPlayers.BackgroundTransparency = 0.5
+NotifyToOurPlayers.Size = UDim2.new(0.5, 0, 0.2, 0)
+NotifyToOurPlayers.Position = UDim2.new(0.25, 0, 0.4, 0)
+NotifyToOurPlayers.TextScaled = true
+NotifyToOurPlayers.TextColor3 = Color3.new(1, 1, 0)
+NotifyToOurPlayers.Font = Enum.Font.Code
+NotifyToOurPlayers.Text = "[Đang nhặt hết Rương]"
+NotifyToOurPlayers.Visible = false
+
+local player = game.Players.LocalPlayer
+local initialBeliValue = player.Data.Beli.Value  -- Lưu giá trị Beli ban đầu
+
+local function countParts()
+    local count = 0
+    local partNames = {"Chest1", "Chest2", "Chest3", "Fruit "}
+    
+    for _, partName in ipairs(partNames) do
+        for _, obj in pairs(game:GetService("Workspace"):GetChildren()) do
+            if obj.Name == partName and obj:IsA("BasePart") then
+                count = count + 1
+            end
+        end
+    end
+    return count
+end
+
+local function UPDTLBFF()
+    HoldOurValue.Text = tostring(countParts())
+end
+
+local function NotifyFSpawnedTrue()
+    if HoldOurValue.Text ~= "0" then
+        NotifyToOurPlayers.Visible = true
+
+        -- Tính số Beli đã nhặt
+        local currentBeliValue = player.Data.Beli.Value
+        local addedBeli = currentBeliValue - initialBeliValue  -- Tính sự thay đổi Beli
+
+        -- Hiển thị thông báo với số Beli đã nhặt
+        NotifyToOurPlayers.Text = "[Đã nhặt: " .. tostring(addedBeli) .. "]"
+        
+        local targetPart
+        if game.Workspace:FindFirstChild("Chest3") then
+            targetPart = game.Workspace.Chest3
+        elseif game.Workspace:FindFirstChild("Chest2") then
+            targetPart = game.Workspace.Chest2
+        elseif game.Workspace:FindFirstChild("Chest1") then
+            targetPart = game.Workspace.Chest1
+        else
+            local fruit = game.Workspace:FindFirstChild("Fruit ")
+            if fruit and fruit:IsA("Model") then
+                targetPart = fruit.Handle
+            end
+        end
+        
+        if targetPart then
+            player.Character.HumanoidRootPart.CFrame = targetPart.CFrame + Vector3.new(0, 1, 0)
+        end
+    else
+        NotifyToOurPlayers.TextColor3 = Color3.new(0, 1, 1)
+        NotifyToOurPlayers.Text = "[Nhặt Xong Hết Rùi Haha]"
+        wait(1)
+        NotifyToOurPlayers.TextColor3 = Color3.new(1, 0, 1)
+        NotifyToOurPlayers.Text = "[Đang đổi Server, Đợi Xíu Nha Em]"
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/refs/heads/main/ServerHop_Https"))()
+    end
+end
+
+local healthSet = false  -- Biến này dùng để đảm bảo chỉ thay đổi máu 1 lần
+
+local function onCharacterAdded(character)
+    local humanoid = character:WaitForChild("Humanoid")
+    
+    -- Chỉ thay đổi máu 1 lần khi script bắt đầu
+    if not healthSet then
+        humanoid.Health = 0
+        healthSet = true  -- Đánh dấu rằng máu đã được set về 0
+    end
+
+    -- Set health to 0 after 8 seconds
+    wait(8)
+    humanoid.Health = 0
+end
+
+-- Connect to character added event
+player.CharacterAdded:Connect(onCharacterAdded)
+
+-- Initial call in case the character already exists
+if player.Character then
+    onCharacterAdded(player.Character)
+end
+
+local LoopNhanhHonNua = game:GetService("RunService")
+
+LoopNhanhHonNua.RenderStepped:Connect(function(deltaTime)
+    UPDTLBFF()
+    NotifyFSpawnedTrue()
+end)
