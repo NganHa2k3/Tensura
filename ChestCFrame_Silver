@@ -25,7 +25,7 @@ NotifyToOurPlayers.BackgroundTransparency = 0.5
 NotifyToOurPlayers.Size = UDim2.new(0.5, 0, 0.2, 0)
 NotifyToOurPlayers.Position = UDim2.new(0.25, 0, 0.4, 0)
 NotifyToOurPlayers.TextScaled = true
-NotifyToOurPlayers.TextColor3 = Color3.new(1, 1, 0)
+NotifyToOurPlayers.TextColor3 = Color3.new(1, 1, 1)
 NotifyToOurPlayers.Font = Enum.Font.Code
 NotifyToOurPlayers.Text = "[Đang nhặt hết Rương]"
 NotifyToOurPlayers.Visible = false
@@ -124,7 +124,7 @@ LoopNhanhHonNua.RenderStepped:Connect(function(deltaTime)
     end
     
     if nowserverhopping then
+        wait(5)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/refs/heads/main/ServerHop_Https"))()
-        wait(1)
     end
 end)
