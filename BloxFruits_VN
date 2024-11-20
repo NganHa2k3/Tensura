@@ -10,6 +10,9 @@ end
 
 -- Blox Fruits UI V4 VN --
 
+game:IsLoaded()
+task.wait(1)
+
 local ScreenGui = Instance.new("ScreenGui")
 local OpenClose = Instance.new("TextButton")
 local HoldBoatName = Instance.new("TextBox")
@@ -2616,3 +2619,5 @@ local function onPlayerChatted(message)
 end
 
 player.Chatted:Connect(onPlayerChatted)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame_Toggler"))()
