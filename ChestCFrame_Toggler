@@ -1,0 +1,166 @@
+local AutoCollect_SG = Instance.new("ScreenGui")
+AutoCollect_SG.Name = "NganHa2k3_AutoChest"
+AutoCollect_SG.Parent = game:GetService("CoreGui")
+
+local plr = game:GetService("Players").LocalPlayer
+local rs = game:GetService("RunService")
+
+local Black, White, Green, Purple, Red = Color3.fromRGB(0, 0, 0), Color3.fromRGB(255, 255, 255), Color3.fromRGB(0, 255, 0), Color3.fromRGB(255, 0, 255), Color3.fromRGB(255, 0, 0)
+local Code, Arcade = Enum.Font.Code, Enum.Font.Arcade
+local FirstExecBeliStat = plr:FindFirstChild("Data") and plr.Data:FindFirstChild("Beli") and plr.Data.Beli.Value or "N/A"
+
+local OFF_RunButton = Instance.new("TextButton")
+local ChestCountLabel = Instance.new("TextLabel")
+local BeliCountLabel = Instance.new("TextLabel")
+local OFF_RunButtonUI, ChestCountLabelUI, BeliCountLabelUI
+
+OFF_RunButton.Parent = AutoCollect_SG
+OFF_RunButton.BackgroundColor3 = Black
+OFF_RunButton.BackgroundTransparency = 0.5
+OFF_RunButton.Position = UDim2.new(0.022, 0, 0.4, 0)
+OFF_RunButton.Size = UDim2.new(0.05, 0, 0.1, 0)
+OFF_RunButton.TextScaled = true
+OFF_RunButton.TextColor3 = White
+OFF_RunButton.Font = Code
+OFF_RunButton.Text = "◇Beli"
+
+ChestCountLabel.Parent = AutoCollect_SG
+ChestCountLabel.BackgroundColor3 = Black
+ChestCountLabel.BackgroundTransparency = 0.5
+ChestCountLabel.Position = UDim2.new(0.08, 0, 0.4, 0)
+ChestCountLabel.Size = UDim2.new(0.1, 0, 0.05, 0)
+ChestCountLabel.TextScaled = true
+ChestCountLabel.TextColor3 = White
+ChestCountLabel.Font = Code
+ChestCountLabel.Text = ""
+ChestCountLabel.Visible = false
+
+BeliCountLabel.Parent = AutoCollect_SG
+BeliCountLabel.BackgroundColor3 = Black
+BeliCountLabel.BackgroundTransparency = 0.5
+BeliCountLabel.Position = UDim2.new(0.08, 0, 0.46, 0)
+BeliCountLabel.Size = UDim2.new(0.2, 0, 0.05, 0)
+BeliCountLabel.TextScaled = true
+BeliCountLabel.TextColor3 = White
+BeliCountLabel.Font = Code
+BeliCountLabel.Text = "Nhận được: " .. tostring(FirstExecBeliStat) .. "$"
+BeliCountLabel.Visible = false
+
+local function AddUICorner(element)
+    local UI = Instance.new("UICorner")
+    UI.Parent = element
+    UI.CornerRadius = UDim.new(0.2, 0)
+end
+
+AddUICorner(OFF_RunButton)
+AddUICorner(ChestCountLabel)
+AddUICorner(BeliCountLabel)
+
+local successful_collected = false
+local AutoF = false
+local IsRun = false
+local isServerHopRunning = false
+local serverHopInterval = 5
+local serverHopTimer = 0
+
+local function countChest()
+    local count_number = 0
+    local allChest = {"Chest1", "Chest2", "Chest3", "Fruit "}
+    for _, ChestName in ipairs(allChest) do
+        for _, obj in pairs(game:GetService("Workspace"):GetChildren()) do
+            if obj.Name == ChestName and obj:IsA("BasePart") then
+                count_number = count_number + 1
+            end
+        end
+    end
+    return count_number
+end
+
+local function UpdateCurrentChestCount()
+    ChestCountLabel.Text = "Số lượng rương: " .. tostring(countChest())
+end
+
+local function UpdateBeliInput()
+    local totalChest = countChest()
+
+    if totalChest == 0 then
+        local AddedBeliStat = CollectedBeliStat - FirstExecBeliStat
+        BeliCountLabel.Text = "Tổng nhận được: " .. tostring(AddedBeliStat) .. "$"
+        BeliCountLabel.TextColor3 = Green
+        task.wait(1)
+        BeliCountLabel.Text = "Đang đổi máy chủ..."
+        BeliCountLabel.TextColor3 = Red
+        
+        if not isServerHopRunning then
+            isServerHopRunning = true
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/ServerHop_Https"))()
+        end
+    else
+        local CollectedBeliStat = plr:FindFirstChild("Data") and plr.Data:FindFirstChild("Beli") and plr.Data.Beli.Value or "N/A"
+        local AddedBeliStat = CollectedBeliStat - FirstExecBeliStat
+        BeliCountLabel.Text = "Nhận được: " .. tostring(AddedBeliStat) .. "$"
+        BeliCountLabel.TextColor3 = White
+    end
+end
+
+local function moveToChest()
+    local allChest = {"Chest3", "Chest2", "Chest1", "Fruit "}
+    for _, ChestName in ipairs(allChest) do
+        for _, obj in pairs(game:GetService("Workspace"):GetChildren()) do
+            if obj.Name == ChestName and obj:IsA("BasePart") then
+                plr.Character.HumanoidRootPart.CFrame = obj.CFrame + Vector3.new(0, 1, 0)
+                wait(0.02)
+                plr.Character.HumanoidRootPart.CFrame = obj.CFrame + Vector3.new(0, 3, 0)
+                return
+            end
+        end
+    end
+end
+
+rs.RenderStepped:Connect(function(deltaTime)
+    if IsRun then
+        UpdateCurrentChestCount()
+        UpdateBeliInput()
+        moveToChest()
+
+        if countChest() == 0 and isServerHopRunning then
+            serverHopTimer = serverHopTimer + deltaTime
+            if serverHopTimer >= serverHopInterval then
+                serverHopTimer = 0
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/ServerHop_Https"))()
+            end
+        end
+    end
+end)
+
+local function stopServerHop()
+    isServerHopRunning = false
+end
+
+OFF_RunButton.MouseButton1Click:Connect(function()
+    if IsRun then
+        OFF_RunButton.Text = "◇Beli"
+        ChestCountLabel.Visible = false
+        BeliCountLabel.Visible = false
+        successful_collected = false
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+        AutoF = false
+        IsRun = false
+        stopServerHop()
+    else
+        OFF_RunButton.Text = "□Beli"
+        ChestCountLabel.Visible = true
+        BeliCountLabel.Visible = true
+        successful_collected = true
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+        AutoF = true
+        IsRun = true
+    end
+end)
+
+plr.CharacterAdded:Connect(function()
+    if AutoF then
+        wait(6.5)
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0
+    end
+end)
