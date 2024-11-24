@@ -63,6 +63,8 @@ function Swimming_X(shouldSwim, speed)
     end
 end
 
+_G.swimming = swimming
+_G.oldgrav = oldgrav
+_G.swimbeat = swimbeat
+_G.gravReset = gravReset
 _G.Swimming_X = Swimming_X
-
-Swimming_X(true, 29)
