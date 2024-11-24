@@ -1,0 +1,68 @@
+-- Swimming Function [recreate from addcmd swim of iy - tks u for not obfucated your script] --
+
+local swimming = false
+local oldgrav = workspace.Gravity
+local swimbeat = nil
+local gravReset = nil
+
+function Swimming_X(shouldSwim, speed)
+    if shouldSwim and not swimming then
+        oldgrav = workspace.Gravity
+        workspace.Gravity = 0
+
+        local swimDied = function()
+            workspace.Gravity = oldgrav
+            swimming = false
+        end
+
+        local humanoid = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+        if humanoid then
+            gravReset = humanoid.Died:Connect(swimDied)
+
+            local enums = Enum.HumanoidStateType:GetEnumItems()
+            table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
+            for _, v in pairs(enums) do
+                humanoid:SetStateEnabled(v, false)
+            end
+
+            humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
+
+            swimbeat = game:GetService("RunService").Heartbeat:Connect(function()
+                pcall(function()
+                    if humanoid.MoveDirection ~= Vector3.new() or game:GetService("UserInputService"):IsKeyDown(Enum.KeyCode.Space) then
+                        local direction = humanoid.MoveDirection.Unit
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = direction * speed
+                    else
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new()
+                    end
+                end)
+            end)
+
+            swimming = true
+        end
+    elseif not shouldSwim and swimming then
+        workspace.Gravity = oldgrav
+        swimming = false
+
+        if gravReset then
+            gravReset:Disconnect()
+        end
+        if swimbeat then
+            swimbeat:Disconnect()
+            swimbeat = nil
+        end
+
+        local humanoid = game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+        if humanoid then
+            local enums = Enum.HumanoidStateType:GetEnumItems()
+            table.remove(enums, table.find(enums, Enum.HumanoidStateType.None))
+            for _, v in pairs(enums) do
+                humanoid:SetStateEnabled(v, true)
+            end
+        end
+    end
+end
+
+_G.Swimming_X = Swimming_X
+
+Swimming_X(true, 29)
