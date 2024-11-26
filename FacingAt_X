@@ -1,49 +1,37 @@
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
+local function PX_X(otherPlayerUsername, shouldLoop)
+    local player = game.Players.LocalPlayer
+    local targetPlayer = game.Players:FindFirstChild(otherPlayerUsername)
 
-local function StareAt(targetPlayerName, shouldStare)
-    local targetPlayer = Players:FindFirstChild(targetPlayerName)
-    
-    if not targetPlayer or not targetPlayer.Character then
-        return
-    end
-    
-    local localCharacter = player.Character
-    local targetCharacter = targetPlayer.Character
-    if not localCharacter or not localCharacter:FindFirstChild("HumanoidRootPart") or
-       not targetCharacter:FindFirstChild("HumanoidRootPart") then
-        return
-    end
-
-    local function StareFunction()
+    if targetPlayer and targetPlayer.Character and player.Character then
         local localChar = player.Character
         local targetChar = targetPlayer.Character
-        
-        if localChar and targetChar then
-            local charPos = localChar.HumanoidRootPart.Position
-            local targetPos = targetChar.HumanoidRootPart.Position
-            local modTPos = Vector3.new(targetPos.X, charPos.Y, targetPos.Z)
-            local newCF = CFrame.new(charPos, modTPos)
-            localChar:SetPrimaryPartCFrame(newCF)
-        end
-    end
 
-    if shouldStare then
-        local StareLoop
-        StareLoop = game:GetService("RunService").RenderStepped:Connect(function()
-            if targetPlayer and targetPlayer.Character then
-                StareFunction()
-            else
-                if StareLoop then
-                    StareLoop:Disconnect()
-                end
+        local function StareFunction()
+            local localChar = player.Character
+            local targetChar = targetPlayer.Character
+            
+            if localChar and targetChar then
+                local charPos = localChar.HumanoidRootPart.Position
+                local targetPos = targetChar.HumanoidRootPart.Position
+                local modTPos = Vector3.new(targetPos.X, charPos.Y, targetPos.Z)
+                local newCF = CFrame.new(charPos, modTPos)
+                localChar:SetPrimaryPartCFrame(newCF)
             end
-        end)
-    else
-        if StareLoop then
-            StareLoop:Disconnect()
         end
+
+        if shouldLoop then
+            local rs = game:GetService("RunService")
+            rs.RenderStepped:Connect(function(deltaTime)
+                if targetPlayer and targetPlayer.Character and localChar and targetChar then
+                    StareFunction()
+                end
+            end)
+        else
+            StareFunction()
+        end
+    else
+        warn("Target player or their character not found!")
     end
 end
 
-_G.LookAt = StareAt
+_G.AimLockedAt = PX_X
