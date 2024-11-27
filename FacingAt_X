@@ -1,39 +1,80 @@
-local stareLoop = nil
+-- Define the Start_Func as usual
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
 
-function RotateToPlayer(targetPlayer)
+local stareLoop -- Declare stareLoop for global scope
+
+local function Start_Func(pacifista)
+    local players = pacifista
+
+    -- Loop through each player in the provided list (pacifista)
+    for _, v in pairs(players) do
+        if stareLoop then
+            stareLoop:Disconnect() -- Disconnect any previous stareLoop to avoid multiple connections
+        end
+        
+        -- Ensure both players have valid HumanoidRootPart
+        if not Players.LocalPlayer.Character or not Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or
+           not Players[v] or not Players[v].Character or not Players[v].Character:FindFirstChild("HumanoidRootPart") then
+            return
+        end
+
+        -- Function to make the local player stare at the target player's character
+        local function stareFunc()
+            local localCharacter = Players.LocalPlayer.Character
+            local targetCharacter = Players[v].Character
+            
+            -- Ensure characters exist and have HumanoidRootPart
+            if localCharacter and localCharacter.PrimaryPart and targetCharacter and targetCharacter:FindFirstChild("HumanoidRootPart") then
+                local chrPos = localCharacter.PrimaryPart.Position
+                local tPos = targetCharacter.HumanoidRootPart.Position
+                local modTPos = Vector3.new(tPos.X, chrPos.Y, tPos.Z) -- Only adjust the Y position for a "level" stare
+                local newCF = CFrame.new(chrPos, modTPos)
+                localCharacter:SetPrimaryPartCFrame(newCF)
+            elseif not Players:FindFirstChild(v) then
+                if stareLoop then
+                    stareLoop:Disconnect() -- Disconnect if target player no longer exists
+                end
+            end
+        end
+
+        -- Start the stare loop for this player
+        stareLoop = RunService.RenderStepped:Connect(stareFunc)
+    end
+end
+
+-- Create a simplified function to call Start_Func by player name
+local function StartStareAt(playerName)
+    -- Check if the playerName is the local player's username
+    if playerName == Players.LocalPlayer.Name then
+        -- If the username is the local player's own name, make the local player stare at themselves
+        -- Here, you can simply adjust their orientation to face forward or any other behavior you want.
+        local character = Players.LocalPlayer.Character
+        if character and character.PrimaryPart then
+            -- Optional: Make the character face a specific direction (self-staring logic)
+            character:SetPrimaryPartCFrame(CFrame.new(character.PrimaryPart.Position, character.PrimaryPart.Position + character.PrimaryPart.CFrame.LookVector))
+        end
+    else
+        -- Otherwise, proceed with the normal behavior, looking at another player
+        local player = game:GetService("Players"):FindFirstChild(playerName)
+        
+        if player then
+            -- If player is found, call Start_Func with the player object in a table
+            Start_Func({player})  -- Pass the player in a table (list)
+        else
+            warn("Player not found: " .. playerName)
+        end
+    end
+end
+
+-- Function to stop staring (disconnect the stare loop)
+local function StopStaring()
     if stareLoop then
-        stareLoop:Disconnect()
-    end
-
-    if not Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") or not targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        return
-    end
-
-    local function stareFunc()
-        local chrPos = Players.LocalPlayer.Character.PrimaryPart.Position
-        local tPos = targetPlayer.Character.HumanoidRootPart.Position
-        local modTPos = Vector3.new(tPos.X, chrPos.Y, tPos.Z)
-        local newCF = CFrame.new(chrPos, modTPos)
-        Players.LocalPlayer.Character:SetPrimaryPartCFrame(newCF)
-    end
-
-    stareLoop = RunService.RenderStepped:Connect(stareFunc)
-end
-
-function StopRotating()
-    if stareLoop and stareLoop.Connected then
-        stareLoop:Disconnect()
-        stareLoop = nil
+        stareLoop:Disconnect() -- Disconnect the stare loop
+        stareLoop = nil -- Clear the stareLoop reference
     end
 end
 
-_G.stareat = function(playerName)
-    local targetPlayer = Players:FindFirstChild(playerName)
-    if targetPlayer then
-        RotateToPlayer(targetPlayer)
-    end
-end
-
-_G.unstareat = function()
-    StopRotating()
-end
+-- Store the StartStareAt and StopStaring functions globally in _G so they can be called from other scripts
+_G.StartStareAt = StartStareAt
+_G.StopStaring = StopStaring
