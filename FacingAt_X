@@ -47,25 +47,14 @@ end
 
 -- Create a simplified function to call Start_Func by player name
 local function StartStareAt(playerName)
-    -- Check if the playerName is the local player's username
-    if playerName == Players.LocalPlayer.Name then
-        -- If the username is the local player's own name, make the local player stare at themselves
-        -- Here, you can simply adjust their orientation to face forward or any other behavior you want.
-        local character = Players.LocalPlayer.Character
-        if character and character.PrimaryPart then
-            -- Optional: Make the character face a specific direction (self-staring logic)
-            character:SetPrimaryPartCFrame(CFrame.new(character.PrimaryPart.Position, character.PrimaryPart.Position + character.PrimaryPart.CFrame.LookVector))
-        end
+    -- Look up the player by username
+    local player = game:GetService("Players"):FindFirstChild(playerName)
+    
+    if player then
+        -- If player is found, call Start_Func with the player object in a table
+        Start_Func({player})  -- Pass the player in a table (list)
     else
-        -- Otherwise, proceed with the normal behavior, looking at another player
-        local player = game:GetService("Players"):FindFirstChild(playerName)
-        
-        if player then
-            -- If player is found, call Start_Func with the player object in a table
-            Start_Func({player})  -- Pass the player in a table (list)
-        else
-            warn("Player not found: " .. playerName)
-        end
+        warn("Player not found: " .. playerName)
     end
 end
 
