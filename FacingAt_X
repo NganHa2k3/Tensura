@@ -23,7 +23,9 @@ local function PX_X(otherPlayerUsername, shouldLoop)
             local rs = game:GetService("RunService")
             rs.RenderStepped:Connect(function(deltaTime)
                 if targetPlayer and targetPlayer.Character and localChar and targetChar then
-                    StareFunction()
+                    if shouldLoop then
+                        StareFunction()
+                    end
                 end
             end)
         else
