@@ -19,17 +19,25 @@ local function PX_X(otherPlayerUsername, shouldLoop)
             end
         end
 
+        local connection  -- Declare connection variable
+
+        -- Loop functionality if shouldLoop is true
         if shouldLoop then
             local rs = game:GetService("RunService")
-            rs.RenderStepped:Connect(function(deltaTime)
+            connection = rs.RenderStepped:Connect(function(deltaTime)
                 if targetPlayer and targetPlayer.Character and localChar and targetChar then
-                    if shouldLoop then
-                        StareFunction()
-                    end
+                    StareFunction()
                 end
             end)
         else
+            -- Run StareFunction once if shouldLoop is false
             StareFunction()
+            targetPlayer = nil  -- Clear the targetPlayer when shouldLoop is false
+            
+            -- If RenderStepped was connected earlier, disconnect it
+            if connection then
+                connection:Disconnect()
+            end
         end
     else
         warn("Target player or their character not found!")
@@ -38,4 +46,4 @@ end
 
 _G.AimLockedAt = PX_X
 
-print("loadstring 'FacingAt_X' successfully executed, without a error !")
+print("loadstring 'FacingAt_X' successfully executed, without an error!")
