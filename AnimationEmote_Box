@@ -1,0 +1,127 @@
+-- Emote Box Script GUI//make by me NganHa2k3 for fun --
+local player = game.Players.LocalPlayer
+local ScreenGui_Name = "NganHa2k3_EmoteBox"
+
+for _, SG in ipairs(game:GetService("CoreGui"):GetChildren()) do
+    if SG:IsA("ScreenGui") and SG.Name == ScreenGui_Name then
+        pcall(function()
+            SG:Destroy()
+        end)
+    end
+end
+
+local EmoteBox_SG = Instance.new("ScreenGui")
+EmoteBox_SG.Name = "NganHa2k3_EmoteBox"
+EmoteBox_SG.Parent = game:GetService("CoreGui")
+local player = game:GetService("Players").LocalPlayer
+
+local FullScript_Font = Enum.Font.Code
+
+local Emote_Frame = Instance.new("Frame")
+Emote_Frame.Parent = EmoteBox_SG
+Emote_Frame.BackgroundColor3 = Color3.new(0, 0, 0)
+Emote_Frame.BackgroundTransparency = 0.9
+Emote_Frame.Position = UDim2.new(0.4, 0, 0.3, 0)
+Emote_Frame.Size = UDim2.new(0.2, 0, 0.2, 0)
+Emote_Frame.Active = true
+Emote_Frame.Draggable = false
+Emote_Frame.Visible = false
+
+local Emote_ScrollingFrame = Instance.new("ScrollingFrame")
+Emote_ScrollingFrame.Parent = Emote_Frame
+Emote_ScrollingFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+Emote_ScrollingFrame.BackgroundTransparency = 0.8
+Emote_ScrollingFrame.Position = UDim2.new(0.02, 0, 0.02, 0)
+Emote_ScrollingFrame.Size = UDim2.new(0.96, 0, 0.96, 0)
+Emote_ScrollingFrame.ScrollBarThickness = 0.1
+Emote_ScrollingFrame.CanvasSize = UDim2.new(0, 0, 4, 0)
+
+local ECorner = Instance.new("UICorner")
+ECorner.Parent = Emote_ScrollingFrame
+ECorner.CornerRadius = UDim.new(0.2, 0)
+
+local OPENCLOSE_V0 = Instance.new("TextButton")
+OPENCLOSE_V0.Parent = EmoteBox_SG
+OPENCLOSE_V0.BackgroundColor3 = Color3.new(0, 0, 0)
+OPENCLOSE_V0.BackgroundTransparency = 0.5
+OPENCLOSE_V0.Position = UDim2.new(0.02, 0, 0.025, 0)
+OPENCLOSE_V0.Size = UDim2.new(0.02, 0, 0.1, 0)
+OPENCLOSE_V0.TextScaled = true
+OPENCLOSE_V0.TextColor3 = Color3.new(1, 1, 1)
+OPENCLOSE_V0.Font = FullScript_Font
+OPENCLOSE_V0.Text = ">"
+OPENCLOSE_V0.Visible = true
+
+local IsEmoteSelectedGUI_ON = false
+OPENCLOSE_V0.MouseButton1Click:Connect(function()
+    if IsEmoteSelectedGUI_ON then
+        OPENCLOSE_V0.Text = ">"
+        Emote_Frame.Visible = false
+        IsEmoteSelectedGUI_ON = false
+    else
+        OPENCLOSE_V0.Text = "<"
+        Emote_Frame.Visible = true
+        IsEmoteSelectedGUI_ON = true
+    end
+end)
+
+local function CreateButton(GUIParent, Specific_Pos, buttonText, animationId, LoopCheck)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(0.85, 0, 0.05, 0)
+    button.Position = Specific_Pos
+    button.Text = buttonText
+    button.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    button.TextScaled = true
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.SourceSans
+    button.TextSize = 20
+    button.Parent = GUIParent
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 12) -- Adjust the corner radius as needed
+    corner.Parent = button
+
+    button.MouseButton1Click:Connect(function()
+        for _, animTrack in pairs(humanoid:GetPlayingAnimationTracks()) do
+            animTrack:Stop()
+        end
+        
+        local animation = Instance.new("Animation")
+        animation.AnimationId = "rbxassetid://" .. animationId
+        
+        local loadedAnimation = humanoid:LoadAnimation(animation)
+        loadedAnimation:Play()
+        loadedAnimation.Looped = LoopCheck
+    end)
+end
+
+CreateButton(Emote_ScrollingFrame, UDim2.new(0.02, 0, 0.01, 0), "Wave", "507770239", false)
+CreateButton(Emote_ScrollingFrame, UDim2.new(0.02, 0, 0.07, 0), "Point", "507770453", false)
+CreateButton(Emote_ScrollingFrame, UDim2.new(0.02, 0, 0.13, 0), "Laugh", "507770818", false)
+CreateButton(Emote_ScrollingFrame, UDim2.new(0.02, 0, 0.19, 0), "Cheer", "507770677", false)
+CreateButton(Emote_ScrollingFrame, UDim2.new(0.02, 0, 0.25, 0), "Dance", "507771019", true)
+CreateButton(Emote_ScrollingFrame, UDim2.new(0.02, 0, 0.31, 0), "Dance 2", "507776879", true)
+CreateButton(Emote_ScrollingFrame, UDim2.new(0.02, 0, 0.37, 0), "Dance 3", "507777268", true)
+
+local emote_box_table_alliases_opened = {"+emote_open", "+e_open", "+eo", "+emote_o", "+e_true", "+emote_true"}
+local emote_box_table_alliases_closed = {"+emote_close", "+e_close", "+ec", "+emote_c", "+e_false", "+emote_false"}
+local function EmoteBoxOpenClosed(spec)
+    local Emote_DE = string.split(spec, " ")
+    
+    if table.find(emote_box_table_alliases_opened, Emote_DE[1]) then
+        OPENCLOSE_V0.Text = "<"
+        Emote_Frame.Visible = true
+        IsEmoteSelectedGUI_ON = true
+    elseif table.find(emote_box_table_alliases_closed, Emote_DE[1]) then
+        OPENCLOSE_V0.Text = ">"
+        Emote_Frame.Visible = false
+        IsEmoteSelectedGUI_ON = false
+    else
+        warn("Nothing.")
+    end
+end
+
+player.Chatted:Connect(EmoteBoxOpenClosed)
