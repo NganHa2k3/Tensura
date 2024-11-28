@@ -1,9 +1,9 @@
-local IsLoop_Enabled = false
 local targetPlayer = nil
 
+-- Recursive function to find a player by their name
 local function FindPlayerInFolders(playerName, parent)
     for _, child in pairs(parent:GetChildren()) do
-        if child:IsA("Player") and child.Name == playerName then
+        if child:IsA("Player") and (child.Name == playerName or child.DisplayName == playerName) then
             return child
         elseif child:IsA("Folder") then
             local foundPlayer = FindPlayerInFolders(playerName, child)
@@ -15,6 +15,7 @@ local function FindPlayerInFolders(playerName, parent)
     return nil
 end
 
+-- Function to rotate the character to face the target player
 local function StareFunction()
     local player = game.Players.LocalPlayer
     if targetPlayer and targetPlayer.Character and player.Character then
@@ -23,19 +24,24 @@ local function StareFunction()
 
         local charPos = localChar.HumanoidRootPart.Position
         local targetPos = targetChar.HumanoidRootPart.Position
-        local modTPos = Vector3.new(targetPos.X, charPos.Y, targetPos.Z)
+        local modTPos = Vector3.new(targetPos.X, charPos.Y, targetPos.Z) -- Maintain Y position for the local player
         local newCF = CFrame.new(charPos, modTPos)
-        localChar:SetPrimaryPartCFrame(newCF)
+        localChar:SetPrimaryPartCFrame(newCF) -- Rotate the character to face the target
     end
 end
 
-game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
-    if IsLoop_Enabled and targetPlayer then
-        StareFunction()
+-- Function to be called externally to start the rotation towards a player
+_G.LockedAtP = function(playerName)
+    targetPlayer = FindPlayerInFolders(playerName, game) -- Find the player by name or display name
+    if targetPlayer then
+        StareFunction() -- Rotate the character once towards the target player
+        print("Now locked on to: " .. targetPlayer.Name)
+    else
+        print("Player not found: " .. playerName)
     end
-end)
+end
 
-_G.LoopStare = IsLoop_Enabled
 _G.targetPlayer = targetPlayer
 
+-- Initial debug message
 print("loadstring 'FacingAt_X' successfully executed, without an error!")
