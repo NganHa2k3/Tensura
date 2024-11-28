@@ -1,49 +1,41 @@
-local function PX_X(otherPlayerUsername, shouldLoop)
-    local player = game.Players.LocalPlayer
-    local targetPlayer = game.Players:FindFirstChild(otherPlayerUsername)
+local IsLoop_Enabled = false
+local targetPlayer = nil
 
+local function FindPlayerInFolders(playerName, parent)
+    for _, child in pairs(parent:GetChildren()) do
+        if child:IsA("Player") and child.Name == playerName then
+            return child
+        elseif child:IsA("Folder") then
+            local foundPlayer = FindPlayerInFolders(playerName, child)
+            if foundPlayer then
+                return foundPlayer
+            end
+        end
+    end
+    return nil
+end
+
+local function StareFunction()
+    local player = game.Players.LocalPlayer
     if targetPlayer and targetPlayer.Character and player.Character then
         local localChar = player.Character
         local targetChar = targetPlayer.Character
 
-        local function StareFunction()
-            local localChar = player.Character
-            local targetChar = targetPlayer.Character
-            
-            if localChar and targetChar then
-                local charPos = localChar.HumanoidRootPart.Position
-                local targetPos = targetChar.HumanoidRootPart.Position
-                local modTPos = Vector3.new(targetPos.X, charPos.Y, targetPos.Z)
-                local newCF = CFrame.new(charPos, modTPos)
-                localChar:SetPrimaryPartCFrame(newCF)
-            end
-        end
-
-        local connection  -- Declare connection variable
-
-        -- Loop functionality if shouldLoop is true
-        if shouldLoop then
-            local rs = game:GetService("RunService")
-            connection = rs.RenderStepped:Connect(function(deltaTime)
-                if targetPlayer and targetPlayer.Character and localChar and targetChar then
-                    StareFunction()
-                end
-            end)
-        else
-            -- Run StareFunction once if shouldLoop is false
-            StareFunction()
-            targetPlayer = nil  -- Clear the targetPlayer when shouldLoop is false
-            
-            -- If RenderStepped was connected earlier, disconnect it
-            if connection then
-                connection:Disconnect()
-            end
-        end
-    else
-        warn("Target player or their character not found!")
+        local charPos = localChar.HumanoidRootPart.Position
+        local targetPos = targetChar.HumanoidRootPart.Position
+        local modTPos = Vector3.new(targetPos.X, charPos.Y, targetPos.Z)
+        local newCF = CFrame.new(charPos, modTPos)
+        localChar:SetPrimaryPartCFrame(newCF)
     end
 end
 
-_G.AimLockedAt = PX_X
+game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+    if IsLoop_Enabled and targetPlayer then
+        StareFunction()
+    end
+end)
+
+_G.LoopStare = IsLoop_Enabled
+_G.targetPlayer = targetPlayer
 
 print("loadstring 'FacingAt_X' successfully executed, without an error!")
