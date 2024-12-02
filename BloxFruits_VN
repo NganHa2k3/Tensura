@@ -1306,7 +1306,7 @@ CheckFUICorner.Parent = CheckF
 CheckFUICorner.CornerRadius = UDim.new(0.1, 0)
 
 local function checkForFruit()
-    local fruit = game:GetService("Workspace"):FindFirstChild("Fruit")
+    local fruit = game:GetService("Workspace"):FindFirstChild("Fruit ")
     if fruit and fruit:FindFirstChild("Handle") then
         CheckF.Text = "Có trái xuất hiện"
     else
