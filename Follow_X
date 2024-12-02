@@ -10,12 +10,16 @@ function Walkto(LP_Walkto_X, V_3, walkSpeed)
         end
 
         walkto = true
+        _G.WalkingTo_X = walkto
+        
         local X_Root = Walkto_X.Character:WaitForChild('HumanoidRootPart')
         local X_Humanoid = Walkto_X.Character:FindFirstChildOfClass('Humanoid')
         X_Humanoid.WalkSpeed = walkSpeed or 16
         
-        if X_Root then
-            Walkto_X.Character:FindFirstChildOfClass('Humanoid'):MoveTo(X_Root.Position + Vector3.new(V_3))
+        if typeof(V_3) == "Vector3" then
+            Walkto_X.Character:FindFirstChildOfClass('Humanoid'):MoveTo(X_Root.Position + V_3)
+        else
+            warn("V_3 must be a valid Vector3 object")
         end
     else
         warn("Player not found!")
@@ -23,6 +27,5 @@ function Walkto(LP_Walkto_X, V_3, walkSpeed)
 end
 
 _G.Follow_X = Walkto
-_G.WalkingTo_X = walkto
 
-print("<Inserted "Follow_X" function successfully, without an error !>")
+print("<Inserted 'Follow_X' function successfully, without an error!>")
