@@ -1,0 +1,92 @@
+local flinging = false
+local flingDied
+local randomString = function() return tostring(math.random(1000000, 9999999)) end
+local getRoot = function(character) return character:FindFirstChild("HumanoidRootPart") end
+
+local LP_X = game.Players.LocalPlayer
+
+function Flinging(state)
+    if not LP_X or not LP_X.Character then return end
+    local character = LP_X.Character
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    if not state then
+        if flinging then
+            unfling()
+        end
+        return
+    end
+
+    if not flinging then
+        flinging = true
+
+        for _, child in pairs(character:GetDescendants()) do
+            if child:IsA("BasePart") then
+                child.CustomPhysicalProperties = PhysicalProperties.new(math.huge, 0.3, 0.5)
+            end
+        end
+
+        local spinning_x = Instance.new("BodyAngularVelocity")
+        spinning_x.Name = randomString()
+        spinning_x.Parent = getRoot(character)
+        spinning_x.AngularVelocity = Vector3.new(0, 99999, 0)
+        spinning_x.MaxTorque = Vector3.new(0, math.huge, 0)
+        spinning_x.P = math.huge
+
+        for _, part in ipairs(character:GetChildren()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
+                part.Massless = true
+                part.Velocity = Vector3.new(0, 0, 0)
+            end
+        end
+
+        local function flingDiedF()
+            unfling()
+        end
+        if humanoid then
+            flingDied = humanoid.Died:Connect(flingDiedF)
+        end
+
+        repeat
+            spinning_x.AngularVelocity = Vector3.new(0, 99999, 0)
+            wait(0.2)
+            spinning_x.AngularVelocity = Vector3.new(0, 0, 0)
+            wait(0.1)
+        until not flinging
+    end
+end
+
+function unfling()
+    if not LP_X or not LP_X.Character then return end
+    local character = LP_X.Character
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    if not flinging then return end
+
+    flinging = false
+    wait(0.1)
+
+    local rootPart = getRoot(character)
+    if not rootPart then return end
+
+    for _, child in pairs(rootPart:GetChildren()) do
+        if child.ClassName == 'BodyAngularVelocity' then
+            child:Destroy()
+        end
+    end
+
+    for _, child in pairs(character:GetDescendants()) do
+        if child:IsA("Part") or child:IsA("MeshPart") then
+            child.CustomPhysicalProperties = PhysicalProperties.new(0.7, 0.3, 0.5)
+        end
+    end
+
+    if flingDied then
+        flingDied:Disconnect()
+    end
+end
+
+_G.fling = Flinging
+
+print("<Inserted "Flinging_X" function successful, without an error !>")
