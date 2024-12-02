@@ -1,4 +1,4 @@
-function Notify_Players_X(txt_1, txt_2, duration_x, button_1txt, button_1func, button_2txt, button_2func)
+local function Notify_Players_X(txt_1, txt_2, duration_x, button_1txt, button_1func, button_2txt, button_2func)
     local bindable = Instance.new("BindableFunction")
     bindable.OnInvoke = function(response)
         print(response .. " Selected")
