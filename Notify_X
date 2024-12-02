@@ -21,7 +21,7 @@ end
 _G.Notify_LP = Notify_Players_X
 
 -- Example Usage:
--- _G.Notice_LP("Game Over", "You lost the game!", 5, "Try Again", function()
+-- _G.Notify_LP("Game Over", "You lost the game!", 5, "Try Again", function()
 --    print("You clicked Try Again!")
 -- end, "Exit", function()
 --    print("You clicked Exit!")
