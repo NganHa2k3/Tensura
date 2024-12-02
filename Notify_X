@@ -18,10 +18,10 @@ function Notify_Players_X(txt_1, txt_2, duration_x, button_1txt, button_1func, b
     game:GetService("StarterGui"):SetCore("SendNotification", notificationData)
 end
 
-_G.Notify = Notify_Players_X
+_G.Notify_LP = Notify_Players_X
 
 -- Example Usage:
--- _G.Notice("Game Over", "You lost the game!", 5, "Try Again", function()
+-- _G.Notice_LP("Game Over", "You lost the game!", 5, "Try Again", function()
 --    print("You clicked Try Again!")
 -- end, "Exit", function()
 --    print("You clicked Exit!")
