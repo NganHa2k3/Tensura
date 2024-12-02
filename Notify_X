@@ -1,29 +1,24 @@
 function Notify_Players_X(txt_1, txt_2, duration_x, button_1txt, button_1func, button_2txt, button_2func)
+    local bindable = Instance.new("BindableFunction")
+    bindable.OnInvoke = function(response)
+        print(response .. " Selected")
+        if response == button_1txt and button_1func then
+            button_1func()
+        elseif response == button_2txt and button_2func then
+            button_2func()
+        end
+    end
+    
     local notificationData = {
         Title = txt_1,
         Text = txt_2,
-        Duration = duration_x
+        Duration = duration_x,
+        Callback = bindable,
+        Button1 = button_1txt or "Button 1",
+        Button2 = button_2txt or "Button 2"
     }
-
-    if button_1txt and button_1func then
-        notificationData.Button1Text = button_1txt
-        notificationData.Button1Callback = button_1func
-    end
-
-    if button_2txt and button_2func then
-        notificationData.Button2Text = button_2txt
-        notificationData.Button2Callback = button_2func
-    end
 
     game:GetService("StarterGui"):SetCore("SendNotification", notificationData)
 end
 
 _G.Notify_LP = Notify_Players_X
-
--- Example Usage:
--- _G.Notify_LP("Game Over", "You lost the game!", 5, "Try Again", function()
---    print("You clicked Try Again!")
--- end, "Exit", function()
---    print("You clicked Exit!")
--- end)
-
