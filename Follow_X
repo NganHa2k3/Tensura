@@ -1,6 +1,6 @@
 local walkto = false
 
-function Walkto(LP_Walkto_X, walkSpeed)
+function Walkto(LP_Walkto_X, V_3, walkSpeed)
     local Walkto_X = game.Players:FindFirstChild(LP_Walkto_X)
     
     if Walkto_X and Walkto_X.Character then
@@ -15,7 +15,7 @@ function Walkto(LP_Walkto_X, walkSpeed)
         X_Humanoid.WalkSpeed = walkSpeed or 16
         
         if X_Root then
-            Walkto_X.Character:FindFirstChildOfClass('Humanoid'):MoveTo(X_Root.Position)
+            Walkto_X.Character:FindFirstChildOfClass('Humanoid'):MoveTo(X_Root.Position + Vector3.new(V_3))
         end
     else
         warn("Player not found!")
