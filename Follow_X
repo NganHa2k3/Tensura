@@ -1,0 +1,28 @@
+local walkto = false
+
+function Walkto(LP_Walkto_X, walkSpeed)
+    local Walkto_X = game.Players:FindFirstChild(LP_Walkto_X)
+    
+    if Walkto_X and Walkto_X.Character then
+        if Walkto_X.Character:FindFirstChildOfClass('Humanoid') and Walkto_X.Character:FindFirstChildOfClass('Humanoid').SeatPart then
+            Walkto_X.Character:FindFirstChildOfClass('Humanoid').Sit = false
+            wait(.1)
+        end
+
+        walkto = true
+        local X_Root = Walkto_X.Character:WaitForChild('HumanoidRootPart')
+        local X_Humanoid = Walkto_X.Character:FindFirstChildOfClass('Humanoid')
+        X_Humanoid.WalkSpeed = walkSpeed or 16
+        
+        if X_Root then
+            Walkto_X.Character:FindFirstChildOfClass('Humanoid'):MoveTo(X_Root.Position)
+        end
+    else
+        warn("Player not found!")
+    end
+end
+
+_G.Follow_X = Walkto
+_G.WalkingTo_X = walkto
+
+print("<Inserted "Follow_X" function successfully, without an error !>")
