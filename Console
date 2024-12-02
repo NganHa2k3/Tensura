@@ -2,7 +2,6 @@ local ConsoleLog_Button_SG = Instance.new("ScreenGui")
 ConsoleLog_Button_SG.Name = "QuickOpen_Console"
 ConsoleLog_Button_SG.Parent = game.CoreGui
 
--- You must ensure that this external script is working. If it's not working or relevant, you can remove it.
 local success, message = pcall(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/ciel/Keypressing_X"))()
 end)
@@ -10,56 +9,34 @@ if not success then
     warn("Error loading external script: " .. message)
 end
 
--- Define the _G.Pressing function if it's missing
 _G.Pressing = _G.Pressing or function(key)
-    -- You can customize this function to handle key presses here
     print("Key pressed: " .. key)
 end
 
-local f1_Button = Instance.new("TextButton")
-f1_Button.Parent = ConsoleLog_Button_SG
-f1_Button.BackgroundColor3 = Color3.new(0, 0, 0)
-f1_Button.BackgroundTransparency = 0.5
-f1_Button.Size = UDim2.new(0.1, 0, 0.1, 0)
-f1_Button.TextScaled = true
-f1_Button.Position = UDim2.new(0.3, 0, 0.4, 0)  -- Adjusted to be visible on screen
-f1_Button.TextColor3 = Color3.new(1, 1, 1)
-f1_Button.Font = Enum.Font.Code
-f1_Button.Text = "F1"
+local f9_Button = Instance.new("TextButton")
+f9_Button.Parent = ConsoleLog_Button_SG
+f9_Button.BackgroundColor3 = Color3.new(0, 0, 0)
+f9_Button.BackgroundTransparency = 0.5
+f9_Button.Size = UDim2.new(0.1, 0, 0.1, 0)
+f9_Button.TextScaled = true
+f9_Button.Position = UDim2.new(0.35, 0, -0.1, 0)
+f9_Button.TextColor3 = Color3.new(1, 1, 1)
+f9_Button.Font = Enum.Font.Code
+f9_Button.Text = "F9"
 
-local f2_Button = Instance.new("TextButton")
-f2_Button.Parent = ConsoleLog_Button_SG
-f2_Button.BackgroundColor3 = Color3.new(0, 0, 0)
-f2_Button.BackgroundTransparency = 0.5
-f2_Button.Size = UDim2.new(0.1, 0, 0.1, 0)
-f2_Button.TextScaled = true
-f2_Button.Position = UDim2.new(0.45, 0, 0.4, 0)  -- Adjusted to be visible on screen
-f2_Button.TextColor3 = Color3.new(1, 1, 1)
-f2_Button.Font = Enum.Font.Code
-f2_Button.Text = "F2"
-
-f1_Button.MouseButton1Click:Connect(function()
-    _G.Pressing("f1")
-    print("<Pressing F1>")
+f9_Button.MouseButton1Click:Connect(function()
+    _G.Pressing("f9")
+    print("<Pressing F9>")
+    
+    if game:GetService("CoreGui"):FindFirstChild("DeveloperConsole") == nil then
+        game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
+    end
 end)
 
-f1_Button.MouseEnter:Connect(function()
-    f1_Button.TextColor3 = Color3.new(1, 0, 0)
+f9_Button.MouseEnter:Connect(function()
+    f9_Button.TextColor3 = Color3.new(1, 0, 0)
 end)
 
-f1_Button.MouseLeave:Connect(function()
-    f1_Button.TextColor3 = Color3.new(1, 1, 1)
-end)
-
-f2_Button.MouseButton1Click:Connect(function()
-    _G.Pressing("f2")
-    print("<Pressing F2>")
-end)
-
-f2_Button.MouseEnter:Connect(function()
-    f2_Button.TextColor3 = Color3.new(1, 0, 0)
-end)
-
-f2_Button.MouseLeave:Connect(function()
-    f2_Button.TextColor3 = Color3.new(1, 1, 1)
+f9_Button.MouseLeave:Connect(function()
+    f9_Button.TextColor3 = Color3.new(1, 1, 1)
 end)
