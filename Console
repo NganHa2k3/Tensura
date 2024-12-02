@@ -1,0 +1,53 @@
+local ConsoleLog_Button_SG = Instance.new("ScreenGui")
+ConsoleLog_Button_SG.Name = "QuickOpen_Console"
+ConsoleLog_Button_SG.Parent = game.CoreGui
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/ciel/Keypressing_X"))()
+
+local f1_Button = Instance.new("TextButton")
+f1_Button.Parent = ConsoleLog_Button_SG
+f1_Button.BackgroundColor3 = Color3.new(0, 0, 0)
+f1_Button.BackgroundTransparency = 0.5
+f1_Button.Size = UDim2.new(0.05, 0, 0.1, 0)
+f1_Button.TextScaled = true
+f1_Button.Position = UDim2.new(0.3, 0, -0.1, 0)
+f1_Button.TextColor3 = Color3.new(1, 1, 1)
+f1_Button.Font = Enum.Font.Code
+f1_Button.Text = "F1"
+
+local f2_Button = Instance.new("TextButton")
+f2_Button.Parent = ConsoleLog_Button_SG
+f2_Button.BackgroundColor3 = Color3.new(0, 0, 0)
+f2_Button.BackgroundTransparency = 0.5
+f2_Button.Size = UDim2.new(0.05, 0, 0.1, 0)
+f2_Button.TextScaled = true
+f2_Button.Position = UDim2.new(0.38, 0, -0.1, 0)
+f2_Button.TextColor3 = Color3.new(1, 1, 1)
+f2_Button.Font = Enum.Font.Code
+f2_Button.Text = "F2"
+
+f1_Button.MouseButton1Click:Connect(function()
+    _G.Pressing("f1")
+    print("<Pressing F1>")
+end)
+
+f1_Button.MouseEnter:Connect(function()
+    f1_Button.TextColor3 = Color3.new(1, 0, 0)
+end)
+
+f1_Button.MouseLeave:Connect(function()
+    f1_Button.TextColor3 = Color3.new(1, 1, 1)
+end)
+
+f2_Button.MouseButton1Click:Connect(function()
+    _G.Pressing("f2")
+    print("<Pressing F2>")
+end)
+
+f2_Button.MouseEnter:Connect(function()
+    f2_Button.TextColor3 = Color3.new(1, 0, 0)
+end)
+
+f2_Button.MouseLeave:Connect(function()
+    f2_Button.TextColor3 = Color3.new(1, 1, 1)
+end)
