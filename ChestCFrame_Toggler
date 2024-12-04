@@ -161,6 +161,7 @@ OFF_RunButton.MouseButton1Click:Connect(function()
         ChestCountLabel.Visible = false
         BeliCountLabel.Visible = false
         successful_collected = false
+        ServerHop_Status.Visible = false
         game.Players.LocalPlayer.Character.Humanoid.Health = 0
         AutoF = false
         IsRun = false
@@ -170,6 +171,7 @@ OFF_RunButton.MouseButton1Click:Connect(function()
         ChestCountLabel.Visible = true
         BeliCountLabel.Visible = true
         successful_collected = true
+        ServerHop_Status.Visible = true
         game.Players.LocalPlayer.Character.Humanoid.Health = 0
         AutoF = true
         IsRun = true
