@@ -7,11 +7,12 @@ local rs = game:GetService("RunService")
 
 local Black, White, Green, Purple, Red = Color3.fromRGB(0, 0, 0), Color3.fromRGB(255, 255, 255), Color3.fromRGB(0, 255, 0), Color3.fromRGB(255, 0, 255), Color3.fromRGB(255, 0, 0)
 local Code, Arcade = Enum.Font.Code, Enum.Font.Arcade
-local FirstExecBeliStat = plr:FindFirstChild("Data") and plr.Data:FindFirstChild("Beli") and plr.Data.Beli.Value or "N/A"
+local FirstExecBeliStat = plr:FindFirstChild("Data") and plr.Data:FindFirstChild("Beli") and plr.Data.Beli.Value or 0
 
 local OFF_RunButton = Instance.new("TextButton")
 local ChestCountLabel = Instance.new("TextLabel")
 local BeliCountLabel = Instance.new("TextLabel")
+local ServerHop_Status = Instance.new("TextButton")
 local OFF_RunButtonUI, ChestCountLabelUI, BeliCountLabelUI
 
 OFF_RunButton.Parent = AutoCollect_SG
@@ -46,6 +47,17 @@ BeliCountLabel.Font = Code
 BeliCountLabel.Text = "Nhận được: " .. tostring(FirstExecBeliStat) .. "$"
 BeliCountLabel.Visible = false
 
+ServerHop_Status.Parent = AutoCollect_SG
+ServerHop_Status.BackgroundColor3 = Black
+ServerHop_Status.BackgroundTransparency = 0.5
+ServerHop_Status.Position = UDim2.new(0.08, 0, 0.52, 0)
+ServerHop_Status.Size = UDim2.new(0.2, 0, 0.05, 0)
+ServerHop_Status.TextScaled = true
+ServerHop_Status.TextColor3 = White
+ServerHop_Status.Font = Code
+ServerHop_Status.Text = "Đổi Server [Tắt]"
+ServerHop_Status.Visible = false
+
 local function AddUICorner(element)
     local UI = Instance.new("UICorner")
     UI.Parent = element
@@ -55,10 +67,12 @@ end
 AddUICorner(OFF_RunButton)
 AddUICorner(ChestCountLabel)
 AddUICorner(BeliCountLabel)
+AddUICorner(ServerHop_Status)
 
 local successful_collected = false
 local AutoF = false
 local IsRun = false
+local IsToggled_ServerHop = false
 local isServerHopRunning = false
 local serverHopInterval = 5
 local serverHopTimer = 0
@@ -83,23 +97,25 @@ end
 local function UpdateBeliInput()
     local totalChest = countChest()
 
-    if totalChest == 0 then
-        local AddedBeliStat = CollectedBeliStat - FirstExecBeliStat
-        BeliCountLabel.Text = "Tổng nhận được: " .. tostring(AddedBeliStat) .. "$"
-        BeliCountLabel.TextColor3 = Green
-        task.wait(1)
-        BeliCountLabel.Text = "Đang đổi máy chủ..."
-        BeliCountLabel.TextColor3 = Red
-        
-        if not isServerHopRunning then
-            isServerHopRunning = true
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/ServerHop_Https"))()
+    if IsToggled_ServerHop then
+        local CollectedBeliStat = plr:FindFirstChild("Data") and plr.Data:FindFirstChild("Beli") and plr.Data.Beli.Value or 0
+        if totalChest == 0 then
+            local AddedBeliStat = CollectedBeliStat - FirstExecBeliStat
+            BeliCountLabel.Text = "Tổng nhận được: " .. tostring(AddedBeliStat) .. "$"
+            BeliCountLabel.TextColor3 = Green
+            task.wait(1)
+            BeliCountLabel.Text = "Đang đổi máy chủ..."
+            BeliCountLabel.TextColor3 = Red
+            
+            if not isServerHopRunning then
+                isServerHopRunning = true
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/ServerHop_Https"))()
+            end
+        else
+            local AddedBeliStat = CollectedBeliStat - FirstExecBeliStat
+            BeliCountLabel.Text = "Nhận được: " .. tostring(AddedBeliStat) .. "$"
+            BeliCountLabel.TextColor3 = White
         end
-    else
-        local CollectedBeliStat = plr:FindFirstChild("Data") and plr.Data:FindFirstChild("Beli") and plr.Data.Beli.Value or "N/A"
-        local AddedBeliStat = CollectedBeliStat - FirstExecBeliStat
-        BeliCountLabel.Text = "Nhận được: " .. tostring(AddedBeliStat) .. "$"
-        BeliCountLabel.TextColor3 = White
     end
 end
 
@@ -125,7 +141,11 @@ rs.RenderStepped:Connect(function(deltaTime)
             serverHopTimer = serverHopTimer + deltaTime
             if serverHopTimer >= serverHopInterval then
                 serverHopTimer = 0
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/ServerHop_Https"))()
+                if IsToggled_ServerHop then
+                    loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/ServerHop_Https"))()
+                else
+                    print("Server Hopping Is Disabled")
+                end
             end
         end
     end
@@ -156,9 +176,37 @@ OFF_RunButton.MouseButton1Click:Connect(function()
     end
 end)
 
+local OTP = false
+ServerHop_Status.MouseButton1Click:Connect(function()
+    if OTP then
+        ServerHop_Status.Text = "Đổi Server [Tắt]"
+        IsToggled_ServerHop = false
+        OTP = false
+    else
+        ServerHop_Status.Text = "Đổi Server [Bật]"
+        IsToggled_ServerHop = true
+        OTP = true
+    end
+end)
+
 plr.CharacterAdded:Connect(function()
     if AutoF then
         wait(6.5)
         game.Players.LocalPlayer.Character.Humanoid.Health = 0
     end
 end)
+
+local SGNotify = game:GetService("StarterGui")
+SGNotify:SetCore("SendNotification", {
+    Title = "NganHa2k3 AutoFarm Chest",
+    Text = "Script successfully loaded or reloaded, Press ◇Beli to Start Auto Farm... Press Server Hop On or Off to Server Hopping !",
+    Duration = 4,
+})
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/KeepScript_OPEN"))()
+
+if _G.ExecuteScriptAfterTeleport then
+    _G.ExecuteScriptAfterTeleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame_Toggler'))()")
+else
+    print("not found _G.ExecuteScriptAfterTeleport somewhere")
+end
