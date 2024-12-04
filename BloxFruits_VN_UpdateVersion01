@@ -124,7 +124,7 @@ local TeleportCheck = false
 Players.LocalPlayer.OnTeleport:Connect(function(State)
     if KeepScript and (not TeleportCheck) and teleportexecute then
         TeleportCheck = true
-        teleportexecute("loadstring")
+        teleportexecute("loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place_1/BloxFruits_VN_UpdateVersion01'))()")
     end
 end)
 
