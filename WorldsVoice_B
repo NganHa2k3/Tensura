@@ -44,6 +44,13 @@ local function loadGameScript(gameId)
     else
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/main/Blocker"))()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Ability/main/CMDS'))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/KeepScript_OPEN"))()
+
+        if _G.ExecuteScriptAfterTeleport then
+            _G.ExecuteScriptAfterTeleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Tensura/slime/WorldsVoice_B'))()")
+        else
+            print("not found _G.ExecuteScriptAfterTeleport somewhere")
+        end
         
         local CoreGui = game:GetService("StarterGui")
 
@@ -59,3 +66,11 @@ end
 
 
 loadGameScript(game.GameId)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/KeepScript_OPEN"))()
+
+if _G.ExecuteScriptAfterTeleport then
+    _G.ExecuteScriptAfterTeleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Tensura/slime/WorldsVoice_B'))()")
+else
+    print("not found _G.ExecuteScriptAfterTeleport somewhere")
+end
