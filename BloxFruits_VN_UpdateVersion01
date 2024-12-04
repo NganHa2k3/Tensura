@@ -1,0 +1,135 @@
+-- New Blox Fruit Script make by NganHa2k3 --
+local BloxFruits_SGUI_Version_01 = Instance.new("ScreenGui")
+local CG = game:GetService("CoreGui")
+BloxFruits_SGUI_Version_01.Name = "NganHa2k3_BFV01"
+BloxFruits_SGUI_Version_01.Parent = CG
+
+-- Local Variable[Color]
+local White, Black, Red, Green, DarkBlue, SkyBlue, Purple, Yellow
+White = Color3.fromRGB(255, 255, 255)
+Black = Color3.fromRGB(0, 0, 0)
+Red = Color3.fromRGB(255, 0, 0)
+Green = Color3.fromRGB(0, 255, 0)
+DarkBlue = Color3.fromRGB(0, 0, 255)
+SkyBlue = Color3.fromRGB(0, 255, 255)
+Purple = Color3.fromRGB(255, 0, 255)
+Yellow = Color3.fromRGB(255, 255, 0)
+
+local A_Font
+A_Font = Enum.Font.Code
+
+-- Local Variable[GUI]
+local TOGGLER_GUI, DRAGGING_FRAME
+
+
+-- Instance[Create Button]
+TOGGLER_GUI = Instance.new("TextButton")
+DRAGGING_FRAME = Instance.new("Frame")
+
+
+-- Function[MainScript]
+-- GetParts function --
+function GetParts(partName)
+    for _, obj in pairs(game.Workspace:GetDescendants()) do
+        if obj:IsA("BasePart") and obj.Name == partName then
+            return obj
+        end
+    end
+    return nil
+end
+
+
+-- Instance[Modifier Button]
+-- Open/Closed GUI --
+TOGGLER_GUI.Parent = BloxFruits_SGUI_Version_01
+TOGGLER_GUI.BackgroundColor3 = Black
+TOGGLER_GUI.BackgroundTransparency = 0.5
+TOGGLER_GUI.Position = UDim2.new(0.84, 0, -0.1, 0)
+TOGGLER_GUI.Size = UDim2.new(0.05, 0, 0.1, 0)
+TOGGLER_GUI.TextScaled = true
+TOGGLER_GUI.TextColor3 = White
+TOGGLER_GUI.Font = A_Font
+TOGGLER_GUI.Text = "□"
+TOGGLER_GUI.Visible = true
+
+-- Draggable Frame --
+DRAGGING_FRAME.Parent = BloxFruits_SGUI_Version_01
+DRAGGING_FRAME.BackgroundColor3 = Black
+DRAGGING_FRAME.BackgroundTransparency = 0.5
+DRAGGING_FRAME.Position = UDim2.new(0.8, 0, 0.05, 0)
+DRAGGING_FRAME.Size = UDim2.new(0.2, 0, 0.55, 0)
+DRAGGING_FRAME.Active = true
+DRAGGING_FRAME.Draggable = true
+DRAGGING_FRAME.Visible = false
+
+
+-- Local Variable[UICorner]
+local TOGGLER_GUI_UI, DRAGGING_FRAME_UI
+TOGGLER_GUI_UI = Instance.new("UICorner")
+DRAGGING_FRAME_UI = Instance.new("UICorner")
+
+
+TOGGLER_GUI_UI.Parent = TOGGLER_GUI
+DRAGGING_FRAME_UI.Parent = DRAGGING_FRAME
+
+
+TOGGLER_GUI_UI.CornerRadius = UDim.new(0.2, 0)
+DRAGGING_FRAME_UI.CornerRadius = UDim.new(0.1, 0)
+
+
+-- Active Button[Func]
+local Is_UIVisible = false
+TOGGLER_GUI.MouseButton1Click:Connect(function()
+    if Is_UIVisible then
+        DRAGGING_FRAME.Visible = false
+        TOGGLER_GUI.Text = "□"
+        Is_UIVisible = false
+    else
+        DRAGGING_FRAME.Visible = true
+        TOGGLER_GUI.Text = "■"
+        Is_UIVisible = true
+    end
+end)
+
+-- Update[TextButton.Text]
+local all_exist_buttons = {
+    TOGGLER_GUI
+}
+
+local function Update_buttons_text(index, N_Text)
+    if all_exist_buttons[index] then
+        all_exist_buttons[index].Text = N_Text
+    end
+end
+
+local function Start_Update_All_Button()
+    if _G.AllButton_Text and #_G.AllButton_Text == 1 then
+        for i = 1, 1 do
+            Update_buttons_text(i, _G.AllButton_Text[i])
+        end
+    end
+end
+
+-- RunService[RS]
+local RS = game:GetService("RunService")
+
+RS.RenderStepped:Connect(function(deltaTime)
+    Start_Update_All_Button()
+end)
+
+-- Keep Script On [HaHa]
+local teleportexecute = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
+
+local TeleportCheck = false
+Players.LocalPlayer.OnTeleport:Connect(function(State)
+    if KeepScript and (not TeleportCheck) and teleportexecute then
+        TeleportCheck = true
+        teleportexecute("loadstring")
+    end
+end)
+
+if teleportexecute then
+    KeepScript = true
+else
+    warn("Missing queue_on_teleport")
+end
