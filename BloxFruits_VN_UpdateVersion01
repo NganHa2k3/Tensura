@@ -1,3 +1,6 @@
+-- Checking game if it successfully loaded then do execute the script below --
+game:IsLoaded()
+
 -- New Blox Fruit Script make by NganHa2k3 --
 local BloxFruits_SGUI_Version_01 = Instance.new("ScreenGui")
 local CG = game:GetService("CoreGui")
@@ -26,6 +29,8 @@ local TOGGLER_GUI, DRAGGING_FRAME
 TOGGLER_GUI = Instance.new("TextButton")
 DRAGGING_FRAME = Instance.new("Frame")
 
+-- LocalPlayer[Variable]
+local Players = game:GetService("Players")
 
 -- Function[MainScript]
 -- GetParts function --
