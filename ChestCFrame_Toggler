@@ -108,8 +108,6 @@ local function moveToChest()
     for _, ChestName in ipairs(allChest) do
         for _, obj in pairs(game:GetService("Workspace"):GetChildren()) do
             if obj.Name == ChestName and obj:IsA("BasePart") then
-                plr.Character.HumanoidRootPart.CFrame = obj.CFrame + Vector3.new(0, 1, 0)
-                wait(0.02)
                 plr.Character.HumanoidRootPart.CFrame = obj.CFrame + Vector3.new(0, 3, 0)
                 return
             end
