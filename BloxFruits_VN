@@ -1368,6 +1368,42 @@ CheckF.MouseButton1Click:Connect(function()
     end
 end)
 
+local Factory = Instance.new("TextButton")
+Factory.Parent = ChestBox
+Factory.BackgroundColor3 = Color3.new(0, 0, 0)
+Factory.BackgroundTransparency = 0.5
+Factory.Size = UDim2.new(0.8, 0, 0.05, 0)
+Factory.TextScaled = true
+Factory.Position = UDim2.new(0.1, 0, 0.565, 0)
+Factory.TextColor3 = Color3.new(0, 0, 1)
+Factory.Font = Enum.Font.PatrickHand
+Factory.Text = "Tới Nhà Máy Factory"
+
+Factory.MouseButton1Click:Connect(function()
+    local Factor = game:GetService("Workspace"):FindFirstChild("Map")
+                    and game.Workspace.Map:FindFirstChild("Dressrosa")
+                    and game.Workspace.Map.Dressrosa:FindFirstChild("SmileFactory")
+                    and game.Workspace.Map.Dressrosa.SmileFactory:FindFirstChild("Core")
+                    and game.Workspace.Map.Dressrosa.SmileFactory.Core:FindFirstChild("Part")
+
+    if Factor then
+        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+            local goal = {CFrame = Factor.CFrame + Vector3.new(0, 2, 0)}
+            local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Factor.CFrame + Vector3.new(0, 2, 0)
+        end
+    else
+        warn("NO FACTOR FOUND")
+    end
+end)
+
 -- Shop --
 
 local BuyItem1 = Instance.new("TextButton")
