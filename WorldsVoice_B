@@ -59,3 +59,5 @@ end
 
 
 loadGameScript(game.GameId)
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/refs/heads/main/ConsoleLog_Open_On_Mobile"))()
