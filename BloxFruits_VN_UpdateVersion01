@@ -29,11 +29,12 @@ SkyBlue = Color3.fromRGB(0, 255, 255)
 Purple = Color3.fromRGB(255, 0, 255)
 Yellow = Color3.fromRGB(255, 255, 0)
 
-local A_Font
+local A_Font, Ult_Size
 A_Font = Enum.Font.Code
+Ult_Size = UDim2.new(0.96, 0, 0.15, 0)
 
 -- Local Variable[GUI]
-local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME
+local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript
 
 
 -- Instance[Create Button]
@@ -41,6 +42,7 @@ TOGGLER_GUI = Instance.new("TextButton")
 DRAGGING_FRAME = Instance.new("Frame")
 SCROLLINGFRAME_ULT = Instance.new("ScrollingFrame")
 CONFIGS_SCROLLINGFRAME = Instance.new("ScrollingFrame")
+Configs_MainScript = Instance.new("TextButton")
 
 -- Local Variable[Players]
 local Players = game:GetService("Players")
@@ -100,56 +102,36 @@ CONFIGS_SCROLLINGFRAME.CanvasSize = UDim2.new(0, 0, 2, 0)
 CONFIGS_SCROLLINGFRAME.ScrollBarThickness = 0.1
 CONFIGS_SCROLLINGFRAME.Visible = false
 
+-- Configs Button for MainScript --
+Configs_MainScript.Parent = SCROLLINGFRAME_ULT
+Configs_MainScript.BackgroundColor3 = Black
+Configs_MainScript.BackgroundTransparency = 0
+Configs_MainScript.Position = UDim2.new(0.02, 0, 0.02, 0)
+Configs_MainScript.Size = Ult_Size
+Configs_MainScript.TextScaled = true
+Configs_MainScript.TextColor3 = White
+Configs_MainScript.Font = A_Font
+Configs_MainScript.Text = "Configs"
+Configs_MainScript.Visible = true
+
 -- Local Variable[UICorner]
-local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI
+local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI, Configs_MainScript_UI
 TOGGLER_GUI_UI = Instance.new("UICorner")
 DRAGGING_FRAME_UI = Instance.new("UICorner")
 SCROLLINGFRAME_ULT_UI = Instance.new("UICorner")
+Configs_MainScript_UI = Instance.new("UICorner")
 
 
 TOGGLER_GUI_UI.Parent = TOGGLER_GUI
 DRAGGING_FRAME_UI.Parent = DRAGGING_FRAME
 SCROLLINGFRAME_ULT_UI.Parent = SCROLLINGFRAME_ULT
+Configs_MainScript_UI.Parent = Configs_MainScript
 
 
 TOGGLER_GUI_UI.CornerRadius = UDim.new(0.2, 0)
 DRAGGING_FRAME_UI.CornerRadius = UDim.new(0.02, 0)
 SCROLLINGFRAME_ULT_UI.CornerRadius = UDim.new(0.2, 0)
-
-
--- AddButton [Func]
-local function AddButton(GUIParent, Specific_Pos, Specific_Size, offText, onText, offTextColor, onTextColor, onClickFunction)
-    local powerful_button = Instance.new("TextButton")
-    powerful_button.Size = Specific_Size
-    powerful_button.Position = Specific_Pos
-    powerful_button.Text = offText
-    powerful_button.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-    powerful_button.TextScaled = true
-    powerful_button.TextColor3 = offTextColor
-    powerful_button.Font = Enum.Font.SourceSans
-    powerful_button.TextSize = 20
-    powerful_button.Parent = GUIParent
-
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 12)
-    corner.Parent = powerful_button
-
-    local isOn = false
-
-    powerful_button.MouseButton1Click:Connect(function()
-        onClickFunction()
-
-        if isOn then
-            powerful_button.Text = offText
-            powerful_button.TextColor3 = offTextColor
-        else
-            powerful_button.Text = onText
-            powerful_button.TextColor3 = onTextColor
-        end
-        
-        isOn = not isOn
-    end)
-end
+Configs_MainScript_UI.CornerRadius = UDim.new(0.15, 0)
 
 
 -- Active Button[Func]
@@ -168,21 +150,17 @@ TOGGLER_GUI.MouseButton1Click:Connect(function()
     end
 end)
 
--- AddButton [Call Func]
--- AddButton(myScreenGui, UDim2.new(0.5, 0, 0.5, 0), Size, "Off", "On", Color3.fromRGB(255, 255, 255), Color3.fromRGB(0, 255, 0), function()
---     print("Button clicked!")
--- end)
-
-local Is_UIConfigs = false
-AddButton(SCROLLINGFRAME_ULT, UDim2.new(0.02, 0, 0.02, 0), UDim2.new(0.96, 0, 0.15, 0), "   Configs   ", "   Configs   ", Color3.fromRGB(255, 255, 255), Color3.fromRGB(0, 255, 0), function()
-    if Is_UIConfigs then
+-- Ult Button[Slot:1]
+local Is_SFUIVisible = false
+Configs_MainScript.MouseButton1Click:Connect(function()
+    if Is_SFUIVisible then
         CONFIGS_SCROLLINGFRAME.Visible = false
-        
-        Is_UIConfigs = false
+        Configs_MainScript.TextColor3 = White
+        Is_SFUIVisible = false
     else
         CONFIGS_SCROLLINGFRAME.Visible = true
-        
-        Is_UIConfigs = true
+        Configs_MainScript.TextColor3 = Green
+        Is_SFUIVisible = true
     end
 end)
 
