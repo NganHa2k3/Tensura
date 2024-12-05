@@ -1,5 +1,16 @@
--- Checking game if it successfully loaded then do execute the script below --
+-- If Game Is Successfully Loaded Then --
 game:IsLoaded()
+
+-- Removed Pre-existing GUI --
+local Previous_SG_Name = "NganHa2k3_BFV01"
+
+for _, SG in ipairs(game:GetService("CoreGui"):GetChildren()) do
+    if SG:IsA("ScreenGui") and SG.Name == Previous_SG_Name then
+        pcall(function()
+            SG:Destroy()
+        end)
+    end
+end
 
 -- New Blox Fruit Script make by NganHa2k3 --
 local BloxFruits_SGUI_Version_01 = Instance.new("ScreenGui")
@@ -22,14 +33,16 @@ local A_Font
 A_Font = Enum.Font.Code
 
 -- Local Variable[GUI]
-local TOGGLER_GUI, DRAGGING_FRAME
+local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME
 
 
 -- Instance[Create Button]
 TOGGLER_GUI = Instance.new("TextButton")
 DRAGGING_FRAME = Instance.new("Frame")
+SCROLLINGFRAME_ULT = Instance.new("ScrollingFrame")
+CONFIGS_SCROLLINGFRAME = Instance.new("ScrollingFrame")
 
--- LocalPlayer[Variable]
+-- Local Variable[Players]
 local Players = game:GetService("Players")
 
 -- Function[MainScript]
@@ -54,7 +67,7 @@ TOGGLER_GUI.Size = UDim2.new(0.05, 0, 0.1, 0)
 TOGGLER_GUI.TextScaled = true
 TOGGLER_GUI.TextColor3 = White
 TOGGLER_GUI.Font = A_Font
-TOGGLER_GUI.Text = "□"
+TOGGLER_GUI.Text = "◇Zero"
 TOGGLER_GUI.Visible = true
 
 -- Draggable Frame --
@@ -67,19 +80,76 @@ DRAGGING_FRAME.Active = true
 DRAGGING_FRAME.Draggable = true
 DRAGGING_FRAME.Visible = false
 
+-- Scrolling frame hold button --
+SCROLLINGFRAME_ULT.Parent = DRAGGING_FRAME
+SCROLLINGFRAME_ULT.BackgroundColor3 = Black
+SCROLLINGFRAME_ULT.BackgroundTransparency = 0.5
+SCROLLINGFRAME_ULT.Position = UDim2.new(-0.415, 0, 0, 0)
+SCROLLINGFRAME_ULT.Size = UDim2.new(0.4, 0, 1, 0)
+SCROLLINGFRAME_ULT.CanvasSize = UDim2.new(0, 0, 1, 0)
+SCROLLINGFRAME_ULT.ScrollBarThickness = 0.1
+SCROLLINGFRAME_ULT.Visible = false
+
+-- Scrolling frame of Configs button --
+CONFIGS_SCROLLINGFRAME.Parent = DRAGGING_FRAME
+CONFIGS_SCROLLINGFRAME.BackgroundColor3 = Black
+CONFIGS_SCROLLINGFRAME.BackgroundTransparency = 0.5
+CONFIGS_SCROLLINGFRAME.Position = UDim2.new(0.02, 0, 0.02, 0)
+CONFIGS_SCROLLINGFRAME.Size = UDim2.new(0.88, 0, 0.9, 0)
+CONFIGS_SCROLLINGFRAME.CanvasSize = UDim2.new(0, 0, 2, 0)
+CONFIGS_SCROLLINGFRAME.ScrollBarThickness = 0.1
+CONFIGS_SCROLLINGFRAME.Visible = false
 
 -- Local Variable[UICorner]
-local TOGGLER_GUI_UI, DRAGGING_FRAME_UI
+local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI
 TOGGLER_GUI_UI = Instance.new("UICorner")
 DRAGGING_FRAME_UI = Instance.new("UICorner")
+SCROLLINGFRAME_ULT_UI = Instance.new("UICorner")
 
 
 TOGGLER_GUI_UI.Parent = TOGGLER_GUI
 DRAGGING_FRAME_UI.Parent = DRAGGING_FRAME
+SCROLLINGFRAME_ULT_UI.Parent = SCROLLINGFRAME_ULT
 
 
 TOGGLER_GUI_UI.CornerRadius = UDim.new(0.2, 0)
-DRAGGING_FRAME_UI.CornerRadius = UDim.new(0.1, 0)
+DRAGGING_FRAME_UI.CornerRadius = UDim.new(0.02, 0)
+SCROLLINGFRAME_ULT_UI.CornerRadius = UDim.new(0.2, 0)
+
+
+-- AddButton [Func]
+local function AddButton(GUIParent, Specific_Pos, Specific_Size, offText, onText, offTextColor, onTextColor, onClickFunction)
+    local powerful_button = Instance.new("TextButton")
+    powerful_button.Size = Specific_Size
+    powerful_button.Position = Specific_Pos
+    powerful_button.Text = offText
+    powerful_button.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    powerful_button.TextScaled = true
+    powerful_button.TextColor3 = offTextColor
+    powerful_button.Font = Enum.Font.SourceSans
+    powerful_button.TextSize = 20
+    powerful_button.Parent = GUIParent
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 12)
+    corner.Parent = powerful_button
+
+    local isOn = false
+
+    powerful_button.MouseButton1Click:Connect(function()
+        onClickFunction()
+
+        if isOn then
+            powerful_button.Text = offText
+            powerful_button.TextColor3 = offTextColor
+        else
+            powerful_button.Text = onText
+            powerful_button.TextColor3 = onTextColor
+        end
+        
+        isOn = not isOn
+    end)
+end
 
 
 -- Active Button[Func]
@@ -87,14 +157,35 @@ local Is_UIVisible = false
 TOGGLER_GUI.MouseButton1Click:Connect(function()
     if Is_UIVisible then
         DRAGGING_FRAME.Visible = false
-        TOGGLER_GUI.Text = "□"
+        SCROLLINGFRAME_ULT.Visible = false
+        TOGGLER_GUI.Text = "◇Zero"
         Is_UIVisible = false
     else
         DRAGGING_FRAME.Visible = true
-        TOGGLER_GUI.Text = "■"
+        SCROLLINGFRAME_ULT.Visible = true
+        TOGGLER_GUI.Text = "□Nine"
         Is_UIVisible = true
     end
 end)
+
+-- AddButton [Call Func]
+-- AddButton(myScreenGui, UDim2.new(0.5, 0, 0.5, 0), Size, "Off", "On", Color3.fromRGB(255, 255, 255), Color3.fromRGB(0, 255, 0), function()
+--     print("Button clicked!")
+-- end)
+
+local Is_UIConfigs = false
+AddButton(SCROLLINGFRAME_ULT, UDim2.new(0.02, 0, 0.02, 0), UDim2.new(0.96, 0, 0.15, 0), "   Configs   ", "   Configs   ", Color3.fromRGB(255, 255, 255), Color3.fromRGB(0, 255, 0), function()
+    if Is_UIConfigs then
+        CONFIGS_SCROLLINGFRAME.Visible = false
+        
+        Is_UIConfigs = false
+    else
+        CONFIGS_SCROLLINGFRAME.Visible = true
+        
+        Is_UIConfigs = true
+    end
+end)
+
 
 -- Update[TextButton.Text]
 local all_exist_buttons = {
@@ -134,6 +225,8 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
 end)
 
 if teleportexecute then
+    wait(10)
+    print("<NganHa2k3 Script - KeepScript is On>")
     KeepScript = true
 else
     warn("Missing queue_on_teleport")
