@@ -2126,6 +2126,37 @@ end
 
 -- Quickly Changed Zero Gravity --
 
+local VAFarm = Instance.new("TextButton")
+VAFarm.Parent = ScreenGui
+VAFarm.BackgroundColor3 = Color3.new(0, 0, 0)
+VAFarm.BackgroundTransparency = 0.5
+VAFarm.Size = UDim2.new(0.05, 0, 0.1, 0)
+VAFarm.TextScaled = true
+VAFarm.Position = UDim2.new(0.48, 0, 0.68, 0)
+VAFarm.TextColor3 = Color3.new(1, 1, 1)
+VAFarm.Font = Enum.Font.Code
+VAFarm.Text = "Tự động Farm[Tắt]"
+VAFarm.Visible = false
+
+local VAFarmUICorner = Instance.new("UICorner")
+VAFarmUICorner.Parent = VAFarm
+VAFarmUICorner.CornerRadius = UDim.new(0.1, 0)
+
+local VFarmA = false
+VAFarm.MouseButton1Click:Connect(function()
+    if VFarmA then
+        VAFarm.Text = "Tự động Farm[Tắt]"
+        VAFarm.TextColor3 = Color3.new(1, 1, 1)
+        REBV()
+        VFarmA = false
+    else
+        VAFarm.Text = "Tự động Farm[Bật]"
+        VAFarm.TextColor3 = Color3.new(0, 1, 1)
+        USEBV()
+        VFarmA = true
+    end
+end)
+
 local ZeroGravity = Instance.new("TextButton")
 ZeroGravity.Parent = ScreenGui
 ZeroGravity.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -2179,6 +2210,7 @@ TrueZeroGravity.MouseButton1Click:Connect(function()
         AntiZGravity = false
         
         ZeroGravity.Visible = false
+        VAFarm.Visible = false
     else
         TrueZeroGravity.Text = "Không trọng lực [Khoe ra]"
         TrueZeroGravity.TextColor3 = Color3.new(0, 1, 0)
@@ -2186,6 +2218,7 @@ TrueZeroGravity.MouseButton1Click:Connect(function()
         AntiZGravity = true
         
         ZeroGravity.Visible = true
+        VAFarm.Visible = true
     end
 end)
 
