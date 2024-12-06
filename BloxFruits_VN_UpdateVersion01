@@ -49,10 +49,10 @@ DFrame_Big = UDim2.new(0.6, 0, 0.65, 0)
 local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript, FARM_SCROLLINGFRAME, Farm_MainScript
 
 -- InsideConfigs [Button]
-local HUD_SIZETRANSFORMATION
+local HUD_SIZETRANSFORMATION, ON_USE_MINIBUTTON
 
 -- InsideAutoFarm [Button]
-local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC
+local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC, STARTNEAREST_FARM, STARTNEAREST_FARM_MiniButton
 
 -- Instance[Create Button]
 TOGGLER_GUI = Instance.new("TextButton")
@@ -66,14 +66,33 @@ Farm_MainScript = Instance.new("TextButton")
 
 -- Instance[Create Button:Parent:Configs]
 HUD_SIZETRANSFORMATION = Instance.new("TextButton")
+ON_USE_MINIBUTTON = Instance.new("TextButton")
 
 -- Instance[Create Button:Parent:AutoFarm]
 CONFIGS_FARM = Instance.new("TextButton")
 TPSPEED_MISC = Instance.new("TextBox")
 SWITCHINGMODE_MISC = Instance.new("TextButton")
+STARTNEAREST_FARM = Instance.new("TextButton")
+STARTNEAREST_FARM_MiniButton = Instance.new("TextButton")
 
 -- Local Variable[Players]
 local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+-- Local Variable[Modules]
+local TS_MainScript = game:GetService("TweenService")
+local rs = game:GetService("RunService")
+local VU = game:GetService("VirtualUser")
+
+-- Variable[Modules_1]
+local TweenSpeed_X01, Is_CurrentlyOn, Is_CurrentTween
+TweenSpeed_X01 = 150
+Is_CurrentlyOn = false
+Is_CurrentTween = nil
+
+-- VariableUI[modules_x]
+local InUse_MiniButton
+InUse_MiniButton = false
 
 -- Function[MainScript]
 -- GetParts function --
@@ -84,6 +103,18 @@ function GetParts(partName)
         end
     end
     return nil
+end
+
+-- Calculate Tweening Duration --
+function Calculate_TweeningDuration(Start_Position, End_Position, Speed_X01)
+    local distance = (End_Position - Start_Position).magnitude
+    return distance / Speed_X01
+end
+
+-- Tweening Information --
+function Create_TweeningInformation(Start_Position, End_Position)
+    local duration = Calculate_TweeningDuration(Start_Position, End_Position, TweenSpeed_X01)
+    return TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
 end
 
 
@@ -201,6 +232,18 @@ HUD_SIZETRANSFORMATION.Font = A_Font
 HUD_SIZETRANSFORMATION.Text = "Size: Default"
 HUD_SIZETRANSFORMATION.Visible = true
 
+-- Configs[Slot:2]
+ON_USE_MINIBUTTON.Parent = CONFIGS_SCROLLINGFRAME
+ON_USE_MINIBUTTON.BackgroundColor3 = Black
+ON_USE_MINIBUTTON.BackgroundTransparency = 0
+ON_USE_MINIBUTTON.Position = UDim2.new(0.02, 0, 0.185, 0)
+ON_USE_MINIBUTTON.Size = UDim2.new(0.96, 0, 0.15, 0)
+ON_USE_MINIBUTTON.TextScaled = true
+ON_USE_MINIBUTTON.TextColor3 = White
+ON_USE_MINIBUTTON.Font = A_Font
+ON_USE_MINIBUTTON.Text = "USE MINI BUTTON: NO"
+ON_USE_MINIBUTTON.Visible = true
+
 -- Button[Inside AutoFarm[Slot:1]]
 CONFIGS_FARM.Parent = FARM_SCROLLINGFRAME
 CONFIGS_FARM.BackgroundColor3 = Black
@@ -213,13 +256,38 @@ CONFIGS_FARM.Font = A_Font
 CONFIGS_FARM.Text = "Mini Button Configs Script"
 CONFIGS_FARM.Visible = true
 
+-- AutoFarm[Slot:2]
+STARTNEAREST_FARM.Parent = FARM_SCROLLINGFRAME
+STARTNEAREST_FARM.BackgroundColor3 = Black
+STARTNEAREST_FARM.BackgroundTransparency = 0
+STARTNEAREST_FARM.Position = UDim2.new(0.02, 0, 0.185, 0)
+STARTNEAREST_FARM.Size = UDim2.new(0.96, 0, 0.15, 0)
+STARTNEAREST_FARM.TextScaled = true
+STARTNEAREST_FARM.TextColor3 = White
+STARTNEAREST_FARM.Font = A_Font
+STARTNEAREST_FARM.Text = "Auto Farm Nearest: OFF"
+STARTNEAREST_FARM.Visible = true
+
+-- MiniButton [1]
+STARTNEAREST_FARM_MiniButton.Parent = BloxFruits_SGUI_Version_01
+STARTNEAREST_FARM_MiniButton.BackgroundColor3 = Black
+STARTNEAREST_FARM_MiniButton.BackgroundTransparency = 0.5
+STARTNEAREST_FARM_MiniButton.Position = UDim2.new(0.4, 0, 0.68, 0)
+STARTNEAREST_FARM_MiniButton.Size = UDim2.new(0.05, 0, 0.1, 0)
+STARTNEAREST_FARM_MiniButton.TextScaled = true
+STARTNEAREST_FARM_MiniButton.TextColor3 = White
+STARTNEAREST_FARM_MiniButton.Font = A_Font
+STARTNEAREST_FARM_MiniButton.Text = "Nearest Farm: OFF"
+STARTNEAREST_FARM_MiniButton.Visible = false
+
 -- Local Variable[UICorner]
-local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI, Configs_MainScript_UI
+local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI, Configs_MainScript_UI, MiniButton_1
 TOGGLER_GUI_UI = Instance.new("UICorner")
 DRAGGING_FRAME_UI = Instance.new("UICorner")
 SCROLLINGFRAME_ULT_UI = Instance.new("UICorner")
 Configs_MainScript_UI = Instance.new("UICorner")
 Farm_MainScript_UI = Instance.new("UICorner")
+MiniButton_1 = Instance.new("UICorner")
 
 
 TOGGLER_GUI_UI.Parent = TOGGLER_GUI
@@ -227,6 +295,7 @@ DRAGGING_FRAME_UI.Parent = DRAGGING_FRAME
 SCROLLINGFRAME_ULT_UI.Parent = SCROLLINGFRAME_ULT
 Configs_MainScript_UI.Parent = Configs_MainScript
 Farm_MainScript_UI.Parent = Farm_MainScript
+MiniButton_1.Parent = STARTNEAREST_FARM_MiniButton
 
 
 TOGGLER_GUI_UI.CornerRadius = UDim.new(0.2, 0)
@@ -234,7 +303,77 @@ DRAGGING_FRAME_UI.CornerRadius = UDim.new(0.02, 0)
 SCROLLINGFRAME_ULT_UI.CornerRadius = UDim.new(0.2, 0)
 Configs_MainScript_UI.CornerRadius = UDim.new(0.15, 0)
 Farm_MainScript_UI.CornerRadius = UDim.new(0.15, 0)
+MiniButton_1.CornerRadius = UDim.new(0.1, 0)
 
+-- Auto Farm Nearest[Func]
+function find_nearest_npc()
+    local nearest_npc = nil
+    local nearest_dis = math.huge
+    local detect_dis = 1000
+    
+    for _, npc in pairs(game.Workspace.Enemies:GetChildren()) do
+        if npc:IsA("Model") and npc:FindFirstChild("HumanoidRootPart") then
+            local distance = (player.Character.HumanoidRootPart.Position - npc.HumanoidRootPart.Position).magnitude
+            
+            if distance < nearest_dis and distance <= detect_dis then
+                nearest_dis = distance
+                nearest_npc = npc
+            end
+        end
+    end
+    
+    if nearest_npc and nearest_npc:FindFirstChild("Humanoid") then
+        local humanoid = nearest_npc.Humanoid
+        
+        if Is_CurrentlyOn then
+            if humanoid.Health > 0 then
+                local npc_pos = nearest_npc.HumanoidRootPart.Position + Vector3.new(30, 0, 30)
+                local pl_pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                if Is_CurrentTween then
+                    Is_CurrentTween:Cancel()
+                end
+                local goal = {CFrame = CFrame.new(npc_pos)}
+                local tweenInfo = Create_TweeningInformation(pl_pos, goal.CFrame.Position)
+                Is_CurrentTween = TS_MainScript:Create(player.Character.HumanoidRootPart, tweenInfo, goal)
+                Is_CurrentTween:Play()
+            else
+                nearest_npc.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
+            end
+        else
+            if humanoid.Health > 0 then
+                local npc_pos = nearest_npc.HumanoidRootPart.Position + Vector3.new(30, 10, 30)
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(npc_pos)
+            else
+                nearest_npc.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
+            end
+        end
+    end
+end
+
+-- Hitbox nearest npc[Func]
+function hitbox_nearest_npc()
+    local nearest_npc_4hb = nil
+    local nearest_dis_4hb = math.huge
+    local detect_dis_4hb = 1000
+    
+    for _, npc_4hb in pairs(game.Workspace.Enemies:GetChildren()) do
+        if npc_4hb:IsA("Model") and npc_4hb:FindFirstChild("HumanoidRootPart") then
+            local distance = (player.Character.HumanoidRootPart.Position - npc_4hb.HumanoidRootPart.Position).magnitude
+            
+            if distance < nearest_dis_4hb and distance <= detect_dis_4hb then
+                nearest_dis_4hb = distance
+                nearest_npc_4hb = npc_4hb
+            end
+        end
+    end
+    
+    if nearest_npc_4hb then
+        nearest_npc_4hb.HumanoidRootPart.Size = Vector3.new(120, 120, 120)
+        nearest_npc_4hb.HumanoidRootPart.CanCollide = false
+        nearest_npc_4hb.HumanoidRootPart.PlatformStand = true
+        nearest_npc_4hb.HumanoidRootPart.WalkSpeed = 0
+    end
+end
 
 -- Active Button[Func]
 local Is_UIVisible = false
@@ -256,16 +395,31 @@ local Is_InUseMode = false
 SWITCHINGMODE_MISC.MouseButton1Click:Connect(function()
     if Is_InUseMode then
         
-        
+        if Is_CurrentlyOn and Is_CurrentTween then
+            Is_CurrentTween:Cancel()
+        end
         SWITCHINGMODE_MISC.TextColor3 = Yellow
         SWITCHINGMODE_MISC.Text = "Teleportation"
+        Is_CurrentlyOn = false
         Is_InUseMode = false
     else
         
         
         SWITCHINGMODE_MISC.TextColor3 = SkyBlue
         SWITCHINGMODE_MISC.Text = "Tweening Position"
+        Is_CurrentlyOn = true
         Is_InUseMode = true
+    end
+end)
+
+TPSPEED_MISC.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local NEW_Speed = tonumber(TPSPEED_MISC.Text)
+        if NEW_Speed and NEW_Speed > 0 then
+            TweenSpeed_X01 = NEW_Speed
+        else
+            warn("Invalid Tweening Speed: " .. tostring(TPSPEED_MISC.Text))
+        end
     end
 end)
 
@@ -286,6 +440,27 @@ HUD_SIZETRANSFORMATION.MouseButton1Click:Connect(function()
     end
 end)
 
+local Is_OnUseMiniButtonToggled = false
+ON_USE_MINIBUTTON.MouseButton1Click:Connect(function()
+    if Is_OnUseMiniButtonToggled then
+        
+        -- All MiniButton OFF --
+        STARTNEAREST_FARM_MiniButton.Visible = false
+        
+        ON_USE_MINIBUTTON.TextColor3 = White
+        ON_USE_MINIBUTTON.Text = "USE MINI BUTTON: NO"
+        InUse_MiniButton = false
+        Is_OnUseMiniButtonToggled = false
+    else
+        
+        
+        ON_USE_MINIBUTTON.TextColor3 = Green
+        ON_USE_MINIBUTTON.Text = "USE MINI BUTTON: YES"
+        InUse_MiniButton = true
+        Is_OnUseMiniButtonToggled = true
+    end
+end)
+
 local Is_MiniButton_1 = false
 CONFIGS_FARM.MouseButton1Click:Connect(function()
     if Is_MiniButton_1 then
@@ -300,6 +475,67 @@ CONFIGS_FARM.MouseButton1Click:Connect(function()
         TPSPEED_MISC.Visible = true
         CONFIGS_FARM.TextColor3 = Green
         Is_MiniButton_1 = true
+    end
+end)
+
+local Is_AutoNearestFarmOn = false
+STARTNEAREST_FARM.MouseButton1Click:Connect(function()
+    if Is_AutoNearestFarmOn then
+        Is_AutoNearestFarmOn = false
+        STARTNEAREST_FARM.Text = "Auto Farm Nearest: OFF"
+        STARTNEAREST_FARM.TextColor3 = White
+    else
+        Is_AutoNearestFarmOn = true
+        STARTNEAREST_FARM.Text = "Auto Farm Nearest: ON"
+        STARTNEAREST_FARM.TextColor3 = Green
+        if InUse_MiniButton then
+            STARTNEAREST_FARM_MiniButton.Visible = true
+        else
+            rs.RenderStepped:Connect(function(deltaTime)
+                if Is_AutoNearestFarmOn and not Is_OnUseMiniButtonToggled then
+                    find_nearest_npc()
+                    hitbox_nearest_npc()
+                    VU:CaptureController()
+                    VU:ClickButton1(Vector2.new(9999, 9999, 9999))
+                end
+            end)
+        end
+    end
+end)
+
+-- MiniButton of STARTNEAREST_FARM[1]
+local InUse_NearestFarm_MiniButton = false
+STARTNEAREST_FARM_MiniButton.MouseButton1Click:Connect(function()
+    if InUse_NearestFarm_MiniButton then
+        
+        STARTNEAREST_FARM_MiniButton.TextColor3 = White
+        STARTNEAREST_FARM_MiniButton.Text = "Nearest Farm: OFF"
+        InUse_NearestFarm_MiniButton = false
+        
+        if Is_AutoNearestFarmOn then
+            Is_AutoNearestFarmOn = false
+            STARTNEAREST_FARM.TextColor3 = White
+            STARTNEAREST_FARM.Text = "Auto Farm Nearest: OFF"
+        end
+    else
+        
+        STARTNEAREST_FARM_MiniButton.TextColor3 = Purple
+        STARTNEAREST_FARM_MiniButton.Text = "Nearest Farm: ON"
+        InUse_NearestFarm_MiniButton = true
+        
+        if Is_AutoNearestFarmOn then
+            Is_AutoNearestFarmOn = false
+            STARTNEAREST_FARM.TextColor3 = White
+            STARTNEAREST_FARM.Text = "Auto Farm Nearest: OFF"
+        end
+        rs.RenderStepped:Connect(function(deltaTime)
+            if InUse_NearestFarm_MiniButton and InUse_MiniButton then
+                find_nearest_npc()
+                hitbox_nearest_npc()
+                VU:CaptureController()
+                VU:ClickButton1(Vector2.new(9999, 9999, 9999))
+            end
+        end)
     end
 end)
 
