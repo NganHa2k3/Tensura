@@ -2624,6 +2624,15 @@ local function Display_Username_AutoCorrect(input)
     return nil
 end
 
+local function DisplayChat_Message(str_chat)
+    str_chat = tostring(str_chat)
+    if not game:GetService("TextChatService") then  -- Assuming you want to check for the legacy chat system
+        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str_chat, "All")
+    else
+        game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(str_chat)
+    end
+end
+
 local function onPlayerChatted(message)
     local words = string.split(message, " ")
 
@@ -2669,6 +2678,10 @@ local function onPlayerChatted(message)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/main/ChestCFrame_Toggler"))()
     elseif words[1] == "tptool" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/TeleportTool"))()
+    elseif words[1] == "cmds" or words[1] == "lệnh" then
+        DisplayChat_Message("Tất cả các lệnh: ")
+        DisplayChat_Message("mua đồ, lấy, mua trái, chợ, stock, awakening fruit, titles, cf normal, cf vip, cf beta")
+        DisplayChat_Message("tptool, view, xem, nhìn, cmds, lệnh")
     elseif table.find(cameraCommands_Table, words[1]) and words[2] then
         local selected_player = words[2]
         local targetSelected = Display_Username_AutoCorrect(selected_player)
