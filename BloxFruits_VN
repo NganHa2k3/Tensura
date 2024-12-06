@@ -2147,13 +2147,22 @@ VAFarm.MouseButton1Click:Connect(function()
     if VFarmA then
         VAFarm.Text = "Tự động Farm[Tắt]"
         VAFarm.TextColor3 = Color3.new(1, 1, 1)
-        REBV()
+        
         VFarmA = false
     else
         VAFarm.Text = "Tự động Farm[Bật]"
         VAFarm.TextColor3 = Color3.new(0, 1, 1)
-        USEBV()
+        
         VFarmA = true
+
+        LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
+            if VFarmA then
+                trackNearestEnemy()
+                HitBoxNearestEnemy()
+                VU:CaptureController()
+                VU:ClickButton1(Vector2.new(0.5, 0, 0.5))
+            end
+        end)
     end
 end)
 
