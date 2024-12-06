@@ -29,13 +29,30 @@ SkyBlue = Color3.fromRGB(0, 255, 255)
 Purple = Color3.fromRGB(255, 0, 255)
 Yellow = Color3.fromRGB(255, 255, 0)
 
-local A_Font, Ult_Size
+local A_Font, Ult_Size, HBBox_Size, HBBox_Pos, HBBox_CanvasSize
 A_Font = Enum.Font.Code
 Ult_Size = UDim2.new(0.96, 0, 0.15, 0)
+HBBox_Size = UDim2.new(0.88, 0, 0.9, 0)
+HBBox_Pos = UDim2.new(0.02, 0, 0.02, 0)
+HBBox_CanvasSize = UDim2.new(0, 0, 2, 0)
+
+-- Local Variable[for Configs SF]
+local HUDSize_Transform, HUDPosition_Transform, DFrame_Small, DFrame_Big, DFrame_Default
+HUDPosition_Transform = UDim2.new(0.02, 0, 0.02, 0)
+HUDSize_Transform = UDim2.new(0.96, 0, 0.15, 0)
+
+DFrame_Default = UDim2.new(0.2, 0, 0.55, 0)
+DFrame_Small = UDim2.new(0.1, 0, 0.275, 0)
+DFrame_Big = UDim2.new(0.6, 0, 0.65, 0)
 
 -- Local Variable[GUI]
-local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript
+local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript, FARM_SCROLLINGFRAME, Farm_MainScript
 
+-- InsideConfigs [Button]
+local HUD_SIZETRANSFORMATION
+
+-- InsideAutoFarm [Button]
+local CONFIGS_FARM
 
 -- Instance[Create Button]
 TOGGLER_GUI = Instance.new("TextButton")
@@ -43,6 +60,15 @@ DRAGGING_FRAME = Instance.new("Frame")
 SCROLLINGFRAME_ULT = Instance.new("ScrollingFrame")
 CONFIGS_SCROLLINGFRAME = Instance.new("ScrollingFrame")
 Configs_MainScript = Instance.new("TextButton")
+FARM_SCROLLINGFRAME = Instance.new("ScrollingFrame")
+Farm_MainScript = Instance.new("TextButton")
+
+
+-- Instance[Create Button:Parent:Configs]
+HUD_SIZETRANSFORMATION = Instance.new("TextButton")
+
+-- Instance[Create Button:Parent:AutoFarm]
+CONFIGS_FARM = Instance.new("TextButton")
 
 -- Local Variable[Players]
 local Players = game:GetService("Players")
@@ -77,7 +103,7 @@ DRAGGING_FRAME.Parent = BloxFruits_SGUI_Version_01
 DRAGGING_FRAME.BackgroundColor3 = Black
 DRAGGING_FRAME.BackgroundTransparency = 0.5
 DRAGGING_FRAME.Position = UDim2.new(0.8, 0, 0.05, 0)
-DRAGGING_FRAME.Size = UDim2.new(0.2, 0, 0.55, 0)
+DRAGGING_FRAME.Size = DFrame_Default
 DRAGGING_FRAME.Active = true
 DRAGGING_FRAME.Draggable = true
 DRAGGING_FRAME.Visible = false
@@ -96,11 +122,21 @@ SCROLLINGFRAME_ULT.Visible = false
 CONFIGS_SCROLLINGFRAME.Parent = DRAGGING_FRAME
 CONFIGS_SCROLLINGFRAME.BackgroundColor3 = Black
 CONFIGS_SCROLLINGFRAME.BackgroundTransparency = 0.5
-CONFIGS_SCROLLINGFRAME.Position = UDim2.new(0.02, 0, 0.02, 0)
-CONFIGS_SCROLLINGFRAME.Size = UDim2.new(0.88, 0, 0.9, 0)
-CONFIGS_SCROLLINGFRAME.CanvasSize = UDim2.new(0, 0, 2, 0)
+CONFIGS_SCROLLINGFRAME.Position = HBBox_Pos
+CONFIGS_SCROLLINGFRAME.Size = HBBox_Size
+CONFIGS_SCROLLINGFRAME.CanvasSize = HBBox_CanvasSize
 CONFIGS_SCROLLINGFRAME.ScrollBarThickness = 0.1
 CONFIGS_SCROLLINGFRAME.Visible = false
+
+-- Scrolling frame of Farm button --
+FARM_SCROLLINGFRAME.Parent = DRAGGING_FRAME
+FARM_SCROLLINGFRAME.BackgroundColor3 = Black
+FARM_SCROLLINGFRAME.BackgroundTransparency = 0.5
+FARM_SCROLLINGFRAME.Position = HBBox_Pos
+FARM_SCROLLINGFRAME.Size = HBBox_Size
+FARM_SCROLLINGFRAME.CanvasSize = HBBox_CanvasSize
+FARM_SCROLLINGFRAME.ScrollBarThickness = 0.1
+FARM_SCROLLINGFRAME.Visible = false
 
 -- Configs Button for MainScript --
 Configs_MainScript.Parent = SCROLLINGFRAME_ULT
@@ -114,24 +150,63 @@ Configs_MainScript.Font = A_Font
 Configs_MainScript.Text = "Configs"
 Configs_MainScript.Visible = true
 
+-- Farm Button for MainScript --
+Farm_MainScript.Parent = SCROLLINGFRAME_ULT
+Farm_MainScript.BackgroundColor3 = Black
+Farm_MainScript.BackgroundTransparency = 0
+Farm_MainScript.Position = UDim2.new(0.02, 0, 0.19, 0)
+Farm_MainScript.Size = Ult_Size
+Farm_MainScript.TextScaled = true
+Farm_MainScript.TextColor3 = White
+Farm_MainScript.Font = A_Font
+Farm_MainScript.Text = "Auto Farm"
+Farm_MainScript.Visible = true
+
+-- Button[Inside Configs[Slot:1]]
+HUD_SIZETRANSFORMATION.Parent = CONFIGS_SCROLLINGFRAME
+HUD_SIZETRANSFORMATION.BackgroundColor3 = Black
+HUD_SIZETRANSFORMATION.BackgroundTransparency = 0
+HUD_SIZETRANSFORMATION.Position = HUDPosition_Transform
+HUD_SIZETRANSFORMATION.Size = HUDSize_Transform
+HUD_SIZETRANSFORMATION.TextScaled = true
+HUD_SIZETRANSFORMATION.TextColor3 = White
+HUD_SIZETRANSFORMATION.Font = A_Font
+HUD_SIZETRANSFORMATION.Text = "Size: Default"
+HUD_SIZETRANSFORMATION.Visible = true
+
+-- Button[Inside AutoFarm[Slot:1]]
+CONFIGS_FARM.Parent = FARM_SCROLLINGFRAME
+CONFIGS_FARM.BackgroundColor3 = Black
+CONFIGS_FARM.BackgroundTransparency = 0
+CONFIGS_FARM.Position = HUDPosition_Transform
+CONFIGS_FARM.Size = HUDSize_Transform
+CONFIGS_FARM.TextScaled = true
+CONFIGS_FARM.TextColor3 = White
+CONFIGS_FARM.Font = A_Font
+CONFIGS_FARM.Text = "Mini Button Configs Script"
+CONFIGS_FARM.Visible = true
+
 -- Local Variable[UICorner]
 local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI, Configs_MainScript_UI
 TOGGLER_GUI_UI = Instance.new("UICorner")
 DRAGGING_FRAME_UI = Instance.new("UICorner")
 SCROLLINGFRAME_ULT_UI = Instance.new("UICorner")
 Configs_MainScript_UI = Instance.new("UICorner")
+Farm_MainScript_UI = Instance.new("UICorner")
 
 
 TOGGLER_GUI_UI.Parent = TOGGLER_GUI
 DRAGGING_FRAME_UI.Parent = DRAGGING_FRAME
 SCROLLINGFRAME_ULT_UI.Parent = SCROLLINGFRAME_ULT
 Configs_MainScript_UI.Parent = Configs_MainScript
+Farm_MainScript_UI.Parent = Farm_MainScript
 
 
 TOGGLER_GUI_UI.CornerRadius = UDim.new(0.2, 0)
 DRAGGING_FRAME_UI.CornerRadius = UDim.new(0.02, 0)
 SCROLLINGFRAME_ULT_UI.CornerRadius = UDim.new(0.2, 0)
 Configs_MainScript_UI.CornerRadius = UDim.new(0.15, 0)
+Farm_MainScript_UI.CornerRadius = UDim.new(0.15, 0)
 
 
 -- Active Button[Func]
@@ -150,8 +225,41 @@ TOGGLER_GUI.MouseButton1Click:Connect(function()
     end
 end)
 
--- Ult Button[Slot:1]
+local size_xcount
+size_xcount = 0
+HUD_SIZETRANSFORMATION.MouseButton1Click:Connect(function()
+    size_xcount = size_xcount + 1
+    if size_xcount == 1 then
+        HUD_SIZETRANSFORMATION.Text = "Size: Small"
+        DRAGGING_FRAME.Size = DFrame_Small
+    elseif size_xcount == 2 then
+        HUD_SIZETRANSFORMATION.Text = "Size: Big"
+        DRAGGING_FRAME.Size = DFrame_Big
+    elseif size_xcount == 3 then
+        size_xcount = 0
+        HUD_SIZETRANSFORMATION.Text = "Size: Default"
+        DRAGGING_FRAME.Size = DFrame_Default
+    end
+end)
+
+local Is_MiniButton_1 = false
+CONFIGS_FARM.MouseButton1Click:Connect(function()
+    if Is_MiniButton_1 then
+        
+        CONFIGS_FARM.TextColor3 = White
+        Is_MiniButton_1 = false
+    else
+        
+        CONFIGS_FARM.TextColor3 = Green
+        Is_MiniButton_1 = true
+    end
+end)
+
+-- Ult Button [Variable]
 local Is_SFUIVisible = false
+local Is_SFUIVisible_2 = false
+
+-- Ult Button[Slot:1]
 Configs_MainScript.MouseButton1Click:Connect(function()
     if Is_SFUIVisible then
         CONFIGS_SCROLLINGFRAME.Visible = false
@@ -159,8 +267,27 @@ Configs_MainScript.MouseButton1Click:Connect(function()
         Is_SFUIVisible = false
     else
         CONFIGS_SCROLLINGFRAME.Visible = true
+        FARM_SCROLLINGFRAME.Visible = false
+        Farm_MainScript.TextColor3 = White
         Configs_MainScript.TextColor3 = Green
+        Is_SFUIVisible_2 = false
         Is_SFUIVisible = true
+    end
+end)
+
+-- [Slot:2]
+Farm_MainScript.MouseButton1Click:Connect(function()
+    if Is_SFUIVisible_2 then
+        FARM_SCROLLINGFRAME.Visible = false
+        Farm_MainScript.TextColor3 = White
+        Is_SFUIVisible_2 = false
+    else
+        FARM_SCROLLINGFRAME.Visible = true
+        CONFIGS_SCROLLINGFRAME.Visible = false
+        Configs_MainScript.TextColor3 = White
+        Farm_MainScript.TextColor3 = Green
+        Is_SFUIVisible = false
+        Is_SFUIVisible_2 = true
     end
 end)
 
@@ -203,7 +330,7 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
 end)
 
 if teleportexecute then
-    wait(10)
+    wait(1)
     print("<NganHa2k3 Script - KeepScript is On>")
     KeepScript = true
 else
