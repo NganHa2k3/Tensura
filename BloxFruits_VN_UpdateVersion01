@@ -52,7 +52,7 @@ local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, C
 local HUD_SIZETRANSFORMATION
 
 -- InsideAutoFarm [Button]
-local CONFIGS_FARM
+local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC
 
 -- Instance[Create Button]
 TOGGLER_GUI = Instance.new("TextButton")
@@ -69,6 +69,8 @@ HUD_SIZETRANSFORMATION = Instance.new("TextButton")
 
 -- Instance[Create Button:Parent:AutoFarm]
 CONFIGS_FARM = Instance.new("TextButton")
+TPSPEED_MISC = Instance.new("TextBox")
+SWITCHINGMODE_MISC = Instance.new("TextButton")
 
 -- Local Variable[Players]
 local Players = game:GetService("Players")
@@ -97,6 +99,31 @@ TOGGLER_GUI.TextColor3 = White
 TOGGLER_GUI.Font = A_Font
 TOGGLER_GUI.Text = "◇Zero"
 TOGGLER_GUI.Visible = true
+
+-- Speed Teleportation Configs_1 --
+TPSPEED_MISC.Parent = BloxFruits_SGUI_Version_01
+TPSPEED_MISC.BackgroundColor3 = Black
+TPSPEED_MISC.BackgroundTransparency = 0.5
+TPSPEED_MISC.Position = UDim2.new(0.78, 0, -0.1, 0)
+TPSPEED_MISC.Size = UDim2.new(0.05, 0, 0.1, 0)
+TPSPEED_MISC.TextScaled = true
+TPSPEED_MISC.TextColor3 = White
+TPSPEED_MISC.Font = A_Font
+TPSPEED_MISC.Text = ""
+TPSPEED_MISC.ClearTextOnFocus = false
+TPSPEED_MISC.Visible = false
+
+-- Switching current mode Teleportation or Tween Position Configs_2 --
+SWITCHINGMODE_MISC.Parent = BloxFruits_SGUI_Version_01
+SWITCHINGMODE_MISC.BackgroundColor3 = Black
+SWITCHINGMODE_MISC.BackgroundTransparency = 0.5
+SWITCHINGMODE_MISC.Position = UDim2.new(0.72, 0, -0.1, 0)
+SWITCHINGMODE_MISC.Size = UDim2.new(0.05, 0, 0.1, 0)
+SWITCHINGMODE_MISC.TextScaled = true
+SWITCHINGMODE_MISC.TextColor3 = Yellow
+SWITCHINGMODE_MISC.Font = A_Font
+SWITCHINGMODE_MISC.Text = "Teleportation"
+SWITCHINGMODE_MISC.Visible = false
 
 -- Draggable Frame --
 DRAGGING_FRAME.Parent = BloxFruits_SGUI_Version_01
@@ -225,6 +252,23 @@ TOGGLER_GUI.MouseButton1Click:Connect(function()
     end
 end)
 
+local Is_InUseMode = false
+SWITCHINGMODE_MISC.MouseButton1Click:Connect(function()
+    if Is_InUseMode then
+        
+        
+        SWITCHINGMODE_MISC.TextColor3 = Yellow
+        SWITCHINGMODE_MISC.Text = "Teleportation"
+        Is_InUseMode = false
+    else
+        
+        
+        SWITCHINGMODE_MISC.TextColor3 = SkyBlue
+        SWITCHINGMODE_MISC.Text = "Tweening Position"
+        Is_InUseMode = true
+    end
+end)
+
 local size_xcount
 size_xcount = 0
 HUD_SIZETRANSFORMATION.MouseButton1Click:Connect(function()
@@ -246,10 +290,14 @@ local Is_MiniButton_1 = false
 CONFIGS_FARM.MouseButton1Click:Connect(function()
     if Is_MiniButton_1 then
         
+        SWITCHINGMODE_MISC.Visible = false
+        TPSPEED_MISC.Visible = false
         CONFIGS_FARM.TextColor3 = White
         Is_MiniButton_1 = false
     else
         
+        SWITCHINGMODE_MISC.Visible = true
+        TPSPEED_MISC.Visible = true
         CONFIGS_FARM.TextColor3 = Green
         Is_MiniButton_1 = true
     end
