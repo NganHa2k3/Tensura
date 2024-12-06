@@ -2609,6 +2609,8 @@ local CoreGui = game:GetService("StarterGui")
 
 -- Quick Tools --
 
+local cameraCommands_Table = {"view", "xem", "nhìn"}
+
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
@@ -2625,7 +2627,7 @@ end
 local function onPlayerChatted(message)
     local words = string.split(message, " ")
 
-    if words[1] == "Mua" and words[2] == "đồ" and words[3] then
+    if words[1] == "mua" and words[2] == "đồ" and words[3] then
         local itemName = words[3]
         wait(0.2)
         local args = {
@@ -2634,7 +2636,7 @@ local function onPlayerChatted(message)
         }
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 
-    elseif words[1] == "Lấy" and words[2] then
+    elseif words[1] == "lấy" and words[2] then
         local toolName = words[2]
         wait(0.2)
         local args = {
@@ -2643,7 +2645,7 @@ local function onPlayerChatted(message)
         }
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 
-    elseif words[1] == "Mua" and words[2] == "trái" and words[3] then
+    elseif words[1] == "mua" and words[2] == "trái" and words[3] then
         local fruitName = words[3]
         wait(0.1)
         local args = {
@@ -2653,19 +2655,21 @@ local function onPlayerChatted(message)
         }
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
 
-    elseif words[1] == "Chợ" then
+    elseif words[1] == "chợ" or words[1] == "stock" then
         game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShop.Visible = true
-    elseif words[1] == "Thức" and words[2] == "tỉnh" and words[3] == "chiêu" then
+    elseif words[1] == "awakening" and words[2] == "fruit" then
         game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
-    elseif words[1] == "Đổi" and words[2] == "danh" and words[3] == "hiệu" then
+    elseif words[1] == "titles" then
         game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
-    elseif words[1] == "Nhặt" and words[2] == "hết" and words[3] == "rương" then
+    elseif words[1] == "cf" and words[2] == "normal" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame"))()
-    elseif words[1] == "Nhặt" and words[2] == "rương" and words[3] == "vip" then
+    elseif words[1] == "cf" and words[2] == "vip" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame_Silver"))()
+    elseif words[1] == "cf" and words[2] == "beta" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/main/ChestCFrame_Toggler"))()
     elseif words[1] == "tptool" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/TeleportTool"))()
-    elseif words[1] == "Xem" and words[2] then
+    elseif table.find(cameraCommands_Table, words[1]) and words[2] then
         local selected_player = words[2]
         local targetSelected = Display_Username_AutoCorrect(selected_player)
         
