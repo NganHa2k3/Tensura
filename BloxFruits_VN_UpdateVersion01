@@ -52,7 +52,15 @@ local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, C
 local HUD_SIZETRANSFORMATION, ON_USE_MINIBUTTON
 
 -- InsideAutoFarm [Button]
-local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC, STARTNEAREST_FARM, STARTNEAREST_FARM_MiniButton
+local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC, SWITCHINGDIRECTION_MISC, STARTNEAREST_FARM, STARTNEAREST_FARM_MiniButton
+
+-- Directional AutoFarm[Dir Variable]
+local DirOnTop, DirOnSide, DirBelowGround, CurrentlyDir
+DirOnTop = Vector3.new(0, 60, 0)
+DirOnSide = Vector3.new(30, 0, 30)
+DirBelowGround = Vector3.new(0, -30, 0)
+
+CurrentlyDir = DirOnTop
 
 -- Instance[Create Button]
 TOGGLER_GUI = Instance.new("TextButton")
@@ -74,6 +82,7 @@ TPSPEED_MISC = Instance.new("TextBox")
 SWITCHINGMODE_MISC = Instance.new("TextButton")
 STARTNEAREST_FARM = Instance.new("TextButton")
 STARTNEAREST_FARM_MiniButton = Instance.new("TextButton")
+SWITCHINGDIRECTION_MISC = Instance.new("TextButton")
 
 -- Local Variable[Players]
 local Players = game:GetService("Players")
@@ -155,6 +164,18 @@ SWITCHINGMODE_MISC.TextColor3 = Yellow
 SWITCHINGMODE_MISC.Font = A_Font
 SWITCHINGMODE_MISC.Text = "Teleportation"
 SWITCHINGMODE_MISC.Visible = false
+
+-- Switching Directional of AutoFarm --
+SWITCHINGDIRECTION_MISC.Parent = BloxFruits_SGUI_Version_01
+SWITCHINGDIRECTION_MISC.BackgroundColor3 = Black
+SWITCHINGDIRECTION_MISC.BackgroundTransparency = 0.5
+SWITCHINGDIRECTION_MISC.Position = UDim2.new(0.66, 0, -0.1, 0)
+SWITCHINGDIRECTION_MISC.Size = UDim2.new(0.05, 0, 0.1, 0)
+SWITCHINGDIRECTION_MISC.TextScaled = true
+SWITCHINGDIRECTION_MISC.TextColor3 = SkyBlue
+SWITCHINGDIRECTION_MISC.Font = A_Font
+SWITCHINGDIRECTION_MISC.Text = "Dir: On Top"
+SWITCHINGDIRECTION_MISC.Visible = false
 
 -- Draggable Frame --
 DRAGGING_FRAME.Parent = BloxFruits_SGUI_Version_01
@@ -327,7 +348,7 @@ function find_nearest_npc()
         
         if Is_CurrentlyOn then
             if humanoid.Health > 0 then
-                local npc_pos = nearest_npc.HumanoidRootPart.Position + Vector3.new(30, 0, 30)
+                local npc_pos = nearest_npc.HumanoidRootPart.Position + CurrentlyDir
                 local pl_pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                 if Is_CurrentTween then
                     Is_CurrentTween:Cancel()
@@ -341,7 +362,7 @@ function find_nearest_npc()
             end
         else
             if humanoid.Health > 0 then
-                local npc_pos = nearest_npc.HumanoidRootPart.Position + Vector3.new(30, 10, 30)
+                local npc_pos = nearest_npc.HumanoidRootPart.Position + CurrentlyDir
                 player.Character.HumanoidRootPart.CFrame = CFrame.new(npc_pos)
             else
                 nearest_npc.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
@@ -412,6 +433,26 @@ SWITCHINGMODE_MISC.MouseButton1Click:Connect(function()
     end
 end)
 
+local dir_autofarm_x
+dir_autofarm_x = 0
+SWITCHINGDIRECTION_MISC.MouseButton1Click:Connect(function()
+    dir_autofarm_x = dir_autofarm_x + 1
+    if dir_autofarm_x == 1 then
+        SWITCHINGDIRECTION_MISC.TextColor3 = Green
+        SWITCHINGDIRECTION_MISC.Text = "Dir: On Side"
+        CurrentlyDir = DirOnSide
+    elseif dir_autofarm_x == 2 then
+        SWITCHINGDIRECTION_MISC.TextColor3 = Red
+        SWITCHINGDIRECTION_MISC.Text = "Dir: Below Ground"
+        CurrentlyDir = DirBelowGround
+    elseif dir_autofarm_x == 3 then
+        dir_autofarm_x = 0
+        SWITCHINGDIRECTION_MISC.TextColor3 = SkyBlue
+        SWITCHINGDIRECTION_MISC.Text = "Dir: On Top"
+        CurrentlyDir = DirOnTop
+    end
+end)
+
 TPSPEED_MISC.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local NEW_Speed = tonumber(TPSPEED_MISC.Text)
@@ -465,12 +506,14 @@ local Is_MiniButton_1 = false
 CONFIGS_FARM.MouseButton1Click:Connect(function()
     if Is_MiniButton_1 then
         
+        SWITCHINGDIRECTION_MISC.Visible = false
         SWITCHINGMODE_MISC.Visible = false
         TPSPEED_MISC.Visible = false
         CONFIGS_FARM.TextColor3 = White
         Is_MiniButton_1 = false
     else
         
+        SWITCHINGDIRECTION_MISC.Visible = true
         SWITCHINGMODE_MISC.Visible = true
         TPSPEED_MISC.Visible = true
         CONFIGS_FARM.TextColor3 = Green
