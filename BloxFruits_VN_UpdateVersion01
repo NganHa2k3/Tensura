@@ -370,8 +370,8 @@ function hitbox_nearest_npc()
     if nearest_npc_4hb then
         nearest_npc_4hb.HumanoidRootPart.Size = Vector3.new(120, 120, 120)
         nearest_npc_4hb.HumanoidRootPart.CanCollide = false
-        nearest_npc_4hb.HumanoidRootPart.PlatformStand = true
-        nearest_npc_4hb.HumanoidRootPart.WalkSpeed = 0
+        nearest_npc_4hb.Humanoid.PlatformStand = true
+        nearest_npc_4hb.Humanoid.WalkSpeed = 0
     end
 end
 
