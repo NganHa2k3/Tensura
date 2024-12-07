@@ -496,7 +496,7 @@ STARTNEAREST_FARM.MouseButton1Click:Connect(function()
                     find_nearest_npc()
                     hitbox_nearest_npc()
                     VU:CaptureController()
-                    VU:ClickButton1(Vector2.new(9999, 9999, 9999))
+                    VU:ClickButton1(Vector2.new(4, 0, 4))
                 end
             end)
         end
@@ -533,7 +533,7 @@ STARTNEAREST_FARM_MiniButton.MouseButton1Click:Connect(function()
                 find_nearest_npc()
                 hitbox_nearest_npc()
                 VU:CaptureController()
-                VU:ClickButton1(Vector2.new(9999, 9999, 9999))
+                VU:ClickButton1(Vector2.new(4, 0, 4))
             end
         end)
     end
