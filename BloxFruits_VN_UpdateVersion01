@@ -46,7 +46,7 @@ DFrame_Small = UDim2.new(0.1, 0, 0.275, 0)
 DFrame_Big = UDim2.new(0.6, 0, 0.65, 0)
 
 -- Local Variable[GUI]
-local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript, FARM_SCROLLINGFRAME, Farm_MainScript
+local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript, FARM_SCROLLINGFRAME, Farm_MainScript, TELEPORT_SCROLLINGFRAME, Tp_MainScript, PLAYER_SCROLLINGFRAME, PVP_MainScript
 
 -- InsideConfigs [Button]
 local HUD_SIZETRANSFORMATION, ON_USE_MINIBUTTON
@@ -70,6 +70,10 @@ CONFIGS_SCROLLINGFRAME = Instance.new("ScrollingFrame")
 Configs_MainScript = Instance.new("TextButton")
 FARM_SCROLLINGFRAME = Instance.new("ScrollingFrame")
 Farm_MainScript = Instance.new("TextButton")
+TELEPORT_SCROLLINGFRAME = Instance.new("ScrollingFrame")
+Tp_MainScript = Instance.new("TextButton")
+PLAYER_SCROLLINGFRAME = Instance.new("ScrollingFrame")
+PVP_MainScript = Instance.new("TextButton")
 
 
 -- Instance[Create Button:Parent:Configs]
@@ -217,6 +221,26 @@ FARM_SCROLLINGFRAME.CanvasSize = HBBox_CanvasSize
 FARM_SCROLLINGFRAME.ScrollBarThickness = 0.1
 FARM_SCROLLINGFRAME.Visible = false
 
+-- Scrolling frame of Teleportation button --
+TELEPORT_SCROLLINGFRAME.Parent = DRAGGING_FRAME
+TELEPORT_SCROLLINGFRAME.BackgroundColor3 = Black
+TELEPORT_SCROLLINGFRAME.BackgroundTransparency = 0.5
+TELEPORT_SCROLLINGFRAME.Position = HBBox_Pos
+TELEPORT_SCROLLINGFRAME.Size = HBBox_Size
+TELEPORT_SCROLLINGFRAME.CanvasSize = HBBox_CanvasSize
+TELEPORT_SCROLLINGFRAME.ScrollBarThickness = 0.1
+TELEPORT_SCROLLINGFRAME.Visible = false
+
+-- Scrolling frame of PVP button --
+PLAYER_SCROLLINGFRAME.Parent = DRAGGING_FRAME
+PLAYER_SCROLLINGFRAME.BackgroundColor3 = Black
+PLAYER_SCROLLINGFRAME.BackgroundTransparency = 0.5
+PLAYER_SCROLLINGFRAME.Position = HBBox_Pos
+PLAYER_SCROLLINGFRAME.Size = HBBox_Size
+PLAYER_SCROLLINGFRAME.CanvasSize = HBBox_CanvasSize
+PLAYER_SCROLLINGFRAME.ScrollBarThickness = 0.1
+PLAYER_SCROLLINGFRAME.Visible = false
+
 -- Configs Button for MainScript --
 Configs_MainScript.Parent = SCROLLINGFRAME_ULT
 Configs_MainScript.BackgroundColor3 = Black
@@ -240,6 +264,30 @@ Farm_MainScript.TextColor3 = White
 Farm_MainScript.Font = A_Font
 Farm_MainScript.Text = "Auto Farm"
 Farm_MainScript.Visible = true
+
+-- Teleportation button for MainScript --
+Tp_MainScript.Parent = SCROLLINGFRAME_ULT
+Tp_MainScript.BackgroundColor3 = Black
+Tp_MainScript.BackgroundTransparency = 0
+Tp_MainScript.Position = UDim2.new(0.02, 0, 0.36, 0)
+Tp_MainScript.Size = Ult_Size
+Tp_MainScript.TextScaled = true
+Tp_MainScript.TextColor3 = White
+Tp_MainScript.Font = A_Font
+Tp_MainScript.Text = "TP Islands/Secrect"
+Tp_MainScript.Visible = true
+
+-- PVP button for MainScript --
+PVP_MainScript.Parent = SCROLLINGFRAME_ULT
+PVP_MainScript.BackgroundColor3 = Black
+PVP_MainScript.BackgroundTransparency = 0
+PVP_MainScript.Position = UDim2.new(0.02, 0, 0.53, 0)
+PVP_MainScript.Size = Ult_Size
+PVP_MainScript.TextScaled = true
+PVP_MainScript.TextColor3 = White
+PVP_MainScript.Font = A_Font
+PVP_MainScript.Text = "PVP"
+PVP_MainScript.Visible = true
 
 -- Button[Inside Configs[Slot:1]]
 HUD_SIZETRANSFORMATION.Parent = CONFIGS_SCROLLINGFRAME
@@ -585,6 +633,26 @@ end)
 -- Ult Button [Variable]
 local Is_SFUIVisible = false
 local Is_SFUIVisible_2 = false
+local Is_SFUIVisible_3 = false
+local Is_SFUIVisible_4 = false
+
+function setVisible_Ult()
+    Is_SFUIVisible = false
+    Is_SFUIVisible_2 = false
+    Is_SFUIVisible_3 = false
+    Is_SFUIVisible_4 = false
+end
+
+function setVisible_Ult_1()
+    CONFIGS_SCROLLINGFRAME.Visible = false
+    FARM_SCROLLINGFRAME.Visible = false
+    TELEPORT_SCROLLINGFRAME.Visible = false
+    PLAYER_SCROLLINGFRAME.Visible = false
+    Configs_MainScript.TextColor3 = White
+    Farm_MainScript.TextColor3 = White
+    Tp_MainScript.TextColor3 = White
+    PVP_MainScript.TextColor3 = White
+end
 
 -- Ult Button[Slot:1]
 Configs_MainScript.MouseButton1Click:Connect(function()
@@ -593,11 +661,11 @@ Configs_MainScript.MouseButton1Click:Connect(function()
         Configs_MainScript.TextColor3 = White
         Is_SFUIVisible = false
     else
+        setVisible_Ult()
+        setVisible_Ult_1()
+        task.wait()
         CONFIGS_SCROLLINGFRAME.Visible = true
-        FARM_SCROLLINGFRAME.Visible = false
-        Farm_MainScript.TextColor3 = White
         Configs_MainScript.TextColor3 = Green
-        Is_SFUIVisible_2 = false
         Is_SFUIVisible = true
     end
 end)
@@ -609,12 +677,44 @@ Farm_MainScript.MouseButton1Click:Connect(function()
         Farm_MainScript.TextColor3 = White
         Is_SFUIVisible_2 = false
     else
+        setVisible_Ult()
+        setVisible_Ult_1()
+        task.wait()
         FARM_SCROLLINGFRAME.Visible = true
-        CONFIGS_SCROLLINGFRAME.Visible = false
-        Configs_MainScript.TextColor3 = White
         Farm_MainScript.TextColor3 = Green
-        Is_SFUIVisible = false
         Is_SFUIVisible_2 = true
+    end
+end)
+
+-- [Slot:3]
+Tp_MainScript.MouseButton1Click:Connect(function()
+    if Is_SFUIVisible_3 then
+        TELEPORT_SCROLLINGFRAME.Visible = false
+        Tp_MainScript.TextColor3 = White
+        Is_SFUIVisible_3 = false
+    else
+        setVisible_Ult()
+        setVisible_Ult_1()
+        task.wait()
+        TELEPORT_SCROLLINGFRAME.Visible = true
+        Tp_MainScript.TextColor3 = Green
+        Is_SFUIVisible_3 = true
+    end
+end)
+
+-- [Slot:4]
+PVP_MainScript.MouseButton1Click:Connect(function()
+    if Is_SFUIVisible_4 then
+        PLAYER_SCROLLINGFRAME.Visible = false
+        PVP_MainScript.TextColor3 = White
+        Is_SFUIVisible_4 = false
+    else
+        setVisible_Ult()
+        setVisible_Ult_1()
+        task.wait()
+        PLAYER_SCROLLINGFRAME.Visible = true
+        PVP_MainScript.TextColor3 = Green
+        Is_SFUIVisible_4 = true
     end
 end)
 
