@@ -1,0 +1,138 @@
+local cameraCommands_Table = {"view", "xem", "nhìn"}
+local unviewCommands_Table = {"unview"}
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local camera = game:GetService("Workspace").CurrentCamera
+
+local currentTarget = nil
+
+local function Display_Username_AutoCorrect(input)
+    for _, player in ipairs(Players:GetPlayers()) do
+        if string.lower(player.Name):sub(1, #input) == string.lower(input) or
+           string.lower(player.DisplayName):sub(1, #input) == string.lower(input) then
+            return player
+        end
+    end
+    return nil
+end
+
+local function DisplayChat_Message(str_chat)
+    str_chat = tostring(str_chat)
+    local textChatService = game:GetService("TextChatService")
+    local legacyChatService = game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
+    
+    if legacyChatService then
+        legacyChatService.SayMessageRequest:FireServer(str_chat, "All")
+    elseif textChatService then
+        local generalChannel = textChatService.TextChannels.RBXGeneral
+        if generalChannel then
+            generalChannel:SendAsync(str_chat)
+        end
+    end
+end
+
+local function resetCameraToPlayer()
+    if currentTarget then
+        local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+        if humanoid then
+            camera.CameraSubject = humanoid
+            currentTarget = nil
+            DisplayChat_Message("Camera reset to your character.")
+        else
+            DisplayChat_Message("Unable to reset camera to your character.")
+        end
+    else
+        DisplayChat_Message("No target to reset camera.")
+    end
+end
+
+local function startSpectating(targetPlayer)
+    if targetPlayer then
+        local targetCharacter = targetPlayer.Character
+        if targetCharacter then
+            local humanoid = targetCharacter:FindFirstChild("Humanoid")
+            if humanoid then
+                camera.CameraSubject = humanoid
+                currentTarget = targetPlayer
+                humanoid.Died:Connect(function()
+                    resetCameraToPlayer()
+                end)
+                DisplayChat_Message("Now Spectating Player: " .. targetPlayer.Name)
+            else
+                DisplayChat_Message("Player's character or humanoid not found.")
+            end
+        else
+            DisplayChat_Message("Target player's character not found.")
+        end
+    end
+end
+
+local function onPlayerChatted(message)
+    local words = string.split(message, " ")
+
+    if words[1] == "mua" and words[2] == "đồ" and words[3] then
+        local itemName = words[3]
+        wait(0.2)
+        local args = {
+            [1] = "BuyItem",
+            [2] = itemName
+        }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+    elseif words[1] == "lấy" and words[2] then
+        local toolName = words[2]
+        wait(0.2)
+        local args = {
+            [1] = "LoadItem",
+            [2] = toolName
+        }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+    elseif words[1] == "mua" and words[2] == "trái" and words[3] then
+        local fruitName = words[3]
+        wait(0.1)
+        local args = {
+            [1] = "PurchaseRawFruit",
+            [2] = fruitName,
+            [3] = false
+        }
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+    elseif words[1] == "chợ" or words[1] == "stock" then
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.FruitShop.Visible = true
+    elseif words[1] == "awakening" and words[2] == "fruit" then
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.AwakeningToggler.Visible = true
+    elseif words[1] == "titles" then
+        game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
+    elseif words[1] == "cf" and words[2] == "normal" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame"))()
+    elseif words[1] == "cf" and words[2] == "vip" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/main/ChestCFrame_Silver"))()
+    elseif words[1] == "cf" and words[2] == "beta" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/main/ChestCFrame_Toggler"))()
+    elseif words[1] == "tptool" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/TeleportTool"))()
+    elseif words[1] == "cmds" or words[1] == "lệnh" then
+        DisplayChat_Message("Tất cả các lệnh: ")
+        DisplayChat_Message("mua đồ, lấy, mua trái, chợ, stock, awakening fruit, titles, cf normal, cf vip, cf beta")
+        DisplayChat_Message("tptool, view, xem, nhìn, cmds, lệnh, unview")
+    elseif table.find(cameraCommands_Table, words[1]) and words[2] then
+        local selected_player = words[2]
+        local targetSelected = Display_Username_AutoCorrect(selected_player)
+        
+        if targetSelected then
+            startSpectating(targetSelected)
+        else
+            DisplayChat_Message("Player not found.")
+        end
+
+    elseif table.find(unviewCommands_Table, words[1]) then
+        resetCameraToPlayer()
+
+    elseif words[1] == "view" and words[2] == player.Name then
+        resetCameraToPlayer()
+    end
+end
+
+player.Chatted:Connect(onPlayerChatted)
