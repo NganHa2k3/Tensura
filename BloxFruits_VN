@@ -2607,8 +2607,6 @@ local CoreGui = game:GetService("StarterGui")
             Duration = 2,
         })
 
--- Quick Tools --
-
 local cameraCommands_Table = {"view", "xem", "nhìn"}
 local unviewCommands_Table = {"unview"}
 
@@ -2645,25 +2643,36 @@ end
 
 local function resetCameraToPlayer()
     if currentTarget then
-        camera.CameraSubject = player.Character:FindFirstChild("Humanoid") or player.Character
-        currentTarget = nil
-        DisplayChat_Message("Camera reset to your character.")
+        local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+        if humanoid then
+            camera.CameraSubject = humanoid
+            currentTarget = nil
+            DisplayChat_Message("Camera reset to your character.")
+        else
+            DisplayChat_Message("Unable to reset camera to your character.")
+        end
+    else
+        DisplayChat_Message("No target to reset camera.")
     end
 end
 
 local function startSpectating(targetPlayer)
     if targetPlayer then
         local targetCharacter = targetPlayer.Character
-        if targetCharacter and targetCharacter:FindFirstChild("Humanoid") then
-            local targetH = targetCharacter:FindFirstChild("Humanoid")
-            camera.CameraSubject = targetH
-            currentTarget = targetPlayer
-            targetCharacter:WaitForChild("Humanoid").Died:Connect(function()
-                resetCameraToPlayer()
-            end)
-            DisplayChat_Message("Now Spectating Player: " .. targetPlayer.Name)
+        if targetCharacter then
+            local humanoid = targetCharacter:FindFirstChild("Humanoid")
+            if humanoid then
+                camera.CameraSubject = humanoid
+                currentTarget = targetPlayer
+                humanoid.Died:Connect(function()
+                    resetCameraToPlayer()
+                end)
+                DisplayChat_Message("Now Spectating Player: " .. targetPlayer.Name)
+            else
+                DisplayChat_Message("Player's character or humanoid not found.")
+            end
         else
-            DisplayChat_Message("Player's character or humanoid not found.")
+            DisplayChat_Message("Target player's character not found.")
         end
     end
 end
