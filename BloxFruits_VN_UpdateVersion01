@@ -47,7 +47,7 @@ DFrame_Small = UDim2.new(0.1, 0, 0.275, 0)
 DFrame_Big = UDim2.new(0.6, 0, 0.65, 0)
 
 -- Local Variable[GUI]
-local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript, FARM_SCROLLINGFRAME, Farm_MainScript, TELEPORT_SCROLLINGFRAME, Tp_MainScript, PLAYER_SCROLLINGFRAME, PVP_MainScript, SHOP_SCRLF, Shop_MainScript
+local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript, FARM_SCROLLINGFRAME, Farm_MainScript, TELEPORT_SCROLLINGFRAME, Tp_MainScript, PLAYER_SCROLLINGFRAME, PVP_MainScript, SHOP_SCRLF, Shop_MainScript, MISC_SCRLF, Misc_MainScript
 
 -- InsideConfigs [Button]
 local HUD_SIZETRANSFORMATION, ON_USE_MINIBUTTON
@@ -57,6 +57,9 @@ local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC, SWITCHINGDIRECTION_MISC, S
 
 -- InsideShop/Stock [Button]
 local REROLLING_FRUITS, BOUGHTSWORD, BOUGHTGUN, DARKSTEP, ELECTRO, FISHKARATE, DRAGONBREATH, SUPERHUMAN, DEATHSTEP, ELECTRICCLAWS, SHARKKARATE, DRAGONTALON, GODHUMAN, SAGUINEART, DIVINEART, ALLHAKI
+
+-- InsidePVP [Button]
+local PLAYER_TARGET_LOCKED, KEEPTP_TO_PLAYERS
 
 -- Directional AutoFarm[Dir Variable]
 local DirOnTop, DirOnSide, DirBelowGround, CurrentlyDir
@@ -80,6 +83,8 @@ PLAYER_SCROLLINGFRAME = Instance.new("ScrollingFrame")
 PVP_MainScript = Instance.new("TextButton")
 SHOP_SCRLF = Instance.new("ScrollingFrame")
 Shop_MainScript = Instance.new("TextButton")
+MISC_SCRLF = Instance.new("ScrollingFrame")
+Misc_MainScript = Instance.new("TextButton")
 
 
 -- Instance[Create Button:Parent:Configs]
@@ -99,6 +104,10 @@ REROLLING_FRUITS = Instance.new("TextButton")
 BOUGHTSWORD = Instance.new("TextBox")
 BOUGHTGUN = Instance.new("TextBox")
 ALLHAKI = Instance.new("TextButton")
+
+-- Instance[Create Button:Parent:PVP]
+PLAYER_TARGET_LOCKED = Instance.new("TextBox")
+KEEPTP_TO_PLAYERS = Instance.new("TextButton")
 
 -- Local Variable[Players]
 local Players = game:GetService("Players")
@@ -157,6 +166,17 @@ function Create_TweeningInformation(Start_Position, End_Position)
     return TweenInfo.new(duration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
 end
 
+-- Automatically Corrected Players Name --
+function autocorrect_players(input)
+    for _, player in ipairs(Players:GetPlayers()) do
+        if string.lower(player.Name):sub(1, #input) == string.lower(input) then
+            return player, "username"
+        elseif string.lower(player.DisplayName):sub(1, #input) == string.lower(input) then
+            return player, "displayname"
+        end
+    end
+    return nil, nil
+end
 
 -- Instance[Modifier Button]
 -- Open/Closed GUI --
@@ -278,6 +298,16 @@ SHOP_SCRLF.CanvasSize = HBBox_CanvasSize
 SHOP_SCRLF.ScrollBarThickness = 0.1
 SHOP_SCRLF.Visible = false
 
+-- Scrolling frame for Misc button --
+MISC_SCRLF.Parent = DRAGGING_FRAME
+MISC_SCRLF.BackgroundColor3 = Black
+MISC_SCRLF.BackgroundTransparency = 0.5
+MISC_SCRLF.Position = HBBox_Pos
+MISC_SCRLF.Size = HBBox_Size
+MISC_SCRLF.CanvasSize = HBBox_CanvasSize
+MISC_SCRLF.ScrollBarThickness = 0.1
+MISC_SCRLF.Visible = false
+
 -- Configs Button for MainScript --
 Configs_MainScript.Parent = SCROLLINGFRAME_ULT
 Configs_MainScript.BackgroundColor3 = Black
@@ -337,6 +367,18 @@ Shop_MainScript.TextColor3 = White
 Shop_MainScript.Font = A_Font
 Shop_MainScript.Text = "Shop/Stock"
 Shop_MainScript.Visible = true
+
+-- Misc/Esp button for MainScript --
+Misc_MainScript.Parent = SCROLLINGFRAME_ULT
+Misc_MainScript.BackgroundColor3 = Black
+Misc_MainScript.BackgroundTransparency = 0
+Misc_MainScript.Position = UDim2.new(0.02, 0, 0.405, 0)
+Misc_MainScript.Size = Ult_Size
+Misc_MainScript.TextScaled = true
+Misc_MainScript.TextColor3 = White
+Misc_MainScript.Font = A_Font
+Misc_MainScript.Text = "Misc/Esp"
+Misc_MainScript.Visible = true
 
 -- Button[Inside Configs[Slot:1]]
 HUD_SIZETRANSFORMATION.Parent = CONFIGS_SCROLLINGFRAME
@@ -450,8 +492,34 @@ ALLHAKI.Font = A_Font
 ALLHAKI.Text = "Learn All Haki"
 ALLHAKI.Visible = true
 
+-- Button[Inside PVP[Slot:1]]
+PLAYER_TARGET_LOCKED.Parent = PLAYER_SCROLLINGFRAME
+PLAYER_TARGET_LOCKED.BackgroundColor3 = Black
+PLAYER_TARGET_LOCKED.BackgroundTransparency = 0
+PLAYER_TARGET_LOCKED.Position = HUDPosition_Transform
+PLAYER_TARGET_LOCKED.Size = UDim2.new(0.76, 0, 0.15, 0)
+PLAYER_TARGET_LOCKED.TextScaled = true
+PLAYER_TARGET_LOCKED.TextColor3 = White
+PLAYER_TARGET_LOCKED.Font = A_Font
+PLAYER_TARGET_LOCKED.Text = ""
+PLAYER_TARGET_LOCKED.ClearTextOnFocus = true
+PLAYER_TARGET_LOCKED.PlaceholderText = "Insert a Player Name"
+PLAYER_TARGET_LOCKED.Visible = true
+
+-- PVP[Slot:2]
+KEEPTP_TO_PLAYERS.Parent = PLAYER_SCROLLINGFRAME
+KEEPTP_TO_PLAYERS.BackgroundColor3 = Black
+KEEPTP_TO_PLAYERS.BackgroundTransparency = 0
+KEEPTP_TO_PLAYERS.Position = UDim2.new(0.80, 0, 0.02, 0)
+KEEPTP_TO_PLAYERS.Size = UDim2.new(0.18, 0, 0.15, 0)
+KEEPTP_TO_PLAYERS.TextScaled = true
+KEEPTP_TO_PLAYERS.TextColor3 = White
+KEEPTP_TO_PLAYERS.Font = A_Font
+KEEPTP_TO_PLAYERS.Text = "Follow"
+KEEPTP_TO_PLAYERS.Visible = true
+
 -- Local Variable[UICorner]
-local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI, Configs_MainScript_UI, Farm_MainScript_UI, Tp_MainScript_UI, PVP_MainScript_UI, Shop_MainScript_UI, MiniButton_1
+local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI, Configs_MainScript_UI, Farm_MainScript_UI, Tp_MainScript_UI, PVP_MainScript_UI, Shop_MainScript_UI, Misc_MainScript_UI, MiniButton_1
 local UI_CornerRadius
 UI_CornerRadius = UDim.new(0.15, 0)
 
@@ -463,6 +531,7 @@ Farm_MainScript_UI = Instance.new("UICorner")
 Tp_MainScript_UI = Instance.new("UICorner")
 PVP_MainScript_UI = Instance.new("UICorner")
 Shop_MainScript_UI = Instance.new("UICorner")
+Misc_MainScript_UI = Instance.new("UICorner")
 MiniButton_1 = Instance.new("UICorner")
 
 
@@ -474,6 +543,7 @@ Farm_MainScript_UI.Parent = Farm_MainScript
 Tp_MainScript_UI.Parent = Tp_MainScript
 PVP_MainScript_UI.Parent = PVP_MainScript
 Shop_MainScript_UI.Parent = Shop_MainScript
+Misc_MainScript_UI.Parent = Misc_MainScript
 MiniButton_1.Parent = STARTNEAREST_FARM_MiniButton
 
 
@@ -485,6 +555,7 @@ Farm_MainScript_UI.CornerRadius = UI_CornerRadius
 Tp_MainScript_UI.CornerRadius = UI_CornerRadius
 PVP_MainScript_UI.CornerRadius = UI_CornerRadius
 Shop_MainScript_UI.CornerRadius = UI_CornerRadius
+Misc_MainScript_UI.CornerRadius = UI_CornerRadius
 MiniButton_1.CornerRadius = UDim.new(0.1, 0)
 
 -- Auto Farm Nearest[Func]
@@ -560,6 +631,42 @@ function hitbox_nearest_npc()
         nearest_npc_4hb.Humanoid.WalkSpeed = 0
         CameraHumanoid = nearest_npc_4hb:FindFirstChild("Humanoid")
         Camera.CameraSubject = CameraHumanoid
+    end
+end
+
+function FollowTarget_Players()
+    local specific_target = PLAYER_TARGET_LOCKED.Text
+    local corrected_player, correction_type = autocorrect_players(specific_target)
+    
+    if corrected_player then
+        if correction_type == "username" then
+            PLAYER_TARGET_LOCKED.Text = corrected_player.Name
+            specific_target = corrected_player.Name
+        elseif correction_type == "displayname" then
+            PLAYER_TARGET_LOCKED.Text = corrected_player.DisplayName
+            specific_target = corrected_player.DisplayName
+        end
+    else
+        print("Player not found")
+    end
+    
+    local toPlr = game:GetService("Players"):FindFirstChild(specific_target)
+    if toPlr and toPlr.Character and toPlr.Character:FindFirstChild("HumanoidRootPart") then
+        local tChar = toPlr.Character.HumanoidRootPart.Position + DirOnTop
+        local plrPos = player.Character.HumanoidRootPart.Position
+        if Is_CurrentlyOn then
+            if Is_CurrentTween then
+                Is_CurrentTween:Cancel()
+            end
+            local toPlr_Goal = {CFrame = CFrame.new(tChar)}
+            local tweenInfo = Create_TweeningInformation(plrPos, tChar)
+            Is_CurrentTween = TS_MainScript:Create(player.Character.HumanoidRootPart, tweenInfo, toPlr_Goal)
+            Is_CurrentTween:Play()
+        else
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(tChar)
+        end
+    else
+        print("Player not found!")
     end
 end
 
@@ -809,6 +916,64 @@ end)
 
 ALLHAKI.MouseButton1Click:Connect(Bought_AllHaki)
 
+PLAYER_TARGET_LOCKED.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local specific_target = PLAYER_TARGET_LOCKED.Text
+        local corrected_player, correction_type = autocorrect_players(specific_target)
+        
+        if corrected_player then
+            if correction_type == "username" then
+                PLAYER_TARGET_LOCKED.Text = corrected_player.Name
+                specific_target = corrected_player.Name
+            elseif correction_type == "displayname" then
+                PLAYER_TARGET_LOCKED.Text = corrected_player.DisplayName
+                specific_target = corrected_player.DisplayName
+            end
+        else
+            print("Player not found")
+        end
+
+        local toPlr = game:GetService("Players"):FindFirstChild(specific_target)
+        if toPlr and toPlr.Character and toPlr.Character:FindFirstChild("HumanoidRootPart") then
+            local tChar = toPlr.Character.HumanoidRootPart.Position + DirOnTop
+            local plrPos = player.Character.HumanoidRootPart.Position
+            if Is_CurrentlyOn then
+                if Is_CurrentTween then
+                    Is_CurrentTween:Cancel()
+                end
+                local toPlr_Goal = {CFrame = CFrame.new(tChar)}
+                local tweenInfo = Create_TweeningInformation(plrPos, tChar)
+                Is_CurrentTween = TS_MainScript:Create(player.Character.HumanoidRootPart, tweenInfo, toPlr_Goal)
+                Is_CurrentTween:Play()
+            else
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(tChar)
+            end
+        else
+            print("Player not found!")
+        end
+    else
+        print("Focus lost without pressing enter")
+    end
+end)
+
+local IKeepFlyTp_To = false
+KEEPTP_TO_PLAYERS.MouseButton1Click:Connect(function()
+    if IKeepFlyTp_To then
+        KEEPTP_TO_PLAYERS.TextColor3 = White
+        KEEPTP_TO_PLAYERS.Text = "Follow"
+        IKeepFlyTp_To = false
+    else
+        KEEPTP_TO_PLAYERS.TextColor3 = Red
+        KEEPTP_TO_PLAYERS.Text = "UnFollow"
+        IKeepFlyTp_To = true
+        rs.RenderStepped:Connect(function(deltaTime)
+            if IKeepFlyTp_To then
+                FollowTarget_Players()
+            end
+        end)
+    end
+end)
+
 -- MiniButton of STARTNEAREST_FARM[1]
 local InUse_NearestFarm_MiniButton = false
 STARTNEAREST_FARM_MiniButton.MouseButton1Click:Connect(function()
@@ -853,6 +1018,7 @@ local Is_SFUIVisible_2 = false
 local Is_SFUIVisible_3 = false
 local Is_SFUIVisible_4 = false
 local Is_SFUIVisible_5 = false
+local Is_SFUIVisible_6 = false
 
 function setVisible_Ult()
     Is_SFUIVisible = false
@@ -860,6 +1026,7 @@ function setVisible_Ult()
     Is_SFUIVisible_3 = false
     Is_SFUIVisible_4 = false
     Is_SFUIVisible_5 = false
+    Is_SFUIVisible_6 = false
 end
 
 function setVisible_Ult_1()
@@ -868,11 +1035,13 @@ function setVisible_Ult_1()
     TELEPORT_SCROLLINGFRAME.Visible = false
     PLAYER_SCROLLINGFRAME.Visible = false
     SHOP_SCRLF.Visible = false
+    MISC_SCRLF.Visible = false
     Configs_MainScript.TextColor3 = White
     Farm_MainScript.TextColor3 = White
     Tp_MainScript.TextColor3 = White
     PVP_MainScript.TextColor3 = White
     Shop_MainScript.TextColor3 = White
+    Misc_MainScript.TextColor3 = White
 end
 
 -- Ult Button[Slot:1]
@@ -955,6 +1124,22 @@ Shop_MainScript.MouseButton1Click:Connect(function()
     end
 end)
 
+-- [Slot:6]
+Misc_MainScript.MouseButton1Click:Connect(function()
+    if Is_SFUIVisible_6 then
+        MISC_SCRLF.Visible = false
+        Misc_MainScript.TextColor3 = White
+        Is_SFUIVisible_6 = false
+    else
+        setVisible_Ult()
+        setVisible_Ult_1()
+        task.wait()
+        MISC_SCRLF.Visible = true
+        Misc_MainScript.TextColor3 = Green
+        Is_SFUIVisible_6 = true
+    end
+end)
+
 -- Ult_Button Effects[4fun]
 function UltB_Effects(ULT_B, Col_B, Col_B2)
     ULT_B.MouseEnter:Connect(function()
@@ -971,6 +1156,7 @@ UltB_Effects(Farm_MainScript, Yellow, Black)
 UltB_Effects(Tp_MainScript, Yellow, Black)
 UltB_Effects(PVP_MainScript, Yellow, Black)
 UltB_Effects(Shop_MainScript, Yellow, Black)
+UltB_Effects(Misc_MainScript, Yellow, Black)
 
 
 -- Update[TextButton.Text]
