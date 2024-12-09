@@ -15,6 +15,7 @@ end
 -- New Blox Fruit Script make by NganHa2k3 --
 local BloxFruits_SGUI_Version_01 = Instance.new("ScreenGui")
 local CG = game:GetService("CoreGui")
+local StarterGui = game:GetService("StarterGui")
 BloxFruits_SGUI_Version_01.Name = "NganHa2k3_BFV01"
 BloxFruits_SGUI_Version_01.Parent = CG
 
@@ -31,7 +32,7 @@ Yellow = Color3.fromRGB(255, 255, 0)
 
 local A_Font, Ult_Size, HBBox_Size, HBBox_Pos, HBBox_CanvasSize
 A_Font = Enum.Font.Code
-Ult_Size = UDim2.new(0.96, 0, 0.15, 0)
+Ult_Size = UDim2.new(0.96, 0, 0.075, 0)
 HBBox_Size = UDim2.new(0.88, 0, 0.9, 0)
 HBBox_Pos = UDim2.new(0.02, 0, 0.02, 0)
 HBBox_CanvasSize = UDim2.new(0, 0, 2, 0)
@@ -46,13 +47,16 @@ DFrame_Small = UDim2.new(0.1, 0, 0.275, 0)
 DFrame_Big = UDim2.new(0.6, 0, 0.65, 0)
 
 -- Local Variable[GUI]
-local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript, FARM_SCROLLINGFRAME, Farm_MainScript, TELEPORT_SCROLLINGFRAME, Tp_MainScript, PLAYER_SCROLLINGFRAME, PVP_MainScript
+local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, Configs_MainScript, FARM_SCROLLINGFRAME, Farm_MainScript, TELEPORT_SCROLLINGFRAME, Tp_MainScript, PLAYER_SCROLLINGFRAME, PVP_MainScript, SHOP_SCRLF, Shop_MainScript
 
 -- InsideConfigs [Button]
 local HUD_SIZETRANSFORMATION, ON_USE_MINIBUTTON
 
 -- InsideAutoFarm [Button]
 local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC, SWITCHINGDIRECTION_MISC, STARTNEAREST_FARM, STARTNEAREST_FARM_MiniButton
+
+-- InsideShop/Stock [Button]
+local REROLLING_FRUITS, BOUGHTSWORD, BOUGHTGUN, DARKSTEP, ELECTRO, FISHKARATE, DRAGONBREATH, SUPERHUMAN, DEATHSTEP, ELECTRICCLAWS, SHARKKARATE, DRAGONTALON, GODHUMAN, SAGUINEART, DIVINEART, ALLHAKI
 
 -- Directional AutoFarm[Dir Variable]
 local DirOnTop, DirOnSide, DirBelowGround, CurrentlyDir
@@ -74,6 +78,8 @@ TELEPORT_SCROLLINGFRAME = Instance.new("ScrollingFrame")
 Tp_MainScript = Instance.new("TextButton")
 PLAYER_SCROLLINGFRAME = Instance.new("ScrollingFrame")
 PVP_MainScript = Instance.new("TextButton")
+SHOP_SCRLF = Instance.new("ScrollingFrame")
+Shop_MainScript = Instance.new("TextButton")
 
 
 -- Instance[Create Button:Parent:Configs]
@@ -88,6 +94,12 @@ STARTNEAREST_FARM = Instance.new("TextButton")
 STARTNEAREST_FARM_MiniButton = Instance.new("TextButton")
 SWITCHINGDIRECTION_MISC = Instance.new("TextButton")
 
+-- Instance[Create Button:Parent:Shop/Stock]
+REROLLING_FRUITS = Instance.new("TextButton")
+BOUGHTSWORD = Instance.new("TextBox")
+BOUGHTGUN = Instance.new("TextBox")
+ALLHAKI = Instance.new("TextButton")
+
 -- Local Variable[Players]
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
@@ -96,16 +108,22 @@ local player = Players.LocalPlayer
 local TS_MainScript = game:GetService("TweenService")
 local rs = game:GetService("RunService")
 local VU = game:GetService("VirtualUser")
+local Camera = game:GetService("Workspace").CurrentCamera
 
 -- Variable[Modules_1]
-local TweenSpeed_X01, Is_CurrentlyOn, Is_CurrentTween
+local TweenSpeed_X01, Is_CurrentlyOn, Is_CurrentTween, CameraHumanoid
 TweenSpeed_X01 = 150
 Is_CurrentlyOn = false
 Is_CurrentTween = nil
+CameraHumanoid = nil
 
 -- VariableUI[modules_x]
 local InUse_MiniButton
 InUse_MiniButton = false
+
+-- Variable PlayerStatus[modules_exp]
+local CurrentLevel
+CurrentLevel = player:FindFirstChild("Data") and player.Data:FindFirstChild("Level") and player.Data.Level.Value or "N/A"
 
 -- Function[MainScript]
 -- GetParts function --
@@ -116,6 +134,15 @@ function GetParts(partName)
         end
     end
     return nil
+end
+
+-- Notify function --
+function Ntf(title_msg, text_msg, duration_msg)
+    StarterGui:SetCore("SendNotification", {
+        Title = title_msg,
+        Text = text_msg,
+        Duration = duration_msg,
+    })
 end
 
 -- Calculate Tweening Duration --
@@ -197,7 +224,7 @@ SCROLLINGFRAME_ULT.BackgroundColor3 = Black
 SCROLLINGFRAME_ULT.BackgroundTransparency = 0.5
 SCROLLINGFRAME_ULT.Position = UDim2.new(-0.415, 0, 0, 0)
 SCROLLINGFRAME_ULT.Size = UDim2.new(0.4, 0, 1, 0)
-SCROLLINGFRAME_ULT.CanvasSize = UDim2.new(0, 0, 1, 0)
+SCROLLINGFRAME_ULT.CanvasSize = UDim2.new(0, 0, 2, 0)
 SCROLLINGFRAME_ULT.ScrollBarThickness = 0.1
 SCROLLINGFRAME_ULT.Visible = false
 
@@ -241,6 +268,16 @@ PLAYER_SCROLLINGFRAME.CanvasSize = HBBox_CanvasSize
 PLAYER_SCROLLINGFRAME.ScrollBarThickness = 0.1
 PLAYER_SCROLLINGFRAME.Visible = false
 
+-- Scrolling frame of Shop button --
+SHOP_SCRLF.Parent = DRAGGING_FRAME
+SHOP_SCRLF.BackgroundColor3 = Black
+SHOP_SCRLF.BackgroundTransparency = 0.5
+SHOP_SCRLF.Position = HBBox_Pos
+SHOP_SCRLF.Size = HBBox_Size
+SHOP_SCRLF.CanvasSize = HBBox_CanvasSize
+SHOP_SCRLF.ScrollBarThickness = 0.1
+SHOP_SCRLF.Visible = false
+
 -- Configs Button for MainScript --
 Configs_MainScript.Parent = SCROLLINGFRAME_ULT
 Configs_MainScript.BackgroundColor3 = Black
@@ -257,7 +294,7 @@ Configs_MainScript.Visible = true
 Farm_MainScript.Parent = SCROLLINGFRAME_ULT
 Farm_MainScript.BackgroundColor3 = Black
 Farm_MainScript.BackgroundTransparency = 0
-Farm_MainScript.Position = UDim2.new(0.02, 0, 0.19, 0)
+Farm_MainScript.Position = UDim2.new(0.02, 0, 0.097, 0)
 Farm_MainScript.Size = Ult_Size
 Farm_MainScript.TextScaled = true
 Farm_MainScript.TextColor3 = White
@@ -269,7 +306,7 @@ Farm_MainScript.Visible = true
 Tp_MainScript.Parent = SCROLLINGFRAME_ULT
 Tp_MainScript.BackgroundColor3 = Black
 Tp_MainScript.BackgroundTransparency = 0
-Tp_MainScript.Position = UDim2.new(0.02, 0, 0.36, 0)
+Tp_MainScript.Position = UDim2.new(0.02, 0, 0.174, 0)
 Tp_MainScript.Size = Ult_Size
 Tp_MainScript.TextScaled = true
 Tp_MainScript.TextColor3 = White
@@ -281,13 +318,25 @@ Tp_MainScript.Visible = true
 PVP_MainScript.Parent = SCROLLINGFRAME_ULT
 PVP_MainScript.BackgroundColor3 = Black
 PVP_MainScript.BackgroundTransparency = 0
-PVP_MainScript.Position = UDim2.new(0.02, 0, 0.53, 0)
+PVP_MainScript.Position = UDim2.new(0.02, 0, 0.251, 0)
 PVP_MainScript.Size = Ult_Size
 PVP_MainScript.TextScaled = true
 PVP_MainScript.TextColor3 = White
 PVP_MainScript.Font = A_Font
 PVP_MainScript.Text = "PVP"
 PVP_MainScript.Visible = true
+
+-- Shop/Stock button for MainScript --
+Shop_MainScript.Parent = SCROLLINGFRAME_ULT
+Shop_MainScript.BackgroundColor3 = Black
+Shop_MainScript.BackgroundTransparency = 0
+Shop_MainScript.Position = UDim2.new(0.02, 0, 0.328, 0)
+Shop_MainScript.Size = Ult_Size
+Shop_MainScript.TextScaled = true
+Shop_MainScript.TextColor3 = White
+Shop_MainScript.Font = A_Font
+Shop_MainScript.Text = "Shop/Stock"
+Shop_MainScript.Visible = true
 
 -- Button[Inside Configs[Slot:1]]
 HUD_SIZETRANSFORMATION.Parent = CONFIGS_SCROLLINGFRAME
@@ -349,13 +398,71 @@ STARTNEAREST_FARM_MiniButton.Font = A_Font
 STARTNEAREST_FARM_MiniButton.Text = "Nearest Farm: OFF"
 STARTNEAREST_FARM_MiniButton.Visible = false
 
+-- Button[Inside Shop/Stock[Slot:1]]
+REROLLING_FRUITS.Parent = SHOP_SCRLF
+REROLLING_FRUITS.BackgroundColor3 = Black
+REROLLING_FRUITS.BackgroundTransparency = 0
+REROLLING_FRUITS.Position = HUDPosition_Transform
+REROLLING_FRUITS.Size = HUDSize_Transform
+REROLLING_FRUITS.TextScaled = true
+REROLLING_FRUITS.TextColor3 = White
+REROLLING_FRUITS.Font = A_Font
+REROLLING_FRUITS.Text = "Random a Fruit"
+REROLLING_FRUITS.Visible = true
+
+-- Shop/Stock[Slot:2]
+BOUGHTSWORD.Parent = SHOP_SCRLF
+BOUGHTSWORD.BackgroundColor3 = Black
+BOUGHTSWORD.BackgroundTransparency = 0
+BOUGHTSWORD.Position = UDim2.new(0.02, 0, 0.185, 0)
+BOUGHTSWORD.Size = UDim2.new(0.96, 0, 0.15, 0)
+BOUGHTSWORD.TextScaled = true
+BOUGHTSWORD.TextColor3 = White
+BOUGHTSWORD.Font = A_Font
+BOUGHTSWORD.Text = ""
+BOUGHTSWORD.ClearTextOnFocus = false
+BOUGHTSWORD.PlaceholderText = "type in /fruit? to reveal all name"
+BOUGHTSWORD.Visible = true
+
+-- Shop/Stock[Slot:3]
+BOUGHTGUN.Parent = SHOP_SCRLF
+BOUGHTGUN.BackgroundColor3 = Black
+BOUGHTGUN.BackgroundTransparency = 0
+BOUGHTGUN.Position = UDim2.new(0.02, 0, 0.350, 0)
+BOUGHTGUN.Size = UDim2.new(0.96, 0, 0.15, 0)
+BOUGHTGUN.TextScaled = true
+BOUGHTGUN.TextColor3 = White
+BOUGHTGUN.Font = A_Font
+BOUGHTGUN.Text = ""
+BOUGHTGUN.ClearTextOnFocus = false
+BOUGHTGUN.PlaceholderText = "type in /item? to reveal all name"
+BOUGHTGUN.Visible = true
+
+-- Shop/Stock[Slot:4]
+ALLHAKI.Parent = SHOP_SCRLF
+ALLHAKI.BackgroundColor3 = Black
+ALLHAKI.BackgroundTransparency = 0
+ALLHAKI.Position = UDim2.new(0.02, 0, 0.515, 0)
+ALLHAKI.Size = UDim2.new(0.96, 0, 0.15, 0)
+ALLHAKI.TextScaled = true
+ALLHAKI.TextColor3 = White
+ALLHAKI.Font = A_Font
+ALLHAKI.Text = "Learn All Haki"
+ALLHAKI.Visible = true
+
 -- Local Variable[UICorner]
-local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI, Configs_MainScript_UI, MiniButton_1
+local TOGGLER_GUI_UI, DRAGGING_FRAME_UI, SCROLLINGFRAME_ULT_UI, Configs_MainScript_UI, Farm_MainScript_UI, Tp_MainScript_UI, PVP_MainScript_UI, Shop_MainScript_UI, MiniButton_1
+local UI_CornerRadius
+UI_CornerRadius = UDim.new(0.15, 0)
+
 TOGGLER_GUI_UI = Instance.new("UICorner")
 DRAGGING_FRAME_UI = Instance.new("UICorner")
 SCROLLINGFRAME_ULT_UI = Instance.new("UICorner")
 Configs_MainScript_UI = Instance.new("UICorner")
 Farm_MainScript_UI = Instance.new("UICorner")
+Tp_MainScript_UI = Instance.new("UICorner")
+PVP_MainScript_UI = Instance.new("UICorner")
+Shop_MainScript_UI = Instance.new("UICorner")
 MiniButton_1 = Instance.new("UICorner")
 
 
@@ -364,14 +471,20 @@ DRAGGING_FRAME_UI.Parent = DRAGGING_FRAME
 SCROLLINGFRAME_ULT_UI.Parent = SCROLLINGFRAME_ULT
 Configs_MainScript_UI.Parent = Configs_MainScript
 Farm_MainScript_UI.Parent = Farm_MainScript
+Tp_MainScript_UI.Parent = Tp_MainScript
+PVP_MainScript_UI.Parent = PVP_MainScript
+Shop_MainScript_UI.Parent = Shop_MainScript
 MiniButton_1.Parent = STARTNEAREST_FARM_MiniButton
 
 
 TOGGLER_GUI_UI.CornerRadius = UDim.new(0.2, 0)
 DRAGGING_FRAME_UI.CornerRadius = UDim.new(0.02, 0)
 SCROLLINGFRAME_ULT_UI.CornerRadius = UDim.new(0.2, 0)
-Configs_MainScript_UI.CornerRadius = UDim.new(0.15, 0)
-Farm_MainScript_UI.CornerRadius = UDim.new(0.15, 0)
+Configs_MainScript_UI.CornerRadius = UI_CornerRadius
+Farm_MainScript_UI.CornerRadius = UI_CornerRadius
+Tp_MainScript_UI.CornerRadius = UI_CornerRadius
+PVP_MainScript_UI.CornerRadius = UI_CornerRadius
+Shop_MainScript_UI.CornerRadius = UI_CornerRadius
 MiniButton_1.CornerRadius = UDim.new(0.1, 0)
 
 -- Auto Farm Nearest[Func]
@@ -407,6 +520,8 @@ function find_nearest_npc()
                 Is_CurrentTween:Play()
             else
                 nearest_npc.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
+                CameraHumanoid = player.Character:FindFirstChild("Humanoid")
+                Camera.CameraSubject = CameraHumanoid
             end
         else
             if humanoid.Health > 0 then
@@ -414,6 +529,8 @@ function find_nearest_npc()
                 player.Character.HumanoidRootPart.CFrame = CFrame.new(npc_pos)
             else
                 nearest_npc.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
+                CameraHumanoid = player.Character:FindFirstChild("Humanoid")
+                Camera.CameraSubject = CameraHumanoid
             end
         end
     end
@@ -441,6 +558,44 @@ function hitbox_nearest_npc()
         nearest_npc_4hb.HumanoidRootPart.CanCollide = false
         nearest_npc_4hb.Humanoid.PlatformStand = true
         nearest_npc_4hb.Humanoid.WalkSpeed = 0
+        CameraHumanoid = nearest_npc_4hb:FindFirstChild("Humanoid")
+        Camera.CameraSubject = CameraHumanoid
+    end
+end
+
+local BHaki = false
+function Bought_AllHaki()
+    if not BHaki then
+        BHaki = true
+        local args = {
+            [1] = "BuyHaki",
+            [2] = "Geppo"
+        }
+        
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        Ntf("+Alert:", "Successfully Buy Geppo, if not watch your money!", 1)
+        wait(0.01)
+        local args = {
+            [1] = "BuyHaki",
+            [2] = "Buso"
+        }
+        
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        Ntf("+Alert:", "Successfully Buy Buso Haki, if not watch your money!", 1)
+        wait(0.01)
+        local args = {
+            [1] = "BuyHaki",
+            [2] = "Soru"
+        }
+        
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+        Ntf("+Alert:", "Successfully Buy Soru, if not watch your money!", 1)
+        wait(0.01)
+        Ntf("+Alert:", "Completed Buy All Haki.", 2)
+        BHaki = false
+        ALLHAKI.Text = "Learn All Haki"
+    else
+        ALLHAKI.Text = "Waiting for it..."
     end
 end
 
@@ -575,6 +730,8 @@ STARTNEAREST_FARM.MouseButton1Click:Connect(function()
         Is_AutoNearestFarmOn = false
         STARTNEAREST_FARM.Text = "Auto Farm Nearest: OFF"
         STARTNEAREST_FARM.TextColor3 = White
+        CameraHumanoid = player.Character:FindFirstChild("Humanoid")
+        Camera.CameraSubject = CameraHumanoid
     else
         Is_AutoNearestFarmOn = true
         STARTNEAREST_FARM.Text = "Auto Farm Nearest: ON"
@@ -594,6 +751,64 @@ STARTNEAREST_FARM.MouseButton1Click:Connect(function()
     end
 end)
 
+REROLLING_FRUITS.MouseButton1Click:Connect(function()
+    local args = {
+    [1] = "Cousin",
+    [2] = "Buy"
+    }
+    
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+    task.wait()
+    if CurrentLevel >= 50 then
+        Ntf("Random Fruits", "Successfully Rerolling a Fruit for u, if not then you're does not have enough money!", 2)
+    else
+        Ntf("Random Fruits", "UnSuccessfully Rerolling a Fruit for u, because you're is level:" .. CurrentLevel .. " it's below 50 the number requires for allowing gacha!")
+    end
+end)
+
+BOUGHTSWORD.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local rawfruits = BOUGHTSWORD.Text
+        if rawfruits ~= "" then
+            local args = {
+                [1] = "PurchaseRawFruit",
+                [2] = rawfruits,
+                [3] = false
+            }
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            BOUGHTSWORD.Text = ""
+            
+            if rawfruits == "/fruit?" then
+                Ntf("Test", "It works, just for testing.", 2)
+                task.wait(1)
+                BOUGHTSWORD.Text = ""
+            end
+        end
+    end
+end)
+
+BOUGHTGUN.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local itemget = BOUGHTGUN.Text
+        if itemget ~= "" then
+            local args = {
+                [1] = "BuyItem",
+                [2] = itemget
+            }
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+            BOUGHTGUN.Text = ""
+            
+            if itemget == "/item?" then
+                Ntf("Test", "It works too...", 2)
+                task.wait(1)
+                BOUGHTGUN.Text = ""
+            end
+        end
+    end
+end)
+
+ALLHAKI.MouseButton1Click:Connect(Bought_AllHaki)
+
 -- MiniButton of STARTNEAREST_FARM[1]
 local InUse_NearestFarm_MiniButton = false
 STARTNEAREST_FARM_MiniButton.MouseButton1Click:Connect(function()
@@ -602,6 +817,8 @@ STARTNEAREST_FARM_MiniButton.MouseButton1Click:Connect(function()
         STARTNEAREST_FARM_MiniButton.TextColor3 = White
         STARTNEAREST_FARM_MiniButton.Text = "Nearest Farm: OFF"
         InUse_NearestFarm_MiniButton = false
+        CameraHumanoid = player.Character:FindFirstChild("Humanoid")
+        Camera.CameraSubject = CameraHumanoid
         
         if Is_AutoNearestFarmOn then
             Is_AutoNearestFarmOn = false
@@ -635,12 +852,14 @@ local Is_SFUIVisible = false
 local Is_SFUIVisible_2 = false
 local Is_SFUIVisible_3 = false
 local Is_SFUIVisible_4 = false
+local Is_SFUIVisible_5 = false
 
 function setVisible_Ult()
     Is_SFUIVisible = false
     Is_SFUIVisible_2 = false
     Is_SFUIVisible_3 = false
     Is_SFUIVisible_4 = false
+    Is_SFUIVisible_5 = false
 end
 
 function setVisible_Ult_1()
@@ -648,10 +867,12 @@ function setVisible_Ult_1()
     FARM_SCROLLINGFRAME.Visible = false
     TELEPORT_SCROLLINGFRAME.Visible = false
     PLAYER_SCROLLINGFRAME.Visible = false
+    SHOP_SCRLF.Visible = false
     Configs_MainScript.TextColor3 = White
     Farm_MainScript.TextColor3 = White
     Tp_MainScript.TextColor3 = White
     PVP_MainScript.TextColor3 = White
+    Shop_MainScript.TextColor3 = White
 end
 
 -- Ult Button[Slot:1]
@@ -717,6 +938,39 @@ PVP_MainScript.MouseButton1Click:Connect(function()
         Is_SFUIVisible_4 = true
     end
 end)
+
+-- [Slot:5]
+Shop_MainScript.MouseButton1Click:Connect(function()
+    if Is_SFUIVisible_5 then
+        SHOP_SCRLF.Visible = false
+        Shop_MainScript.TextColor3 = White
+        Is_SFUIVisible_5 = false
+    else
+        setVisible_Ult()
+        setVisible_Ult_1()
+        task.wait()
+        SHOP_SCRLF.Visible = true
+        Shop_MainScript.TextColor3 = Green
+        Is_SFUIVisible_5 = true
+    end
+end)
+
+-- Ult_Button Effects[4fun]
+function UltB_Effects(ULT_B, Col_B, Col_B2)
+    ULT_B.MouseEnter:Connect(function()
+        ULT_B.BackgroundColor3 = Col_B
+    end)
+    
+    ULT_B.MouseLeave:Connect(function()
+        ULT_B.BackgroundColor3 = Col_B2
+    end)
+end
+
+UltB_Effects(Configs_MainScript, Yellow, Black)
+UltB_Effects(Farm_MainScript, Yellow, Black)
+UltB_Effects(Tp_MainScript, Yellow, Black)
+UltB_Effects(PVP_MainScript, Yellow, Black)
+UltB_Effects(Shop_MainScript, Yellow, Black)
 
 
 -- Update[TextButton.Text]
