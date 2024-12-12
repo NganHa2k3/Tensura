@@ -1,0 +1,75 @@
+local SuperFastMode = false
+local plr = game.Players.LocalPlayer
+local CombatFramework = debug.getupvalues(require(plr.PlayerScripts.CombatFramework))
+local CombatController = CombatFramework[2]
+
+function GetCurrentBlade()
+    local controller = CombatController.activeController
+    local blade = controller.blades[1]
+    if not blade then return end
+    
+    while blade.Parent ~= plr.Character do
+        blade = blade.Parent
+    end
+    
+    return blade
+end
+
+function AttackNoCD()
+    local activeController = CombatController.activeController
+    for i = 1, 1 do
+        local bladeHits = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
+            plr.Character, {plr.Character.HumanoidRootPart}, 60
+        )
+        
+        local targets = {}
+        local targetHash = {}
+        
+        for _, hit in pairs(bladeHits) do
+            if hit.Parent:FindFirstChild("HumanoidRootPart") and not targetHash[hit.Parent] then
+                table.insert(targets, hit.Parent.HumanoidRootPart)
+                targetHash[hit.Parent] = true
+            end
+        end
+        
+        bladeHits = targets
+        if #bladeHits > 0 then
+            local u8 = debug.getupvalue(activeController.attack, 5)
+            local u9 = debug.getupvalue(activeController.attack, 6)
+            local u7 = debug.getupvalue(activeController.attack, 4)
+            local u10 = debug.getupvalue(activeController.attack, 7)
+            
+            local u12 = (u8 * 798405 + u7 * 727595) % u9
+            local u13 = u7 * 798405
+            
+            (function()
+                u12 = (u12 * u9 + u13) % 1099511627776
+                u8 = math.floor(u12 / u9)
+                u7 = u12 - u8 * u9
+            end)()
+            
+            u10 = u10 + 1
+            debug.setupvalue(activeController.attack, 5, u8)
+            debug.setupvalue(activeController.attack, 6, u9)
+            debug.setupvalue(activeController.attack, 4, u7)
+            debug.setupvalue(activeController.attack, 7, u10)
+            
+            pcall(function()
+                for _, anim in pairs(activeController.animator.anims.basic) do
+                    anim:Play()
+                end
+            end)
+            
+            if plr.Character:FindFirstChildOfClass("Tool") and activeController.blades and activeController.blades[1] then
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(GetCurrentBlade()))
+                game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", bladeHits, i, "")
+            end
+        end
+    end
+end
+
+local delayFunction = SuperFastMode and task.wait or wait
+while delayFunction() do
+    AttackNoCD()
+end
