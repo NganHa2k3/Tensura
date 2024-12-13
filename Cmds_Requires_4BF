@@ -132,6 +132,20 @@ local function onPlayerChatted(message)
 
     elseif words[1] == "view" and words[2] == player.Name then
         resetCameraToPlayer()
+    elseif words[1] == "random" or words[1] == "gacha" then
+        local args = {
+            [1] = "Cousin",
+            [2] = "Buy"
+        }
+        
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+
+        local CoreGui = game:GetService("StarterGui")
+        CoreGui:SetCore("SendNotification", {
+            Title = "Thông Báo",
+            Text = "Bạn đã mua một trái ngẫu nhiên, nếu không có nghĩa là bạn không có đủ tiền random !",
+            Duration = 2,
+        })
     end
 end
 
