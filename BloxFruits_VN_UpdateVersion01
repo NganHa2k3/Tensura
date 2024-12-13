@@ -53,7 +53,7 @@ local TOGGLER_GUI, DRAGGING_FRAME, SCROLLINGFRAME_ULT, CONFIGS_SCROLLINGFRAME, C
 local HUD_SIZETRANSFORMATION, ON_USE_MINIBUTTON
 
 -- InsideAutoFarm [Button]
-local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC, SWITCHINGDIRECTION_MISC, STARTNEAREST_FARM, STARTNEAREST_FARM_MiniButton
+local CONFIGS_FARM, TPSPEED_MISC, SWITCHINGMODE_MISC, SWITCHINGDIRECTION_MISC, FASTATTACK_MISC, STARTNEAREST_FARM, STARTNEAREST_FARM_MiniButton
 
 -- InsideShop/Stock [Button]
 local REROLLING_FRUITS, BOUGHTSWORD, BOUGHTGUN, DARKSTEP, ELECTRO, FISHKARATE, DRAGONBREATH, SUPERHUMAN, DEATHSTEP, ELECTRICCLAWS, SHARKKARATE, DRAGONTALON, GODHUMAN, SAGUINEART, DIVINEART, ALLHAKI
@@ -98,6 +98,7 @@ SWITCHINGMODE_MISC = Instance.new("TextButton")
 STARTNEAREST_FARM = Instance.new("TextButton")
 STARTNEAREST_FARM_MiniButton = Instance.new("TextButton")
 SWITCHINGDIRECTION_MISC = Instance.new("TextButton")
+FASTATTACK_MISC = Instance.new("TextButton")
 
 -- Instance[Create Button:Parent:Shop/Stock]
 REROLLING_FRUITS = Instance.new("TextButton")
@@ -118,13 +119,17 @@ local TS_MainScript = game:GetService("TweenService")
 local rs = game:GetService("RunService")
 local VU = game:GetService("VirtualUser")
 local Camera = game:GetService("Workspace").CurrentCamera
+local CombatFramework = debug.getupvalues(require(player.PlayerScripts.CombatFramework))
+local CombatController = CombatFramework[2]
 
 -- Variable[Modules_1]
-local TweenSpeed_X01, Is_CurrentlyOn, Is_CurrentTween, CameraHumanoid
+local TweenSpeed_X01, Is_CurrentlyOn, Is_CurrentTween, CameraHumanoid, SuperFastMode, IsOn
 TweenSpeed_X01 = 150
 Is_CurrentlyOn = false
 Is_CurrentTween = nil
 CameraHumanoid = nil
+SuperFastMode = false
+IsOn = false
 
 -- VariableUI[modules_x]
 local InUse_MiniButton
@@ -227,6 +232,18 @@ SWITCHINGDIRECTION_MISC.TextColor3 = SkyBlue
 SWITCHINGDIRECTION_MISC.Font = A_Font
 SWITCHINGDIRECTION_MISC.Text = "Dir: On Top"
 SWITCHINGDIRECTION_MISC.Visible = false
+
+-- Turn On/Off Fast Attack --
+FASTATTACK_MISC.Parent = BloxFruits_SGUI_Version_01
+FASTATTACK_MISC.BackgroundColor3 = Black
+FASTATTACK_MISC.BackgroundTransparency = 0.5
+FASTATTACK_MISC.Position = UDim2.new(0.6, 0, -0.1, 0)
+FASTATTACK_MISC.Size = UDim2.new(0.05, 0, 0.1, 0)
+FASTATTACK_MISC.TextScaled = true
+FASTATTACK_MISC.TextColor3 = White
+FASTATTACK_MISC.Font = A_Font
+FASTATTACK_MISC.Text = "Fast Attack: OFF"
+FASTATTACK_MISC.Visible = false
 
 -- Draggable Frame --
 DRAGGING_FRAME.Parent = BloxFruits_SGUI_Version_01
@@ -558,6 +575,8 @@ Shop_MainScript_UI.CornerRadius = UI_CornerRadius
 Misc_MainScript_UI.CornerRadius = UI_CornerRadius
 MiniButton_1.CornerRadius = UDim.new(0.1, 0)
 
+local countinued_follow_when_completed = false
+
 -- Auto Farm Nearest[Func]
 function find_nearest_npc()
     local nearest_npc = nil
@@ -584,6 +603,7 @@ function find_nearest_npc()
                 local pl_pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                 if Is_CurrentTween then
                     Is_CurrentTween:Cancel()
+                    countinued_follow_when_completed = false
                 end
                 local goal = {CFrame = CFrame.new(npc_pos)}
                 local tweenInfo = Create_TweeningInformation(pl_pos, goal.CFrame.Position)
@@ -634,42 +654,142 @@ function hitbox_nearest_npc()
     end
 end
 
-function FollowTarget_Players()
-    local specific_target = PLAYER_TARGET_LOCKED.Text
-    local corrected_player, correction_type = autocorrect_players(specific_target)
+-- Hitbox nearest toPlr --
+function hitbox_nearest_user()
+    local nearest_players_4hb = nil
+    local nearest_distance_toPlr4hb = math.huge
+    local effect_distance_4toPlrhb = 1000
     
-    if corrected_player then
-        if correction_type == "username" then
-            PLAYER_TARGET_LOCKED.Text = corrected_player.Name
-            specific_target = corrected_player.Name
-        elseif correction_type == "displayname" then
-            PLAYER_TARGET_LOCKED.Text = corrected_player.DisplayName
-            specific_target = corrected_player.DisplayName
+    for _, user4hb in pairs(game.Players:GetPlayers()) do
+        if user4hb ~= player and user4hb.Character and user4hb.Character:FindFirstChild("HumanoidRootPart") then
+            local nearest_user = user4hb.Character.HumanoidRootPart
+            local d_user = (player.Character.HumanoidRootPart.Position - user4hb.Position).magnitude
+            
+            if d_user < nearest_distance_toPlr4hb then
+                nearest_distance_toPlr4hb = d_user
+                nearest_players_4hb = user4hb
+            end
         end
-    else
-        print("Player not found")
     end
     
-    local toPlr = game:GetService("Players"):FindFirstChild(specific_target)
-    if toPlr and toPlr.Character and toPlr.Character:FindFirstChild("HumanoidRootPart") then
-        local tChar = toPlr.Character.HumanoidRootPart.Position + DirOnTop
-        local plrPos = player.Character.HumanoidRootPart.Position
-        if Is_CurrentlyOn then
-            if Is_CurrentTween then
-                Is_CurrentTween:Cancel()
-            end
-            local toPlr_Goal = {CFrame = CFrame.new(tChar)}
-            local tweenInfo = Create_TweeningInformation(plrPos, tChar)
-            Is_CurrentTween = TS_MainScript:Create(player.Character.HumanoidRootPart, tweenInfo, toPlr_Goal)
-            Is_CurrentTween:Play()
-        else
-            player.Character.HumanoidRootPart.CFrame = CFrame.new(tChar)
-        end
-    else
-        print("Player not found!")
+    if nearest_players_4hb and nearest_players_4hb.Character and nearest_players_4hb.Character:FindFirstChild("HumanoidRootPart") then
+        nearest_players_4hb.HumanoidRootPart.Size = Vector3.new(120, 120, 120)
+        nearest_players_4hb.HumanoidRootPart.CanCollide = false
     end
 end
 
+-- Fast Attack Function --
+function GetCurrentBlade()
+    local controller = CombatController.activeController
+    local blade = controller.blades[1]
+    if not blade then return end
+    
+    while blade.Parent ~= player.Character do
+        blade = blade.Parent
+    end
+    
+    return blade
+end
+
+function AttackNoCD()
+    local activeController = CombatController.activeController
+    for i = 1, 1 do
+        local bladeHits = require(game.ReplicatedStorage.CombatFramework.RigLib).getBladeHits(
+            player.Character, {player.Character.HumanoidRootPart}, 60
+        )
+        
+        local targets = {}
+        local targetHash = {}
+        
+        for _, hit in pairs(bladeHits) do
+            if hit.Parent:FindFirstChild("HumanoidRootPart") and not targetHash[hit.Parent] then
+                table.insert(targets, hit.Parent.HumanoidRootPart)
+                targetHash[hit.Parent] = true
+            end
+        end
+        
+        bladeHits = targets
+        if #bladeHits > 0 then
+            local u8 = debug.getupvalue(activeController.attack, 5)
+            local u9 = debug.getupvalue(activeController.attack, 6)
+            local u7 = debug.getupvalue(activeController.attack, 4)
+            local u10 = debug.getupvalue(activeController.attack, 7)
+            
+            local u12 = (u8 * 798405 + u7 * 727595) % u9
+            local u13 = u7 * 798405
+            
+            (function()
+                u12 = (u12 * u9 + u13) % 1099511627776
+                u8 = math.floor(u12 / u9)
+                u7 = u12 - u8 * u9
+            end)()
+            
+            u10 = u10 + 1
+            debug.setupvalue(activeController.attack, 5, u8)
+            debug.setupvalue(activeController.attack, 6, u9)
+            debug.setupvalue(activeController.attack, 4, u7)
+            debug.setupvalue(activeController.attack, 7, u10)
+            
+            pcall(function()
+                for _, anim in pairs(activeController.animator.anims.basic) do
+                    anim:Play()
+                end
+            end)
+            
+            if player.Character:FindFirstChildOfClass("Tool") and activeController.blades and activeController.blades[1] then
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("weaponChange", tostring(GetCurrentBlade()))
+                game.ReplicatedStorage.Remotes.Validator:FireServer(math.floor(u12 / 1099511627776 * 16777215), u10)
+                game:GetService("ReplicatedStorage").RigControllerEvent:FireServer("hit", bladeHits, i, "")
+            end
+        end
+    end
+end
+
+-- Keep track on specifics player --
+function FollowTarget_Players()
+    if not countinued_follow_when_completed then
+        countinued_follow_when_completed = true
+        local specific_target = PLAYER_TARGET_LOCKED.Text
+        local corrected_player, correction_type = autocorrect_players(specific_target)
+        
+        if corrected_player then
+            if correction_type == "username" then
+                PLAYER_TARGET_LOCKED.Text = corrected_player.Name
+                specific_target = corrected_player.Name
+            elseif correction_type == "displayname" then
+                PLAYER_TARGET_LOCKED.Text = corrected_player.DisplayName
+                specific_target = corrected_player.DisplayName
+            end
+        else
+            print("Player not found")
+        end
+        
+        local toPlr = game:GetService("Players"):FindFirstChild(specific_target)
+        if toPlr and toPlr.Character and toPlr.Character:FindFirstChild("HumanoidRootPart") then
+            local tChar = toPlr.Character.HumanoidRootPart.Position + DirOnTop
+            local plrPos = player.Character.HumanoidRootPart.Position
+            if Is_CurrentlyOn then
+                if Is_CurrentTween then
+                    Is_CurrentTween:Cancel()
+                end
+                local toPlr_Goal = {CFrame = CFrame.new(tChar)}
+                local tweenInfo = Create_TweeningInformation(plrPos, tChar)
+                Is_CurrentTween = TS_MainScript:Create(player.Character.HumanoidRootPart, tweenInfo, toPlr_Goal)
+                Is_CurrentTween:Play()
+                Is_CurrentTween.Completed:Connect(function()
+                    countinued_follow_when_completed = false
+                end)
+            else
+                player.Character.HumanoidRootPart.CFrame = CFrame.new(tChar)
+                countinued_follow_when_completed = false
+            end
+        else
+            print("Player not found!")
+        end
+    end
+end
+
+-- Buy Haki --
 local BHaki = false
 function Bought_AllHaki()
     if not BHaki then
@@ -705,6 +825,9 @@ function Bought_AllHaki()
         ALLHAKI.Text = "Waiting for it..."
     end
 end
+
+-- Fast Attack Delay Func[A]
+local Delay_on_FAttack = SuperFastMode and task.wait or wait
 
 -- Active Button[Func]
 local Is_UIVisible = false
@@ -763,6 +886,18 @@ SWITCHINGDIRECTION_MISC.MouseButton1Click:Connect(function()
     end
 end)
 
+FASTATTACK_MISC.MouseButton1Click:Connect(function()
+    if IsOn then
+        FASTATTACK_MISC.TextColor3 = White
+        FASTATTACK_MISC.Text = "Fast Attack: OFF"
+        IsOn = false
+    else
+        FASTATTACK_MISC.TextColor3 = Red
+        FASTATTACK_MISC.Text = "Fast Attack: ON"
+        IsOn = true
+    end
+end)
+
 TPSPEED_MISC.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local NEW_Speed = tonumber(TPSPEED_MISC.Text)
@@ -816,6 +951,7 @@ local Is_MiniButton_1 = false
 CONFIGS_FARM.MouseButton1Click:Connect(function()
     if Is_MiniButton_1 then
         
+        FASTATTACK_MISC.Visible = false
         SWITCHINGDIRECTION_MISC.Visible = false
         SWITCHINGMODE_MISC.Visible = false
         TPSPEED_MISC.Visible = false
@@ -823,6 +959,7 @@ CONFIGS_FARM.MouseButton1Click:Connect(function()
         Is_MiniButton_1 = false
     else
         
+        FASTATTACK_MISC.Visible = true
         SWITCHINGDIRECTION_MISC.Visible = true
         SWITCHINGMODE_MISC.Visible = true
         TPSPEED_MISC.Visible = true
@@ -850,8 +987,10 @@ STARTNEAREST_FARM.MouseButton1Click:Connect(function()
                 if Is_AutoNearestFarmOn and not Is_OnUseMiniButtonToggled then
                     find_nearest_npc()
                     hitbox_nearest_npc()
-                    VU:CaptureController()
-                    VU:ClickButton1(Vector2.new(4, 0, 4))
+                    if not IsOn then
+                        VU:CaptureController()
+                        VU:ClickButton1(Vector2.new(4, 0, 4))
+                    end
                 end
             end)
         end
@@ -920,6 +1059,7 @@ PLAYER_TARGET_LOCKED.FocusLost:Connect(function(enterPressed)
     if enterPressed then
         local specific_target = PLAYER_TARGET_LOCKED.Text
         local corrected_player, correction_type = autocorrect_players(specific_target)
+        countinued_follow_when_completed = false
         
         if corrected_player then
             if correction_type == "username" then
@@ -953,6 +1093,7 @@ PLAYER_TARGET_LOCKED.FocusLost:Connect(function(enterPressed)
         end
     else
         print("Focus lost without pressing enter")
+        countinued_follow_when_completed = false
     end
 end)
 
@@ -1005,10 +1146,28 @@ STARTNEAREST_FARM_MiniButton.MouseButton1Click:Connect(function()
             if InUse_NearestFarm_MiniButton and InUse_MiniButton then
                 find_nearest_npc()
                 hitbox_nearest_npc()
-                VU:CaptureController()
-                VU:ClickButton1(Vector2.new(4, 0, 4))
+                if not IsOn then
+                    VU:CaptureController()
+                    VU:ClickButton1(Vector2.new(4, 0, 4))
+                end
             end
         end)
+    end
+end)
+
+-- Fast Attack Rs --
+local lastAttack_time, Attack_delay
+lastAttack_time = 0
+Attack_delay = 0.01
+
+rs.RenderStepped:Connect(function(deltaTime)
+    if IsOn and tick() - lastAttack_time >= Attack_delay then
+        if SuperFastMode then
+            AttackNoCD()
+        else
+            AttackNoCD()
+            lastAttack_time = tick()
+        end
     end
 end)
 
