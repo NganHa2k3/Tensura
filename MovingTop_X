@@ -1,0 +1,30 @@
+local player = game.Players.LocalPlayer
+local character = game.Workspace:WaitForChild(player.Name)
+local humanoid = character:WaitForChild("Humanoid")
+
+local function findSpecificPlayer(username)
+    local targetPlayer = game.Players:FindFirstChild(username)
+    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+        return targetPlayer
+    end
+    return nil
+end
+
+local movingToUsername = _G.movingtop
+
+if movingToUsername then
+    local targetPlayer = findSpecificPlayer(movingToUsername)
+    
+    if targetPlayer then
+        local targetPosition = targetPlayer.Character.HumanoidRootPart.Position
+        local facingDirection = targetPlayer.Character.HumanoidRootPart.CFrame.LookVector
+        local backwardPosition = targetPosition - facingDirection * 5
+        humanoid:MoveTo(backwardPosition)
+    else
+        warn("Player with username '" .. movingToUsername .. "' not found or their character is not valid.")
+    end
+else
+    warn("_G.movingtop is not set or is empty!")
+end
+
+print("<Inserted 'movingtop' function done>")
