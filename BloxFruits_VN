@@ -1275,17 +1275,12 @@ local AChest = false
 AChestF.MouseButton1Click:Connect(function()
     if AChest then
         AChestF.TextColor3 = Color3.new(1, 1, 1)
-        
+        game.Players.LocalPlayer.Character.Humanoid.Health = 0
         AChest = false
     else
         AChestF.TextColor3 = Color3.new(0, 1, 0)
-        
         AChest = true
-        
-        while AChest do
-            CollectChest()
-            wait(0.0001)
-        end
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/main/BloxFruits_Update_Dragon_ChestFarm_V001"))()
     end
 end)
 
@@ -1375,12 +1370,12 @@ Factory.BackgroundTransparency = 0.5
 Factory.Size = UDim2.new(0.8, 0, 0.05, 0)
 Factory.TextScaled = true
 Factory.Position = UDim2.new(0.1, 0, 0.565, 0)
-Factory.TextColor3 = Color3.new(0, 0, 1)
+Factory.TextColor3 = Color3.new(1, 1, 1)
 Factory.Font = Enum.Font.PatrickHand
 Factory.Text = "Tới Nhà Máy Factory"
 
-Factory.MouseButton1Click:Connect(function()
-    local Factor = game:GetService("Workspace"):FindFirstChild("Map")
+function tpsto_hahafactory()
+local Factor = game:GetService("Workspace"):FindFirstChild("Map")
                     and game.Workspace.Map:FindFirstChild("Dressrosa")
                     and game.Workspace.Map.Dressrosa:FindFirstChild("SmileFactory")
                     and game.Workspace.Map.Dressrosa.SmileFactory:FindFirstChild("Core")
@@ -1402,6 +1397,22 @@ Factory.MouseButton1Click:Connect(function()
     else
         warn("NO FACTOR FOUND")
     end
+end
+
+local fcxptl_1z = false
+Factory.MouseButton1Click:Connect(function()
+if fcxptl_1z then
+fcxptl_1z = false
+Factory.Text = "Tới Nhà Máy Factory"
+else
+fcxptl_1z = true
+Factory.Text = "Đang tới... chờ xíu đi"
+game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+if fcxptl_1z then
+tpsto_hahafactory()
+end
+end)
+end
 end)
 
 -- Shop --
