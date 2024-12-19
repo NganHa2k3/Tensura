@@ -1,0 +1,52 @@
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local tweenService = game:GetService("TweenService")
+local chestNames = {"Chest1", "Chest2", "Chest3"}
+
+-- Function to find all chests in the workspace
+local function findChests()
+    local chests = {}
+    for _, object in pairs(game.Workspace:GetDescendants()) do
+        if object:IsA("BasePart") and table.find(chestNames, object.Name) then
+            table.insert(chests, object)
+        end
+    end
+    return chests
+end
+
+-- Function to calculate the distance between two parts
+local function getDistance(part1, part2)
+    return (part1.Position - part2.Position).Magnitude
+end
+
+-- Function to create the tween for the character's movement
+local function createTween(destination)
+    local goal = {CFrame = CFrame.new(destination.Position)}
+    local tweenInfo = TweenInfo.new(
+        getDistance(humanoidRootPart, destination) / 200,  -- 200 studs per second
+        Enum.EasingStyle.Linear,
+        Enum.EasingDirection.Out
+    )
+    return tweenService:Create(humanoidRootPart, tweenInfo, goal)
+end
+
+-- Main function to start tweening to the chests
+local function moveToChests()
+    local chests = findChests()
+
+    -- Sort chests by distance from the character
+    table.sort(chests, function(a, b)
+        return getDistance(humanoidRootPart, a) < getDistance(humanoidRootPart, b)
+    end)
+
+    -- Start tweening to each chest in order of nearest
+    for _, chest in ipairs(chests) do
+        local tween = createTween(chest)
+        tween:Play()
+        tween.Completed:Wait()  -- Wait until the tween is done before moving to the next chest
+    end
+end
+
+-- Start the tweening process
+moveToChests()
