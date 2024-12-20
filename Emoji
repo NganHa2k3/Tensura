@@ -1,0 +1,133 @@
+-- Emoji/Chat --
+local Players, player, Humanoid, HumanoidRootPart, ScreenGui_Removing, NewScreenGui, EF, ESF, OC, ESFU
+local Red, Green, Blue, White, Black
+Red = Color3.new(1, 0, 0)
+Green = Color3.new(0, 1, 0)
+Blue = Color3.new(0, 0, 1)
+White = Color3.new(1, 1, 1)
+Black = Color3.new(0, 0, 0)
+Players = game:GetService("Players")
+player = Players.LocalPlayer
+Humanoid = player.Character.Humanoid
+HumanoidRootPart = player.Character.HumanoidRootPart
+ScreenGui_Removing = "NH2K3_E"
+
+for _, ExactSame_Previous_ScreenGui in ipairs(game:GetService("CoreGui"):GetChildren()) do
+    if ExactSame_Previous_ScreenGui:IsA("ScreenGui") and ExactSame_Previous_ScreenGui.Name == ScreenGui_Removing then
+        pcall(function()
+            ExactSame_Previous_ScreenGui:Destroy()
+        end)
+    end
+end
+
+game:IsLoaded()
+
+NewScreenGui = Instance.new("ScreenGui")
+NewScreenGui.Name = "NH2K3_E"
+NewScreenGui.Parent = game.CoreGui
+
+EF = Instance.new("Frame")
+EF.Parent = NewScreenGui
+EF.BackgroundColor3 = Black
+EF.BackgroundTransparency = 0.9
+EF.Position = UDim2.new(0.4, 0, 0.3, 0)
+EF.Size = UDim2.new(0.2, 0, 0.2, 0)
+EF.Active = true
+EF.Draggable = true
+EF.Visible = false
+
+ESF = Instance.new("ScrollingFrame")
+ESF.Parent = EF
+ESF.BackgroundColor3 = Black
+ESF.BackgroundTransparency = 0.8
+ESF.Position = UDim2.new(0.02, 0, 0.02, 0)
+ESF.Size = UDim2.new(0.96, 0, 0.96, 0)
+ESF.ScrollBarThickness = 0.1
+ESF.CanvasSize = UDim2.new(0, 0, 4, 0)
+
+OC = Instance.new("TextButton")
+OC.Parent = NewScreenGui
+OC.BackgroundColor3 = Black
+OC.BackgroundTransparency = 0.5
+OC.Position = UDim2.new(0.02, 0, 0.025, 0)
+OC.Size = UDim2.new(0.02, 0, 0.1, 0)
+OC.TextScaled = true
+OC.TextColor3 = White
+OC.Font = Enum.Font.Code
+OC.Text = ">"
+OC.Visible = true
+
+ESFU = Instance.new("UICorner")
+ESFU.Parent = ESF
+ESFU.CornerRadius = UDim.new(0.2, 0)
+
+local IsOn = false
+OC.MouseButton1Click:Connect(function()
+    if IsOn then
+        IsOn = false
+        OC.Text = ">"
+        EF.Visible = false
+    else
+        IsOn = true
+        OC.Text = "<"
+        EF.Visible = true
+    end
+end)
+
+function DisplayChat_Message(str_chat)
+    str_chat = tostring(str_chat)
+    local textChatService = game:GetService("TextChatService")
+    local legacyChatService = game:GetService("ReplicatedStorage"):FindFirstChild("DefaultChatSystemChatEvents")
+    
+    if legacyChatService then
+        legacyChatService.SayMessageRequest:FireServer(str_chat, "All")
+    elseif textChatService then
+        local generalChannel = textChatService.TextChannels.RBXGeneral
+        if generalChannel then
+            generalChannel:SendAsync(str_chat)
+        end
+    end
+end
+
+function NewEmoji(BP, POS, T1)
+    local EB = Instance.new("TextButton")
+    EB.Parent = BP
+    EB.BackgroundColor3 = Black
+    EB.BackgroundTransparency = 0
+    EB.Position = POS
+    EB.Size = UDim2.new(0.85, 0, 0.05, 0)
+    EB.TextScaled = true
+    EB.TextColor3 = White
+    EB.Font = Enum.Font.Code
+    EB.Text = T1
+    EB.TextSize = 20
+    
+    local EBUI = Instance.new("UICorner")
+    EBUI.Parent = EB
+    EBUI.CornerRadius = UDim.new(0, 12)
+    
+    EB.MouseButton1Click:Connect(function()
+        DisplayChat_Message(T1)
+    end)
+end
+
+-- All Emoji 0, 0, +0.06, 0 --
+NewEmoji(ESF, UDim2.new(0.02, 0, 0.01, 0), "≽^• ˕ • ྀི≼")
+
+-- Hide UI --
+local EOP
+EOP = {"emoji", "open-e"}
+function ecmds(str)
+    local opcmds = string.split(str, " ")
+    local toggled_e = false
+    if table.find(EOP, opcmds[1]) then
+        if toggled_e then
+            OC.Visible = false
+            EF.Visible = false
+        else
+            OC.Visible = true
+        end
+    end
+end
+
+player.Chatted:Connect(ecmds)
