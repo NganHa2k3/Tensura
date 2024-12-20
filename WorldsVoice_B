@@ -67,6 +67,7 @@ end
 
 loadGameScript(game.GameId)
 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/main/func_fun"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/KeepScript_OPEN"))()
 
 if _G.ExecuteScriptAfterTeleport then
