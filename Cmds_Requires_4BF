@@ -113,8 +113,10 @@ local function onPlayerChatted(message)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/main/ChestCFrame_Toggler"))()
     elseif words[1] == "tptool" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/main/TeleportTool"))()
+    elseif words[1] == "redz" then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Others/refs/heads/Creator/BloxFruits_ScriptHub_1"))()
     elseif words[1] == "cmds" or words[1] == "lệnh" then
-        DisplayChat_Message("Tất cả các lệnh: ")
+        DisplayChat_Message("List of all commands: ")
         DisplayChat_Message("mua đồ, lấy, mua trái, chợ, stock, awakening fruit, titles, cf normal, cf vip, cf beta")
         DisplayChat_Message("tptool, view, xem, nhìn, cmds, lệnh, unview")
     elseif table.find(cameraCommands_Table, words[1]) and words[2] then
