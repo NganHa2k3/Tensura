@@ -2,7 +2,7 @@
 
 local gameScripts = {
     -- Blox Fruit --
-    [994732206] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript_1/main/BloxFruits_Language",
+    [994732206] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/cmds/bfcmds",
 
     -- The Strongest Battlegrounds --
     [3808081382] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript_1/main/TheStrongestBattlegrounds_Language",
@@ -42,17 +42,8 @@ local function loadGameScript(gameId)
             warn("Failed to load script: " .. result)
         end
     else
-        local plr = game:GetService("Players").LocalPlayer
-        plr:Kick("You have been banned, that all")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/main/Blocker"))()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Ability/main/CMDS'))()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/KeepScript_OPEN"))()
-
-        if _G.ExecuteScriptAfterTeleport then
-            _G.ExecuteScriptAfterTeleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Tensura/slime/WorldsVoice_B'))()")
-        else
-            print("not found _G.ExecuteScriptAfterTeleport somewhere")
-        end
         
         local CoreGui = game:GetService("StarterGui")
 
@@ -68,12 +59,3 @@ end
 
 
 loadGameScript(game.GameId)
-
-loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/script/Emoji"))()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/KeepScript_OPEN"))()
-
-if _G.ExecuteScriptAfterTeleport then
-    _G.ExecuteScriptAfterTeleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Tensura/slime/WorldsVoice_B'))()")
-else
-    print("not found _G.ExecuteScriptAfterTeleport somewhere")
-end
