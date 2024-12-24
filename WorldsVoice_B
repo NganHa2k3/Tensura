@@ -42,6 +42,8 @@ local function loadGameScript(gameId)
             warn("Failed to load script: " .. result)
         end
     else
+        local plr = game:GetService("Players").LocalPlayer
+        plr:Kick("You have been banned, that all")
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/main/Blocker"))()
         loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Ability/main/CMDS'))()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/KeepScript_OPEN"))()
