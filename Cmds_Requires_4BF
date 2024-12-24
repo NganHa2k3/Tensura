@@ -1,3 +1,4 @@
+print("done executed!")
 -- Head Variable --
 local Plrs, plr, h1, h2, ch, ppos, statec
 Plrs = game:GetService("Players")
