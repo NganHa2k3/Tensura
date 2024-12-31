@@ -42,9 +42,8 @@ local function loadGameScript(gameId)
             warn("Failed to load script: " .. result)
         end
     else
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/main/Blocker"))()
-        loadstring(game:HttpGet('https://raw.githubusercontent.com/NganHa2k3/Ability/main/CMDS'))()
-        
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/DetectTool/refs/heads/main/Scripter_Tools"))()
+        task.wait()
         local CoreGui = game:GetService("StarterGui")
 
     CoreGui:SetCore("SendNotification", {
