@@ -2618,4 +2618,4 @@ local CoreGui = game:GetService("StarterGui")
             Duration = 2,
         })
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/cmds/Cmds_Requires_4BF"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/cmds/bfcmds"))()
