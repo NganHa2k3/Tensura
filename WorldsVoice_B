@@ -2,7 +2,7 @@
 
 local gameScripts = {
     -- Blox Fruit --
-    [994732206] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/cmds/bfcmds",
+    [994732206] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript_1/refs/heads/main/BloxFruits_Language",
 
     -- The Strongest Battlegrounds --
     [3808081382] = "https://raw.githubusercontent.com/NganHa2k3/RobloxScript_1/main/TheStrongestBattlegrounds_Language",
