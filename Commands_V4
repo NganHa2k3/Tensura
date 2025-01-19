@@ -25,7 +25,7 @@ local isSwim_Activated = false
 local Respawn_CFrame_X0 = nil
 
 -- MessFunction [A]
-local function autocorrect_players(input)
+function autocorrect_players(input)
     for _, player in ipairs(Players:GetPlayers()) do
         if string.lower(player.Name):sub(1, #input) == string.lower(input) or
         string.lower(player.DisplayName):sub(1, #input) == string.lower(input) then
@@ -36,7 +36,7 @@ local function autocorrect_players(input)
 end
 
 -- MessFunction [B]
-local function toClipboard(txt)
+function toClipboard(txt)
     local everyClipboard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
     
     if everyClipboard then
@@ -48,7 +48,7 @@ local function toClipboard(txt)
 end
 
 -- MessFunction Chat str_chat [B-1]
-local function DisplayChat_Message(str_chat)
+function DisplayChat_Message(str_chat)
     str_chat = tostring(str_chat)
     if not IsLegacyChat_Service then
         TextChatService.TextChannels.RBXGeneral:SendAsync(str_chat)
@@ -58,7 +58,7 @@ local function DisplayChat_Message(str_chat)
 end
 
 -- MessFunction Send Notification [B-2]
-local function Notify_Commands(txt_a, txt_b, duration_c)
+function Notify_Commands(txt_a, txt_b, duration_c)
     strg:SetCore("SendNotification", {
         Title = txt_a,
         Text = txt_b,
@@ -67,7 +67,7 @@ local function Notify_Commands(txt_a, txt_b, duration_c)
 end
 
 -- Teleport to players function mess [A-1]
-local function tpto(target_player)
+function tpto(target_player)
     if target_player and target_player.Character and target_player.Character:FindFirstChild("HumanoidRootPart") then
         player.Character:SetPrimaryPartCFrame(target_player.Character.HumanoidRootPart.CFrame)
         print("Successfully teleport to: " .. target_player.DisplayName)
@@ -77,7 +77,7 @@ local function tpto(target_player)
 end
 
 -- View/Spectating to players function mess [A-2]
-local function spectating(players_camera)
+function spectating(players_camera)
     if players_camera and players_camera.Character and players_camera.Character:FindFirstChild("HumanoidRootPart") then
         local dcamera = game:GetService("Workspace").CurrentCamera
         dcamera.CameraSubject = players_camera.Character.HumanoidRootPart
@@ -89,7 +89,7 @@ local function spectating(players_camera)
 end
 
 -- Nearest Players [N]
-local function find_nearestplayers()
+function find_nearestplayers()
     local nearestone = nil
     local ShortestDistance = math.huge
     
@@ -106,7 +106,7 @@ local function find_nearestplayers()
 end
 
 -- Farthest Players [F]
-local function find_farthestplayers()
+function find_farthestplayers()
     local farthestone = nil
     local LongestDistance = 0
     
@@ -123,7 +123,7 @@ local function find_farthestplayers()
 end
 
 -- Reset Character [R]
-local function resetCharacter()
+function resetCharacter()
     if player.Character and player.Character:FindFirstChildOfClass("Humanoid") then
         local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
         humanoid.Health = 0
@@ -135,13 +135,13 @@ local function resetCharacter()
 end
 
 -- Root [R-1]
-local function GetRoot(char)
+function GetRoot(char)
     local Root_Part = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
     return Root_Part
 end
 
 -- Copy Animation [C-A]
-local function copyAnimation(TargetSpecifics_PlayerName, self_Lp)
+function copyAnimation(TargetSpecifics_PlayerName, self_Lp)
     local targetPlayer = Players:FindFirstChild(TargetSpecifics_PlayerName)
     if not targetPlayer or not targetPlayer.Character or not self_Lp or not self_Lp.Character then
         Notify_Commands("Error: ", "Target player or self_Lp is invalid!", 2)
@@ -176,12 +176,24 @@ local function copyAnimation(TargetSpecifics_PlayerName, self_Lp)
 end
 
 -- Combo function [1]
-local function tellstat_ifcombo(chat_msg_x0, title_msg_x0, text_msg_x0, duration_msg_x0)
+function tellstat_ifcombo(chat_msg_x0, title_msg_x0, text_msg_x0, duration_msg_x0)
     if sayingcommands_status then
         DisplayChat_Message(chat_msg_x0)
     else
         Notify_Commands(title_msg_x0, text_msg_x0, duration_msg_x0)
     end
+end
+
+-- Show Developer Console Logs [1]
+function opendevconsole()
+    if game:GetService("CoreGui"):FindFirstChild("DeveloperConsole") == nil then
+        game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
+    end
+end
+
+-- Loadstring function [1]
+function paste(url)
+    loadstring(game:HttpGet(url))()
 end
 
 -- Alliases Commands [Allies]
@@ -204,7 +216,7 @@ local Swimming_Table = {"+swim", "+swimming", "+Swim", "+Swimming"}
 local UnSwimming_Table = {"+unswim", "+unswimming", "+noswim", "+noswimming"}
 
 -- Commands [Cmds]
-local function OnChatted_CommandScript(special)
+function OnChatted_CommandScript(special)
     local DE_Command = string.split(special, " ")
     
     if table.find(Teleportation_Alliases, DE_Command[1]) then
@@ -429,7 +441,7 @@ local function OnChatted_CommandScript(special)
         if not isSwim_Activated then
             local SwimSpeed_Set = DE_Command[2]
             isSwim_Activated = true
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/ciel/Swimming_X"))()
+            paste("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/ciel/Swimming_X")
             _G.oldgrav = Workspace.Gravity
             _G.Swimming_X(true, SwimSpeed_Set)
             if sayingcommands_status then
@@ -453,7 +465,7 @@ local function OnChatted_CommandScript(special)
             tellstat_ifcombo("Air Swimming Is not Enable right now.", "Swimming Status", "Swimming is not Enable right now so...", 2)
         end
     elseif DE_Command[1] == "+emotebox" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/script/AnimationEmote_Box"))()
+        paste("https://raw.githubusercontent.com/NganHa2k3/Tensura/script/AnimationEmote_Box")
         tellstat_ifcombo("Completed Loaded In: Emote Script", "NganHa2k3 Emote Box Script", "Emote / Emoji / Animation Fast", 2)
     elseif DE_Command[1] == "+noemotebox" or DE_Command[1] == "+unemotebox" then
         local ScreenGui_Name = "NganHa2k3_EmoteBox"
@@ -466,6 +478,21 @@ local function OnChatted_CommandScript(special)
             end
         end
         tellstat_ifcombo("Completed Removed: Emote Script", "Emote Box Removed", "Successfully removed emote box script", 2)
+    elseif DE_Command[1] == "+executor" then
+        paste("https://raw.githubusercontent.com/NganHa2k3/RobloxScript_0/main/Executor_V2")
+        tellstat_ifcombo("Loaded Custom Executor", "Execute Script/Editing/Loop Execute", "Paste Inside A Script", 2)
+    elseif DE_Command[1] == "+cmds" then
+        print("All Commands: ")
+        print("[+tp/+t/+teleport/+goto/+to/+moveto/+gateway: random/r/others/any/@r/randomly, nearest/n/nearby/closed/@n, farthest/f/@f, players name]")
+        print("[+respawn/+reset/+r]")
+        print("[+pov/+view/+spectate/+repov/+unview/+unspectate: players name]")
+        print("[+copy: gameId, GameId, gameid, Gameid, PlaceId, placeId, Placeid, placeid, jobid, Jobid, JobId, jobId, players name, cframe, CFrame, pos, position, Position, Cordinate, cordinate]")
+        print("[+WalkSpeed/+Speed/+speed/+s/+ws/+walkspeed: value]")
+        print("[+JumpPower/+Jump/+jump/+j/+jp/+jumppower: value]")
+        print("[+looptp/+loopt/+loopgoto/+loopto/+ltp/+lgoto/+lto/+lgateway/+loopgateway/+autotp/+autogoto/+autot/+autogateway: players name 'Added un to disable, example +unltp']")
+        print("[+Swim/+swim/+swimming/+Swimming: Value]")
+        print("[+sit/+leave/+say/+spam/+unspam/+clogs/+noclogs/+tellstat/+untellstat/+spawnpoint/+emotebox/+noemotebox/+executor]")
+        opendevconsole()
     else
         print("Unknown Command: " .. DE_Command[1])
         if showcommands_logs then
