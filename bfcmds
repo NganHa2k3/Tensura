@@ -73,7 +73,7 @@ function cmdsx(cmd)
         game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
         statec = false
     elseif wis[1] == "-redz" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Others/refs/heads/Creator/BloxFruits_ScriptHub_1"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))()
         statec = false
         ntf("Loading REDZ", "A useful blox fruits script not by me.")
     elseif wis[1] == "-tptool" then
