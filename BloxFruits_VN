@@ -1048,14 +1048,17 @@ local function trackNearestEnemy()
     if nearestEnemy and nearestEnemy:FindFirstChild("Humanoid") then
         local humanoid = nearestEnemy.Humanoid
         
+        local enemyPosition = nearestEnemy.HumanoidRootPart.Position
+        local directionBehind = (ILocalPlayer.Character.HumanoidRootPart.Position - enemyPosition).unit
+        local behindPosition = enemyPosition + directionBehind * -1
+
         if isTweenMode then
             if humanoid.Health > 0 then
-                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 0, 0)
                 local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
                 if currentTween then
                     currentTween:Cancel()
                 end
-                local goal = {CFrame = CFrame.new(targetPosition)}
+                local goal = {CFrame = CFrame.new(behindPosition)}
                 local tweenInfo = createTweenInfo(playerPos, goal.CFrame.Position)
                 currentTween = tweenService:Create(ILocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
                 currentTween:Play()
@@ -1064,8 +1067,7 @@ local function trackNearestEnemy()
             end
         else
             if humanoid.Health > 0 then
-                local targetPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 0, 0)
-                ILocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+                ILocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(behindPosition)
             else
                 nearestEnemy.HumanoidRootPart.CFrame = ILocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
             end
