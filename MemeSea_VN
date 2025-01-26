@@ -1558,28 +1558,37 @@ WalkOnAir.MouseButton1Click:Connect(function()
     if not isToggled then
         isToggled = true
         WalkOnAir.Text = "Vũ trụ"
-        WalkOnAir.TextColor3 = Color3.fromRGB(0, 255, 255)
+        WalkOnAir.TextColor3 = Color3.fromRGB(255, 0, 255)
 
         part = Instance.new("Part")
-        part.Size = Vector3.new(20, 0.2, 20)
+        part.Size = Vector3.new(5, 0.2, 5)
         part.Position = Vector3.new(
             player.Character.HumanoidRootPart.Position.X,
             player.Character.HumanoidRootPart.Position.Y - 3.5,
             player.Character.HumanoidRootPart.Position.Z
         )
         part.Anchored = true
-        part.Transparency = 1
+        part.Transparency = 0.95
         part.Parent = workspace
         
         local lockedY = part.Position.Y
 
         local function updatePartPosition()
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local humanoidRootPart = player.Character.HumanoidRootPart
                 part.Position = Vector3.new(
-                    player.Character.HumanoidRootPart.Position.X,
+                    humanoidRootPart.Position.X,
                     lockedY,
-                    player.Character.HumanoidRootPart.Position.Z
+                    humanoidRootPart.Position.Z
                 )
+                
+                if humanoidRootPart.Position.Y < lockedY then
+                    humanoidRootPart.CFrame = CFrame.new(
+                        humanoidRootPart.Position.X,
+                        lockedY + 2,
+                        humanoidRootPart.Position.Z
+                    )
+                end
             end
         end
 
