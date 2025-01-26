@@ -289,32 +289,42 @@ local isToggled = false
 local part
 
 WalkOnAir.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+
     if not isToggled then
         isToggled = true
         WalkOnAir.Text = "Sky Walking[ON]"
-        WalkOnAir.TextColor3 = Color3.fromRGB(0, 255, 255)
+        WalkOnAir.TextColor3 = Color3.fromRGB(0, 255, 0)
 
         part = Instance.new("Part")
-        part.Size = Vector3.new(20, 0.2, 20)
+        part.Size = Vector3.new(5, 0.2, 5)
         part.Position = Vector3.new(
             player.Character.HumanoidRootPart.Position.X,
             player.Character.HumanoidRootPart.Position.Y - 3.5,
             player.Character.HumanoidRootPart.Position.Z
         )
         part.Anchored = true
-        part.Transparency = 0.9
-        part.Color = Color3.fromRGB(255, 0, 255)
+        part.Transparency = 0.95
         part.Parent = workspace
         
         local lockedY = part.Position.Y
 
         local function updatePartPosition()
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local humanoidRootPart = player.Character.HumanoidRootPart
                 part.Position = Vector3.new(
-                    player.Character.HumanoidRootPart.Position.X,
+                    humanoidRootPart.Position.X,
                     lockedY,
-                    player.Character.HumanoidRootPart.Position.Z
+                    humanoidRootPart.Position.Z
                 )
+                
+                if humanoidRootPart.Position.Y < lockedY then
+                    humanoidRootPart.CFrame = CFrame.new(
+                        humanoidRootPart.Position.X,
+                        lockedY + 2,
+                        humanoidRootPart.Position.Z
+                    )
+                end
             end
         end
 
