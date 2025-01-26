@@ -7,7 +7,7 @@ h1 = ch.Humanoid
 h2 = ch.HumanoidRootPart
 ppos = h2.Position
 statec = false
-Is_Allowed = loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Script/refs/heads/main/BloxFruits"))()
+Is_Allowed = true
 
 -- function --
 function autocorrectname(splr)
