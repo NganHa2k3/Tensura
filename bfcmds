@@ -1,4 +1,3 @@
--- Head Variable --
 local Plrs, plr, h1, h2, ch, ppos, statec
 Plrs = game:GetService("Players")
 plr = Plrs.LocalPlayer
@@ -8,7 +7,6 @@ h2 = ch.HumanoidRootPart
 ppos = h2.Position
 statec = false
 
--- function --
 function autocorrectname(splr)
     for _, xplr in ipairs(Plrs:GetPlayers()) do
         if string.lower(xplr.Name):sub(1, #input) == string.lower(input) or
@@ -49,8 +47,8 @@ function cmdsx(cmd)
     if not statec then
     statec = true
     
-    if wis[1] == "-buyitem" and wis[2] then
-        local itemcanbuy = wis[2]
+    if wis[1] == "-buyitem" and #wis > 1 then
+        local itemcanbuy = table.concat(wis, " ", 2)
         local args = {
             [1] = "BuyItem",
             [2] = itemcanbuy
@@ -88,7 +86,7 @@ function cmdsx(cmd)
         ntf("Teleport Tool V2", "Check it in your inventory or backpack...")
     elseif wis[1] == "-twtool" and wis[2] and wis[3] then
         local edit_dis_2 = tonumber(wis[2])
-        local edit_ts_1 = tonumber(wis[3)
+        local edit_ts_1 = tonumber(wis[3])
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tools/refs/heads/main/Tween"))()
         _G.Dis = edit_dis_2 or 50
         _G.TweenSpeed = edit_ts_1 or 250
