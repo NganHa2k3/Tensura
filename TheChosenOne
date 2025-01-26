@@ -1304,7 +1304,7 @@ WalkOnAir.TextScaled = true
 WalkOnAir.Position = UDim2.new(0.485, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
 WalkOnAir.Font = Enum.Font.PatrickHand
-WalkOnAir.Text = "On Ground"
+WalkOnAir.Text = "Walking: Normal"
 
 local isToggled = false
 local part
@@ -1314,7 +1314,7 @@ WalkOnAir.MouseButton1Click:Connect(function()
 
     if not isToggled then
         isToggled = true
-        WalkOnAir.Text = "On Air-Water"
+        WalkOnAir.Text = "Walking: Safe"
         WalkOnAir.TextColor3 = Color3.fromRGB(0, 255, 255)
 
         part = Instance.new("Part")
@@ -1325,18 +1325,27 @@ WalkOnAir.MouseButton1Click:Connect(function()
             player.Character.HumanoidRootPart.Position.Z
         )
         part.Anchored = true
-        part.Transparency = 0.9
+        part.Transparency = 0.95
         part.Parent = workspace
         
         local lockedY = part.Position.Y
 
         local function updatePartPosition()
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                local humanoidRootPart = player.Character.HumanoidRootPart
                 part.Position = Vector3.new(
-                    player.Character.HumanoidRootPart.Position.X,
+                    humanoidRootPart.Position.X,
                     lockedY,
-                    player.Character.HumanoidRootPart.Position.Z
+                    humanoidRootPart.Position.Z
                 )
+                
+                if humanoidRootPart.Position.Y < lockedY then
+                    humanoidRootPart.CFrame = CFrame.new(
+                        humanoidRootPart.Position.X,
+                        lockedY + 2,
+                        humanoidRootPart.Position.Z
+                    )
+                end
             end
         end
 
@@ -1351,7 +1360,7 @@ WalkOnAir.MouseButton1Click:Connect(function()
 
     else
         isToggled = false
-        WalkOnAir.Text = "On Ground"
+        WalkOnAir.Text = "Walking: Normal"
         WalkOnAir.TextColor3 = Color3.fromRGB(255, 255, 255)
         
         if part then
