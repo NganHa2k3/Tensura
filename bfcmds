@@ -1,5 +1,5 @@
 -- Head Variable --
-local Plrs, plr, h1, h2, ch, ppos, statec, Is_Allowed
+local Plrs, plr, h1, h2, ch, ppos, statec
 Plrs = game:GetService("Players")
 plr = Plrs.LocalPlayer
 ch = plr.Character
@@ -7,7 +7,6 @@ h1 = ch.Humanoid
 h2 = ch.HumanoidRootPart
 ppos = h2.Position
 statec = false
-Is_Allowed = true
 
 -- function --
 function autocorrectname(splr)
@@ -74,17 +73,27 @@ function cmdsx(cmd)
         game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
         statec = false
     elseif wis[1] == "-redz" then
-        if Is_Allowed then
             loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))()
             statec = false
             ntf("Loading REDZ", "A useful blox fruits script not by me.")
-        else
-            game:GetService("Players").LocalPlayer:Kick("Hack Redz Đang Được Sửa Nhé... Nên Chờ 2 Tiếng Nữa ĐỂ SỬA NHA !")
-        end
     elseif wis[1] == "-tptool" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/refs/heads/main/TeleportTool"))()
         statec = false
-        ntf("Teleport Tool", "Check your inventory or backpack...")
+        ntf("Teleport Tool", "Check it in your inventory or backpack...")
+    elseif wis[1] == "-tptool" and wis[2] == "v2" and wis[3] then
+        local edit_dis_1 = tonumber(wis[3])
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tools/refs/heads/main/Teleport"))()
+        _G.Dis = edit_dis_1 or 50
+        statec = false
+        ntf("Teleport Tool V2", "Check it in your inventory or backpack...")
+    elseif wis[1] == "-twtool" and wis[2] and wis[3] then
+        local edit_dis_2 = tonumber(wis[2])
+        local edit_ts_1 = tonumber(wis[3)
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tools/refs/heads/main/Tween"))()
+        _G.Dis = edit_dis_2 or 50
+        _G.TweenSpeed = edit_ts_1 or 250
+        statec = false
+        ntf("Tweening Tool", "Check it in your inventory or backpack...")
     elseif wis[1] == "-random" or wis[1] == "-fruit" or wis[1] == "-gacha" then
         local args = {
             [1] = "Cousin",
