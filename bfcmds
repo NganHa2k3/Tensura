@@ -1,5 +1,5 @@
 -- Head Variable --
-local Plrs, plr, h1, h2, ch, ppos, statec
+local Plrs, plr, h1, h2, ch, ppos, statec, Is_Allowed
 Plrs = game:GetService("Players")
 plr = Plrs.LocalPlayer
 ch = plr.Character
@@ -7,6 +7,7 @@ h1 = ch.Humanoid
 h2 = ch.HumanoidRootPart
 ppos = h2.Position
 statec = false
+Is_Allowed = false
 
 -- function --
 function autocorrectname(splr)
@@ -73,9 +74,13 @@ function cmdsx(cmd)
         game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
         statec = false
     elseif wis[1] == "-redz" then
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))()
-        statec = false
-        ntf("Loading REDZ", "A useful blox fruits script not by me.")
+        if Is_Allowed then
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))()
+            statec = false
+            ntf("Loading REDZ", "A useful blox fruits script not by me.")
+        else
+            game:GetService("Players").LocalPlayer:Kick("Hack Redz Đang Được Sửa Nhé... Nên Chờ 2 Tiếng Nữa ĐỂ SỬA NHA !")
+        end
     elseif wis[1] == "-tptool" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/refs/heads/main/TeleportTool"))()
         statec = false
