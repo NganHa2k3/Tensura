@@ -1156,10 +1156,7 @@ end)
 
 
 
-
 -- Teleport Button --
-
--- Create the teleportButton
 local teleportButton = Instance.new("TextButton")
 teleportButton.Name = "teleportButton"
 teleportButton.Parent = ScreenGui
@@ -1177,7 +1174,7 @@ local teleportButtonCorner = Instance.new("UICorner")
 teleportButtonCorner.Parent = teleportButton
 teleportButtonCorner.CornerRadius = UDim.new(0, 10)
 
--- Create the toggleTeleport button
+-- Create the toggleTeleport button --
 local toggleTeleport = Instance.new("TextButton")
 toggleTeleport.Name = "toggleTeleport"
 toggleTeleport.Parent = ScrollingFrame
@@ -1194,9 +1191,8 @@ local teleportCorner = Instance.new("UICorner")
 teleportCorner.Parent = toggleTeleport
 teleportCorner.CornerRadius = UDim.new(0, 10)
 
--- Script to toggle visibility and text
+-- Function to toggle visibility and text --
 local isTeleportButtonVisible = false
-
 toggleTeleport.MouseButton1Click:Connect(function()
     isTeleportButtonVisible = not isTeleportButtonVisible
     teleportButton.Visible = isTeleportButtonVisible
@@ -1214,87 +1210,49 @@ toggleMode.TextScaled = true
 toggleMode.Position = UDim2.new(0.17, 0, 0, 0)
 toggleMode.TextColor3 = Color3.fromRGB(0, 0, 200)
 toggleMode.Font = Enum.Font.PatrickHand
-toggleMode.Text = "Dịch chuyển tới người chơi"
+toggleMode.Text = "Dịch chuyển tới Weakest Dummy"
 
 local toggleButtonCorner = Instance.new("UICorner")
 toggleButtonCorner.Parent = toggleMode
 toggleButtonCorner.CornerRadius = UDim.new(0, 10)
 
--- Function to toggle text
+local modenumber = 1
+local ice_event = true
+
 local function toggleText()
-    if toggleMode.Text == "Dịch chuyển tới người chơi" then
-        toggleMode.Text = "Dịch chuyển tới Hình nộm Yếu nhất"
-    else
+    modenumber = modenumber + 1
+    if modenumber == 1 then
+        toggleMode.Text = "Dịch chuyển tới Weakest Dummy"
+    elseif modenumber == 2 then
         toggleMode.Text = "Dịch chuyển tới người chơi"
+    elseif modenumber == 3 then
+        toggleMode.Text = "Dịch chuyển tới TrashCan"
+    elseif modenumber == 4 and ice_event then
+        toggleMode.Text = "Dịch chuyển tới Falling Star"
+    elseif modenumber == 5 then
+        modenumber = 1
     end
 end
 
--- Connect the function to the button click event
 toggleMode.MouseButton1Click:Connect(toggleText)
 
--- Animation and Sound IDs for Teleport only
-local animationIds = {
-    ["Teleport"] = "rbxassetid://15957361339"
-}
-
-local soundIds = {
-    ["Teleport"] = "rbxassetid://405593386"
-}
-
--- Function to play an animation by name
-local function playAnimation(name)
-    local animationId = animationIds[name]
-    if not animationId then
-        warn("Animation ID for '" .. name .. "' not found")
-        return
-    end
-
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-    local humanoid = character:FindFirstChildOfClass("Humanoid")
-
-    if humanoid then
-        -- Stop all currently playing animations
-        stopAllAnimations(humanoid)
-        
-        -- Load and play the new animation
-        local animation = Instance.new("Animation")
-        animation.AnimationId = animationId
-        local animationTrack = humanoid:LoadAnimation(animation)
-        animationTrack:Play()
-        return animationTrack
-    else
-        warn("Humanoid not found in character")
+-- Function to stop all animations --
+local function stopAllAnimations(humanoid)
+    for _, track in ipairs(humanoid:GetPlayingAnimationTracks()) do
+        track:Stop()
     end
 end
 
--- Function to play a sound by name
-local function playSound(name)
-    local soundId = soundIds[name]
-    if not soundId then
-        warn("Sound ID for '" .. name .. "' not found")
-        return
+-- Function to stop all sounds --
+local function stopAllSounds(character)
+    for _, sound in ipairs(character:GetChildren()) do
+        if sound:IsA("Sound") then
+            sound:Stop()
+        end
     end
-
-    local player = game.Players.LocalPlayer
-    local character = player.Character or player.CharacterAdded:Wait()
-
-    -- Stop all currently playing sounds
-    stopAllSounds(character)
-
-    -- Create and play the new sound
-    local sound = Instance.new("Sound")
-    sound.SoundId = soundId
-    sound.Parent = character
-    sound:Play()
-
-    -- Clean up after sound finishes
-    sound.Ended:Connect(function()
-        sound:Destroy()
-    end)
 end
 
--- Function to find a random player
+-- Teleport Functions --
 local function teleportToRandomPlayer()
     local players = game.Players:GetPlayers()
     local otherPlayers = {}
@@ -1312,19 +1270,80 @@ local function teleportToRandomPlayer()
     end
 end
 
--- Function to teleport based on the toggle state and play animation
+local function playAnimation(name)
+    local animationId = animationIds[name]
+    if not animationId then
+        warn("Animation ID for '" .. name .. "' not found")
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:FindFirstChildOfClass("Humanoid")
+
+    if humanoid then
+        stopAllAnimations(humanoid)
+        
+        local animation = Instance.new("Animation")
+        animation.AnimationId = animationId
+        local animationTrack = humanoid:LoadAnimation(animation)
+        animationTrack:Play()
+        return animationTrack
+    else
+        warn("Humanoid not found in character")
+    end
+end
+
+local function playSound(name)
+    local soundId = soundIds[name]
+    if not soundId then
+        warn("Sound ID for '" .. name .. "' not found")
+        return
+    end
+
+    local player = game.Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    stopAllSounds(character)
+
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Parent = character
+    sound:Play()
+
+    sound.Ended:Connect(function()
+        sound:Destroy()
+    end)
+end
+
 local function teleportToTarget()
     local targetPosition
+    wait()
 
-    if toggleMode.Text == "Dịch chuyển tới người chơi" then
-        toggleMode.TextColor3 = Color3.fromRGB(0, 0, 200)
+    if modenumber == 2 then
+        toggleMode.TextColor3 = Color3.fromRGB(0, 255, 0)
         teleportToRandomPlayer()
-    elseif toggleMode.Text == "Dịch chuyển tới Hình nộm Yếu nhất" then
-        toggleMode.TextColor3 = Color3.fromRGB(200, 0, 0)
+    elseif modenumber == 1 then
+        toggleMode.TextColor3 = Color3.fromRGB(255, 255, 0)
         local npc = game:GetService("Workspace").Live:FindFirstChild("Weakest Dummy")
         if npc and npc:FindFirstChild("HumanoidRootPart") then
             targetPosition = npc.HumanoidRootPart.CFrame
             game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetPosition)
+        end
+    elseif modenumber == 3 then
+        toggleMode.TextColor3 = Color3.fromRGB(255, 255, 255)
+        local trashcan = game:GetService("Workspace").Map.Trash.Trashcan.Trashcan
+        if trashcan then
+            targetPosition = trashcan.CFrame
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetPosition)
+        end
+    elseif modenumber == 4 and ice_event then
+        toggleMode.TextColor3 = Color3.fromRGB(0, 255, 255)
+        local FallingStar = game:GetService("Workspace").Thrown:FindFirstChild("Frozen Lock")
+        if FallingStar then
+            targetPosition = FallingStar.CFrame
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetPosition)
+        else
+            print("Falling Star not found!")
         end
     end
 
