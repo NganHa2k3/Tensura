@@ -1,0 +1,83 @@
+local ShurikenGui = Instance.new("ScreenGui")
+ShurikenGui.Name = "InstanceShuriken"
+ShurikenGui.Parent = game:GetService("CoreGui")
+
+local QuickThrown_Shuriken = Instance.new("TextButton")
+QuickThrown_Shuriken.Parent = ShurikenGui
+QuickThrown_Shuriken.BackgroundColor3 = Color3.new(0, 0, 0)
+QuickThrown_Shuriken.BackgroundTransparency = 0.5
+QuickThrown_Shuriken.Position = UDim2.new(0.3, 0, 0.6, 0)
+QuickThrown_Shuriken.Size = UDim2.new(0.05, 0, 0.1, 0)
+QuickThrown_Shuriken.TextScaled = true
+QuickThrown_Shuriken.TextColor3 = Color3.new(1, 1, 1)
+QuickThrown_Shuriken.Font = Enum.Font.Code
+QuickThrown_Shuriken.Text = "Thrown Shuriken"
+QuickThrown_Shuriken.Visible = true
+
+local UIC = Instance.new("UICorner")
+UIC.Parent = QuickThrown_Shuriken
+UIC.CornerRadius = UDim.new(0.1, 0)
+
+local QuickDummies = Instance.new("TextButton")
+QuickDummies.Parent = ShurikenGui
+QuickDummies.BackgroundColor3 = Color3.new(0, 0, 0)
+QuickDummies.BackgroundTransparency = 0.5
+QuickDummies.Position = UDim2.new(0.37, 0, 0.6, 0)
+QuickDummies.Size = UDim2.new(0.05, 0, 0.1, 0)
+QuickDummies.TextScaled = true
+QuickDummies.TextColor3 = Color3.new(1, 1, 1)
+QuickDummies.Font = Enum.Font.Code
+QuickDummies.Text = "Dummy"
+QuickDummies.Visible = true
+
+local UIC2 = Instance.new("UICorner")
+UIC2.Parent = QuickDummies
+UIC2.CornerRadius = UDim.new(0.1, 0)
+
+local Rs = game:GetService("RunService")
+
+function ThrownShuriken_Function()
+    local args = {
+    [1] = "ShurikenThrow",
+    [2] = {
+        [1] = "Left"
+    }
+}
+
+    game:GetService("Players").LocalPlayer.Character.Local.R_Event:FireServer(unpack(args))
+wait(0.2)
+end
+
+local NPC_1
+function toDummy()
+    NPC_1 = game:GetService("Workspace").Dummies["Weakest Dummy"].HumanoidRootPart
+    if NPC_1 then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = NPC_1.CFrame
+    end
+end
+
+local InUse = false
+QuickThrown_Shuriken.MouseButton1Click:Connect(function()
+    if InUse then
+        InUse = false
+        QuickThrown_Shuriken.TextColor3 = Color3.new(1, 1, 1)
+    else
+        InUse = true
+        QuickThrown_Shuriken.TextColor3 = Color3.new(0, 1, 0)
+        
+        Rs.RenderStepped:Connect(function(deltaTime)
+            if InUse then
+                ThrownShuriken_Function()
+            end
+        end)
+    end
+end)
+
+QuickDummies.MouseButton1Click:Connect(toDummy)
+
+local St = game:GetService("StarterGui")
+St:SetCore("SendNotification", {
+    Title = "NOTIFICATION",
+    Text = "Loaded Chakra Battleground Script, Short by NganHa2k3 for fun!",
+    Duration = 2,
+})
