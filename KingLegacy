@@ -4007,6 +4007,87 @@ local function Swords_AbilityFireEvent(N_HRP)
             found = true
         end
         
+        if SwordUsing("Avalon") then
+            if SW_Use_M1 then
+            local args = {
+                [1] = "SW_Avalon_M1",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            
+            wait(0.05)
+            
+            local args = {
+                [1] = "SW_Avalon_M1",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            
+            wait(0.001)
+            end
+            
+            if SW_Use_Z then
+            local args = {
+                [1] = "SW_Avalon_Z",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            
+            wait(0.05)
+            
+            local args = {
+                [1] = "SW_Avalon_Z",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            
+            wait(0.001)
+            end
+            
+            if SW_Use_X then
+            local args = {
+                [1] = "SW_Avalon_X",
+                [2] = {
+                    ["Type"] = "Down",
+                    ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            
+            wait(0.05)
+            
+            local args = {
+                [1] = "SW_Avalon_X",
+                [2] = {
+                    ["Type"] = "Up",
+                    ["MouseHit"] = CFrame.new(N_HRP.Position) * CFrame.Angles(-0, 0, -0)
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").Chest.Remotes.Functions.SkillAction:InvokeServer(unpack(args))
+            
+            wait(0.001)
+            end
+            found = true
+        end
+        
         if not found then
             print("Not Found Tools")
         end
