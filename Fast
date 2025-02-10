@@ -1,0 +1,63 @@
+local rls = game:GetService("ReplicatedStorage")
+local mds = rls:WaitForChild("Modules")
+local ws = game:GetService("Workspace")
+local plr = game:GetService("Players").LocalPlayer
+local net = mds:WaitForChild("Net")
+local re_attack = net:WaitForChild("RE/RegisterAttack")
+local re_hit = net:WaitForChild("RE/RegisterHit")
+local enemies_folder = ws:WaitForChild("Enemies")
+local character_folder = ws:WaitForChild("Characters")
+
+local FA = {
+    Range = 60,
+    T_Mobs = true,
+    T_Players = false,
+    Equipped = nil
+}
+
+function C_Enemies(t_list, folder)
+    local s_target = nil
+    
+    for _, entity in ipairs(folder:GetChildren()) do
+        local head_p = entity:FindFirstChild("Head")
+        
+        if head_p then
+            if entity ~= plr.Character then
+                table.insert(t_list, { entity, head_p })
+                s_target = head_p
+            end
+        end
+    end
+    
+    return s_target
+end
+
+function FA:ExeAttack(target, t_list)
+    re_attack:FireServer(0.05)
+    re_hit:FireServer(target, t_list)
+end
+
+function FA:Nearest()
+    local potenial_t = {}
+    
+    local first_t = C_Enemies(potenial_t, enemies_folder)
+    local second_t = C_Enemies(potenial_t, character_folder)
+    
+    if #potenial_t > 0 then
+        self:ExeAttack(first_t or second_t, potenial_t)
+    else
+        task.wait(1)
+    end
+end
+
+function FA:BladeHits()
+    local c_tools = plr.Character:FindFirstChildOfClass("Tool")
+    
+    if c_tools and c_tools.ToolTip ~= "Gun" then
+        self:Nearest()
+    else
+        task.wait(0.5)
+    end
+end
+
+FA:BladeHits()
