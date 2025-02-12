@@ -158,9 +158,9 @@ local tween2 = TweenService:Create(ScrollingFrame, tweenInfo, {Position = goalPo
 
 -- Toggle button behavior
 
-local isToggled = false
+local isToggledp = false
 OpenClose.MouseButton1Click:Connect(function()
-    if isToggled then
+    if isToggledp then
         tween2:Play()
         OpenClose.Text = "ⓧ"
         OpenClose.TextColor3 = Color3.new(0, 1, 0)
@@ -169,7 +169,7 @@ OpenClose.MouseButton1Click:Connect(function()
         OpenClose.Text = "Ⓗ"
         OpenClose.TextColor3 = Color3.new(1, 1, 1)
     end
-    isToggled = not isToggled
+    isToggledp = not isToggledp
 end)
 
 -- Done --
@@ -2624,7 +2624,7 @@ end)
 
 local CoreGui = game:GetService("StarterGui")
         CoreGui:SetCore("SendNotification", {
-            Title = "Chào mừng đến với kịch bản NganHa2k3",
+            Title = "Chào mừng đến với kịch bản HoangHien",
             Text = "Công cụ nhặt rương, trái ác quỷ, vũ khí cực nhanh !",
             Duration = 2,
         })
