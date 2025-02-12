@@ -74,6 +74,10 @@ function cmdsx(cmd)
             loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))()
             statec = false
             ntf("Loading REDZ", "A useful blox fruits script not by me.")
+    elseif wis[1] == "-miniui" and wis[2] == "v0.01" then
+        loadstring(game:HttpGet("https://byvn.net/qWp7"))()
+        statec = false
+        ntf("Loading Mini UI", "Self Create Blox Fruits Script: Mini UI v0.01.")
     elseif wis[1] == "-tptool" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/refs/heads/main/TeleportTool"))()
         statec = false
