@@ -80,7 +80,7 @@ function cmdsx(cmd)
             statec = false
             ntf("Loading Mini UI", "Self Create Blox Fruits Script: Mini UI v0.01.")
         elseif wis[2] == "v0.02" then
-            loadstring(game:HttpGet("https://encr.pw/MiniUIv001"))()
+            loadstring(game:HttpGet("https://byvn.net/ukuA"))()
             statec = false
             ntf("Loading Mini UI", "Self Create Blox Fruits Script: Mini UI v0.02.")
         end
