@@ -114,8 +114,8 @@ function cmdsx(cmd)
     elseif wis[1] == "-cmds" then
         loadchat("List of all command: below!")
         loadchat("[1]: -buyitem, -buyfruit")
-        loadchat("[2]: -awk, -titles, -tptool, -random, -fruit, -gacha, -redz")
-        loadchat("[3]: -cmds.")
+        loadchat("[2]: -awk, -titles, -tptool, -twtool, -tptool v2, -random, -fruit, -gacha, -redz")
+        loadchat("[3]: -cmds, -miniui v0.01, -miniui v0.02")
         statec = false
     end
     statec = false
