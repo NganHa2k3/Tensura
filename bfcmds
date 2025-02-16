@@ -87,6 +87,10 @@ function cmdsx(cmd)
             loadstring(game:HttpGet("https://pastefy.app/qUHJWFhY/raw"))()
             statec = false
             ntf("Loading Mini UI", "Self Create Blox Fruits Script: Mini UI v0.03.")
+        elseif wis[2] == "v0.04" then
+            loadstring(game:HttpGet("https://byvn.net/XbXk"))()
+            statec = false
+            ntf("Loading Mini UI", "Self Create Blox Fruits Script: Mini UI v0.04.")
         end
     elseif wis[1] == "-tptool" then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Ability/refs/heads/main/TeleportTool"))()
