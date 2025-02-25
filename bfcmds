@@ -42,6 +42,10 @@ function ntf(msf, tsf)
     })
 end
 
+function tpSea(sea)
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(sea)
+end
+
 function cmdsx(cmd)
     local wis = string.split(cmd, " ")
     if not statec then
@@ -119,12 +123,20 @@ function cmdsx(cmd)
         game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
         statec = false
         ntf("Randomizer a Fruit!", "Completed Randomize a fruit, check your inventory... if not check your money :v")
+    elseif wis[1] == "-sea" then
+        if wis[2] == "1" then
+            tpSea("TravelMain")
+        elseif wis[2] == "2" then
+            tpSea("TravelDressora")
+        elseif wis[2] == "3" then
+            tpSea("TravelZou")
+        elseif wis[2] ~= "" then
+            ntf("Hmm...", "Do 1 or 2 and 3 to teleportation sea/world")
+        end
     elseif wis[1] == "-cmds" then
-        loadchat("List of all command: below!")
-        loadchat("[1]: -buyitem, -buyfruit")
-        loadchat("[2]: -awk, -titles, -tptool, -twtool, -tptool v2, -random, -fruit, -gacha, -redz")
-        loadchat("[3]: -cmds, -miniui v0.01, -miniui v0.02")
-        statec = false
+        print("Hello " .. game:GetService("Players").LocalPlayer.DisplayName .. "!")
+        print("Here is all commands you can use: \n -buyitem [and a item name], -buyfruit [and a fruit name... like this example: Spin-Spin] \n -awk, -titles, -random, -gacha, -fruit, -tptool, -tptool v2, -twtool [distance] [speed], -miniui [v0.01 to v0.04], -sea [1 or 2 and 3] \n -redz")
+        game:GetService("StarterGui"):SetCore("DeveloperConsoleVisible", true)
     end
     statec = false
     end
