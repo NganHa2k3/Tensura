@@ -34,7 +34,8 @@ function AttackNoCD_JK()
     local localPlayer = game:GetService("Players").LocalPlayer
     local character = localPlayer.Character
     if not character then return end
-    
+
+    local selfname = localPlayer.Name
     local nearestPlayer = findNearestPlayer()
     local targetPosition = nearestPlayer and nearestPlayer.Character.HumanoidRootPart.Position or character.HumanoidRootPart.Position
     
@@ -44,6 +45,18 @@ function AttackNoCD_JK()
     [3] = {
         ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0),
         ["Mouse"] = targetPosition
+        }
+    }
+    
+    game:GetService("ReplicatedStorage").Remotes.DoMagic:FireServer(unpack(args))
+
+    local args = {
+    [1] = "Turret",
+    [2] = "Energy Ball",
+    [3] = {
+        ["Mouse"] = targetPosition,
+        ["Gun"] = workspace.Tycoons.selfname.Assets.Turret.XYZGuns.Right,
+        ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
         }
     }
     
