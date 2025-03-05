@@ -32,7 +32,10 @@ local gameScripts = {
     [1451439645] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/KingLegacy",
 
     -- Chakra Battleground --
-    [5287704645] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/ChakraBattleground"
+    [5287704645] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/ChakraBattleground",
+
+    -- Elemental Tycoon --
+    [3754482795] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/ElementalTycoon"
 }
 
 local function loadGameScript(gameId)
