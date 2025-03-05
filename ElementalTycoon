@@ -35,7 +35,6 @@ function AttackNoCD_JK()
     local character = localPlayer.Character
     if not character then return end
 
-    local selfname = localPlayer.Name
     local nearestPlayer = findNearestPlayer()
     local targetPosition = nearestPlayer and nearestPlayer.Character.HumanoidRootPart.Position or character.HumanoidRootPart.Position
     
@@ -55,7 +54,7 @@ function AttackNoCD_JK()
     [2] = "Energy Ball",
     [3] = {
         ["Mouse"] = targetPosition,
-        ["Gun"] = workspace.Tycoons.selfname.Assets.Turret.XYZGuns.Right,
+        ["Gun"] = workspace.Tycoons(game:GetService("Players").LocalPlayer.Name):FindFirstChild("Assets"):FindFirstChild("Turret").XYZGuns.Right,
         ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
         }
     }
