@@ -1,8 +1,8 @@
 -- HoangHien_Script: Elementals Tycoon --
 local coreui, starterui, singleone, mainframe, sframe, turretframe, toolframe
 local openui, lockbutton, switchpage
-local creditlb, autoshoot_turret, turretmode, nukeboom
-local itsHidden, itsLocked, itsPage, itsDefends, switchmode, itOnWorking, current_turretmode, previous_pos
+local creditlb, autoshoot_turret, turretmode, nukeboom, storagetarget, airstrike_mode
+local itsHidden, itsLocked, itsPage, itsDefends, switchmode, itOnWorking, current_turretmode, previous_pos, finaln, current_modeairstrike
 local ws, plrs, plr, self_name
 
 itsHidden = false
@@ -11,10 +11,13 @@ itsPage = 1
 itsDefends = false
 switchmode = 1
 current_turretmode = 1
+current_modeairstrike = 1
 
 itOnWorking = true
 
 previous_pos = nil
+
+finaln = ""
 
 coreui = game:GetService("CoreGui")
 starterui = game:GetService("StarterGui")
@@ -37,7 +40,9 @@ switchpage = Instance.new("TextButton", mainframe)
 creditlb = Instance.new("TextLabel", sframe)
 autoshoot_turret = Instance.new("TextButton", turretframe)
 turretmode = Instance.new("TextButton", turretframe)
-nukeboom = Instance.new("TextButton", toolframe)
+nukeboom = Instance.new("TextButton", turretframe)
+storagetarget = Instance.new("TextBox", singleone)
+airstrike_mode = Instance.new("TextButton", turretframe)
 
 singleone.Name = "Elementals_Script"
 
@@ -114,13 +119,13 @@ creditlb.TextScaled = true
 creditlb.TextSize = 12
 creditlb.TextColor3 = Color3.new(1, 1, 0)
 creditlb.Font = Enum.Font.Code
-creditlb.Text = "script making by HoangHien."
+creditlb.Text = "Script writed by: HoangHien."
 creditlb.Visible = true
 
 autoshoot_turret.BackgroundTransparency = 0.8
 autoshoot_turret.BackgroundColor3 = Color3.new(0, 0, 0)
 autoshoot_turret.Position = UDim2.new(0.02, 0, 0.05, 0)
-autoshoot_turret.Size = UDim2.new(0.96, 0, 0.2, 0)
+autoshoot_turret.Size = UDim2.new(0.645, 0, 0.2, 0)
 autoshoot_turret.TextScaled = true
 autoshoot_turret.TextColor3 = Color3.new(1, 1, 1)
 autoshoot_turret.Font = Enum.Font.Code
@@ -129,25 +134,58 @@ autoshoot_turret.Visible = true
 
 turretmode.BackgroundTransparency = 0.8
 turretmode.BackgroundColor3 = Color3.new(0, 0, 0)
-turretmode.Position = UDim2.new(0.02, 0, 0.265, 0)
-turretmode.Size = UDim2.new(0.96, 0, 0.2, 0)
+turretmode.Position = UDim2.new(0.68, 0, 0.05, 0)
+turretmode.Size = UDim2.new(0.29, 0, 0.2, 0)
 turretmode.TextScaled = true
 turretmode.TextColor3 = Color3.new(1, 1, 0)
 turretmode.Font = Enum.Font.Code
-turretmode.Text = "NEAREST"
+turretmode.Text = "Nearby"
 turretmode.Visible = true
 
 nukeboom.BackgroundTransparency = 0.8
 nukeboom.BackgroundColor3 = Color3.new(0, 0, 0)
-nukeboom.Position = UDim2.new(0.02, 0, 0.05, 0)
-nukeboom.Size = UDim2.new(0.96, 0, 0.2, 0)
+nukeboom.Position = UDim2.new(0.02, 0, 0.275, 0)
+nukeboom.Size = UDim2.new(0.645, 0, 0.2, 0)
 nukeboom.TextScaled = true
 nukeboom.TextColor3 = Color3.new(1, 1, 1)
 nukeboom.Font = Enum.Font.Code
 nukeboom.Text = "Air Strike"
 nukeboom.Visible = true
 
+storagetarget.BackgroundTransparency = 0.5
+storagetarget.BackgroundColor3 = Color3.new(0, 0, 0)
+storagetarget.Position = UDim2.new(0.25, 0, 0.69, 0)
+storagetarget.Size = UDim2.new(0.15, 0, 0.05, 0)
+storagetarget.TextScaled = true
+storagetarget.TextSize = 12
+storagetarget.TextColor3 = Color3.new(1, 1, 1)
+storagetarget.Text = ""
+storagetarget.Font = Enum.Font.Code
+storagetarget.ClearTextOnFocus = false
+storagetarget.PlaceholderText = "= Input Target Name ="
+storagetarget.Visible = false
+
+airstrike_mode.BackgroundTransparency = 0.8
+airstrike_mode.BackgroundColor3 = Color3.new(0, 0, 0)
+airstrike_mode.Position = UDim2.new(0.68, 0, 0.275, 0)
+airstrike_mode.Size = UDim2.new(0.29, 0, 0.2, 0)
+airstrike_mode.TextScaled = true
+airstrike_mode.TextColor3 = Color3.new(1, 1, 0)
+airstrike_mode.Font = Enum.Font.Code
+airstrike_mode.Text = "Self"
+airstrike_mode.Visible = true
+
 -- Connected function --
+function correct_username(plrs_name)
+    for _, findplrs in ipairs(plrs:GetPlayers()) do
+        if string.lower(findplrs.Name):sub(1, #plrs_name) == string.lower(plrs_name) or
+        string.lower(findplrs.DisplayName):sub(1, #plrs_name) == string.lower(plrs_name) then
+            return findplrs
+        end
+    end
+    return nil
+end
+
 function normal_ntf(tl, tx)
     starterui:SetCore("SendNotification", {
         Title = tl,
@@ -160,6 +198,19 @@ function music_mb1c(b, script)
     b.MouseButton1Click:Connect(function()
         script()
     end)
+end
+
+function music_fl(b, e, script)
+    b.FocusLost:Connect(function(e)
+        if e then
+            script()
+        end
+    end)
+end
+
+function uic0_2(ui)
+    local uic = Instance.new("UICorner", ui)
+    uic.CornerRadius = UDim.new(0.2, 0)
 end
 
 function hidevisfr(vf)
@@ -177,6 +228,7 @@ function hide_Allframe()
     hidevisfr(turretframe)
     hidevisfr(toolframe)
     hidevisfr(switchpage)
+    hidevisfr(storagetarget)
 end
 
 function hide_Powerframe()
@@ -226,6 +278,23 @@ local function findfarthestENEMY()
     return farthestone
 end
 
+local function findcustomENEMY(username)
+    local c_har = plr.Character
+    if not c_har then return nil end
+    
+    local targetPlayer = nil
+    
+    for i, v in ipairs(plrs:GetPlayers()) do
+        if v.Character and v.Character:FindFirstChild("HumanoidRootPart") then
+            if v.Name == username then
+                targetPlayer = v
+            end
+        end
+    end
+
+    return targetPlayer
+end
+
 local function findrandomENEMY()
     local c_har = plr.Character
     if not c_har then return nil end
@@ -242,9 +311,9 @@ local function findrandomENEMY()
 end
 
 function autoaimshootnearest_turret()
-    local nearestPLRS, humanoidrpPLRS, positionPLRS
-    nearestPLRS = findneareatENEMY()
-    humanoidrpPLRS = nearestPLRS and nearestPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
+    local Chosen_targetPLRS, humanoidrpPLRS, positionPLRS
+    Chosen_targetPLRS = findneareatENEMY()
+    humanoidrpPLRS = Chosen_targetPLRS and Chosen_targetPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
     if humanoidrpPLRS then
         positionPLRS = humanoidrpPLRS.Position
         
@@ -264,9 +333,9 @@ function autoaimshootnearest_turret()
 end
 
 function autoaimshootfarthest_turret()
-    local nearestPLRS, humanoidrpPLRS, positionPLRS
-    nearestPLRS = findfarthestENEMY()
-    humanoidrpPLRS = nearestPLRS and nearestPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
+    local Chosen_targetPLRS, humanoidrpPLRS, positionPLRS
+    Chosen_targetPLRS = findfarthestENEMY()
+    humanoidrpPLRS = Chosen_targetPLRS and Chosen_targetPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
     if humanoidrpPLRS then
         positionPLRS = humanoidrpPLRS.Position
         
@@ -285,10 +354,38 @@ function autoaimshootfarthest_turret()
     end
 end
 
+function autoaimshootcustom_turret(user)
+    local Chosen_targetPLRS, humanoidrpPLRS, positionPLRS
+    Chosen_targetPLRS = findcustomENEMY(user)
+
+    if Chosen_targetPLRS then
+        humanoidrpPLRS = Chosen_targetPLRS.Character:FindFirstChild("HumanoidRootPart")
+    end
+
+    if humanoidrpPLRS then
+        positionPLRS = humanoidrpPLRS.Position
+        
+        local args = {
+            [1] = "Turret",
+            [2] = "Energy Ball",
+            [3] = {
+                ["Mouse"] = positionPLRS,
+                ["Gun"] = workspace.Tycoons[self_name].Assets.Turret.XYZGuns.Right,
+                ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+            }
+        }
+        
+        game:GetService("ReplicatedStorage").Remotes.DoMagic:FireServer(unpack(args))
+        wait(0.01)
+    else
+        print("Error: Target not found or invalid!")
+    end
+end
+
 function autoaimshootrandom_turret()
-    local nearestPLRS, humanoidrpPLRS, positionPLRS
-    nearestPLRS = findrandomENEMY()
-    humanoidrpPLRS = nearestPLRS and nearestPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
+    local Chosen_targetPLRS, humanoidrpPLRS, positionPLRS
+    Chosen_targetPLRS = findrandomENEMY()
+    humanoidrpPLRS = Chosen_targetPLRS and Chosen_targetPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
     if humanoidrpPLRS then
         positionPLRS = humanoidrpPLRS.Position
         
@@ -318,7 +415,11 @@ function GetPartPos(pn)
 end
 
 function JusticeSky(pr)
-    local MainTarget_Part, NukePad_Part, NukePad_PartInt
+    if ws:FindFirstChild("LockIn") then
+        ws:FindFirstChild("LockIn"):Destroy()
+    end
+    
+    local MainTarget_Part, NukePad_Part, NukePad_PartInt, NearbyOne_toNuke, HumanoidRP_Nearest, PositionNearest
     MainTarget_Part = Instance.new("Part")
     NukePad_Part = ws.Tycoons[self_name].Assets["Air Strike"].Wedge
     
@@ -339,20 +440,40 @@ function JusticeSky(pr)
     if NukePad_Part then
         local checkplrhrp = plr.Character:FindFirstChild("HumanoidRootPart")
         if checkplrhrp then
+            if current_modeairstrike == 2 then -- Start: just a test
+                NearbyOne_toNuke = findneareatENEMY()
+                task.wait(0.2)
+            end -- End: i think will remove
             plr.Character.HumanoidRootPart.CFrame = NukePad_Part.CFrame
-            task.wait(0.8)
+            task.wait(0.2)
             fireproximityprompt(ws.Tycoons[self_name].Assets["Air Strike"].Interact.ProximityPrompt)
-            task.wait(1)
-            NukePad_PartInt = GetPartPos("LockIn")
-            wait(0.5)
-            local args = {
-                [1] = NukePad_PartInt
-            }
-            
-            game:GetService("ReplicatedStorage").Magic.Ability:FindFirstChild("Air Strike").RemoteEvent:FireServer(unpack(args))
-            wait(0.5)
+            task.wait(0.35)
+            if current_modeairstrike == 1 then
+                NukePad_PartInt = GetPartPos("LockIn")
+                wait(0.01)
+                local args = {
+                    [1] = NukePad_PartInt
+                }
+                
+                game:GetService("ReplicatedStorage").Magic.Ability:FindFirstChild("Air Strike").RemoteEvent:FireServer(unpack(args))
+            elseif current_modeairstrike == 2 then
+                -- NearbyOne_toNuke = findneareatENEMY()
+                HumanoidRP_Nearest = NearbyOne_toNuke and NearbyOne_toNuke.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
+                if HumanoidRP_Nearest then
+                    PositionNearest = HumanoidRP_Nearest.Position
+                    wait(0.01)
+                    local args = {
+                        [1] = PositionNearest
+                    }
+                    
+                    game:GetService("ReplicatedStorage").Magic.Ability:FindFirstChild("Air Strike").RemoteEvent:FireServer(unpack(args))
+                else
+                    normal_ntf("《Error》", "Player: " .. NearbyOne_toNuke.Name .. " does not exist a HumanoidRootPart !")
+                end
+            end
+            task.wait(0.35)
             plr.Character.HumanoidRootPart.CFrame = ws.LockIn.CFrame
-            task.wait(0.5)
+            task.wait(0.15)
             for i, p in pairs(ws:GetChildren()) do
                 if p:IsA("Part") and p.Name == "LockIn" then
                     p:Destroy()
@@ -374,10 +495,22 @@ music_mb1c(openui, function()
         openui.TextColor3 = Color3.new(1, 0, 1)
     else
         itsHidden = true
-        sframe.Visible = true
         switchpage.Visible = true
         openui.TextColor3 = Color3.new(0, 1, 1)
-        switchpage.Text = "<< Credit Page >>"
+        if itsPage == 1 then
+            sframe.Visible = true
+            switchpage.Text = "<< Credit Page >>"
+        elseif itsPage == 2 then
+            turretframe.Visible = true
+            switchpage.Text = "<< Turret Page >>"
+        elseif itsPage >= 3 then
+            toolframe.Visible = true
+            switchpage.Text = "<< Ability Page >>"
+        end
+        
+        if switchmode == 4 then
+            visfr(storagetarget)
+        end
     end
 end)
 
@@ -428,15 +561,20 @@ music_mb1c(autoshoot_turret, function()
             
             while itsDefends do
                 if current_turretmode == 1 then
-                    turretmode.Text = "NEAREST"
+                    turretmode.Text = "Nearby"
                     pcall(autoaimshootnearest_turret)
                 elseif current_turretmode == 2 then
-                    turretmode.Text = "FARTHEST"
+                    turretmode.Text = "Farthest"
                     pcall(autoaimshootfarthest_turret)
                 elseif current_turretmode == 3 then
-                    turretmode.Text = "RANDOM"
+                    turretmode.Text = "Random"
                     pcall(autoaimshootrandom_turret)
-                elseif current_turretmode >= 4 then
+                elseif current_turretmode == 4 then
+                    turretmode.Text = "User"
+                    pcall(function()
+                        autoaimshootcustom_turret(finaln.Name)
+                    end)
+                elseif current_turretmode >= 5 then
                     current_turretmode = 1
                 end
                 wait(0.01)
@@ -451,18 +589,17 @@ music_mb1c(turretmode, function()
     switchmode = switchmode + 1
     current_turretmode = current_turretmode + 1
     if switchmode == 2 then
-        turretmode.Text = "FARTHEST"
+        turretmode.Text = "Farthest"
+        hidevisfr(storagetarget)
     elseif switchmode == 3 then
-        turretmode.Text = "RANDOM"
+        turretmode.Text = "Random"
+        hidevisfr(storagetarget)
     elseif switchmode == 4 then
-        if not itOnWorking then
-            turretmode.Text = "CUSTOM"
-        else
-            switchmode = switchmode + 1
-            turretmode.Text = "NEAREST"
-        end
+        turretmode.Text = "User"
+        visfr(storagetarget)
     elseif switchmode >= 5 then
-        turretmode.Text = "NEAREST"
+        turretmode.Text = "Nearby"
+        hidevisfr(storagetarget)
         switchmode = 1
     end
 end)
@@ -470,3 +607,25 @@ end)
 music_mb1c(nukeboom, function()
     JusticeSky(ws)
 end)
+
+music_fl(storagetarget, enterPressed, function()
+    local inputn = storagetarget.Text
+    finaln = correct_username(inputn)
+    normal_ntf("《User Selected》", "Current ENEMY is: " .. finaln.Name .. " Position !")
+end)
+
+music_mb1c(airstrike_mode, function()
+    current_modeairstrike = current_modeairstrike + 1
+    if current_modeairstrike == 2 then
+        airstrike_mode.Text = "Nearby"
+    elseif current_modeairstrike >= 3 then
+        airstrike_mode.Text = "Self"
+        current_modeairstrike = 1
+    end
+end)
+
+uic0_2(autoshoot_turret)
+uic0_2(turretmode)
+uic0_2(nukeboom)
+uic0_2(storagetarget)
+uic0_2(airstrike_mode)
