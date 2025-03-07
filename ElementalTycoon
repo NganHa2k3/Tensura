@@ -1,145 +1,472 @@
--- Elemental Tycoon: Machine Gun --
+-- HoangHien_Script: Elementals Tycoon --
+local coreui, starterui, singleone, mainframe, sframe, turretframe, toolframe
+local openui, lockbutton, switchpage
+local creditlb, autoshoot_turret, turretmode, nukeboom
+local itsHidden, itsLocked, itsPage, itsDefends, switchmode, itOnWorking, current_turretmode, previous_pos
+local ws, plrs, plr, self_name
 
-local Elemental_SG, RifleToggler, DelayBox, MultiShot
+itsHidden = false
+itsLocked = true
+itsPage = 1
+itsDefends = false
+switchmode = 1
+current_turretmode = 1
 
-Elemental_SG = Instance.new("ScreenGui", game:GetService("CoreGui"))
-RifleToggler = Instance.new("TextButton", Elemental_SG)
-DelayBox = Instance.new("TextBox", Elemental_SG)
+itOnWorking = true
 
-Elemental_SG.Name = "AimbotSkill_PVPScript"
-MultiShot = false
-_G.DelayTime = _G.DelayTime or 0.05
+previous_pos = nil
 
-local function findNearestPlayer()
-    local localPlayer = game:GetService("Players").LocalPlayer
-    local character = localPlayer.Character
-    if not character then return nil end
-    
-    local nearestPlayer = nil
-    local shortestDistance = math.huge
-    
-    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-        if player ~= localPlayer and player.Character then
-            local distance = (player.Character.HumanoidRootPart.Position - character.HumanoidRootPart.Position).magnitude
-            if distance < shortestDistance then
-                shortestDistance = distance
-                nearestPlayer = player
-            end
-        end
-    end
-    return nearestPlayer
-end
+coreui = game:GetService("CoreGui")
+starterui = game:GetService("StarterGui")
+ws = game:GetService("Workspace")
+plrs = game:GetService("Players")
+plr = plrs.LocalPlayer
 
-function AttackNoCD_JK()
-    local localPlayer = game:GetService("Players").LocalPlayer
-    local character = localPlayer.Character
-    if not character then return end
+self_name = plr.Name
 
-    local selfname = localPlayer.Name
-    local nearestPlayer = findNearestPlayer()
-    local targetPosition = nearestPlayer and nearestPlayer.Character.HumanoidRootPart.Position or character.HumanoidRootPart.Position
-    
-    local args = {
-    [1] = "Space",
-    [2] = "Space Gun",
-    [3] = {
-        ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0),
-        ["Mouse"] = targetPosition
-        }
-    }
-    
-    game:GetService("ReplicatedStorage").Remotes.DoMagic:FireServer(unpack(args))
+singleone = Instance.new("ScreenGui", coreui)
+mainframe = Instance.new("Frame", singleone)
+sframe = Instance.new("Frame", mainframe)
+turretframe = Instance.new("Frame", mainframe)
+toolframe = Instance.new("Frame", mainframe)
 
-    local args = {
-    [1] = "Turret",
-    [2] = "Energy Ball",
-    [3] = {
-        ["Mouse"] = targetPosition,
-        ["Gun"] = workspace.Tycoons[selfname].Assets.Turret.XYZGuns.Right,
-        ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
-        }
-    }
-    
-    game:GetService("ReplicatedStorage").Remotes.DoMagic:FireServer(unpack(args))
-    wait(_G.DelayTime)
-end
+openui = Instance.new("TextButton", mainframe)
+lockbutton = Instance.new("TextButton", mainframe)
+switchpage = Instance.new("TextButton", mainframe)
 
-function c(ui)
-    local vk = Instance.new("UICorner")
-    vk.Parent = ui
-    vk.CornerRadius = UDim.new(0.2, 0)
-end
+creditlb = Instance.new("TextLabel", sframe)
+autoshoot_turret = Instance.new("TextButton", turretframe)
+turretmode = Instance.new("TextButton", turretframe)
+nukeboom = Instance.new("TextButton", toolframe)
 
-function ntf(title, text)
-    game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = title,
-        Text = text,
-        Duration = 1.25,
-        Button1 = "Reset Delay Time ?",
-        Callback = (function()
-            _G.DelayTime = 0.05
-            print("Delay Time Reset.")
-        end)
+singleone.Name = "Elementals_Script"
+
+mainframe.BackgroundTransparency = 0
+mainframe.BackgroundColor3 = Color3.new(0, 0, 0)
+mainframe.Position = UDim2.new(0.65, 0, -0.1, 0)
+mainframe.Size = UDim2.new(0.2, 0, 0.05, 0)
+mainframe.Active = true
+mainframe.Draggable = true
+mainframe.Visible = true
+
+sframe.BackgroundTransparency = 0.5
+sframe.BackgroundColor3 = Color3.new(0, 0, 0)
+sframe.Position = UDim2.new(0, 0, 1, 0)
+sframe.Size = UDim2.new(1, 0, 4.95, 0)
+sframe.Active = true
+sframe.Draggable = false
+sframe.Visible = false
+
+turretframe.BackgroundTransparency = 0.5
+turretframe.BackgroundColor3 = Color3.new(0, 0, 0)
+turretframe.Position = UDim2.new(0, 0, 1, 0)
+turretframe.Size = UDim2.new(1, 0, 4.95, 0)
+turretframe.Active = true
+turretframe.Draggable = false
+turretframe.Visible = false
+
+toolframe.BackgroundTransparency = 0.5
+toolframe.BackgroundColor3 = Color3.new(0, 0, 0)
+toolframe.Position = UDim2.new(0, 0, 1, 0)
+toolframe.Size = UDim2.new(1, 0, 4.95, 0)
+toolframe.Active = true
+toolframe.Draggable = false
+toolframe.Visible = false
+
+openui.BackgroundTransparency = 0
+openui.BackgroundColor3 = Color3.new(1, 1, 1)
+openui.Position = UDim2.new(0.02, 0, 0.1, 0)
+openui.Size = UDim2.new(0.6, 0, 0.8, 0)
+openui.TextScaled = true
+openui.TextSize = 12
+openui.TextColor3 = Color3.new(1, 0, 1)
+openui.Font = Enum.Font.Code
+openui.Text = "Elementals"
+openui.Visible = true
+
+lockbutton.BackgroundTransparency = 0
+lockbutton.BackgroundColor3 = Color3.new(1, 1, 1)
+lockbutton.Position = UDim2.new(0.65, 0, 0.1, 0)
+lockbutton.Size = UDim2.new(0.15, 0, 0.8, 0)
+lockbutton.TextScaled = true
+lockbutton.TextSize = 12
+lockbutton.TextColor3 = Color3.new(0, 1, 0)
+lockbutton.Font = Enum.Font.Code
+lockbutton.Text = "LockUI"
+lockbutton.Visible = true
+
+switchpage.BackgroundTransparency = 0.5
+switchpage.BackgroundColor3 = Color3.new(1, 1, 1)
+switchpage.Position = UDim2.new(0, 0, 6.25, 0)
+switchpage.Size = UDim2.new(1, 0, 0.8, 0)
+switchpage.TextScaled = true
+switchpage.TextSize = 12
+switchpage.TextColor3 = Color3.new(1, 1, 1)
+switchpage.Font = Enum.Font.Code
+switchpage.Text = "<< Credit Page >>"
+switchpage.Visible = false
+
+creditlb.BackgroundTransparency = 0.8
+creditlb.BackgroundColor3 = Color3.new(0, 0, 0)
+creditlb.Position = UDim2.new(0.02, 0, 0.05, 0)
+creditlb.Size = UDim2.new(0.96, 0, 0.2, 0)
+creditlb.TextScaled = true
+creditlb.TextSize = 12
+creditlb.TextColor3 = Color3.new(1, 1, 0)
+creditlb.Font = Enum.Font.Code
+creditlb.Text = "script making by HoangHien."
+creditlb.Visible = true
+
+autoshoot_turret.BackgroundTransparency = 0.8
+autoshoot_turret.BackgroundColor3 = Color3.new(0, 0, 0)
+autoshoot_turret.Position = UDim2.new(0.02, 0, 0.05, 0)
+autoshoot_turret.Size = UDim2.new(0.96, 0, 0.2, 0)
+autoshoot_turret.TextScaled = true
+autoshoot_turret.TextColor3 = Color3.new(1, 1, 1)
+autoshoot_turret.Font = Enum.Font.Code
+autoshoot_turret.Text = "Auto Defends: OFF"
+autoshoot_turret.Visible = true
+
+turretmode.BackgroundTransparency = 0.8
+turretmode.BackgroundColor3 = Color3.new(0, 0, 0)
+turretmode.Position = UDim2.new(0.02, 0, 0.265, 0)
+turretmode.Size = UDim2.new(0.96, 0, 0.2, 0)
+turretmode.TextScaled = true
+turretmode.TextColor3 = Color3.new(1, 1, 0)
+turretmode.Font = Enum.Font.Code
+turretmode.Text = "NEAREST"
+turretmode.Visible = true
+
+nukeboom.BackgroundTransparency = 0.8
+nukeboom.BackgroundColor3 = Color3.new(0, 0, 0)
+nukeboom.Position = UDim2.new(0.02, 0, 0.05, 0)
+nukeboom.Size = UDim2.new(0.96, 0, 0.2, 0)
+nukeboom.TextScaled = true
+nukeboom.TextColor3 = Color3.new(1, 1, 1)
+nukeboom.Font = Enum.Font.Code
+nukeboom.Text = "Air Strike"
+nukeboom.Visible = true
+
+-- Connected function --
+function normal_ntf(tl, tx)
+    starterui:SetCore("SendNotification", {
+        Title = tl,
+        Text = tx,
+        Duration = 1,
     })
 end
 
-RifleToggler.BackgroundTransparency = 0.5
-RifleToggler.BackgroundColor3 = Color3.new(0, 0, 0)
-RifleToggler.Position = UDim2.new(0.25, 0, 0.58, 0)
-RifleToggler.Size = UDim2.new(0.05, 0, 0.1, 0)
-RifleToggler.TextScaled = true
-RifleToggler.TextColor3 = Color3.new(1, 1, 1)
-RifleToggler.Font = Enum.Font.Code
-RifleToggler.Text = "AutoShoot: OFF"
-RifleToggler.Visible = true
+function music_mb1c(b, script)
+    b.MouseButton1Click:Connect(function()
+        script()
+    end)
+end
 
-DelayBox.BackgroundTransparency = 0.5
-DelayBox.BackgroundColor3 = Color3.new(0, 0, 0)
-DelayBox.Position = UDim2.new(0.32, 0, 0.58, 0)
-DelayBox.Size = UDim2.new(0.05, 0, 0.1, 0)
-DelayBox.TextScaled = true
-DelayBox.TextColor3 = Color3.new(1, 1, 0)
-DelayBox.Font = Enum.Font.Code
-DelayBox.Text = ""
-DelayBox.ClearTextOnFocus = false
-DelayBox.PlaceholderText = "Delay"
-DelayBox.Visible = true
+function hidevisfr(vf)
+    if vf.Visible == true then
+        vf.Visible = false
+    end
+end
 
-c(RifleToggler)
-c(DelayBox)
+function visfr(vf)
+    vf.Visible = true
+end
 
--- Connect button --
+function hide_Allframe()
+    hidevisfr(sframe)
+    hidevisfr(turretframe)
+    hidevisfr(toolframe)
+    hidevisfr(switchpage)
+end
 
-RifleToggler.MouseButton1Click:Connect(function()
-    if MultiShot then
-        MultiShot = false
-        RifleToggler.Text = "AutoShoot: OFF"
-        RifleToggler.TextColor3 = Color3.new(1, 1, 1)
-    else
-        MultiShot = true
-        RifleToggler.Text = "AutoShoot: ON"
-        RifleToggler.TextColor3 = Color3.new(0, 1, 0)
-        
-        game:GetService("RunService").RenderStepped:Connect(function()
-            if MultiShot then
-                AttackNoCD_JK()
-                wait(0.01)
+function hide_Powerframe()
+    hidevisfr(sframe)
+    hidevisfr(turretframe)
+    hidevisfr(toolframe)
+end
+
+-- AbilitySkill function --
+local function findneareatENEMY()
+    local c_har = plr.Character
+    if not c_har then return nil end
+    
+    local nearestone, closedistance, distance
+    nearestone = nil
+    closedistance = math.huge
+    
+    for i, v in ipairs(plrs:GetPlayers()) do
+        if v ~= plr and plr.Character then
+            distance = (v.Character.HumanoidRootPart.Position - c_har.HumanoidRootPart.Position).magnitude
+            if distance < closedistance then
+                closedistance = distance
+                nearestone = v
             end
-        end)
+        end
+    end
+    return nearestone
+end
+
+local function findfarthestENEMY()
+    local c_har = plr.Character
+    if not c_har then return nil end
+    
+    local farthestone, farthestdistance, distance
+    farthestone = nil
+    farthestdistance = 0
+    
+    for i, v in ipairs(plrs:GetPlayers()) do
+        if v ~= plr and plr.Character then
+            distance = (v.Character.HumanoidRootPart.Position - c_har.HumanoidRootPart.Position).magnitude
+            if distance > farthestdistance then
+                farthestdistance = distance
+                farthestone = v
+            end
+        end
+    end
+    return farthestone
+end
+
+local function findrandomENEMY()
+    local c_har = plr.Character
+    if not c_har then return nil end
+    
+    local players, randomplayers
+    players = plrs:GetPlayers()
+    table.remove(players, table.find(players, plr))
+    
+    if #players == 0 then return nil end
+    
+    randomplayers = players[math.random(1, #players)]
+    
+    return randomplayers
+end
+
+function autoaimshootnearest_turret()
+    local nearestPLRS, humanoidrpPLRS, positionPLRS
+    nearestPLRS = findneareatENEMY()
+    humanoidrpPLRS = nearestPLRS and nearestPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
+    if humanoidrpPLRS then
+        positionPLRS = humanoidrpPLRS.Position
+        
+        local args = {
+            [1] = "Turret",
+            [2] = "Energy Ball",
+            [3] = {
+                ["Mouse"] = positionPLRS,
+                ["Gun"] = workspace.Tycoons[self_name].Assets.Turret.XYZGuns.Right,
+                ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+                }
+            }
+            
+        game:GetService("ReplicatedStorage").Remotes.DoMagic:FireServer(unpack(args))
+        wait(0.01)
+    end
+end
+
+function autoaimshootfarthest_turret()
+    local nearestPLRS, humanoidrpPLRS, positionPLRS
+    nearestPLRS = findfarthestENEMY()
+    humanoidrpPLRS = nearestPLRS and nearestPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
+    if humanoidrpPLRS then
+        positionPLRS = humanoidrpPLRS.Position
+        
+        local args = {
+            [1] = "Turret",
+            [2] = "Energy Ball",
+            [3] = {
+                ["Mouse"] = positionPLRS,
+                ["Gun"] = workspace.Tycoons[self_name].Assets.Turret.XYZGuns.Right,
+                ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+                }
+            }
+            
+        game:GetService("ReplicatedStorage").Remotes.DoMagic:FireServer(unpack(args))
+        wait(0.01)
+    end
+end
+
+function autoaimshootrandom_turret()
+    local nearestPLRS, humanoidrpPLRS, positionPLRS
+    nearestPLRS = findrandomENEMY()
+    humanoidrpPLRS = nearestPLRS and nearestPLRS.Character:FindFirstChild("HumanoidRootPart") or plr.Character:FindFirstChild("HumanoidRootPart")
+    if humanoidrpPLRS then
+        positionPLRS = humanoidrpPLRS.Position
+        
+        local args = {
+            [1] = "Turret",
+            [2] = "Energy Ball",
+            [3] = {
+                ["Mouse"] = positionPLRS,
+                ["Gun"] = workspace.Tycoons[self_name].Assets.Turret.XYZGuns.Right,
+                ["Camera"] = CFrame.new(0, 0, 0) * CFrame.Angles(0, 0, 0)
+                }
+            }
+            
+        game:GetService("ReplicatedStorage").Remotes.DoMagic:FireServer(unpack(args))
+        wait(0.01)
+    end
+end
+
+-- Nuke Boom function --
+function GetPartPos(pn)
+    local special = ws:FindFirstChild(pn)
+    if special and special:IsA("BasePart") then
+        return special.Position
+    else
+        return nil
+    end
+end
+
+function JusticeSky(pr)
+    local MainTarget_Part, NukePad_Part, NukePad_PartInt
+    MainTarget_Part = Instance.new("Part")
+    NukePad_Part = ws.Tycoons[self_name].Assets["Air Strike"].Wedge
+    
+    MainTarget_Part.Anchored = true
+    MainTarget_Part.CanCollide = false
+    MainTarget_Part.Transparency = 0.9
+    MainTarget_Part.Color = Color3.new(1, 0, 0)
+    MainTarget_Part.Material = Enum.Material.Neon
+    MainTarget_Part.Parent = pr
+    MainTarget_Part.Name = "LockIn"
+    MainTarget_Part.Size = Vector3.new(5, 0.2, 5)
+    MainTarget_Part.Position = Vector3.new(
+        plr.Character.HumanoidRootPart.Position.X,
+        plr.Character.HumanoidRootPart.Position.Y - 2,
+        plr.Character.HumanoidRootPart.Position.Z
+    )
+    
+    if NukePad_Part then
+        local checkplrhrp = plr.Character:FindFirstChild("HumanoidRootPart")
+        if checkplrhrp then
+            plr.Character.HumanoidRootPart.CFrame = NukePad_Part.CFrame
+            task.wait(0.8)
+            fireproximityprompt(ws.Tycoons[self_name].Assets["Air Strike"].Interact.ProximityPrompt)
+            task.wait(1)
+            NukePad_PartInt = GetPartPos("LockIn")
+            wait(0.5)
+            local args = {
+                [1] = NukePad_PartInt
+            }
+            
+            game:GetService("ReplicatedStorage").Magic.Ability:FindFirstChild("Air Strike").RemoteEvent:FireServer(unpack(args))
+            wait(0.5)
+            plr.Character.HumanoidRootPart.CFrame = ws.LockIn.CFrame
+            task.wait(0.5)
+            for i, p in pairs(ws:GetChildren()) do
+                if p:IsA("Part") and p.Name == "LockIn" then
+                    p:Destroy()
+                end
+            end
+        else
+            normal_ntf("《Wait for Character》", "You died... i think ?")
+        end
+    else
+        normal_ntf("《Air Strike Requires》", "You need to build Air Strike pad to use this feature button!")
+    end
+end
+
+-- Connected button --
+music_mb1c(openui, function()
+    if itsHidden then
+        itsHidden = false
+        hide_Allframe()
+        openui.TextColor3 = Color3.new(1, 0, 1)
+    else
+        itsHidden = true
+        sframe.Visible = true
+        switchpage.Visible = true
+        openui.TextColor3 = Color3.new(0, 1, 1)
+        switchpage.Text = "<< Credit Page >>"
     end
 end)
 
-DelayBox.FocusLost:Connect(function(enterPressed)
-    if enterPressed then
-        local newDelayTime = DelayBox.Text
-        local CurrentNewDelayTime = tonumber(newDelayTime)
-        if CurrentNewDelayTime > 0 then
-            _G.DelayTime = CurrentNewDelayTime
-            ntf("《Skill Delay Time》", "Current Delay Time Between Each Shot Is: [" .. _G.DelayTime .. "].")
-            wait(1.5)
-            DelayBox.Text = ""
-        else
-            ntf("》Invalid Delay Time《", "Can't Set Delay Time Between Each Shot Is Lower Than: [0].")
-        end
+music_mb1c(lockbutton, function()
+    if itsLocked then
+        itsLocked = false
+        mainframe.Draggable = false
+        lockbutton.Text = "UnLockUI"
+        lockbutton.TextColor3 = Color3.new(1, 0, 0)
+    else
+        itsLocked = true
+        mainframe.Draggable = true
+        lockbutton.Text = "LockUI"
+        lockbutton.TextColor3 = Color3.new(0, 1, 0)
     end
+end)
+
+music_mb1c(switchpage, function()
+    itsPage = itsPage + 1
+    hide_Powerframe()
+    if itsPage == 2 then
+        visfr(turretframe)
+        switchpage.Text = "<< Turret Page >>"
+    elseif itsPage == 3 then
+        visfr(toolframe)
+        switchpage.Text = "<< Ability Page >>"
+    elseif itsPage >= 4 then
+        visfr(sframe)
+        switchpage.Text = "<< Credit Page >>"
+        itsPage = 1
+    end
+end)
+
+-- Special button --
+music_mb1c(autoshoot_turret, function()
+    local towerdefends = ws.Tycoons[self_name].Assets:FindFirstChild("Turret")
+    if towerdefends then
+        if itsDefends then
+            itsDefends = false
+            autoshoot_turret.Text = "Auto Defends: OFF"
+            autoshoot_turret.TextColor3 = Color3.new(1, 1, 1)
+            normal_ntf("《Defends: OFF》", "Turret Stopped Shooting at Target!")
+        else
+            itsDefends = true
+            autoshoot_turret.Text = "Auto Defends: ON"
+            autoshoot_turret.TextColor3 = Color3.new(0, 1, 0)
+            normal_ntf("《Defends: ON》", "Turret Started Shooting at Target!")
+            
+            while itsDefends do
+                if current_turretmode == 1 then
+                    turretmode.Text = "NEAREST"
+                    pcall(autoaimshootnearest_turret)
+                elseif current_turretmode == 2 then
+                    turretmode.Text = "FARTHEST"
+                    pcall(autoaimshootfarthest_turret)
+                elseif current_turretmode == 3 then
+                    turretmode.Text = "RANDOM"
+                    pcall(autoaimshootrandom_turret)
+                elseif current_turretmode >= 4 then
+                    current_turretmode = 1
+                end
+                wait(0.01)
+            end
+        end
+    else
+        normal_ntf("《Doesnt Exist!》", "You does not have upgrades and build the tower defends yet already... can't use this button, Come back later :> !")
+    end
+end)
+
+music_mb1c(turretmode, function()
+    switchmode = switchmode + 1
+    current_turretmode = current_turretmode + 1
+    if switchmode == 2 then
+        turretmode.Text = "FARTHEST"
+    elseif switchmode == 3 then
+        turretmode.Text = "RANDOM"
+    elseif switchmode == 4 then
+        if not itOnWorking then
+            turretmode.Text = "CUSTOM"
+        else
+            switchmode = switchmode + 1
+            turretmode.Text = "NEAREST"
+        end
+    elseif switchmode >= 5 then
+        turretmode.Text = "NEAREST"
+        switchmode = 1
+    end
+end)
+
+music_mb1c(nukeboom, function()
+    JusticeSky(ws)
 end)
