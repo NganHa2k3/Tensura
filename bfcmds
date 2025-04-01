@@ -136,7 +136,7 @@ function cmdsx(cmd)
     elseif wis[1] == "-cmds" then
         print("Hello " .. game:GetService("Players").LocalPlayer.DisplayName .. "!")
         print("Here is all commands you can use: \n -buyitem [and a item name], -buyfruit [and a fruit name... like this example: Spin-Spin] \n -awk, -titles, -random, -gacha, -fruit, -tptool, -tptool v2, -twtool [distance] [speed], -miniui [v0.01 to v0.04], -sea [1 or 2 and 3] \n -redz")
-        game:GetService("StarterGui"):SetCore("DeveloperConsoleVisible", true)
+        game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
     end
     statec = false
     end
