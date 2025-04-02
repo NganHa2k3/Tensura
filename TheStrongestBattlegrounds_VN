@@ -1229,7 +1229,8 @@ local function toggleText()
         toggleMode.Text = "Dịch chuyển tới TrashCan"
     elseif modenumber == 4 and ice_event then
         toggleMode.Text = "Dịch chuyển tới Falling Star"
-    elseif modenumber == 5 then
+    elseif modenumber >= 5 then
+        toggleMode.Text = "Dịch chuyển tới Weakest Dummy"
         modenumber = 1
     end
 end
@@ -1338,7 +1339,7 @@ local function teleportToTarget()
         end
     elseif modenumber == 4 and ice_event then
         toggleMode.TextColor3 = Color3.fromRGB(0, 255, 255)
-        local FallingStar = game:GetService("Workspace").Thrown:FindFirstChild("Frozen Lock")
+        local FallingStar = game:GetService("Workspace").Thrown:FindFirstChild("Frozen Lock"):FindFirstChild("Lock")
         if FallingStar then
             targetPosition = FallingStar.CFrame
             game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetPosition)
