@@ -1,4 +1,4 @@
-local Plrs, plr, h1, h2, ch, ppos, statec
+local Plrs, plr, h1, h2, ch, ppos, statec, everCalledScripts
 Plrs = game:GetService("Players")
 plr = Plrs.LocalPlayer
 ch = plr.Character
@@ -6,6 +6,7 @@ h1 = ch.Humanoid
 h2 = ch.HumanoidRootPart
 ppos = h2.Position
 statec = false
+everCalledScripts = false
 
 function autocorrectname(splr)
     for _, xplr in ipairs(Plrs:GetPlayers()) do
@@ -133,9 +134,25 @@ function cmdsx(cmd)
         elseif wis[2] ~= "" then
             ntf("Hmm...", "Do 1 or 2 and 3 to teleportation sea/world")
         end
+    elseif wis[1] == "-fast" then
+        if wis[2] == "attack" then
+            if not everCalledScripts then
+                everCalledScripts = true
+                print("Wait... now loading fast attack scripts!")
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks"))()
+                print("Loaded... now enable it pls wait!")
+            else
+                print("Already loaded scripts one... so now i will just enable it!")
+            end
+            task.wait()
+            _G.EnableFastAttack = true
+            print("Fast attack enabled.")
+        end
+    elseif wis[1] == "-nofast" then
+        _G.EnableFastAttack = false
     elseif wis[1] == "-cmds" then
         print("Hello " .. game:GetService("Players").LocalPlayer.DisplayName .. "!")
-        print("Here is all commands you can use: \n -buyitem [and a item name], -buyfruit [and a fruit name... like this example: Spin-Spin] \n -awk, -titles, -random, -gacha, -fruit, -tptool, -tptool v2, -twtool [distance] [speed], -miniui [v0.01 to v0.04], -sea [1 or 2 and 3] \n -redz")
+        print("Here is all commands you can use: \n -buyitem [and a item name], -buyfruit [and a fruit name... like this example: Spin-Spin] \n -awk, -titles, -random, -gacha, -fruit, -tptool, -tptool v2, -twtool [distance] [speed], -miniui [v0.01 to v0.04], -sea [1 or 2 and 3], -fast attack, -nofast \n -redz")
         game:GetService("StarterGui"):SetCore("DevConsoleVisible", true)
     end
     statec = false
