@@ -9,6 +9,7 @@ local RE_RegisterHit = Net:WaitForChild("RE/RegisterHit")
 local Enemies = workspace:WaitForChild("Enemies")
 
 _G.EnableFastAttack = false
+_G.SuperFastAttack = false
 local Its_Disable, _WaitTime
 
 Its_Disable = false
@@ -56,7 +57,7 @@ function NormalAttacking(Character, Cooldown)
     end
 end
 
-function AttackNoCD()
+function AttackNoCD(Cooldown_I)
     if not IsAlive(Player.Character) then return end
     
     local Character = Player.Character
@@ -67,14 +68,18 @@ function AttackNoCD()
         return
     end
     
-    local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or 0.3
+    local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or Cooldown_I
 
     NormalAttacking(Character, Cooldown)
 end
 
 RunService.RenderStepped:Connect(function()
     if _G.EnableFastAttack and not Its_Disable then
-        AttackNoCD()
+        if not _G.SuperFastAttack then
+            AttackNoCD(0.3)
+        else
+            AttackNoCD(0.02)
+        end
         wait(_WaitTime)
     end
 end)
