@@ -2629,4 +2629,9 @@ local CoreGui = game:GetService("StarterGui")
             Duration = 2,
         })
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/cmds/bfcmds"))()
+task.spawn(function()
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/cmds/bfcmds"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/cmds/bfcmds_v2"))()
+    end)
+end)
