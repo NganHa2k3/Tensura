@@ -1,0 +1,279 @@
+-- Blox Fruits: Commands Scripts Fixed + Changed, HoangHien(@NganHa2k3) --
+local _WS, _CG, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands
+local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn
+local _PLRS, _PLR, _Char, _Him, _He
+local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused
+
+_G.Commands_Script_Language_Test = {}
+EndPoint = UDim2.new(0, 0, 0.1, 0)
+StartPoint = UDim2.new(-0.25, 0, 0.1, 0)
+
+_WS = game:GetService("Workspace")
+_CG = game:GetService("CoreGui")
+_RS = game:GetService("RunService")
+_TS = game:GetService("TweenService")
+_StGui = game:GetService("StarterGui")
+
+_PLRS = game:GetService("Players")
+_PLR = _PLRS.LocalPlayer
+_Char = _PLR.Character
+_Him = _Char:WaitForChild("HumanoidRootPart")
+_He = _Char:WaitForChild("Humanoid")
+
+FA_VariableCheck_0 = false
+FA_Toggle = false
+FA_Toggle_II = false
+Cmdbar_ItsOnFocused = false
+
+_SGui = Instance.new("ScreenGui", _CG)
+_GetCommands = Instance.new("TextBox", _SGui)
+_GetFocusedButton = Instance.new("TextButton", _GetCommands)
+_GetCorrectedCommands = Instance.new("TextLabel", _GetCommands)
+
+OnFocused_SlideOut = _TS:Create(_GetCommands, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Position = EndPoint})
+OnFocused_SlideIn = _TS:Create(_GetCommands, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Position = StartPoint})
+
+_GetCommands.BackgroundTransparency = 0.8
+_GetCommands.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_GetCommands.Position = UDim2.new(-0.25, 0, 0.1, 0)
+_GetCommands.Size = UDim2.new(0.25, 0, 0.065, 0)
+_GetCommands.TextScaled = true
+_GetCommands.TextSize = 9
+_GetCommands.TextColor3 = Color3.fromRGB(0, 255, 0)
+_GetCommands.Font = Enum.Font.Code
+_GetCommands.Text = ""
+_GetCommands.ClearTextOnFocus = true
+_GetCommands.PlaceholderText = _G.Commands_Script_Language_Test[1] or "Commands ?"
+_GetCommands.Visible = true
+
+_GetFocusedButton.BackgroundTransparency = 0.8
+_GetFocusedButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_GetFocusedButton.Position = UDim2.new(1.02, 0, 0, 0)
+_GetFocusedButton.Size = UDim2.new(0.15, 0, 1, 0)
+_GetFocusedButton.TextScaled = true
+_GetFocusedButton.TextSize = 9
+_GetFocusedButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+_GetFocusedButton.Font = Enum.Font.Code
+_GetFocusedButton.Text = _G.Commands_Script_Language_Test[2] or ">"
+_GetFocusedButton.Visible = true
+
+_GetCorrectedCommands.BackgroundTransparency = 1
+_GetCorrectedCommands.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_GetCorrectedCommands.Position = UDim2.new(0.02, 0, 1.02, 0)
+_GetCorrectedCommands.Size = UDim2.new(0.96, 0, 0.45, 0)
+_GetCorrectedCommands.TextScaled = true
+_GetCorrectedCommands.TextSize = 8.5
+_GetCorrectedCommands.TextColor3 = Color3.fromRGB(0, 255, 255)
+_GetCorrectedCommands.Font = Enum.Font.Code
+_GetCorrectedCommands.Text = _G.Commands_Script_Language_Test[4] or "</>"
+_GetCorrectedCommands.Visible = true
+
+function _MouseButton1Click(Name, Scripts)
+    Name.MouseButton1Click:Connect(function()
+        Scripts()
+    end)
+end
+
+function _FocusLost(Name, Var, Scripts)
+    Name.FocusLost:Connect(function(Var)
+        if Var then
+            Scripts()
+        end
+    end)
+end
+
+function _Notice(Tt, tx, dur, x)
+    if x == "SendNotification" then
+        _StGui:SetCore(x, {
+            Title = Tt,
+            Text = tx,
+            Duration = dur,
+        })
+    elseif x == "DevConsoleVisible" then
+        _StGui:SetCore(x, true)
+    end
+end
+
+function _PasteScripts(url)
+    pcall(function()
+        loadstring(game:HttpGet(url))()
+    end)
+end
+
+function EveryCommands()
+    local GetWords = _GetCommands.Text
+    local Scripts_Cmds = {}
+    
+    for wis in string.gmatch(GetWords, "%S+") do
+        table.insert(Scripts_Cmds, wis)
+    end
+    
+    if Scripts_Cmds[1] == "reset" then
+        -- _He:ChangeState(Enum.HumanoidStateType.Dead)
+        if _He.Health > 0 then
+            _He.Health = 0
+        end
+        _Notice("Commands", "Character Reseted!", 1, "SendNotification")
+    elseif Scripts_Cmds[1] == "console" then
+        _Notice("nothing", "nothing", 1, "DevConsoleVisible")
+        _Notice("Commands", "Developer Console Opened!", 1, "SendNotification")
+    elseif Scripts_Cmds[1] == "speed" then
+        local myCharacterIn_WS = _WS.Characters[_PLR.Name]
+        if myCharacterIn_WS then
+            if Scripts_Cmds[2] then
+                local new_SpeedValue = tonumber(Scripts_Cmds[2])
+                if new_SpeedValue >= 0.01 then
+                    myCharacterIn_WS:SetAttribute("SpeedMultiplier", new_SpeedValue)
+                    _Notice("Commands", "Running & Walking speed changed/set to: " .. new_SpeedValue, 1, "SendNotification")
+                else
+                    _Notice("Commands", "Running & Walking speed can't be set 0 or lower!", 1, "SendNotification")
+                end
+            elseif Scripts_Cmds[2] == "max" then
+                myCharacterIn_WS:SetAttribute("SpeedMultiplier", 10)
+                _Notice("Commands", "Running & Walking speed set maxium!", 1, "SendNotification")
+            elseif Scripts_Cmds[2] ~= "" or Scripts_Cmds[2] == " " then
+                _Notice("Commands", "Running & Walking speed try typing in a value number!", 1, "SendNotification")
+            end
+        end
+    elseif Scripts_Cmds[1] == "dash" then
+        local myCharacterIn_WS = _WS.Characters[_PLR.Name]
+        if myCharacterIn_WS then
+            if Scripts_Cmds[2] then
+                local new_DashDistanceValue = tonumber(Scripts_Cmds[2])
+                if new_DashDistanceValue >= 0.01 then
+                    myCharacterIn_WS:SetAttribute("DashLength", new_DashDistanceValue)
+                    _Notice("Commands", "Dash Distance increase to: " .. new_DashDistanceValue, 1, "SendNotification")
+                else
+                    _Notice("Commands", "Dash Distance can't be set 0 or lower!", 1, "SendNotification")
+                end
+            elseif Scripts_Cmds[2] == "max" then
+                myCharacterIn_WS:SetAttribute("DashLength", 900)
+                _Notice("Commands", "Dash Distance set maxium!", 1, "SendNotification")
+            elseif Scripts_Cmds[2] ~= "" or Scripts_Cmds[2] == " " then
+                _Notice("Commands", "Dash Distance try typing in a dash value number!", 1, "SendNotification")
+            end
+        end
+    elseif Scripts_Cmds[1] == "fastattack" then
+        if not FA_VariableCheck_0 then
+            FA_VariableCheck_0 = true
+            _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
+            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks")
+            _Notice("Commands", "Successfully Loaded Scripts!", 1, "SendNotification")
+            FastAttack_Status()
+        else
+            _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
+            FastAttack_Status()
+        end
+    elseif Scripts_Cmds[1] == "superfastattack" then
+        if not FA_VariableCheck_0 then
+            FA_VariableCheck_0 = true
+            _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
+            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks")
+            _Notice("Commands", "Successfully Loaded Scripts!", 1, "SendNotification")
+            SuperFastAttack_Status()
+        else
+            _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
+            SuperFastAttack_Status()
+        end
+    end
+    
+    _GetCommands.Text = ""
+end
+
+function FastAttack_Status()
+    if not FA_Toggle and not FA_Toggle_II then
+        FA_Toggle = true
+        _G.EnableFastAttack = true
+        _Notice("Commands", "Fast Attacking Normal is On/Activated!", 1, "SendNotification")
+    else
+        FA_Toggle = false
+        _G.EnableFastAttack = false
+        _Notice("Commands", "Fast Attacking Normal is Off/Deactivated!", 1, "SendNotification")
+    end
+end
+
+function SuperFastAttack_Status()
+    if not FA_Toggle_II and not FA_Toggle then
+        FA_Toggle_II = true
+        _G.EnableFastAttack = true
+        _G.SuperFastAttack = true
+        _Notice("Commands", "Fast Attacking Overpower is On/Activated!", 1, "SendNotification")
+    else
+        FA_Toggle_II = false
+        _G.EnableFastAttack = false
+        _G.SuperFastAttack = false
+        _Notice("Commands", "Fast Attacking Overpower is Off/Deactivated!", 1, "SendNotification")
+    end
+end
+
+local _TotalCommands = {"", "reset", "console", "fastattack", "superfastattack"}
+local _TotalCommands_I = {"</>", "reset", "console", "speed <value>", "dash <value>", "fastattack", "superfastattack"}
+function CorrectedEveryCommands(boolean_ix)
+    local GetCommands_Words, Matching_Words, Matching_Words_I
+    GetCommands_Words = _GetCommands.Text:lower()
+    Matching_Words = nil
+    Matching_Words_I = nil
+    
+    for TrueIndex, A_Commands in ipairs(_TotalCommands) do
+        if A_Commands:sub(1, #GetCommands_Words):lower() == GetCommands_Words then
+            Matching_Words = A_Commands
+            break
+        end
+    end
+    
+    for TrueIndex_I, A_Commands_I in ipairs(_TotalCommands_I) do
+        if A_Commands_I:sub(1, #GetCommands_Words):lower() == GetCommands_Words then
+            Matching_Words_I = A_Commands_I
+            break
+        end
+    end
+    
+    if boolean_ix then
+        if Matching_Words_I then
+            _GetCorrectedCommands.Text = Matching_Words_I
+        else
+            _GetCorrectedCommands.Text = _G.Commands_Script_Language_Test[4] or "</>"
+        end
+    else
+        if Matching_Words then
+            _GetCommands.Text = Matching_Words
+        else
+            _GetCommands.Text = ""
+        end
+    end
+end
+
+function _AddCornerUI(Name, Radius)
+    local UIC_Zero = Instance.new("UICorner", Name)
+    UIC_Zero.CornerRadius = UDim.new(Radius, 0)
+end
+
+_MouseButton1Click(_GetFocusedButton, function()
+    _GetCommands:CaptureFocus()
+end)
+
+_FocusLost(_GetCommands, enterPressed, function()
+    print("You're leave activated cmdbar... and have done something!")
+    Cmdbar_ItsOnFocused = false
+    OnFocused_SlideIn:Play()
+    _GetFocusedButton.Text = _G.Commands_Script_Language_Test[2] or ">"
+    -- CorrectedEveryCommands(false)
+    pcall(EveryCommands)
+end)
+
+_GetCommands.Focused:Connect(function()
+    print("You're on activated cmdbar, now waiting...")
+    Cmdbar_ItsOnFocused = true
+    OnFocused_SlideOut:Play()
+    _GetFocusedButton.Text = _G.Commands_Script_Language_Test[3] or "<"
+end)
+
+_RS.RenderStepped:Connect(function(deltaTime)
+    if Cmdbar_ItsOnFocused then
+        CorrectedEveryCommands(true)
+    end
+end)
+
+_AddCornerUI(_GetCommands, 0.2)
+_AddCornerUI(_GetFocusedButton, 0.2)
+_AddCornerUI(_GetCorrectedCommands, 0.2)
