@@ -1,52 +1,92 @@
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local tweenService = game:GetService("TweenService")
-local chestNames = {"Chest1", "Chest2", "Chest3"}
+-- Blox Fruits: HoangHien Script/<Collecting Chest Update Dragon 25> --
+local _WS, _PLRS, _PLR, _RS, _TS, _TpS, _Char, _Him, _He
+local _Chests_Name, _ItsMath, _NowPlay, _IsDeathOnec
 
--- Function to find all chests in the workspace
-local function findChests()
+_WS = game:GetService("Workspace")
+_PLRS = game:GetService("Players")
+_RS = game:GetService("RunService")
+_TS = game:GetService("TweenService")
+_TpS = game:GetService("TeleportService")
+
+_PLR = _PLRS.LocalPlayer
+_Char = _PLR.Character
+_Him = _Char:WaitForChild("HumanoidRootPart")
+_He = _Char:WaitForChild("Humanoid")
+
+_Chests_Name = {"Chest1", "Chest2", "Chest3"}
+_ItsMath = math.huge
+_NowPlay = false
+_IsDeathOnec = false
+_G.Hmm_WantSome = _G.Hmm_WantSome or 200
+
+function FlyingSmooth_Toggler(Whatsup)
+    if not _Him:FindFirstChild("Extra_Wings_IX") then
+        local Safety_First = Instance.new("BodyVelocity", Whatsup)
+        Safety_First.Name = "Extra_Wings_IX"
+        Safety_First.Velocity = Vector3.new(0, 0, 0)
+        Safety_First.MaxForce = Vector3.new(_ItsMath, _ItsMath, _ItsMath)
+        warn(":3 Safety flight.")
+    else
+        _Him:FindFirstChild("Extra_Wings_IX"):Destroy()
+        warn("=-= becareful.")
+    end
+end
+
+function LetUsGoThroughObject(TrueOrFalse)
+    for nothing, noclip_part in pairs(_Char:GetDescendants()) do
+        if noclip_part:IsA("BasePart") then
+            noclip_part.CanCollide = TrueOrFalse
+            warn("your a ghost :0")
+        end
+    end
+end
+
+function Let_meSearching4CHEST_OK()
     local chests = {}
-    for _, object in pairs(game.Workspace:GetDescendants()) do
-        if object:IsA("BasePart") and table.find(chestNames, object.Name) then
-            table.insert(chests, object)
+    
+    for nothing, a_mess in pairs(_WS:GetDescendants()) do
+        if a_mess:IsA("BasePart") and table.find(_Chests_Name, a_mess.Name) then
+            table.insert(chests, a_mess)
         end
     end
     return chests
 end
 
--- Function to calculate the distance between two parts
-local function getDistance(part1, part2)
-    return (part1.Position - part2.Position).Magnitude
+function ExpectedGet_Distance(Money1, Money2)
+    return (Money1.Position - Money2.Position).Magnitude
 end
 
--- Function to create the tween for the character's movement
-local function createTween(destination)
-    local goal = {CFrame = CFrame.new(destination.Position)}
-    local tweenInfo = TweenInfo.new(
-        getDistance(humanoidRootPart, destination) / 200,  -- 200 studs per second
-        Enum.EasingStyle.Linear,
-        Enum.EasingDirection.Out
-    )
-    return tweenService:Create(humanoidRootPart, tweenInfo, goal)
-end
-
--- Main function to start tweening to the chests
-local function moveToChests()
-    local chests = findChests()
-
-    -- Sort chests by distance from the character
-    table.sort(chests, function(a, b)
-        return getDistance(humanoidRootPart, a) < getDistance(humanoidRootPart, b)
+function Lets_Go_CollectedAllTheseCrateOrChests()
+    local new_chests = Let_meSearching4CHEST_OK()
+    
+    table.sort(new_chests, function(A_Point, B_Point)
+        return ExpectedGet_Distance(_Him, A_Point) < ExpectedGet_Distance(_Him, B_Point)
     end)
-
-    -- Start tweening to each chest in order of nearest
-    for _, chest in ipairs(chests) do
-        local tween = createTween(chest)
-        tween:Play()
-        tween.Completed:Wait()  -- Wait until the tween is done before moving to the next chest
+    
+    for money, locate_new_chest in pairs(new_chests) do
+        local Start_Farm = _TS:Create(_Him, TweenInfo.new(ExpectedGet_Distance(_Him, locate_new_chest) / _G.Hmm_WantSome, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {CFrame = CFrame.new(locate_new_chest.Position)})
+        Start_Farm:Play()
+        Start_Farm.Completed:Wait()
     end
 end
 
--- Start the tweening process
-moveToChests()
+function OkLetStart()
+    print("Let's Go !")
+    FlyingSmooth_Toggler(_Him)
+    LetUsGoThroughObject(false)
+    Lets_Go_CollectedAllTheseCrateOrChests()
+end
+
+OkLetStart()
+
+_RS.RenderStepped:Connect(function()
+    local _YourHealth = _He.Health
+    if _YourHealth <= 0 then
+        if not _IsDeathOnec then
+            _IsDeathOnec = true
+            FlyingSmooth_Toggler(_Him)
+            LetUsGoThroughObject(true)
+            warn("oh u ded, imma disable some stuff... wait until u activated it again :) !")
+        end
+    end
+end)
