@@ -76,11 +76,11 @@ function cmdsx(cmd)
         game:GetService("Players").LocalPlayer.PlayerGui.Main.Titles.Visible = true
         statec = false
     elseif wis[1] == "-redz" then
-            -- loadstring(game:HttpGet("https://raw.githubusercontent.com/newredz/BloxFruits/refs/heads/main/Source.luau"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/newredz/BloxFruits/refs/heads/main/Source.luau"))()
             statec = false
             ntf("Loading REDZ", "A useful blox fruits script not by me.")
-            task.wait(3)
-            game:GetService("Players").LocalPlayer:Kick("Banned [9999 Hours Left]")
+            -- task.wait(3)
+            -- game:GetService("Players").LocalPlayer:Kick("Banned [9999 Hours Left]")
     elseif wis[1] == "-miniui" then
         if wis[2] == "v0.01" then
             loadstring(game:HttpGet("https://byvn.net/qWp7"))()
