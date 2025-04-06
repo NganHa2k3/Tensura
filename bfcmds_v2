@@ -1,4 +1,4 @@
--- Blox Fruits: Commands Scripts Fixed + Changed, HoangHien(@NganHa2k3) --
+-- Blox Fruits: Commands Scripts Fixed + Changed, HoangHien --
 local _WS, _CG, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands
 local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn
 local _PLRS, _PLR, _Char, _Him, _He
@@ -63,7 +63,7 @@ _GetCorrectedCommands.Position = UDim2.new(0.02, 0, 1.02, 0)
 _GetCorrectedCommands.Size = UDim2.new(0.96, 0, 0.45, 0)
 _GetCorrectedCommands.TextScaled = true
 _GetCorrectedCommands.TextSize = 8.5
-_GetCorrectedCommands.TextColor3 = Color3.fromRGB(0, 255, 255)
+_GetCorrectedCommands.TextColor3 = Color3.fromRGB(255, 255, 255)
 _GetCorrectedCommands.Font = Enum.Font.Code
 _GetCorrectedCommands.Text = _G.Commands_Script_Language_Test[4] or "</>"
 _GetCorrectedCommands.Visible = true
@@ -175,6 +175,21 @@ function EveryCommands()
             _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
             SuperFastAttack_Status()
         end
+    elseif Scripts_Cmds[1] == "suggestiontextcolor" then
+        if #Scripts_Cmds < 4 then
+            _Notice("Theme", "Missing value! Please do 3_RGB color values.", 1, "SendNotification")
+        else
+            local _ArGs_II = tonumber(Scripts_Cmds[2])
+            local _ArGs_III = tonumber(Scripts_Cmds[3])
+            local _ArGs_IV = tonumber(Scripts_Cmds[4])
+            
+            if _ArGs_II and _ArGs_III and _ArGs_IV then
+                _GetCorrectedCommands.TextColor3 = Color3.fromRGB(_ArGs_II, _ArGs_III, _ArGs_IV)
+                _Notice("Theme", "Suggestion Text Theme Color Changed to: " .. Scripts_Cmds[2] .. " " .. Scripts_Cmds[3] .. " " .. Scripts_Cmds[4], 1, "SendNotification")
+            else
+                _Notice("Theme", "Please do a valid 3_RGB values.", 1, "SendNotification")
+            end
+        end
     end
     
     _GetCommands.Text = ""
@@ -207,7 +222,7 @@ function SuperFastAttack_Status()
 end
 
 local _TotalCommands = {"", "reset", "console", "fastattack", "superfastattack"}
-local _TotalCommands_I = {"</>", "reset", "console", "speed <value>", "dash <value>", "fastattack", "superfastattack"}
+local _TotalCommands_I = {"</>", "reset", "console", "speed <value>", "dash <value>", "fastattack", "superfastattack", "suggestiontextcolor <value_1> <value_2> <value_3>"}
 function CorrectedEveryCommands(boolean_ix)
     local GetCommands_Words, Matching_Words, Matching_Words_I
     GetCommands_Words = _GetCommands.Text:lower()
