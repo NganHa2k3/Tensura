@@ -105,6 +105,16 @@ function _PasteScripts(url, scripts)
     end
 end
 
+local EveryCmds_nAlliase = {
+    ["reset"] = {"reset", "r"},
+    ["console"] = {"console", "c"},
+    ["speed"] = {"speed", "s"},
+    ["dash"] = {"dash", "d"},
+    ["fastattack"] = {"fastattack", "fa"},
+    ["superfastattack"] = {"superfastattack", "sfa"},
+    ["suggestiontextcolor"] = {"suggestiontextcolor", "stc"}
+}
+
 function EveryCommands()
     local GetWords = _GetCommands.Text
     local Scripts_Cmds = {}
@@ -113,16 +123,16 @@ function EveryCommands()
         table.insert(Scripts_Cmds, wis)
     end
     
-    if Scripts_Cmds[1] == "reset" then
+    if table.find(EveryCmds_nAlliase["reset"], Scripts_Cmds[1]) then
         -- _He:ChangeState(Enum.HumanoidStateType.Dead)
         if _He.Health > 0 then
             _He.Health = 0
         end
         _Notice("Commands", "Character Reseted!", 1, "SendNotification")
-    elseif Scripts_Cmds[1] == "console" then
+    elseif table.find(EveryCmds_nAlliase["console"], Scripts_Cmds[1]) then
         _Notice("nothing", "nothing", 1, "DevConsoleVisible")
         _Notice("Commands", "Developer Console Opened!", 1, "SendNotification")
-    elseif Scripts_Cmds[1] == "speed" then
+    elseif table.find(EveryCmds_nAlliase["speed"], Scripts_Cmds[1]) then
         local myCharacterIn_WS = _WS.Characters[_PLR.Name]
         if myCharacterIn_WS then
             if Scripts_Cmds[2] then
@@ -140,7 +150,7 @@ function EveryCommands()
                 _Notice("Commands", "Running & Walking speed try typing in a value number!", 1, "SendNotification")
             end
         end
-    elseif Scripts_Cmds[1] == "dash" then
+    elseif table.find(EveryCmds_nAlliase["dash"], Scripts_Cmds[1]) then
         local myCharacterIn_WS = _WS.Characters[_PLR.Name]
         if myCharacterIn_WS then
             if Scripts_Cmds[2] then
@@ -158,7 +168,7 @@ function EveryCommands()
                 _Notice("Commands", "Dash Distance try typing in a dash value number!", 1, "SendNotification")
             end
         end
-    elseif Scripts_Cmds[1] == "fastattack" then
+    elseif table.find(EveryCmds_nAlliase["fastattack"], Scripts_Cmds[1]) then
         if not FA_VariableCheck_0 then
             FA_VariableCheck_0 = true
             _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
@@ -170,7 +180,7 @@ function EveryCommands()
             _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
             FastAttack_Status()
         end
-    elseif Scripts_Cmds[1] == "superfastattack" then
+    elseif table.find(EveryCmds_nAlliase["superfastattack"], Scripts_Cmds[1]) then
         if not FA_VariableCheck_0 then
             FA_VariableCheck_0 = true
             _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
@@ -182,7 +192,7 @@ function EveryCommands()
             _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
             SuperFastAttack_Status()
         end
-    elseif Scripts_Cmds[1] == "suggestiontextcolor" then
+    elseif table.find(EveryCmds_nAlliase["suggestiontextcolor"], Scripts_Cmds[1]) then
         if #Scripts_Cmds < 4 then
             _Notice("Theme", "Missing value! Please do 3_RGB color values.", 1, "SendNotification")
         else
@@ -228,33 +238,31 @@ function SuperFastAttack_Status()
     end
 end
 
-local _TotalCommands = {"", "reset", "console", "fastattack", "superfastattack"}
-local _TotalCommands_I = {"</>", "reset", "console", "speed <value>", "dash <value>", "fastattack", "superfastattack", "suggestiontextcolor <value_1> <value_2> <value_3>"}
 function CorrectedEveryCommands(boolean_ix)
-    local GetCommands_Words, Matching_Words, Matching_Words_I
-    GetCommands_Words = _GetCommands.Text:lower()
-    Matching_Words = nil
-    Matching_Words_I = nil
-    
-    for TrueIndex, A_Commands in ipairs(_TotalCommands) do
-        if A_Commands:sub(1, #GetCommands_Words):lower() == GetCommands_Words then
-            Matching_Words = A_Commands
-            break
+    local GetCommands_Words = _GetCommands.Text:lower()
+    local Matching_Words, Matching_Words_I = nil, nil
+
+    if GetCommands_Words ~= "" then
+        for command, aliases in pairs(EveryCmds_nAlliase) do
+            for _, alias in ipairs(aliases) do
+                if alias:lower():find(GetCommands_Words) then
+                    Matching_Words = command
+                    Matching_Words_I = command .. ", " .. table.concat({table.unpack(aliases, 2)}, ", ")
+                    break
+                end
+            end
+            if Matching_Words then break end
         end
+    else
+        Matching_Words = ""
+        Matching_Words_I = "</>"
     end
-    
-    for TrueIndex_I, A_Commands_I in ipairs(_TotalCommands_I) do
-        if A_Commands_I:sub(1, #GetCommands_Words):lower() == GetCommands_Words then
-            Matching_Words_I = A_Commands_I
-            break
-        end
-    end
-    
+
     if boolean_ix then
         if Matching_Words_I then
             _GetCorrectedCommands.Text = Matching_Words_I
         else
-            _GetCorrectedCommands.Text = _G.Commands_Script_Language_Test[4] or "</>"
+            _GetCorrectedCommands.Text = _G.Commands_Script_Language_Test[4] or "Seems like it's not a valid command"
         end
     else
         if Matching_Words then
