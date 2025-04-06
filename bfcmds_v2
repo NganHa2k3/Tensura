@@ -4,10 +4,6 @@ local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn
 local _PLRS, _PLR, _Char, _Him, _He
 local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused
 
-_G.Commands_Script_Language_Test = {}
-EndPoint = UDim2.new(0, 0, 0.1, 0)
-StartPoint = UDim2.new(-0.25, 0, 0.1, 0)
-
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
 _RS = game:GetService("RunService")
@@ -20,10 +16,13 @@ _Char = _PLR.Character
 _Him = _Char:WaitForChild("HumanoidRootPart")
 _He = _Char:WaitForChild("Humanoid")
 
+_G.Commands_Script_Language_Test = {}
 FA_VariableCheck_0 = false
 FA_Toggle = false
 FA_Toggle_II = false
 Cmdbar_ItsOnFocused = false
+EndPoint = UDim2.new(0, 0, 0.1, 0)
+StartPoint = UDim2.new(-0.25, 0, 0.1, 0)
 
 _SGui = Instance.new("ScreenGui", _CG)
 _GetCommands = Instance.new("TextBox", _SGui)
@@ -94,10 +93,16 @@ function _Notice(Tt, tx, dur, x)
     end
 end
 
-function _PasteScripts(url)
-    pcall(function()
+function _PasteScripts(url, scripts)
+    local success, result = pcall(function()
         loadstring(game:HttpGet(url))()
     end)
+    
+    if success then
+        scripts()
+    else
+        print(result .. " <failed>!")
+    end
 end
 
 function EveryCommands()
@@ -157,8 +162,9 @@ function EveryCommands()
         if not FA_VariableCheck_0 then
             FA_VariableCheck_0 = true
             _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
-            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks")
-            _Notice("Commands", "Successfully Loaded Scripts!", 1, "SendNotification")
+            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks", function()
+                _Notice("Commands", "Successfully Loaded Scripts!", 1, "SendNotification")
+            end)
             FastAttack_Status()
         else
             _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
@@ -168,8 +174,9 @@ function EveryCommands()
         if not FA_VariableCheck_0 then
             FA_VariableCheck_0 = true
             _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
-            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks")
-            _Notice("Commands", "Successfully Loaded Scripts!", 1, "SendNotification")
+            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks", function()
+                _Notice("Commands", "Successfully Loaded Scripts!", 1, "SendNotification")
+            end)
             SuperFastAttack_Status()
         else
             _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
