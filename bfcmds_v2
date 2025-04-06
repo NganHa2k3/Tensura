@@ -1,8 +1,8 @@
 -- Blox Fruits: Commands Scripts Fixed + Changed, HoangHien --
 local _WS, _CG, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
-local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn
+local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn, intBGC_All, col1, col2, col3
 local _PLRS, _PLR, _Char, _Him, _He
-local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable
+local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
@@ -17,6 +17,7 @@ _Him = _Char:WaitForChild("HumanoidRootPart")
 _He = _Char:WaitForChild("Humanoid")
 
 _G.Commands_Script_Language_Test = {}
+numtest, thisisenable, intCLabel_Txc = 1, false, Color3.fromRGB(255, 255, 255)
 FA_VariableCheck_0 = false
 FA_Toggle = false
 FA_Toggle_II = false
@@ -27,6 +28,7 @@ _ButtonHeight = 25
 _ButtonPadding = 2
 EndPoint = UDim2.new(0, 0, 0.1, 0)
 StartPoint = UDim2.new(-0.25, 0, 0.1, 0)
+intBGC_All = Color3.fromRGB(0, 0, 0)
 
 _SGui = Instance.new("ScreenGui", _CG)
 _GetCommands = Instance.new("TextBox", _SGui)
@@ -314,10 +316,18 @@ function _AddCornerUI(Name, Radius)
     UIC_Zero.CornerRadius = UDim.new(Radius, 0)
 end
 
+function _ThemeChanged(RGB_Color)
+    _GetCommands.BackgroundColor3 = RGB_Color
+    _GetCorrectedCommands.BackgroundColor3 = RGB_Color
+    _GetFocusedButton.BackgroundColor3 = RGB_Color
+    _SettingsFrame.BackgroundColor3 = RGB_Color
+    _SettingsScroll.BackgroundColor3 = RGB_Color
+end
+
 function _AddedSettings_NormalB(NameSetting, Scripts)
     local _SpecialNew_Button = Instance.new("TextButton", _SettingsScroll)
     _SpecialNew_Button.BackgroundTransparency = 0
-    _SpecialNew_Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    _SpecialNew_Button.BackgroundColor3 = intBGC_All
     _SpecialNew_Button.Position = UDim2.new(0.02, 0, 0, _SSCRL_Canvasmain + _ButtonPadding)
     _SpecialNew_Button.Size = UDim2.new(0.96, 0, 0, _ButtonHeight)
     _SpecialNew_Button.TextScaled = true
@@ -335,10 +345,12 @@ function _AddedSettings_NormalB(NameSetting, Scripts)
 end
 
 _MouseButton1Click(_GetFocusedButton, function()
-    _GetCommands:CaptureFocus()
     if _GetFocusedButton.Text == "<" and _GetCommands.Position == EndPoint then
+        _GetFocusedButton.Text = ">"
         print("You're used button to closed activated cmdbar =))")
         OnFocused_SlideIn:Play()
+    else
+        _GetCommands:CaptureFocus()
     end
 end)
 
@@ -370,21 +382,26 @@ _AddCornerUI(_GetCorrectedCommands, 0.2)
 _AddCornerUI(_SettingsFrame, 0.05)
 _AddCornerUI(_SettingsScroll, 0.2)
 
-_AddedSettings_NormalB("<Test Print>", function()
-    print("<Test success>")
+_AddedSettings_NormalB("Theme: Default", function()
+    _ThemeChanged(intBGC_All)
+    _Notice("Theme", "Scripts UI Background Color it's set as Default!", 1, "SendNotification")
 end)
 
-local numtest, thisisenable = 1, false
-local col1, col2, col3
-local intCLabel_Txc = _GetCorrectedCommands.TextColor3
-_AddedSettings_NormalB("Suggestion TextColor: Rainbown", function()
+_AddedSettings_NormalB("Theme: Skyblue", function()
+    _ThemeChanged(Color3.fromRGB(0, 200, 200))
+    _Notice("Theme", "Scripts UI Background Color it's set as Skyblue!", 1, "SendNotification")
+end)
+
+_AddedSettings_NormalB("Suggestion TextColor: Rainbow", function()
     -- numtest += 1
     if not thisisenable then
         thisisenable = true
+        _Notice("Theme", "Suggestion UI Text Color it's set to Rainbow!", 1, "SendNotification")
     else
         thisisenable = false
-        task.delay(1, function()
+        task.delay(0.2, function()
             _GetCorrectedCommands.TextColor3 = intCLabel_Txc
+            _Notice("Theme", "Suggestion UI Text Color it's set as Default!", 1, "SendNotification")
         end)
     end
     
