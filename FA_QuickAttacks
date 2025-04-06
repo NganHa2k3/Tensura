@@ -78,7 +78,7 @@ RunService.RenderStepped:Connect(function()
         if not _G.SuperFastAttack then
             AttackNoCD(0.3)
         else
-            AttackNoCD(0.02)
+            AttackNoCD(0.0002)
         end
         wait(_WaitTime)
     end
