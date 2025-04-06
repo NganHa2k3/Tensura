@@ -1,8 +1,8 @@
 -- Blox Fruits: Commands Scripts Fixed + Changed, HoangHien --
-local _WS, _CG, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands
+local _WS, _CG, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
 local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn
 local _PLRS, _PLR, _Char, _Him, _He
-local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused
+local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
@@ -21,6 +21,10 @@ FA_VariableCheck_0 = false
 FA_Toggle = false
 FA_Toggle_II = false
 Cmdbar_ItsOnFocused = false
+Its_SettingsUIEnable = false
+_SSCRL_Canvasmain = 0
+_ButtonHeight = 25
+_ButtonPadding = 2
 EndPoint = UDim2.new(0, 0, 0.1, 0)
 StartPoint = UDim2.new(-0.25, 0, 0.1, 0)
 
@@ -28,6 +32,8 @@ _SGui = Instance.new("ScreenGui", _CG)
 _GetCommands = Instance.new("TextBox", _SGui)
 _GetFocusedButton = Instance.new("TextButton", _GetCommands)
 _GetCorrectedCommands = Instance.new("TextLabel", _GetCommands)
+_SettingsFrame = Instance.new("Frame", _SGui)
+_SettingsScroll = Instance.new("ScrollingFrame", _SettingsFrame)
 
 OnFocused_SlideOut = _TS:Create(_GetCommands, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Position = EndPoint})
 OnFocused_SlideIn = _TS:Create(_GetCommands, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {Position = StartPoint})
@@ -66,6 +72,26 @@ _GetCorrectedCommands.TextColor3 = Color3.fromRGB(255, 255, 255)
 _GetCorrectedCommands.Font = Enum.Font.Code
 _GetCorrectedCommands.Text = _G.Commands_Script_Language_Test[4] or "</>"
 _GetCorrectedCommands.Visible = true
+
+-- Settings Hidden Frame --
+
+_SettingsFrame.BackgroundTransparency = 0.8
+_SettingsFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_SettingsFrame.Position = UDim2.new(0.45, 0, 0.2, 0)
+_SettingsFrame.Size = UDim2.new(0.25, 0, 0.6, 0)
+_SettingsFrame.Active = true
+_SettingsFrame.Draggable = true
+_SettingsFrame.Visible = Its_SettingsUIEnable
+
+_SettingsScroll.BackgroundTransparency = 0.9
+_SettingsScroll.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_SettingsScroll.Position = UDim2.new(0.05, 0, 0.05, 0)
+_SettingsScroll.Size = UDim2.new(0.9, 0, 0.9, 0)
+_SettingsScroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+_SettingsScroll.ScrollBarThickness = 0.1
+_SettingsScroll.Visible = true
+
+-- End --
 
 function _MouseButton1Click(Name, Scripts)
     Name.MouseButton1Click:Connect(function()
@@ -106,13 +132,14 @@ function _PasteScripts(url, scripts)
 end
 
 local EveryCmds_nAlliase = {
-    ["reset"] = {"reset", "r"},
-    ["console"] = {"console", "c"},
-    ["speed"] = {"speed", "s"},
-    ["dash"] = {"dash", "d"},
+    ["reset"] = {"reset", "re"},
+    ["console"] = {"console", "co"},
+    ["speed"] = {"speed", "sp"},
+    ["dash"] = {"dash", "da"},
     ["fastattack"] = {"fastattack", "fa"},
     ["superfastattack"] = {"superfastattack", "sfa"},
-    ["suggestiontextcolor"] = {"suggestiontextcolor", "stc"}
+    ["suggestiontextcolor"] = {"suggestiontextcolor", "stc"},
+    ["settings"] = {"settings", "se", "s"}
 }
 
 function EveryCommands()
@@ -207,6 +234,15 @@ function EveryCommands()
                 _Notice("Theme", "Please do a valid 3_RGB values.", 1, "SendNotification")
             end
         end
+    elseif table.find(EveryCmds_nAlliase["settings"], Scripts_Cmds[1]) then
+        if not Its_SettingsUIEnable then
+            Its_SettingsUIEnable = true
+            _Notice("Settings", "Settings UI Opened!", 1, "SendNotification")
+        else
+            Its_SettingsUIEnable = false
+            _Notice("Settings", "Settings UI Closed!", 1, "SendNotification")
+        end
+        _SettingsFrame.Visible = Its_SettingsUIEnable
     end
     
     _GetCommands.Text = ""
@@ -278,8 +314,32 @@ function _AddCornerUI(Name, Radius)
     UIC_Zero.CornerRadius = UDim.new(Radius, 0)
 end
 
+function _AddedSettings_NormalB(NameSetting, Scripts)
+    local _SpecialNew_Button = Instance.new("TextButton", _SettingsScroll)
+    _SpecialNew_Button.BackgroundTransparency = 0
+    _SpecialNew_Button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    _SpecialNew_Button.Position = UDim2.new(0.02, 0, 0, _SSCRL_Canvasmain + _ButtonPadding)
+    _SpecialNew_Button.Size = UDim2.new(0.96, 0, 0, _ButtonHeight)
+    _SpecialNew_Button.TextScaled = true
+    _SpecialNew_Button.TextSize = 9
+    _SpecialNew_Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _SpecialNew_Button.Font = Enum.Font.Code
+    _SpecialNew_Button.Text = NameSetting
+    _SpecialNew_Button.Visible = true
+    _AddCornerUI(_SpecialNew_Button, 0.2)
+    _MouseButton1Click(_SpecialNew_Button, function()
+        Scripts()
+    end)
+    _SSCRL_Canvasmain = _SSCRL_Canvasmain + _ButtonHeight + _ButtonPadding
+    _SettingsScroll.CanvasSize = UDim2.new(0, 0, 0, _SSCRL_Canvasmain)
+end
+
 _MouseButton1Click(_GetFocusedButton, function()
     _GetCommands:CaptureFocus()
+    if _GetFocusedButton.Text == "<" and _GetCommands.Position == EndPoint then
+        print("You're used button to closed activated cmdbar =))")
+        OnFocused_SlideIn:Play()
+    end
 end)
 
 _FocusLost(_GetCommands, enterPressed, function()
@@ -307,3 +367,32 @@ end)
 _AddCornerUI(_GetCommands, 0.2)
 _AddCornerUI(_GetFocusedButton, 0.2)
 _AddCornerUI(_GetCorrectedCommands, 0.2)
+_AddCornerUI(_SettingsFrame, 0.05)
+_AddCornerUI(_SettingsScroll, 0.2)
+
+_AddedSettings_NormalB("<Test Print>", function()
+    print("<Test success>")
+end)
+
+local numtest, thisisenable = 1, false
+local col1, col2, col3
+local intCLabel_Txc = _GetCorrectedCommands.TextColor3
+_AddedSettings_NormalB("Suggestion TextColor: Rainbown", function()
+    -- numtest += 1
+    if not thisisenable then
+        thisisenable = true
+    else
+        thisisenable = false
+        task.delay(1, function()
+            _GetCorrectedCommands.TextColor3 = intCLabel_Txc
+        end)
+    end
+    
+    while thisisenable do
+        col1 = math.random(1, 255)
+        col2 = math.random(1, 255)
+        col3 = math.random(1, 255)
+        _GetCorrectedCommands.TextColor3 = Color3.fromRGB(col1, col2, col3)
+        wait(0.24)
+    end
+end)
