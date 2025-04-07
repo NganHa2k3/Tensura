@@ -924,6 +924,7 @@ end)
 
 -- Animation and Sound IDs
 local animationIds = {
+    ["Teleport"] = "rbxassetid://15957361339",
     ["Anims1"] = "rbxassetid://15391323441",
     ["Anims2"] = "rbxassetid://12772543293",
     ["Anims3"] = "rbxassetid://15943915877",
@@ -939,6 +940,7 @@ local animationIds = {
 }
 
 local soundIds = {
+    ["Teleport"] = "rbxassetid://405593386",
     ["Anims1"] = "rbxassetid://15806232934",
     ["Anims2"] = "rbxassetid://13059564956",
     ["Anims3"] = "rbxassetid://8964762256",
@@ -1679,6 +1681,53 @@ chat4.Text = "Chửi nó tùm lum"
 
 chat4.MouseButton1Click:Connect(function()
     sendRandomMessages()
+end)
+
+local chat5 = Instance.new("TextButton")
+chat5.Parent = ScrollingChat
+chat5.BackgroundColor3 = Color3.new(0, 0, 0)
+chat5.BackgroundTransparency = 0.5
+chat5.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
+chat5.TextScaled = true
+chat5.Position = UDim2.new(0.1, 0, 0.29, 0)  -- Positioned below chat2
+chat5.TextColor3 = Color3.new(1, 1, 1)
+chat5.Font = Enum.Font.PatrickHand
+chat5.Text = "tự động chửi EZ"
+
+local thisisfired = false
+chat5.MouseButton1Click:Connect(function()
+if not thisisfired then
+thisisfired = true
+chat5.TextColor3 = Color3.new(0, 1, 0)
+else
+thisisfired = false
+chat5.TextColor3 = Color3.new(1, 1, 1)
+end
+end)
+
+-- Auto Chat: EZ --
+function ChatMessage(str)
+game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
+end
+
+function DetectZeroHealth()
+for i, v in pairs(game:GetService("Players"):GetPlayers()) do
+if v ~= game:GetService("Players").LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and v.Character:FindFirstChild("HumanoidRootPart") then
+local vRange = v.Character:FindFirstChild("HumanoidRootPart")
+if (vRange.Position - game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position).magnitude <= 2000 then
+local vHumanoid = v.Character:FindFirstChild("Humanoid")
+if vHumanoid.Health <= 0 then
+ChatMessage("EZ! " .. v.Name .. " died.")
+end
+end
+end
+end
+end
+
+game:GetService("RunService").RenderStepped:Connect(function()
+if thisisfired then
+DetectZeroHealth()
+end
 end)
 
 -- End of Chat Spam Box --
