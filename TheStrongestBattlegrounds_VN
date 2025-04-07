@@ -1331,7 +1331,7 @@ local function teleportToRandomTrashCan()
     if #trashcanParts > 0 then
         local randomPart = trashcanParts[math.random(1, #trashcanParts)]
         local randomOffset = Vector3.new(math.random(-5, 5), 0, math.random(-5, 5))
-        local targetPosition = randomPart.Position + randomOffset
+        local targetPosition = randomPart.CFrame.Position + randomOffset
         game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition, randomPart.Position)
     end
