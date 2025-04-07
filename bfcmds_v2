@@ -1,11 +1,12 @@
 -- Blox Fruits: Commands Scripts Fixed + Changed, HoangHien --
-local _WS, _CG, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
+local _WS, _CG, _RlS, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
 local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn, intBGC_All, col1, col2, col3
 local _PLRS, _PLR, _Char, _Him, _He
 local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
+_RlS = game:GetService("ReplicatedStorage")
 _RS = game:GetService("RunService")
 _TS = game:GetService("TweenService")
 _StGui = game:GetService("StarterGui")
@@ -121,6 +122,14 @@ function _Notice(Tt, tx, dur, x)
     end
 end
 
+function _InvokeServer(Name, Worlds, ...)
+    local _ArGs_Text = {...}
+    _RlS.Remotes[Name]:InvokeServer(unpack(_ArGs_Text))
+    task.spawn(function()
+        _Notice("World Commands", "Teleportation to " .. Worlds .. ". !", 1, "SendNotification")
+    end)
+end
+
 function _PasteScripts(url, scripts)
     local success, result = pcall(function()
         loadstring(game:HttpGet(url))()
@@ -140,6 +149,7 @@ local EveryCmds_nAlliase = {
     ["dash"] = {"dash", "da"},
     ["fastattack"] = {"fastattack", "fa"},
     ["superfastattack"] = {"superfastattack", "sfa"},
+    ["travelingsea"] = {"travelingsea", "sea", "worlds"},
     ["suggestiontextcolor"] = {"suggestiontextcolor", "stc"},
     ["settings"] = {"settings", "se", "s"}
 }
@@ -154,8 +164,8 @@ function EveryCommands()
     
     if table.find(EveryCmds_nAlliase["reset"], Scripts_Cmds[1]) then
         -- _He:ChangeState(Enum.HumanoidStateType.Dead)
-        if _He.Health > 0 then
-            _He.Health = 0
+        if _PLR.Character and _PLR.Character:FindFirstChild("Humanoid") then
+            _PLR.Character.Humanoid.Health = 0
         end
         _Notice("Commands", "Character Reseted!", 1, "SendNotification")
     elseif table.find(EveryCmds_nAlliase["console"], Scripts_Cmds[1]) then
@@ -220,6 +230,14 @@ function EveryCommands()
         else
             _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
             SuperFastAttack_Status()
+        end
+    elseif table.find(EveryCmds_nAlliase["travelingsea"], Scripts_Cmds[1]) then
+        if Scripts_Cmds[2] == "1" then
+            _InvokeServer("CommF_", "First Sea", "TravelMain")
+        elseif Scripts_Cmds[2] == "2" then
+            _InvokeServer("CommF_", "Second Sea", "TravelDressora")
+        elseif Scripts_Cmds[2] == "3" then
+            _InvokeServer("CommF_", "Final Sea", "TravelZou")
         end
     elseif table.find(EveryCmds_nAlliase["suggestiontextcolor"], Scripts_Cmds[1]) then
         if #Scripts_Cmds < 4 then
@@ -387,9 +405,14 @@ _AddedSettings_NormalB("Theme: Default", function()
     _Notice("Theme", "Scripts UI Background Color it's set as Default!", 1, "SendNotification")
 end)
 
-_AddedSettings_NormalB("Theme: Skyblue", function()
+_AddedSettings_NormalB("Theme: Skyblue/Rain", function()
     _ThemeChanged(Color3.fromRGB(0, 200, 200))
     _Notice("Theme", "Scripts UI Background Color it's set as Skyblue!", 1, "SendNotification")
+end)
+
+_AddedSettings_NormalB("Theme: Crimson/Red", function()
+    _ThemeChanged(Color3.fromRGB(255, 0, 0))
+    _Notice("Theme", "Scripts UI Background Color it's set as Crimson!", 1, "SendNotification")
 end)
 
 _AddedSettings_NormalB("Suggestion TextColor: Rainbow", function()
