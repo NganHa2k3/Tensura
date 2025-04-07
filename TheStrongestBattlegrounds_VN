@@ -1319,7 +1319,7 @@ local function playSound(name)
 end
 
 local function teleportToRandomTrashCan()
-    local trashcanFolder = game:GetService("Workspace").Map.Trashcan
+    local trashcanFolder = game:GetService("Workspace").Map.Trash
     local trashcanParts = {}
 
     for _, part in pairs(trashcanFolder:GetChildren()) do
