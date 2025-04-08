@@ -1318,22 +1318,28 @@ local function playSound(name)
     end)
 end
 
-local function teleportToRandomTrashCan()
+local function teleportToRandomTrashcan()
     local trashcanFolder = game:GetService("Workspace").Map.Trash
-    local trashcanParts = {}
+    local trashcanModels = {}
 
-    for _, part in pairs(trashcanFolder:GetChildren()) do
-        if part.Name == "Trashcan" then
-            table.insert(trashcanParts, part)
+    for _, model in pairs(trashcanFolder:GetChildren()) do
+        if model:IsA("Model") and model.Name == "Trashcan" then
+            local trashcanPart = model:FindFirstChild("Trashcan")
+            if trashcanPart and trashcanPart:IsA("BasePart") then
+                table.insert(trashcanModels, trashcanPart)
+            end
         end
     end
 
-    if #trashcanParts > 0 then
-        local randomPart = trashcanParts[math.random(1, #trashcanParts)]
-        local randomOffset = Vector3.new(math.random(-5, 5), 0, math.random(-5, 5))
-        local targetPosition = randomPart.CFrame.Position + randomOffset
-        game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition, randomPart.Position)
+    if #trashcanModels > 0 then
+        local randomPart = trashcanModels[math.random(1, #trashcanModels)]
+        local targetPosition = randomPart.Position
+        
+        local player = game.Players.LocalPlayer
+        local character = player.Character
+        if character and character:FindFirstChild("HumanoidRootPart") then
+            character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
+        end
     end
 end
 
