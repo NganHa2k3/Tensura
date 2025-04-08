@@ -1318,30 +1318,55 @@ local function playSound(name)
     end)
 end
 
-local function teleportToRandomTrashcan()
-    local trashcanFolder = game:GetService("Workspace").Map.Trash
-    local trashcanModels = {}
+-- Trashcan Scripts --
 
-    for _, model in pairs(trashcanFolder:GetChildren()) do
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+
+local trashFolder = game:GetService("Workspace").Map.Trash
+
+local function getRandomTrashcan()
+    local trashcans = {}
+    
+    for _, model in ipairs(trashFolder:GetChildren()) do
         if model:IsA("Model") and model.Name == "Trashcan" then
-            local trashcanPart = model:FindFirstChild("Trashcan")
-            if trashcanPart and trashcanPart:IsA("BasePart") then
-                table.insert(trashcanModels, trashcanPart)
-            end
+            table.insert(trashcans, model)
         end
     end
-
-    if #trashcanModels > 0 then
-        local randomPart = trashcanModels[math.random(1, #trashcanModels)]
-        local targetPosition = randomPart.Position
-        
-        local player = game.Players.LocalPlayer
-        local character = player.Character
-        if character and character:FindFirstChild("HumanoidRootPart") then
-            character:SetPrimaryPartCFrame(CFrame.new(targetPosition))
-        end
+    
+    if #trashcans > 0 then
+        return trashcans[math.random(1, #trashcans)]
     end
 end
+
+local function tpGetTrashcan()
+    local randomTrashcan = getRandomTrashcan()
+    if randomTrashcan then
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        print("Trashcan found: " .. randomTrashcan.Name)
+        print("Trashcan Children count: " .. #randomTrashcan:GetChildren())
+        local targetPosition
+        if randomTrashcan.PrimaryPart then
+            print("PrimaryPart is set: " .. randomTrashcan.PrimaryPart.Name)
+            targetPosition = randomTrashcan.PrimaryPart.Position
+        else
+            local part = randomTrashcan:FindFirstChildWhichIsA("Part") or randomTrashcan:FindFirstChildWhichIsA("MeshPart")
+            if part then
+                print("Using part: " .. part.Name)
+                targetPosition = part.Position
+            else
+                warn("No valid part found in Trashcan!")
+                return
+            end
+        end
+        
+        humanoidRootPart:PivotTo(CFrame.new(targetPosition))
+    else
+        warn("No Trashcan models found.")
+    end
+end
+
+-- End --
 
 local function teleportToTarget()
     local targetPosition
@@ -1359,7 +1384,7 @@ local function teleportToTarget()
         end
     elseif modenumber == 3 then
         toggleMode.TextColor3 = Color3.fromRGB(255, 255, 255)
-        teleportToRandomTrashCan()
+        tpGetTrashcan()
     elseif modenumber == 4 and ice_event then
         toggleMode.TextColor3 = Color3.fromRGB(0, 255, 255)
         local FallingStar = game:GetService("Workspace").Thrown:FindFirstChild("Frozen Lock"):FindFirstChild("Lock")
