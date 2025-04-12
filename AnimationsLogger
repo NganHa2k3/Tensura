@@ -1,0 +1,99 @@
+-- Animation Logger, Scripts by: HoangHien --
+local _mCG, _mkPS, _mSG, _mFrame, _mSFrame
+local mSG_Par, rdValue, _sfCanvasmain, _bHeight, _bPadding, _specific_pName
+
+_mCG = game:GetService("CoreGui")
+_mkPS = game:GetService("MarketplaceService")
+
+mSG_Par = _mCG
+_sfCanvasmain = 0
+_bHeight = 25
+_bPadding = 2.5
+_specific_pName = ""
+rdValue = math.random(1, 9999)
+
+_mSG = Instance.new("ScreenGui", mSG_Par)
+_mFrame = Instance.new("Frame", _mSG)
+_mSFrame = Instance.new("ScrollingFrame", _mFrame)
+
+_mFrame.Name = "HolderFrame_ArkXProject"
+_mFrame.BackgroundTransparency = 0.5
+_mFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_mFrame.Position = UDim2.new(0.6, 0, 0.1, 0)
+_mFrame.Size = UDim2.new(0.25, 0, 0.25, 0)
+_mFrame.Active = true
+_mFrame.Draggable = true
+_mFrame.Visible = true
+
+_mSFrame.Name = "CointainerButtons_ArkXProject"
+_mSFrame.BackgroundTransparency = 0.5
+_mSFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_mSFrame.Position = UDim2.new(0.02, 0, 0.05, 0)
+_mSFrame.Size = UDim2.new(0.96, 0, 0.85, 0)
+_mSFrame.ScrollBarThickness = 0.1
+_mSFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+_mSFrame.Visible = true
+
+function AddUIC(_name, radius)
+    local RoundedUI = Instance.new("UICorner", _name)
+    RoundedUI.CornerRadius = UDim.new(radius, 0)
+end
+
+function _MB1C(_name, scripts)
+    _name.MouseButton1Click:Connect(function()
+        scripts()
+    end)
+end
+
+function AddAnimations_Button_Main(_namepar, _bText, scripts)
+    local _Anims = Instance.new("TextButton", _namepar)
+    _Anims.Name = "_SpecialButton_#" .. rdValue
+    _Anims.BackgroundTransparency = 0
+    _Anims.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    _Anims.Position = UDim2.new(0.02, 0, 0, _sfCanvasmain + _bPadding)
+    _Anims.Size = UDim2.new(0.96, 0, 0, _bHeight)
+    _Anims.TextScaled = true
+    _Anims.TextSize = 9
+    _Anims.TextColor3 = Color3.fromRGB(255, 255, 255)
+    _Anims.Font = Enum.Font.Code
+    _Anims.Text = _bText
+    _Anims.Visible = true
+    AddUIC(_Anims, 0.2)
+    _MB1C(_Anims, function()
+        scripts()
+    end)
+    _sfCanvasmain = _sfCanvasmain + _bHeight + _bPadding
+    _mSFrame.CanvasSize = UDim2.new(0, 0, 0, _sfCanvasmain)
+end
+
+function AddAnimations_Button_Listed(_IsAWhat)
+    for _, items in pairs(game:GetDescendants()) do
+        if items:IsA(_IsAWhat) then
+            local A1_AnimationId = items.AnimationId
+            local A1Find = A1_AnimationId:find("rbxassetid://") and A1_AnimationId:match("%d+")
+            
+            if not string.find(A1_AnimationId, "507768375") and not string.find(A1_AnimationId, "180435571") then
+                if A1Find then
+                    local success, result = pcall(function()
+                        return _mkPS:GetProductInfo(tonumber(A1Find)).Name
+                    end)
+                    _specific_pName = success and result or "failed..."
+                end
+            end
+            
+            AddAnimations_Button_Main(_mSFrame, "Anim: " .. items.Name, function()
+                print("AnimationId: " .. A1_AnimationId .. "\n >> Animation Name: " .. items.Name .. " <<\n >>> ProductName: " .. _specific_pName .. " <<<")
+            end)
+        end
+    end
+end
+
+task.spawn(function()
+    if game:IsLoaded() then
+        AddUIC(_mFrame, 0.2)
+        AddUIC(_mSFrame, 0.2)
+        AddAnimations_Button_Listed("Animation")
+    else
+        print("Error: Game is not Loaded.")
+    end
+end)
