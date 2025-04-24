@@ -2,7 +2,7 @@
 local _WS, _CG, _RlS, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
 local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn, intBGC_All, col1, col2, col3
 local _PLRS, _PLR, _Char, _Him, _He
-local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc
+local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
@@ -24,6 +24,7 @@ FA_Toggle = false
 FA_Toggle_II = false
 Cmdbar_ItsOnFocused = false
 Its_SettingsUIEnable = false
+_alreadyRunIYEdited = false
 _SSCRL_Canvasmain = 0
 _ButtonHeight = 25
 _ButtonPadding = 2
@@ -149,6 +150,7 @@ local EveryCmds_nAlliase = {
     ["dash"] = {"dash", "da"},
     ["fastattack"] = {"fastattack", "fa"},
     ["superfastattack"] = {"superfastattack", "sfa"},
+    ["iyedited"] = {"iyedited", "iy"},
     ["travelingsea"] = {"travelingsea", "sea", "worlds"},
     ["suggestiontextcolor"] = {"suggestiontextcolor", "stc"},
     ["settings"] = {"settings", "se", "s"}
@@ -168,6 +170,20 @@ function EveryCommands()
             _PLR.Character.Humanoid.Health = 0
         end
         _Notice("Commands", "Character Reseted!", 1, "SendNotification")
+    elseif table.find(EveryCmds_nAlliase["iyedited"], Scripts_Cmds[1]) then
+        if not _alreadyRunIYEdited then
+            _alreadyRunIYEdited = true
+            local success, result = pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHien2k3/Tensura/refs/heads/edit/Scripts/InfiniteYield-Edited/Source_Edited.luau"))()
+            end)
+            if success then
+                _Notice("IY-Edited", "Successfully loaded!", 1, "SendNotification")
+            else
+                _Notice("IY-Edited", "Failed load, error: " .. result, 1, "SendNotification")
+            end
+        else
+            _Notice("Commands", "This command should be only used one time...", 1, "SendNotification")
+        end
     elseif table.find(EveryCmds_nAlliase["console"], Scripts_Cmds[1]) then
         _Notice("nothing", "nothing", 1, "DevConsoleVisible")
         _Notice("Commands", "Developer Console Opened!", 1, "SendNotification")
