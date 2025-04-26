@@ -510,6 +510,34 @@ FlyButton.MouseButton1Click:Connect(function()
     end
 end)
 
+local AimbotUI = Instance.new("TextButton")
+AimbotUI.Parent = ScrollingFrame
+AimbotUI.BackgroundColor3 = Color3.new(0, 0, 0)
+AimbotUI.BackgroundTransparency = 0.5
+AimbotUI.Size = UDim2.new(0.03, 0, 0.9, 0)
+AimbotUI.TextScaled = true
+AimbotUI.Position = UDim2.new(0.63, 0, 0, 0)
+AimbotUI.TextColor3 = Color3.new(1, 1, 1)
+AimbotUI.Font = Enum.Font.PatrickHand
+AimbotUI.Text = "Aimbot-UI"
+
+local _WaitFullyLoaded = false
+AimbotUI.MouseButton1Click:Connect(function()
+    if not _WaitFullyLoaded then
+        _WaitFullyLoaded = true
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/main/Scripts/TSBv_AutoAim"))()
+            _WaitFullyLoaded = false
+        end)
+    else
+        AimbotUI.Text = "Wait..."
+        AimbotUI.TextColor3 = Color3.new(1, 0, 0)
+    end
+    task.wait()
+    AimbotUI.Text = "Aimbot-UI"
+    AimbotUI.TextColor3 = Color3.new(1, 1, 1)
+end)
+
 -- Scrolling Box --
 
 ScrollingEmote.Parent = ScreenGui
