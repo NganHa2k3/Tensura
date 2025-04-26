@@ -1,0 +1,187 @@
+-- The Strongest Battlegrounds / New Scripts --
+local _WS, _CG, _PLRS, _RS, _STRG
+local _SG, _Fr, _ScrlF, _CreditLb
+local Canvas_main, _Padding, _Height, _Totals, _Commands
+
+_WS = game:GetService("Workspace")
+_CG = game:GetService("CoreGui")
+_PLRS = game:GetService("Players")
+_RS = game:GetService("RunService")
+_STRG = game:GetService("StarterGui")
+
+_SG = Instance.new("ScreenGui", _CG)
+_Fr = Instance.new("Frame", _SG)
+_ScrlF = Instance.new("ScrollingFrame", _Fr)
+_CreditLb = Instance.new("TextLabel", _Fr)
+
+Canvas_main = 0
+_Padding = 2
+_Height = 10
+_Totals = 0
+_Commands = "Scripts Alert" or "I try so Hard, n Get so Far"
+
+_Fr.Name = "HolderFrame_StAt"
+_Fr.BackgroundTransparency = 0.5
+_Fr.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_Fr.Position = UDim2.new(0.75, 0, -0.15, 0)
+_Fr.Size = UDim2.new(0.2, 0, 0.25, 0)
+_Fr.Active = true
+_Fr.Draggable = true
+_Fr.Visible = true
+
+_ScrlF.Name = "ListedPlayers_StAt"
+_ScrlF.BackgroundTransparency = 0.5
+_ScrlF.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_ScrlF.Position = UDim2.new(0.02, 0, 0, 0.05)
+_ScrlF.Size = UDim2.new(0.96, 0, 0.85, 0)
+_ScrlF.ScrollBarThickness = 0.1
+_ScrlF.CanvasSize = UDim2.new(0, 0, 0, 0)
+_ScrlF.Visible = true
+
+_CreditLb.Name = "CreditNCount_StAt"
+_CreditLb.BackgroundTransparency = 0.5
+_CreditLb.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_CreditLb.Position = UDim2.new(0, 0, -0.15, 0)
+_CreditLb.Size = UDim2.new(0.49, 0, 0.1, 0)
+_CreditLb.TextScaled = true
+_CreditLb.TextSize = 9
+_CreditLb.TextColor3 = Color3.fromRGB(0, 200, 200)
+_CreditLb.Font = Enum.Font.Code
+_CreditLb.Text = ""
+_CreditLb.Visible = true
+
+function _AddUIC(_name, radius_X)
+    local InstanceNewUI = Instance.new("UICorner", _name)
+    InstanceNewUI.CornerRadius = UDim.new(radius_X, 0)
+end
+
+function _MB1C(_name, scripts)
+    _name.MouseButton1Click:Connect(function()
+        scripts()
+    end)
+end
+
+function _Notify(_Title, _Message)
+    _STRG:SetCore("SendNotification", {
+        Title = _Title,
+        Text = _Message,
+        Duration = 1.5,
+    })
+end
+
+function _Root(_Target)
+    local TargetRoot = _PLRS[_Target].Character:FindFirstChild("HumanoidRootPart")
+    pcall(function()
+        if TargetRoot then
+            print("Root Exist On: " .. _PLRS[_Target].Name)
+        else
+            print("Root Does not Exist On: " .. _PLRS[_Target].Name)
+        end
+    end)
+    return TargetRoot
+end
+
+function _FaceFacingAt(_Target)
+    if _FacingLoop then
+        _FacingLoop:Disconnect()
+    end
+    if not _PLRS.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and _PLRS[_Target].Character:FindFirstChild("HumanoidRootPart") then return end
+    local function _RunFacing()
+        if _PLRS.LocalPlayer.Character.PrimaryPart and _PLRS:FindFirstChild(_Target) and _PLRS[_Target].Character ~= nil and _PLRS[_Target].Character:FindFirstChild("HumanoidRootPart") then
+            local _TPos, _SPos, V3_ModifierPos, CF_ModifierPos
+            _TPos = _PLRS[_Target].Character:FindFirstChild("HumanoidRootPart").Position
+            _SPos = _PLRS.LocalPlayer.Character.PrimaryPart.Position
+            V3_ModifierPos = Vector3.new(_TPos.X, _SPos.Y, _TPos.Z)
+            CF_ModifierPos = CFrame.new(_SPos, V3_ModifierPos)
+            _PLRS.LocalPlayer.Character:SetPrimaryPartCFrame(CF_ModifierPos)
+        elseif not _PLRS:FindFirstChild(_Target) then
+            _FacingLoop:Disconnect()
+        end
+    end
+    _Notify(_Commands, "Facing At On Target: " .. _PLRS[_Target].Name .. "/" .. _PLRS[_Target].DisplayName)
+    _FacingLoop = _RS.RenderStepped:Connect(_RunFacing)
+end
+
+function _Spectating(_Target)
+    local viewing, view_respawn, view_changed
+    if view_respawn then
+        view_respawn:Disconnect()
+        view_changed:Disconnect()
+    end
+    viewing = _PLRS[_Target]
+    _WS.CurrentCamera.CameraSubject = viewing.Character
+    _Notify(_Commands, "Spectating Changed, Set At On Target: " .. viewing.Name .. "/" .. viewing.DisplayName)
+    local function _ResetSpectateOnTarget()
+        repeat wait() until _PLRS[_Target].Character ~= nil and _Root(_Target)
+        _WS.CurrentCamera.CameraSubject = viewing.Character
+    end
+    view_respawn = _PLRS[_Target].CharacterAdded:Connect(_ResetSpectateOnTarget)
+    local function _ChangedSpectateOnTarget()
+        _WS.CurrentCamera.CameraSubject = viewing.Character
+    end
+    view_changed = _WS.CurrentCamera:GetPropertyChangedSignal("CameraSubject"):Connect(_ChangedSpectateOnTarget)
+end
+
+function _CreateButton4Players(_plr, scripts)
+    local btn = Instance.new("TextButton", _ScrlF)
+    btn.Name = "_StAt_" .. _plr.Name
+    btn.BackgroundTransparency = 0
+    btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    btn.Position = UDim2.new(0.02, 0, 0, Canvas_main + _Padding)
+    btn.Size = UDim2.new(0.96, 0, 0, _Height)
+    btn.TextScaled = true
+    btn.TextSize = 9
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Font = Enum.Font.Code
+    btn.Text = _plr.Name
+    btn.Visible = true
+    _AddUIC(btn, 0.2)
+    _MB1C(btn, function()
+        scripts()
+    end)
+    Canvas_main = Canvas_main + _Height + _Padding
+    _ScrlF.CanvasSize = UDim2.new(0, 0, 0, Canvas_main)
+end
+
+function _CreatePlayersList()
+    for i, v in pairs(_PLRS:GetPlayers()) do
+        if v ~= _PLRS.LocalPlayer then
+            _Totals += 1
+            _CreditLb.Text = "Credit by HoangHien, {" .. _Totals .. "} Players!"
+            _CreateButton4Players(v, function()
+                pcall(function()
+                    _FaceFacingAt(v.Name)
+                    _Spectating(v.Name)
+                end)
+            end)
+        end
+    end
+end
+
+task.spawn(function()
+    if game:IsLoaded() then
+        _AddUIC(_Fr, 0.025)
+        _AddUIC(_ScrlF, 0.25)
+        _AddUIC(_CreditLb, 0.25)
+        _CreatePlayersList()
+    end
+end)
+
+task.wait(2)
+local IYMouse = _PLRS.LocalPlayer:GetMouse()
+local TpTool = Instance.new("Tool")
+TpTool.Name = "Blink"
+TpTool.RequiresHandle = false
+TpTool.Parent = _PLRS.LocalPlayer.Backpack
+TpTool.Activated:Connect(function()
+    local Char = _PLRS.LocalPlayer.Character or _WS:FindFirstChild(_PLRS.LocalPlayer.Name)
+    local HRP = Char and Char:FindFirstChild("HumanoidRootPart")
+    if not Char or not HRP then
+        return warn("Failed to find HumanoidRootPart")
+    end
+    HRP.CFrame = CFrame.new(IYMouse.Hit.X, IYMouse.Hit.Y + 3, IYMouse.Hit.Z)
+end)
+
+-- Notification --
+_Notify("Important Note", "For now this scripts is used 1/per time execute... like if u wanted to updated player need to re-execute, OK")
+_Notify("Credits", "HoangHien, IY-Source...")
