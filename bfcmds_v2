@@ -16,7 +16,7 @@ _PLR = _PLRS.LocalPlayer
 _Char = _PLR.Character
 _Him = _Char:WaitForChild("HumanoidRootPart")
 _He = _Char:WaitForChild("Humanoid")
-_FirstSea = _WS.Map:FindFirstChild("MobBoss") -- Hả tại sao lại chưa thay đổi
+_FirstSea = _WS.Map:FindFirstChild("MobBoss") -- I hate Github for this slow update
 _SecondsSea = _WS.Map:FindFirstChild("GreenBit")
 _ThirdSea = _WS.Map:FindFirstChild("TikiOutpost")
 
