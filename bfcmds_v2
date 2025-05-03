@@ -167,7 +167,7 @@ function _ToPart(_name, _h)
         local _I4 = _Info(_PLR.Character.HumanoidRootPart.Position, _Goal.CFrame.Position)
         _CurrentTween = _TS:Create(_PLR.Character.HumanoidRootPart, _I4, _Goal)
         _CurrentTween:Play()
-        if (_PLR.Character.HumanoidRootPart.Position - _Goal.CFrame.Position).magnitude <= 5 then
+        if (_PLR.Character.HumanoidRootPart.Position - _Goal.Position).magnitude <= 5 then
             _BV("false")
         end
     else
