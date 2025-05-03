@@ -1377,6 +1377,12 @@ ACheckF.MouseButton1Click:Connect(function()
     end
 end)
 
+game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
+    if ACheckFSet and CheckF.Visible == true then
+        checkForFruit()
+    end
+end)
+
 CheckF.MouseButton1Click:Connect(function()
     local fruitcheckx = game:GetService("Workspace")["Fruit "].Handle
     if fruitcheckx then
