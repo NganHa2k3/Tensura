@@ -83,7 +83,7 @@ function AbsoluteRemove()
 end
 
 local tweenService = game:GetService("TweenService")
-local tweenSpeed = 150 -- Default speed in studs per second
+local tweenSpeed = 325 -- Default speed in studs per second
 
 -- Function to calculate tween duration based on distance and speed
 local function calculateTweenDuration(startPos, endPos, speed)
@@ -1079,9 +1079,9 @@ local function trackNearestEnemy()
     if nearestEnemy and nearestEnemy:FindFirstChild("Humanoid") then
         local humanoid = nearestEnemy.Humanoid
         
-        local enemyPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
+        local enemyPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 20, 0)
         local directionBehind = (ILocalPlayer.Character.HumanoidRootPart.Position - enemyPosition).unit
-        local behindPosition = enemyPosition + directionBehind * -0.2
+        local behindPosition = enemyPosition + directionBehind * 1
 
         if isTweenMode then
             if humanoid.Health > 0 then
@@ -1328,7 +1328,7 @@ CheckF.Position = UDim2.new(0.3, 0, 0.6, 0)
 CheckF.TextColor3 = Color3.new(1, 1, 1)
 CheckF.Font = Enum.Font.PatrickHand
 CheckF.Text = ""
-CheckF.Visible = false
+CheckF.Visible = true
 
 local CheckFUICorner = Instance.new("UICorner")
 CheckFUICorner.Parent = CheckF
@@ -1350,11 +1350,11 @@ ACheckF.BackgroundTransparency = 0.5
 ACheckF.Size = UDim2.new(0.8, 0, 0.05, 0)  -- Adjusted size for better visibility
 ACheckF.TextScaled = true
 ACheckF.Position = UDim2.new(0.1, 0, 0.485, 0)  -- Positioned inside the ScrollingFrame
-ACheckF.TextColor3 = Color3.new(1, 1, 1)
+ACheckF.TextColor3 = Color3.new(0, 1, 0)
 ACheckF.Font = Enum.Font.PatrickHand
 ACheckF.Text = "Kiểm tra trái ác quỷ xuất hiện"
 
-local ACheckFSet = false
+local ACheckFSet = true
 
 ACheckF.MouseButton1Click:Connect(function()
     if ACheckFSet then
