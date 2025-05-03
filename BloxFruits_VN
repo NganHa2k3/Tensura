@@ -1632,7 +1632,8 @@ SuperHuman.Font = Enum.Font.PatrickHand
 SuperHuman.Text = "Lấy võ: Siêu nhân v1"
 
 SuperHuman.MouseButton1Click:Connect(function()
-    warn("Empty for now")
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySuperhuman")
+game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuySuperHuman")
 end)
 
 local DarkStep = Instance.new("TextButton")
@@ -1647,7 +1648,7 @@ DarkStep.Font = Enum.Font.PatrickHand
 DarkStep.Text = "Lấy võ: Bước chân tử thần v2"
 
 DarkStep.MouseButton1Click:Connect(function()
-    warn("Empty for now")
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BuyDeathStep")
 end)
 
 local ElectricPaw = Instance.new("TextButton")
@@ -2205,9 +2206,9 @@ VAFarm.MouseButton1Click:Connect(function()
         LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
             if VFarmA then
                 trackNearestEnemy()
-                HitBoxNearestEnemy()
-                VU:CaptureController()
-                VU:ClickButton1(Vector2.new(0.5, 0, 0.5))
+                -- HitBoxNearestEnemy()
+                -- VU:CaptureController()
+                -- VU:ClickButton1(Vector2.new(0.5, 0, 0.5))
             end
         end)
     end
