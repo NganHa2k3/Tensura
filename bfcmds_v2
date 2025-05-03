@@ -357,6 +357,7 @@ function EveryCommands()
         if Scripts_Cmds[2] == "1" then
             _InvokeServer("CommF_", "First Sea", "TravelMain")
         elseif Scripts_Cmds[2] == "2" then
+            _ToPart("Seconds_Sea_NPC", Vector3.new(0, 9, 0))
             _InvokeServer("CommF_", "Second Sea", "TravelDressora")
         elseif Scripts_Cmds[2] == "3" then
             _InvokeServer("CommF_", "Final Sea", "TravelZou")
@@ -632,6 +633,7 @@ if _FirstSea then
     _Part(CFrame.new(4047, 400, -1816), "Underwater_Island")
     _Part(CFrame.new(-4692, 1020, -1887), "LowerSky_Island")
     _Part(CFrame.new(-7965, 6050, -1401), "HighestSky_Island")
+    _Part(CFrame.new(-1166, 8, 1729), "Seconds_Sea_NPC")
 elseif _SecondsSea then
     _Notice("Script Notice", "Worlds Detected: Seconds Sea!", 1, "SendNotification")
 elseif _ThirdSea then
