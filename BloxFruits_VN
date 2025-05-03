@@ -2195,12 +2195,12 @@ VAFarm.MouseButton1Click:Connect(function()
     if VFarmA then
         VAFarm.Text = "Tự động Farm[Tắt]"
         VAFarm.TextColor3 = Color3.new(1, 1, 1)
-        
+        AbsoluteRemove()
         VFarmA = false
     else
         VAFarm.Text = "Tự động Farm[Bật]"
         VAFarm.TextColor3 = Color3.new(0, 1, 1)
-        
+        AbsoluteSmooth()
         VFarmA = true
 
         LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
