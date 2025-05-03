@@ -2,7 +2,7 @@
 local _WS, _CG, _RlS, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
 local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn, intBGC_All, col1, col2, col3
 local _PLRS, _PLR, _Char, _Him, _He
-local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited
+local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited, _AutoStatus
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
@@ -25,6 +25,7 @@ FA_Toggle_II = false
 Cmdbar_ItsOnFocused = false
 Its_SettingsUIEnable = false
 _alreadyRunIYEdited = false
+_AutoStatus = 0
 _SSCRL_Canvasmain = 0
 _ButtonHeight = 25
 _ButtonPadding = 2
@@ -148,9 +149,13 @@ local EveryCmds_nAlliase = {
     ["console"] = {"console", "co"},
     ["speed"] = {"speed", "sp"},
     ["dash"] = {"dash", "da"},
+    ["upstat"] = {"upstat", "autostat", "as"},
+    ["refunds"] = {"refunds", "rf"},
     ["fastattack"] = {"fastattack", "fa"},
     ["superfastattack"] = {"superfastattack", "sfa"},
     ["iyedited"] = {"iyedited", "iy"},
+    ["remotespy"] = {"remotespy", "rspy"},
+    ["explorer"] = {"explorer", "dex"},
     ["travelingsea"] = {"travelingsea", "sea", "worlds"},
     ["suggestiontextcolor"] = {"suggestiontextcolor", "stc"},
     ["settings"] = {"settings", "se", "s"}
@@ -184,9 +189,40 @@ function EveryCommands()
         else
             _Notice("Commands", "This command should be only used one time...", 1, "SendNotification")
         end
+    elseif table.find(EveryCmds_nAlliase["remotespy"], Scripts_Cmds[1]) then
+        print("Nothing for now!")
+        _Notice("Nah", "Nothing for now!", 1, "DevConsoleVisible")
+    elseif table.find(EveryCmds_nAlliase["explorer"], Scripts_Cmds[1]) then
+        print("Nothing for now!")
+        _Notice("Nah", "Nothing for now!", 1, "DevConsoleVisible")
     elseif table.find(EveryCmds_nAlliase["console"], Scripts_Cmds[1]) then
         _Notice("nothing", "nothing", 1, "DevConsoleVisible")
         _Notice("Commands", "Developer Console Opened!", 1, "SendNotification")
+    elseif table.find(EveryCmds_nAlliase["upstat"], Scripts_Cmds[1]) then
+        if Scripts_Cmds[2] == "melee" then
+            _AutoStatus += 1
+            print("_AutoStatus: " .. tonumber(_AutoStatus))
+            if _AutoStatus >= 6 then
+                _AutoStatus = 0
+                _Notice("First Check", "Automatically Upgrading Stat is Deactivated!", 1, "SendNotification")
+                if not _AutoStatus == 0 then
+                    _AutoStatus = 0
+                    _Notice("Seconds Check", "Deactivated Fixes...", 1, "SendNotification")
+                else
+                    _Notice("Seconds Check", "Completely Deactivated!", 1, "SendNotification")
+                end
+            elseif _AutoStatus == 1 then
+                _Notice("Commands", "Automatically Upgrading Status: Melee/Punch Plus 1.", 1, "SendNotification")
+            end
+        end
+    elseif table.find(EveryCmds_nAlliase["refunds"], Scripts_Cmds[1]) then
+        if Scripts_Cmds[2] == "code" then
+            game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Sub2GamerRobot_Reset1")
+            task.wait()
+            game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Sub2UncleKizaru")
+            task.wait()
+            game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Kitt_reset")
+        end
     elseif table.find(EveryCmds_nAlliase["speed"], Scripts_Cmds[1]) then
         local myCharacterIn_WS = _WS.Characters[_PLR.Name]
         if myCharacterIn_WS then
@@ -407,6 +443,12 @@ end)
 _RS.RenderStepped:Connect(function(deltaTime)
     if Cmdbar_ItsOnFocused then
         CorrectedEveryCommands(true)
+    end
+end)
+
+_RS.RenderStepped:Connect(function()
+    if _AutoStatus == 1 then
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("AddPoint", "Melee", 1)
     end
 end)
 
