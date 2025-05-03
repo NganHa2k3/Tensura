@@ -1079,9 +1079,9 @@ local function trackNearestEnemy()
     if nearestEnemy and nearestEnemy:FindFirstChild("Humanoid") then
         local humanoid = nearestEnemy.Humanoid
         
-        local enemyPosition = nearestEnemy.HumanoidRootPart.Position
+        local enemyPosition = nearestEnemy.HumanoidRootPart.Position + Vector3.new(0, 60, 0)
         local directionBehind = (ILocalPlayer.Character.HumanoidRootPart.Position - enemyPosition).unit
-        local behindPosition = enemyPosition + directionBehind * -30
+        local behindPosition = enemyPosition + directionBehind * -0.2
 
         if isTweenMode then
             if humanoid.Health > 0 then
