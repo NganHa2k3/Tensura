@@ -168,7 +168,7 @@ function _ToPart(_name, _h)
         _CurrentTween = _TS:Create(_PLR.Character.HumanoidRootPart, _I4, _Goal)
         _CurrentTween:Play()
         local _RunningCheck = _RS.RenderStepped:Connect(function()
-            if (_PLR.Character.HumanoidRootPart.Position - _Goal.Position).magnitude <= 5 then
+            if (_PLR.Character.HumanoidRootPart.Position - _SPart.Position).magnitude <= 5 then
                 _BV("false")
                 _RunningCheck:Disconnect()
                 warn("Check if it work!")
