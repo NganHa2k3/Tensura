@@ -61,6 +61,27 @@ BoatSelection.ScrollBarThickness = 0.1
 
 -- Function --
 
+local _PLRS = game:GetService("Players")
+local _PLR = _PLRS.LocalPlayer
+local _Char = _PLR.Character
+local _Him = _Char:WaitForChild("HumanoidRootPart")
+local _ItsMath = math.huge
+
+function AbsoluteSmooth()
+    if not _Him:FindFirstChild("Extra_Wings_IX") then
+        local Safety_First = Instance.new("BodyVelocity", _Him)
+        Safety_First.Name = "Extra_Wings_IX"
+        Safety_First.Velocity = Vector3.new(0, 0, 0)
+        Safety_First.MaxForce = Vector3.new(_ItsMath, _ItsMath, _ItsMath)
+        warn(":3 Safety flight.")
+    end
+end
+
+function AbsoluteRemove()
+    _Him:FindFirstChild("Extra_Wings_IX"):Destroy()
+    warn("=-= becareful.")
+end
+
 local tweenService = game:GetService("TweenService")
 local tweenSpeed = 150 -- Default speed in studs per second
 
@@ -478,13 +499,14 @@ local LPlayers = false
 LoopsPlayers.MouseButton1Click:Connect(function()
     if LPlayers then
         LoopsPlayers.TextColor3 = Color3.fromRGB(255, 255, 255)
-        
+        AbsoluteRemove()
         LPlayers = false
     else
         LoopsPlayers.TextColor3 = Color3.fromRGB(0, 255, 0)
         
         LPlayers = true
-        
+
+        AbsoluteSmooth()
         LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
             if LPlayers then
                 LoopsTPP()
@@ -1059,7 +1081,7 @@ local function trackNearestEnemy()
         
         local enemyPosition = nearestEnemy.HumanoidRootPart.Position
         local directionBehind = (ILocalPlayer.Character.HumanoidRootPart.Position - enemyPosition).unit
-        local behindPosition = enemyPosition + directionBehind * -1
+        local behindPosition = enemyPosition + directionBehind * -30
 
         if isTweenMode then
             if humanoid.Health > 0 then
@@ -1099,13 +1121,14 @@ local EnemiesCF = false
 EnemiesCFrameTo.MouseButton1Click:Connect(function()
     if EnemiesCF then
         EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 255)
-        
+        AbsoluteRemove()
         EnemiesCF = false
     else
         EnemiesCFrameTo.TextColor3 = Color3.fromRGB(255, 255, 0)
         
         EnemiesCF = true
-        
+
+        AbsoluteSmooth()
         LoopActivated_AllF.RenderStepped:Connect(function(deltaTime)
             if EnemiesCF then
                 trackNearestEnemy()
@@ -1414,9 +1437,11 @@ local fcxptl_1z = false
 Factory.MouseButton1Click:Connect(function()
 if fcxptl_1z then
 fcxptl_1z = false
+AbsoluteRemove()
 Factory.Text = "Tới Nhà Máy Factory"
 else
 fcxptl_1z = true
+AbsoluteSmooth()
 Factory.Text = "Đang tới... chờ xíu đi"
 game:GetService("RunService").RenderStepped:Connect(function(deltaTime)
 if fcxptl_1z then
