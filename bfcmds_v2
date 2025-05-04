@@ -2,7 +2,7 @@
 local _WS, _CG, _RlS, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
 local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn, intBGC_All, col1, col2, col3
 local _PLRS, _PLR, _Char, _Him, _He, _FirstSea, _SecondsSea, _ThirdSea
-local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited, _AutoStatus, _CurrentTween
+local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited, _AutoStatus, _CurrentTween, _AutoEnablePvp, _EnablePvpOne
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
@@ -28,8 +28,10 @@ FA_Toggle_II = false
 Cmdbar_ItsOnFocused = false
 Its_SettingsUIEnable = false
 _alreadyRunIYEdited = false
+_AutoEnablePvp = false
 _CurrentTween = nil
 _AutoStatus = 0
+_EnablePvpOne = 0
 _SSCRL_Canvasmain = 0
 _ButtonHeight = 25
 _ButtonPadding = 2
@@ -167,15 +169,29 @@ function _ToPart(_name, _h)
         local _I4 = _Info(_PLR.Character.HumanoidRootPart.Position, _Goal.CFrame.Position)
         _CurrentTween = _TS:Create(_PLR.Character.HumanoidRootPart, _I4, _Goal)
         _CurrentTween:Play()
+        _CurrentTween.Completed:Wait()
+        _BV("false")
         -- local _RunningCheck = _RS.RenderStepped:Connect(function()
-            if (_PLR.Character.HumanoidRootPart.Position - _SPart.Position).magnitude <= 5 then
+            if (_PLR.Character.HumanoidRootPart.Position - _SPart.CFrame.Position).Magnitude <= 20 then
                 _BV("false")
                 -- _RunningCheck:Disconnect()
                 warn("Check if it work!")
+            else
+                warn("it not work :(")
             end
         -- end)
     else
         _Notice("Commands", "Error not found Islands named: " .. _name, 1, "SendNotification")
+    end
+end
+
+function _ToPos(_Pos, _Number)
+    local _TryTimes = _Number or 3
+    local _Totals_Tries = 0
+    for i = 1, _TryTimes do
+        _Totals_Tries += 1
+        print("Trying: " .. _Totals_Tries)
+        _PLR.Character.HumanoidRootPart.CFrame = _Pos
     end
 end
 
@@ -219,6 +235,7 @@ end
 
 local EveryCmds_nAlliase = {
     ["reset"] = {"reset", "re"},
+    ["cmds"] = {"cmds", "commands"},
     ["console"] = {"console", "co"},
     ["speed"] = {"speed", "sp"},
     ["dash"] = {"dash", "da"},
@@ -227,6 +244,8 @@ local EveryCmds_nAlliase = {
     ["refunds"] = {"refunds", "rf"},
     ["fastattack"] = {"fastattack", "fa"},
     ["superfastattack"] = {"superfastattack", "sfa"},
+    ["pvp"] = {"pvp", "autoenablepvp"},
+    ["removehrpbodyvelocity"] = {"removehrpbodyvelocity", "rhrpbv"},
     ["iyedited"] = {"iyedited", "iy"},
     ["remotespy"] = {"remotespy", "rspy"},
     ["explorer"] = {"explorer", "dex"},
@@ -263,6 +282,11 @@ function EveryCommands()
         else
             _Notice("Commands", "This command should be only used one time...", 1, "SendNotification")
         end
+    elseif table.find(EveryCmds_nAlliase["cmds"], Scripts_Cmds[1]) then
+        for i, v in ipairs(EveryCmds_nAlliase) do
+            print("Command[" .. i .. "]: " .. v[i] .. ".")
+        end
+        _Notice("nah", "nothing here", 1, "DevConsoleVisible")
     elseif table.find(EveryCmds_nAlliase["remotespy"], Scripts_Cmds[1]) then
         print("Nothing for now!")
         _Notice("Nah", "Nothing for now!", 1, "DevConsoleVisible")
@@ -296,6 +320,21 @@ function EveryCommands()
             game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Sub2UncleKizaru")
             task.wait()
             game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Kitt_reset")
+        end
+    elseif table.find(EveryCmds_nAlliase["removehrpbodyvelocity"], Scripts_Cmds[1]) then
+        for i, v in pairs(_PLR.Character.HumanoidRootPart:GetChildren()) do
+            if v:IsA("BodyVelocity") and v.Name == "Extra_Wings_IX" then
+                v:Destroy()
+                warn("Totaly destroyed " .. i .. " body velocity.")
+            end
+        end
+    elseif table.find(EveryCmds_nAlliase["pvp"], Scripts_Cmds[1]) then
+        if _AutoEnablePvp then
+            _AutoEnablePvp = false
+            _Notice("Commands", "Auto Enable Pvp is Deactivated!", 1, "SendNotification")
+        else
+            _AutoEnablePvp = true
+            _Notice("Commands", "Auto Enable Pvp is Activated!", 1, "SendNotification")
         end
     elseif table.find(EveryCmds_nAlliase["speed"], Scripts_Cmds[1]) then
         local myCharacterIn_WS = _WS.Characters[_PLR.Name]
@@ -361,6 +400,8 @@ function EveryCommands()
         if Scripts_Cmds[2] == "1" then
             _InvokeServer("CommF_", "First Sea", "TravelMain")
         elseif Scripts_Cmds[2] == "2" then
+            _ToPos(CFrame.new(-4608, 873, -1668), 5)
+            task.wait()
             _ToPart("Seconds_Sea_NPC", Vector3.new(0, 2.5, 0))
             _InvokeServer("CommF_", "Second Sea", "TravelDressora")
         elseif Scripts_Cmds[2] == "3" then
@@ -410,10 +451,16 @@ function EveryCommands()
             elseif Scripts_Cmds[2] == "fountain" or Scripts_Cmds[2] == "f" then
                 _ToPart("Fountain_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "underwater" or Scripts_Cmds[2] == "uw" then
+                _ToPos(CFrame.new(61164, 5, 1820), 5)
+                task.wait()
                 _ToPart("Underwater_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "lowersky" or Scripts_Cmds[2] == "ls" then
+                _ToPos(CFrame.new(-4608, 873, -1668), 5)
+                task.wait()
                 _ToPart("LowerSky_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "highersky" or Scripts_Cmds[2] == "hs" then
+                _ToPos(CFrame.new(-7895, 5546, -383), 5)
+                task.wait()
                 _ToPart("HighestSky_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "?" then
                 if _FirstSea then
@@ -575,6 +622,16 @@ _RS.RenderStepped:Connect(function()
     end
 end)
 
+_RS.RenderStepped:Connect(function()
+    if _AutoEnablePvp then
+        _EnablePvpOne += 1
+        if _EnablePvpOne >= 20 then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("EnablePvp")
+            _EnablePvpOne = 0
+        end
+    end
+end)
+
 _AddCornerUI(_GetCommands, 0.2)
 _AddCornerUI(_GetFocusedButton, 0.2)
 _AddCornerUI(_GetCorrectedCommands, 0.2)
@@ -634,7 +691,7 @@ if _FirstSea then
     _Part(CFrame.new(5214, 400, 734), "Prison_Island")
     _Part(CFrame.new(-5616, 400, 8754), "MagmaVillage_Island")
     _Part(CFrame.new(5668, 580, 4301), "Fountain_Island")
-    _Part(CFrame.new(4047, 400, -1816), "Underwater_Island")
+    _Part(CFrame.new(61351, 31, 1300), "Underwater_Island")
     _Part(CFrame.new(-4692, 1020, -1887), "LowerSky_Island")
     _Part(CFrame.new(-7965, 6050, -1401), "HighestSky_Island")
     _Part(CFrame.new(-1166, 8, 1729), "Seconds_Sea_NPC")
@@ -646,4 +703,4 @@ else
     _Notice("Script Notice", "Worlds Detected: Error!", 1, "SendNotification")
 end
 
-_Notice("BF Commands Scripts", "Completely Loaded!", 1, "SendNotification")
+_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: 0.9", 1, "SendNotification")
