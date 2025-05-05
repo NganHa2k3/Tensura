@@ -4,7 +4,7 @@ local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn, intBGC_All, c
 local _PLRS, _PLR, _Char, _Him, _He, _FirstSea, _SecondsSea, _ThirdSea
 local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited, _AutoStatus, _CurrentTween, _AutoEnablePvp, _EnablePvpOne, _TweeningSpeed, _FAmode, _CurrentVersion
 
-_CurrentVersion = 1.25
+_CurrentVersion = 1.26
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
@@ -144,10 +144,10 @@ end
 function _Noclip(_boolean)
     for _, _N in pairs(_PLR.Character:GetDescendants()) do
         if _N:IsA("BasePart") then
-            if _boolean then
+            if _boolean == true then
                 _N.CanCollide = false
                 warn(":0 noclipping on.")
-            else
+            elseif _boolean == false then
                 _N.CanCollide = true
                 warn(":l noclipping off.")
             end
@@ -316,6 +316,7 @@ local EveryCmds_nAlliase = {
     ["autofarmnearby"] = {"autofarmnearby", "afn"},
     ["island"] = {"island", "il"},
     ["refunds"] = {"refunds", "rf"},
+    ["race"] = {"race", "reroll"},
     ["fastattack"] = {"fastattack", "fa"},
     ["superfastattack"] = {"superfastattack", "sfa"},
     ["attackmode"] = {"attackmode", "am"},
@@ -331,7 +332,7 @@ local EveryCmds_nAlliase = {
 
 local _OrderedCommands = {
     "reset", "tweeningspeed", "cmds", "console", "speed", "dash", "upstat", "jobid", "autofarmnearby",
-    "island", "refunds", "fastattack", "superfastattack", "attackmode",
+    "island", "refunds", "race", "fastattack", "superfastattack", "attackmode",
     "pvp", "removehrpbodyvelocity", "iyedited", "remotespy",
     "explorer", "travelingsea", "suggestiontextcolor", "settings"
 }
@@ -352,8 +353,8 @@ function EveryCommands()
         _Notice("Commands", "Character Reseted!", 1, "SendNotification")
     elseif table.find(EveryCmds_nAlliase["tweeningspeed"], Scripts_Cmds[1]) then
         if Scripts_Cmds[2] ~= "" or Scripts_Cmds[2] ~= nil then
-            _Notice("Commands", "Tweening Speed Unchanged!", 1, "SendNotification")
-        else
+            --_Notice("Commands", "Tweening Speed Unchanged!", 1, "SendNotification")
+        --else
             local new_TweeningSpeedValue = tonumber(Scripts_Cmds[2])
             _TweeningSpeed = new_TweeningSpeedValue
             _Notice("Commands", "Tweening Speed Changed to " .. _TweeningSpeed, 1, "SendNotification")
@@ -421,8 +422,12 @@ function EveryCommands()
             task.wait()
             game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Kitt_reset")
         elseif Scripts_Cmds[2] == "frags" or Scripts_Cmds[2] == "fragments" or Scripts_Cmds[2] == "f" then
+            game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Refund", "2")
             print("Used fragments!")
         end
+    elseif table.find(EveryCmds_nAlliase["race"], Scripts_Cmds[1]) then
+        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("BlackbeardReward", "Reroll", "2")
+        print("Used fragments!")
     elseif table.find(EveryCmds_nAlliase["removehrpbodyvelocity"], Scripts_Cmds[1]) then
         for i, v in pairs(_PLR.Character.HumanoidRootPart:GetChildren()) do
             if v:IsA("BodyVelocity") and v.Name == "Extra_Wings_IX" then
