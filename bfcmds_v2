@@ -2,7 +2,9 @@
 local _WS, _CG, _RlS, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
 local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn, intBGC_All, col1, col2, col3
 local _PLRS, _PLR, _Char, _Him, _He, _FirstSea, _SecondsSea, _ThirdSea
-local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited, _AutoStatus, _CurrentTween, _AutoEnablePvp, _EnablePvpOne, _TweeningSpeed
+local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited, _AutoStatus, _CurrentTween, _AutoEnablePvp, _EnablePvpOne, _TweeningSpeed, _FAmode, _CurrentVersion
+
+_CurrentVersion = 1.25
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
@@ -31,6 +33,7 @@ _alreadyRunIYEdited = false
 _AutoEnablePvp = false
 _CurrentTween = nil
 _AutoStatus = 0
+_FAmode = 1 -- attacking mobs as default
 _EnablePvpOne = 0
 _TweeningSpeed = 250
 _SSCRL_Canvasmain = 0
@@ -309,11 +312,13 @@ local EveryCmds_nAlliase = {
     ["speed"] = {"speed", "sp"},
     ["dash"] = {"dash", "da"},
     ["upstat"] = {"upstat", "autostat", "as"},
+    ["jobid"] = {"jobid", "saveserverjobid"},
     ["autofarmnearby"] = {"autofarmnearby", "afn"},
     ["island"] = {"island", "il"},
     ["refunds"] = {"refunds", "rf"},
     ["fastattack"] = {"fastattack", "fa"},
     ["superfastattack"] = {"superfastattack", "sfa"},
+    ["attackmode"] = {"attackmode", "am"},
     ["pvp"] = {"pvp", "autoenablepvp"},
     ["removehrpbodyvelocity"] = {"removehrpbodyvelocity", "rhrpbv"},
     ["iyedited"] = {"iyedited", "iy"},
@@ -325,8 +330,8 @@ local EveryCmds_nAlliase = {
 }
 
 local _OrderedCommands = {
-    "reset", "tweeningspeed", "cmds", "console", "speed", "dash", "upstat", "autofarmnearby",
-    "island", "refunds", "fastattack", "superfastattack",
+    "reset", "tweeningspeed", "cmds", "console", "speed", "dash", "upstat", "jobid", "autofarmnearby",
+    "island", "refunds", "fastattack", "superfastattack", "attackmode",
     "pvp", "removehrpbodyvelocity", "iyedited", "remotespy",
     "explorer", "travelingsea", "suggestiontextcolor", "settings"
 }
@@ -405,6 +410,9 @@ function EveryCommands()
                 _Notice("Commands", "Automatically Upgrading Status: Melee/Punch Plus 1.", 1, "SendNotification")
             end
         end
+    elseif table.find(EveryCmds_nAlliase["jobid"], Scripts_Cmds[1]) then
+        _Clipboard(game.JobId)
+        _Notice("Commands", "JobId: " .. game.JobId .. "\n -- Server JobId Saved --", 1, "SendNotification")
     elseif table.find(EveryCmds_nAlliase["refunds"], Scripts_Cmds[1]) then
         if Scripts_Cmds[2] == "code" or Scripts_Cmds[2] == "c" then
             game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Sub2GamerRobot_Reset1")
@@ -495,6 +503,16 @@ function EveryCommands()
         else
             _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
             SuperFastAttack_Status()
+        end
+    elseif table.find(EveryCmds_nAlliase["attackmode"], Scripts_Cmds[1]) then
+        if Scripts_Cmds[2] == "mobs" then
+            _FAmode = 1
+            _Notice("Fast Attacks", "MODE Attack: On MOBS!", 1, "SendNotification")
+        elseif Scripts_Cmds[2] == "players" then
+            _FAmode = 2
+            _Notice("Fast Attacks", "MODE Attack: On PLAYERS!", 1, "SendNotification")
+        elseif Scripts_Cmds[2] == "?" then
+            _Notice("Fast Attacks", "MODE Attack: attackmode mobs or players\nmobs, players...", 1, "SendNotification")
         end
     elseif table.find(EveryCmds_nAlliase["autofarmnearby"], Scripts_Cmds[1]) then
         if _NearbyFarm then
@@ -636,13 +654,31 @@ end
 function FastAttack_Status()
     if not FA_Toggle and not FA_Toggle_II then
         FA_Toggle = true
-        _G.EnableFastAttack_Enemies = true
-        _G.EnableFastAttack_Players = true
+        if _FAmode == 1 then
+            if _G.EnableFastAttack_Players == true then
+                _G.EnableFastAttack_Players = false
+            end
+            _G.EnableFastAttack_Enemies = true
+        elseif _FAmode == 2 then
+            if _G.EnableFastAttack_Enemies == true then
+                _G.EnableFastAttack_Enemies = false
+            end
+            _G.EnableFastAttack_Players = true
+        end
         _Notice("Commands", "Fast Attacking Normal is On/Activated!", 1, "SendNotification")
     else
         FA_Toggle = false
-        _G.EnableFastAttack_Enemies = false
-        _G.EnableFastAttack_Players = false
+        if _FAmode == 1 then
+            if _G.EnableFastAttack_Players == true then
+                _G.EnableFastAttack_Players = false
+            end
+            _G.EnableFastAttack_Enemies = false
+        elseif _FAmode == 2 then
+            if _G.EnableFastAttack_Enemies == true then
+                _G.EnableFastAttack_Enemies = false
+            end
+            _G.EnableFastAttack_Players = false
+        end
         _Notice("Commands", "Fast Attacking Normal is Off/Deactivated!", 1, "SendNotification")
     end
 end
@@ -650,17 +686,47 @@ end
 function SuperFastAttack_Status()
     if not FA_Toggle_II and not FA_Toggle then
         FA_Toggle_II = true
-        _G.EnableFastAttack_Enemies = true
-        _G.SuperFastAttack_Enemies = true
-        _G.EnableFastAttack_Players = true
-        _G.SuperFastAttack_Players = true
+        if _FAmode == 1 then
+            if _G.EnableFastAttack_Players == true then
+                _G.EnableFastAttack_Players = false
+            end
+            if _G.SuperFastAttack_Players == true then
+                _G.SuperFastAttack_Players = false
+            end
+            _G.EnableFastAttack_Enemies = true
+            _G.SuperFastAttack_Enemies = true
+        elseif _FAmode == 2 then
+            if _G.EnableFastAttack_Enemies == true then
+                _G.EnableFastAttack_Enemies = false
+            end
+            if _G.SuperFastAttack_Enemies == true then
+                _G.SuperFastAttack_Enemies = false
+            end
+            _G.EnableFastAttack_Players = true
+            _G.SuperFastAttack_Players = true
+        end
         _Notice("Commands", "Fast Attacking Overpower is On/Activated!", 1, "SendNotification")
     else
         FA_Toggle_II = false
-        _G.EnableFastAttack_Enemies = false
-        _G.SuperFastAttack_Enemies = false
-        _G.EnableFastAttack_Players = false
-        _G.SuperFastAttack_Players = false
+        if _FAmode == 1 then
+            if _G.EnableFastAttack_Players == true then
+                _G.EnableFastAttack_Players = false
+            end
+            if _G.SuperFastAttack_Players == true then
+                _G.SuperFastAttack_Players = false
+            end
+            _G.EnableFastAttack_Enemies = false
+            _G.SuperFastAttack_Enemies = false
+        elseif _FAmode == 2 then
+            if _G.EnableFastAttack_Enemies == true then
+                _G.EnableFastAttack_Enemies = false
+            end
+            if _G.SuperFastAttack_Enemies == true then
+                _G.SuperFastAttack_Enemies = false
+            end
+            _G.EnableFastAttack_Players = false
+            _G.SuperFastAttack_Players = false
+        end
         _Notice("Commands", "Fast Attacking Overpower is Off/Deactivated!", 1, "SendNotification")
     end
 end
@@ -862,4 +928,4 @@ else
     _Notice("Script Notice", "Worlds Detected: Error!", 1, "SendNotification")
 end
 
-_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: 1.2", 1, "SendNotification")
+_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: " .. _CurrentVersion, 1, "SendNotification")
