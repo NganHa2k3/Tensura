@@ -1,12 +1,12 @@
 -- Main Script --
-local Player = game:GetService("Players").LocalPlayer
-local RunService = game:GetService("RunService")
-local Repli = game:GetService("ReplicatedStorage")
-local Modules = Repli:WaitForChild("Modules")
-local Net = Modules:WaitForChild("Net")
-local RE_RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
-local RE_RegisterHit = Net:WaitForChild("RE/RegisterHit")
-local Enemies = workspace:WaitForChild("Characters")
+local P1L = game:GetService("Players").LocalPlayer
+local R1S = game:GetService("RunService")
+local RP1 = game:GetService("ReplicatedStorage")
+local M1D = RP1:WaitForChild("Modules")
+local N1 = M1D:WaitForChild("Net")
+local RE_1 = N1:WaitForChild("RE/RegisterAttack")
+local RE_2 = N1:WaitForChild("RE/RegisterHit")
+local CHARs1 = workspace:WaitForChild("Characters")
 
 _G.EnableFastAttack_Players = false
 _G.SuperFastAttack_Players = false
@@ -16,69 +16,68 @@ Its_Disable_ATKPlayers = false
 _WaitTime_Players = 0.05
 
 -- Function --
-function IsAlive(Character)
-    local humanoid = Character:FindFirstChild("Humanoid")
-    return humanoid and humanoid.Health > 0
+function AreYouAlive(C1H)
+    local Hmoid = C1H:FindFirstChild("Humanoid")
+    return Hmoid and Hmoid.Health > 0
 end
 
-function DoProcessHits(Position, Distance)
-    local BladeHits = {}
-    local Mobs = Enemies:GetChildren()
+function CreateProcess(Pz1, Distance)
+    local BLADE1 = {}
+    local YLP = CHARs1:GetChildren()
 
-    for i = 1, #Mobs do
-        local Enemy = Mobs[i]
-        local BasePart = Enemy.PrimaryPart
+    for i = 1, #YLP do
+        local ELT = YLP[i]
+        local BzP = ELT.PrimaryPart
 
-        if BasePart and IsAlive(Enemy) and (Position - BasePart.Position).Magnitude <= Distance then
-            table.insert(BladeHits, {Enemy, BasePart})
+        if BzP and AreYouAlive(ELT) and (Pz1 - BzP.Position).Magnitude <= Distance then
+            table.insert(BLADE1, {ELT, BzP})
         end
     end
 
-    return BladeHits
+    return BLADE1
 end
 
-function ValidPartFor_Bladehits(Character, Distance)
-    local Position = Character:GetPivot().Position
+function VLP4BLADE1(C1H, Distance)
+    local Pz1 = C1H:GetPivot().Position
     Distance = Distance or 50
 
-    return DoProcessHits(Position, Distance)
+    return CreateProcess(Pz1, Distance)
 end
 
-function NormalAttacking(Character, Cooldown)
-    local EnemyRootPart = nil
-    local BladeHits = ValidPartFor_Bladehits(Character)
+function Run_NormalAttacking(C1H, CDF)
+    local ERP1 = nil
+    local BLADE1 = VLP4BLADE1(C1H)
 
-    if #BladeHits > 0 then
-        EnemyRootPart = BladeHits[1][2]
+    if #BLADE1 > 0 then
+        ERP1 = BLADE1[1][2]
 
-        RE_RegisterAttack:FireServer(Cooldown)
-
-        RE_RegisterHit:FireServer(EnemyRootPart, BladeHits)
+        RE_1:FireServer(CDF)
+        RE_2:FireServer(ERP1, BLADE1)
     end
 end
 
-function AttackNoCD(Cooldown_I)
-    if not IsAlive(Player.Character) then return end
+function RunSpecialFunction(CDF)
+    if not AreYouAlive(P1L.Character) then return end
     
-    local Character = Player.Character
-    local Equipped = Character:FindFirstChildOfClass("Tool")
-    local ToolTip = Equipped and Equipped.ToolTip
+    local C1H = P1L.Character
+    local EP1 = C1H:FindFirstChildOfClass("Tool")
+    local ToolTip = EP1 and EP1.ToolTip
     
-    if not Equipped or (ToolTip ~= "Gun" and ToolTip ~= "Melee" and ToolTip ~= "Blox Fruit" and ToolTip ~= "Sword") then
+    if not EP1 or (ToolTip ~= "Gun" and ToolTip ~= "Melee" and ToolTip ~= "Blox Fruit" and ToolTip ~= "Sword") then
         return
     end
     
-    local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or Cooldown_I
+    local CDF = EP1:FindFirstChild("Cooldown") and EP1.Cooldown.Value or CDF
 
-    NormalAttacking(Character, Cooldown)
+    Run_NormalAttacking(C1H, CDF)
 end
 
-RunService.RenderStepped:Connect(function()
+R1S.RenderStepped:Connect(function()
     if _G.EnableFastAttack_Players and not Its_Disable_ATKPlayers then
         if not _G.SuperFastAttack_Players then
-            AttackNoCD(0.3)
+            RunSpecialFunction(0.3)
         else
-            AttackNoCD(0.0002)
+            RunSpecialFunction(0.0002)
         end
         wait(_WaitTime_Players)
     end
