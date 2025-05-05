@@ -243,7 +243,7 @@ function _ToNearbyMobs()
         _H = _NearestEnemies.Humanoid
         _EnemiesPosition = _NearestEnemies.HumanoidRootPart.Position
         _DirectionBehind = (_PLR.Character.HumanoidRootPart.Position - _EnemiesPosition).unit
-        _PositionBehind = _EnemiesPosition + (_DirectionBehind * -0.2) + Vector3.new(0, 35, 0)
+        _PositionBehind = _EnemiesPosition + (_DirectionBehind * -0.2) + Vector3.new(0, 25, 0)
         
         if _H.Health > 0 then
             _TwPos(_PositionBehind)
@@ -470,7 +470,7 @@ function EveryCommands()
         if not FA_VariableCheck_0 then
             FA_VariableCheck_0 = true
             _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
-            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks", function()
+            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks_OnEnemies", function()
                 _Notice("Commands", "Successfully Loaded Scripts: I!", 1, "SendNotification")
             end)
             _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks_OnCharacters", function()
@@ -485,7 +485,7 @@ function EveryCommands()
         if not FA_VariableCheck_0 then
             FA_VariableCheck_0 = true
             _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
-            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks", function()
+            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks_OnEnemies", function()
                 _Notice("Commands", "Successfully Loaded Scripts: I!", 1, "SendNotification")
             end)
             _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks_OnCharacters", function()
@@ -636,11 +636,13 @@ end
 function FastAttack_Status()
     if not FA_Toggle and not FA_Toggle_II then
         FA_Toggle = true
-        _G.EnableFastAttack = true
+        _G.EnableFastAttack_Enemies = true
+        _G.EnableFastAttack_Players = true
         _Notice("Commands", "Fast Attacking Normal is On/Activated!", 1, "SendNotification")
     else
         FA_Toggle = false
-        _G.EnableFastAttack = false
+        _G.EnableFastAttack_Enemies = false
+        _G.EnableFastAttack_Players = false
         _Notice("Commands", "Fast Attacking Normal is Off/Deactivated!", 1, "SendNotification")
     end
 end
@@ -648,13 +650,17 @@ end
 function SuperFastAttack_Status()
     if not FA_Toggle_II and not FA_Toggle then
         FA_Toggle_II = true
-        _G.EnableFastAttack = true
-        _G.SuperFastAttack = true
+        _G.EnableFastAttack_Enemies = true
+        _G.SuperFastAttack_Enemies = true
+        _G.EnableFastAttack_Players = true
+        _G.SuperFastAttack_Players = true
         _Notice("Commands", "Fast Attacking Overpower is On/Activated!", 1, "SendNotification")
     else
         FA_Toggle_II = false
-        _G.EnableFastAttack = false
-        _G.SuperFastAttack = false
+        _G.EnableFastAttack_Enemies = false
+        _G.SuperFastAttack_Enemies = false
+        _G.EnableFastAttack_Players = false
+        _G.SuperFastAttack_Players = false
         _Notice("Commands", "Fast Attacking Overpower is Off/Deactivated!", 1, "SendNotification")
     end
 end
@@ -856,4 +862,4 @@ else
     _Notice("Script Notice", "Worlds Detected: Error!", 1, "SendNotification")
 end
 
-_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: 1.1", 1, "SendNotification")
+_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: 1.2", 1, "SendNotification")
