@@ -1,0 +1,85 @@
+-- Main Script --
+local Player = game:GetService("Players").LocalPlayer
+local RunService = game:GetService("RunService")
+local Repli = game:GetService("ReplicatedStorage")
+local Modules = Repli:WaitForChild("Modules")
+local Net = Modules:WaitForChild("Net")
+local RE_RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
+local RE_RegisterHit = Net:WaitForChild("RE/RegisterHit")
+local Enemies = workspace:WaitForChild("Characters")
+
+_G.EnableFastAttack = false
+_G.SuperFastAttack = false
+local Its_Disable, _WaitTime
+
+Its_Disable = false
+_WaitTime = 0.05
+
+-- Function --
+function IsAlive(Character)
+    local humanoid = Character:FindFirstChild("Humanoid")
+    return humanoid and humanoid.Health > 0
+end
+
+function DoProcessHits(Position, Distance)
+    local BladeHits = {}
+    local Mobs = Enemies:GetChildren()
+
+    for i = 1, #Mobs do
+        local Enemy = Mobs[i]
+        local BasePart = Enemy.PrimaryPart
+
+        if BasePart and IsAlive(Enemy) and (Position - BasePart.Position).Magnitude <= Distance then
+            table.insert(BladeHits, {Enemy, BasePart})
+        end
+    end
+
+    return BladeHits
+end
+
+function ValidPartFor_Bladehits(Character, Distance)
+    local Position = Character:GetPivot().Position
+    Distance = Distance or 50
+
+    return DoProcessHits(Position, Distance)
+end
+
+function NormalAttacking(Character, Cooldown)
+    local EnemyRootPart = nil
+    local BladeHits = ValidPartFor_Bladehits(Character)
+
+    if #BladeHits > 0 then
+        EnemyRootPart = BladeHits[1][2]
+
+        RE_RegisterAttack:FireServer(Cooldown)
+
+        RE_RegisterHit:FireServer(EnemyRootPart, BladeHits)
+    end
+end
+
+function AttackNoCD(Cooldown_I)
+    if not IsAlive(Player.Character) then return end
+    
+    local Character = Player.Character
+    local Equipped = Character:FindFirstChildOfClass("Tool")
+    local ToolTip = Equipped and Equipped.ToolTip
+    
+    if not Equipped or (ToolTip ~= "Gun" and ToolTip ~= "Melee" and ToolTip ~= "Blox Fruit" and ToolTip ~= "Sword") then
+        return
+    end
+    
+    local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or Cooldown_I
+
+    NormalAttacking(Character, Cooldown)
+end
+
+RunService.RenderStepped:Connect(function()
+    if _G.EnableFastAttack and not Its_Disable then
+        if not _G.SuperFastAttack then
+            AttackNoCD(0.3)
+        else
+            AttackNoCD(0.0002)
+        end
+        wait(_WaitTime)
+    end
+end)
