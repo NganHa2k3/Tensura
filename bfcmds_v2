@@ -442,7 +442,11 @@ function EveryCommands()
                 _ToPart("Snowy_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "marineford" or Scripts_Cmds[2] == "mf" then
                 _ToPart("MarineFord_Island", Vector3.new(0, 9, 0))
-            elseif Scripts_Cmds[2] == "arena" or Scripts_Cmds[2] == "a" then
+            elseif Scripts_Cmds[2] == "arena1" or Scripts_Cmds[2] == "a1" then
+                _ToPos(CFrame.new(-4608, 873, -1668), 5)
+                task.wait(0.2)
+                _ToPos(CFrame.new(-4608, 500, -1668), 5)
+                task.wait()
                 _ToPart("Arena_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "prison" or Scripts_Cmds[2] == "p" then
                 _ToPart("Prison_Island", Vector3.new(0, 9, 0))
@@ -462,13 +466,38 @@ function EveryCommands()
                 _ToPos(CFrame.new(-7895, 5546, -383), 5)
                 task.wait()
                 _ToPart("HighestSky_Island", Vector3.new(0, 9, 0))
+            elseif Scripts_Cmds[2] == "dock2" or Scripts_Cmds[2] == "d2" then
+                _ToPos(CFrame.new(-286.98901, 306.17145, 597.73639), 5)
+                task.wait(0.2)
+                _ToPos(CFrame.new(-286.98901, 656.17145, 597.73639), 5)
+                task.wait()
+                _ToPart("KingdomOfRose_Dock2", Vector3.new(0, 9, 0))
+            elseif Scripts_Cmds[2] == "arena2" or Scripts_Cmds[2] == "a2" then
+                _ToPos(CFrame.new(-286.98901, 306.17145, 597.73639), 5)
+                task.wait(0.2)
+                _ToPos(CFrame.new(-286.98901, 656.17145, 597.73639), 5)
+                task.wait()
+                _ToPart("KingdomOfRose_Arena", Vector3.new(0, 9, 0))
+            elseif Scripts_Cmds[2] == "cafe" or Scripts_Cmds[2] == "c" then
+                _ToPos(CFrame.new(-286.98901, 306.17145, 597.73639), 5)
+                task.wait(0.2)
+                _ToPos(CFrame.new(-286.98901, 656.17145, 597.73639), 5)
+                task.wait()
+                _ToPart("KingdomOfRose_Cafe", Vector3.new(0, 9, 0))
+            elseif Scripts_Cmds[2] == "roomv3" or Scripts_Cmds[2] == "r3" then
+                _ToPos(CFrame.new(-286.98901, 306.17145, 597.73639), 5)
+                task.wait(0.2)
+                _ToPos(CFrame.new(-286.98901, 656.17145, 597.73639), 5)
+                task.wait()
+                _ToPart("KingdomOfRose_RaceV3", Vector3.new(0, 2.5, 0))
             elseif Scripts_Cmds[2] == "?" then
                 if _FirstSea then
-                    print("List of all island name, do 'island' with these name for teleportation: ms, ps, mt, j, pv, d, s, mf, a, p, mv, f, uw, ls, hs or ? for shown command info...")
-                    print("Others way or name of the island for teleportation: marinestarter, piratestarter, middletown, jungle, piratevillage, desert, snowy, marineford, arena, prison, magmavillage, fountain, underwater, lowersky, highersky. That's all !")
+                    print("List of all island name, do 'island' with these name for teleportation: ms, ps, mt, j, pv, d, s, mf, a1, p, mv, f, uw, ls, hs or ? for shown command info...")
+                    print("Others way or name of the island for teleportation: marinestarter, piratestarter, middletown, jungle, piratevillage, desert, snowy, marineford, arena1, prison, magmavillage, fountain, underwater, lowersky, highersky. That's all !")
                     _Notice("nah", "nothing nothing...", 1, "DevConsoleVisible")
                 elseif _SecondsSea then
-                    print("Nothing for now")
+                    print("List of all island name, do 'island' with these name for teleportation: d2, a2, c, r3 or ? for shown command info...")
+                    print("Others way or name of the island for teleportation: dock2, arena2, cafe, roomv3. That's all !")
                 elseif _ThirdSea then
                     print("Nothing for now")
                 else
@@ -697,10 +726,14 @@ if _FirstSea then
     _Part(CFrame.new(-1166, 8, 1729), "Seconds_Sea_NPC")
 elseif _SecondsSea then
     _Notice("Script Notice", "Worlds Detected: Seconds Sea!", 1, "SendNotification")
+    _Part(CFrame.new(-24.70779, 39.31746, 2704.16431), "KingdomOfRose_Dock2")
+    _Part(CFrame.new(-383.42191, 73.06046, 349.10770), "KingdomOfRose_Cafe")
+    _Part(CFrame.new(-1939.58630, 241.66844, 1750.40906), "KingdomOfRose_Arena")
+    _Part(CFrame.new(-2019.60767, 125.53294, -77.13563), "KingdomOfRose_RaceV3")
 elseif _ThirdSea then
     _Notice("Script Notice", "Worlds Detected: Third Sea!", 1, "SendNotification")
 else
     _Notice("Script Notice", "Worlds Detected: Error!", 1, "SendNotification")
 end
 
-_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: 0.9", 1, "SendNotification")
+_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: 1.0", 1, "SendNotification")
