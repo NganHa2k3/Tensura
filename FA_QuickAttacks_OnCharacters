@@ -8,12 +8,12 @@ local RE_RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
 local RE_RegisterHit = Net:WaitForChild("RE/RegisterHit")
 local Enemies = workspace:WaitForChild("Characters")
 
-_G.EnableFastAttack = false
-_G.SuperFastAttack = false
-local Its_Disable, _WaitTime
+_G.EnableFastAttack_Players = false
+_G.SuperFastAttack_Players = false
+local Its_Disable_ATKPlayers, _WaitTime_Players
 
-Its_Disable = false
-_WaitTime = 0.05
+Its_Disable_ATKPlayers = false
+_WaitTime_Players = 0.05
 
 -- Function --
 function IsAlive(Character)
@@ -74,12 +74,12 @@ function AttackNoCD(Cooldown_I)
 end
 
 RunService.RenderStepped:Connect(function()
-    if _G.EnableFastAttack and not Its_Disable then
-        if not _G.SuperFastAttack then
+    if _G.EnableFastAttack_Players and not Its_Disable_ATKPlayers then
+        if not _G.SuperFastAttack_Players then
             AttackNoCD(0.3)
         else
             AttackNoCD(0.0002)
         end
-        wait(_WaitTime)
+        wait(_WaitTime_Players)
     end
 end)
