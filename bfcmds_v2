@@ -2,7 +2,7 @@
 local _WS, _CG, _RlS, _RS, _TS, _StGui, _SGui, _GetFocusedButton, _GetCommands, _GetCorrectedCommands, _SettingsFrame, _SettingsScroll
 local EndPoint, StartPoint, OnFocused_SlideOut, OnFocused_SlideIn, intBGC_All, col1, col2, col3
 local _PLRS, _PLR, _Char, _Him, _He, _FirstSea, _SecondsSea, _ThirdSea
-local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited, _AutoStatus, _CurrentTween, _AutoEnablePvp, _EnablePvpOne
+local FA_VariableCheck_0, FA_Toggle, FA_Toggle_II, Cmdbar_ItsOnFocused, _SSCRL_Canvasmain, _ButtonHeight, _ButtonPadding, Its_SettingsUIEnable, numtest, thisisenable, intCLabel_Txc, _alreadyRunIYEdited, _AutoStatus, _CurrentTween, _AutoEnablePvp, _EnablePvpOne, _TweeningSpeed
 
 _WS = game:GetService("Workspace")
 _CG = game:GetService("CoreGui")
@@ -32,6 +32,7 @@ _AutoEnablePvp = false
 _CurrentTween = nil
 _AutoStatus = 0
 _EnablePvpOne = 0
+_TweeningSpeed = 250
 _SSCRL_Canvasmain = 0
 _ButtonHeight = 25
 _ButtonPadding = 2
@@ -137,6 +138,20 @@ function _BV(State)
     end
 end
 
+function _Noclip(_boolean)
+    for _, _N in pairs(_PLR.Character:GetDescendants()) do
+        if _N:IsA("BasePart") then
+            if _boolean then
+                _N.CanCollide = false
+                warn(":0 noclipping on.")
+            else
+                _N.CanCollide = true
+                warn(":l noclipping off.")
+            end
+        end
+    end
+end
+
 function _Part(_cframe, _name)
     local epoint = Instance.new("Part")
     epoint.Parent = game.Workspace
@@ -155,7 +170,7 @@ function _Dur(_Start, _End, _SP)
 end
 
 function _Info(_Start, _End)
-    local _DR = _Dur(_Start, _End, 250)
+    local _DR = _Dur(_Start, _End, _TweeningSpeed)
     return TweenInfo.new(_DR, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
 end
 
@@ -165,24 +180,35 @@ function _ToPart(_name, _h)
         _BV("false")
         _CT_Cancel()
         _BV("true")
+        _Noclip(true)
         local _Goal = {CFrame = _SPart.CFrame + _h}
         local _I4 = _Info(_PLR.Character.HumanoidRootPart.Position, _Goal.CFrame.Position)
         _CurrentTween = _TS:Create(_PLR.Character.HumanoidRootPart, _I4, _Goal)
         _CurrentTween:Play()
         _CurrentTween.Completed:Wait()
         _BV("false")
+        _Noclip(false)
         -- local _RunningCheck = _RS.RenderStepped:Connect(function()
             if (_PLR.Character.HumanoidRootPart.Position - _SPart.CFrame.Position).Magnitude <= 20 then
                 _BV("false")
+                _Noclip(false)
                 -- _RunningCheck:Disconnect()
                 warn("Check if it work!")
             else
-                warn("it not work :(")
+                warn("Not in range, it not work :(")
             end
         -- end)
     else
         _Notice("Commands", "Error not found Islands named: " .. _name, 1, "SendNotification")
     end
+end
+
+function _TwPos(_p)
+    local _PLR_Position = _PLR.Character.HumanoidRootPart.Position
+    local _Goal = {CFrame = CFrame.new(_p)}
+    local _I4 = _Info(_PLR_Position, _Goal.CFrame.Position)
+    _CurrentTween = _TS:Create(_PLR.Character.HumanoidRootPart, _I4, _Goal)
+    _CurrentTween:Play()
 end
 
 function _ToPos(_Pos, _Number)
@@ -192,6 +218,38 @@ function _ToPos(_Pos, _Number)
         _Totals_Tries += 1
         print("Trying: " .. _Totals_Tries)
         _PLR.Character.HumanoidRootPart.CFrame = _Pos
+    end
+end
+
+function _ToNearbyMobs()
+    local _NearestEnemies, _Huge, _InRange, _Range
+    _NearestEnemies = nil
+    _Huge = math.huge
+    _InRange = 1000
+    
+    for _, _Enemies in pairs(_WS.Enemies:GetChildren()) do
+        if _Enemies:IsA("Model") and _Enemies:FindFirstChild("HumanoidRootPart") then
+            _Range = (_PLR.Character.HumanoidRootPart.Position - _Enemies.HumanoidRootPart.Position).Magnitude
+            
+            if _Range < _Huge and _Range <= _InRange then
+                _Huge = _Range
+                _NearestEnemies = _Enemies
+            end
+        end
+    end
+    
+    if _NearestEnemies and _NearestEnemies:FindFirstChild("Humanoid") then
+        local _H, _EnemiesPosition, _DirectionBehind, _PositionBehind
+        _H = _NearestEnemies.Humanoid
+        _EnemiesPosition = _NearestEnemies.HumanoidRootPart.Position
+        _DirectionBehind = (_PLR.Character.HumanoidRootPart.Position - _EnemiesPosition).unit
+        _PositionBehind = _EnemiesPosition + (_DirectionBehind * -0.2) + Vector3.new(0, 35, 0)
+        
+        if _H.Health > 0 then
+            _TwPos(_PositionBehind)
+        else
+            _NearestEnemies.HumanoidRootPart.CFrame = _PLR.Character.HumanoidRootPart.CFrame * CFrame.new(0, 900, 0)
+        end
     end
 end
 
@@ -210,6 +268,16 @@ function _Notice(Tt, tx, dur, x)
         })
     elseif x == "DevConsoleVisible" then
         _StGui:SetCore(x, true)
+    end
+end
+
+function _Clipboard(_m)
+    local _someTypeOfClipboard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
+    if _someTypeOfClipboard then
+        _someTypeOfClipboard(tostring(_m))
+        _Notice("Clipboard", "Saved to clipboard!\nText: " .. _m, 1, "SendNotification")
+    else
+        _Notice("Clipboard", "Your exploit does not supported, saving clipboard!", 1, "SendNotification")
     end
 end
 
@@ -235,11 +303,13 @@ end
 
 local EveryCmds_nAlliase = {
     ["reset"] = {"reset", "re"},
+    ["tweeningspeed"] = {"tweeningspeed", "tspeed"},
     ["cmds"] = {"cmds", "commands"},
     ["console"] = {"console", "co"},
     ["speed"] = {"speed", "sp"},
     ["dash"] = {"dash", "da"},
     ["upstat"] = {"upstat", "autostat", "as"},
+    ["autofarmnearby"] = {"autofarmnearby", "afn"},
     ["island"] = {"island", "il"},
     ["refunds"] = {"refunds", "rf"},
     ["fastattack"] = {"fastattack", "fa"},
@@ -252,6 +322,13 @@ local EveryCmds_nAlliase = {
     ["travelingsea"] = {"travelingsea", "sea", "worlds"},
     ["suggestiontextcolor"] = {"suggestiontextcolor", "stc"},
     ["settings"] = {"settings", "se", "s"}
+}
+
+local _OrderedCommands = {
+    "reset", "tweeningspeed", "cmds", "console", "speed", "dash", "upstat", "autofarmnearby",
+    "island", "refunds", "fastattack", "superfastattack",
+    "pvp", "removehrpbodyvelocity", "iyedited", "remotespy",
+    "explorer", "travelingsea", "suggestiontextcolor", "settings"
 }
 
 function EveryCommands()
@@ -268,6 +345,14 @@ function EveryCommands()
             _PLR.Character.Humanoid.Health = 0
         end
         _Notice("Commands", "Character Reseted!", 1, "SendNotification")
+    elseif table.find(EveryCmds_nAlliase["tweeningspeed"], Scripts_Cmds[1]) then
+        if Scripts_Cmds[2] ~= "" or Scripts_Cmds[2] ~= nil then
+            _Notice("Commands", "Tweening Speed Unchanged!", 1, "SendNotification")
+        else
+            local new_TweeningSpeedValue = tonumber(Scripts_Cmds[2])
+            _TweeningSpeed = new_TweeningSpeedValue
+            _Notice("Commands", "Tweening Speed Changed to " .. _TweeningSpeed, 1, "SendNotification")
+        end
     elseif table.find(EveryCmds_nAlliase["iyedited"], Scripts_Cmds[1]) then
         if not _alreadyRunIYEdited then
             _alreadyRunIYEdited = true
@@ -283,16 +368,23 @@ function EveryCommands()
             _Notice("Commands", "This command should be only used one time...", 1, "SendNotification")
         end
     elseif table.find(EveryCmds_nAlliase["cmds"], Scripts_Cmds[1]) then
-        for i, v in ipairs(EveryCmds_nAlliase) do
-            print("Command[" .. i .. "]: " .. v[i] .. ".")
+        for i, key in ipairs(_OrderedCommands) do
+            local aliases = EveryCmds_nAlliase[key]
+            print("Command[" .. i .. "]: " .. key .. " <+> Aliases: " .. table.concat(aliases, ", "))
         end
         _Notice("nah", "nothing here", 1, "DevConsoleVisible")
     elseif table.find(EveryCmds_nAlliase["remotespy"], Scripts_Cmds[1]) then
-        print("Nothing for now!")
-        _Notice("Nah", "Nothing for now!", 1, "DevConsoleVisible")
+        _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/RobloxScript/refs/heads/item/Remote_Spy_For_Mobile", function()
+            _Notice("Commands", "Successfully loaded!", 1, "SendNotification")
+        end)
+        --print("Nothing for now!")
+        --_Notice("Nah", "Nothing for now!", 1, "DevConsoleVisible")
     elseif table.find(EveryCmds_nAlliase["explorer"], Scripts_Cmds[1]) then
-        print("Nothing for now!")
-        _Notice("Nah", "Nothing for now!", 1, "DevConsoleVisible")
+        _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/RobloxScript/refs/heads/item/Dex_Explorer_For_Mobile", function()
+            _Notice("Commands", "Successfully loaded!", 1, "SendNotification")
+        end)
+        --print("Nothing for now!")
+        --_Notice("Nah", "Nothing for now!", 1, "DevConsoleVisible")
     elseif table.find(EveryCmds_nAlliase["console"], Scripts_Cmds[1]) then
         _Notice("nothing", "nothing", 1, "DevConsoleVisible")
         _Notice("Commands", "Developer Console Opened!", 1, "SendNotification")
@@ -314,12 +406,14 @@ function EveryCommands()
             end
         end
     elseif table.find(EveryCmds_nAlliase["refunds"], Scripts_Cmds[1]) then
-        if Scripts_Cmds[2] == "code" then
+        if Scripts_Cmds[2] == "code" or Scripts_Cmds[2] == "c" then
             game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Sub2GamerRobot_Reset1")
             task.wait()
             game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Sub2UncleKizaru")
             task.wait()
             game:GetService("ReplicatedStorage").Remotes.Redeem:InvokeServer("Kitt_reset")
+        elseif Scripts_Cmds[2] == "frags" or Scripts_Cmds[2] == "fragments" or Scripts_Cmds[2] == "f" then
+            print("Used fragments!")
         end
     elseif table.find(EveryCmds_nAlliase["removehrpbodyvelocity"], Scripts_Cmds[1]) then
         for i, v in pairs(_PLR.Character.HumanoidRootPart:GetChildren()) do
@@ -377,7 +471,10 @@ function EveryCommands()
             FA_VariableCheck_0 = true
             _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
             _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks", function()
-                _Notice("Commands", "Successfully Loaded Scripts!", 1, "SendNotification")
+                _Notice("Commands", "Successfully Loaded Scripts: I!", 1, "SendNotification")
+            end)
+            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks_OnCharacters", function()
+                _Notice("Commands", "Successfully Loaded Scripts: II!", 1, "SendNotification")
             end)
             FastAttack_Status()
         else
@@ -389,12 +486,29 @@ function EveryCommands()
             FA_VariableCheck_0 = true
             _Notice("Commands", "Hold on a seconds, Loading Scripts...", 1, "SendNotification")
             _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks", function()
-                _Notice("Commands", "Successfully Loaded Scripts!", 1, "SendNotification")
+                _Notice("Commands", "Successfully Loaded Scripts: I!", 1, "SendNotification")
+            end)
+            _PasteScripts("https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/powerful/FA_QuickAttacks_OnCharacters", function()
+                _Notice("Commands", "Successfully Loaded Scripts: II!", 1, "SendNotification")
             end)
             SuperFastAttack_Status()
         else
             _Notice("Commands", "Already Loaded Scripts!", 1, "SendNotification")
             SuperFastAttack_Status()
+        end
+    elseif table.find(EveryCmds_nAlliase["autofarmnearby"], Scripts_Cmds[1]) then
+        if _NearbyFarm then
+            _NearbyFarm = false
+            _BV("false")
+            _Noclip(false)
+            _Notice("Commands", "Auto Follow Nearby Mobs is Deactivated!", 1, "SendNotification")
+        else
+            _NearbyFarm = true
+            _BV("false")
+            task.wait(0.5)
+            _BV("true")
+            _Noclip(true)
+            _Notice("Commands", "Auto Follow Nearby Mobs is Activated!", 1, "SendNotification")
         end
     elseif table.find(EveryCmds_nAlliase["travelingsea"], Scripts_Cmds[1]) then
         if Scripts_Cmds[2] == "1" then
@@ -444,8 +558,8 @@ function EveryCommands()
                 _ToPart("MarineFord_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "arena1" or Scripts_Cmds[2] == "a1" then
                 _ToPos(CFrame.new(-4608, 873, -1668), 5)
-                task.wait(0.2)
-                _ToPos(CFrame.new(-4608, 500, -1668), 5)
+                task.wait(1.5)
+                _ToPos(CFrame.new(-4608, 400, -1668), 5)
                 task.wait()
                 _ToPart("Arena_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "prison" or Scripts_Cmds[2] == "p" then
@@ -468,26 +582,26 @@ function EveryCommands()
                 _ToPart("HighestSky_Island", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "dock2" or Scripts_Cmds[2] == "d2" then
                 _ToPos(CFrame.new(-286.98901, 306.17145, 597.73639), 5)
-                task.wait(0.2)
-                _ToPos(CFrame.new(-286.98901, 656.17145, 597.73639), 5)
+                task.wait(1.5)
+                _ToPos(CFrame.new(-286.98901, 100.17145, 597.73639), 5)
                 task.wait()
                 _ToPart("KingdomOfRose_Dock2", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "arena2" or Scripts_Cmds[2] == "a2" then
                 _ToPos(CFrame.new(-286.98901, 306.17145, 597.73639), 5)
-                task.wait(0.2)
-                _ToPos(CFrame.new(-286.98901, 656.17145, 597.73639), 5)
+                task.wait(1.5)
+                _ToPos(CFrame.new(-286.98901, 800.17145, 597.73639), 5)
                 task.wait()
                 _ToPart("KingdomOfRose_Arena", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "cafe" or Scripts_Cmds[2] == "c" then
                 _ToPos(CFrame.new(-286.98901, 306.17145, 597.73639), 5)
-                task.wait(0.2)
-                _ToPos(CFrame.new(-286.98901, 656.17145, 597.73639), 5)
+                task.wait(1.5)
+                _ToPos(CFrame.new(-286.98901, 100.17145, 597.73639), 5)
                 task.wait()
                 _ToPart("KingdomOfRose_Cafe", Vector3.new(0, 9, 0))
             elseif Scripts_Cmds[2] == "roomv3" or Scripts_Cmds[2] == "r3" then
                 _ToPos(CFrame.new(-286.98901, 306.17145, 597.73639), 5)
-                task.wait(0.2)
-                _ToPos(CFrame.new(-286.98901, 656.17145, 597.73639), 5)
+                task.wait(1.5)
+                _ToPos(CFrame.new(-286.98901, 100.17145, 597.73639), 5)
                 task.wait()
                 _ToPart("KingdomOfRose_RaceV3", Vector3.new(0, 2.5, 0))
             elseif Scripts_Cmds[2] == "?" then
@@ -661,6 +775,12 @@ _RS.RenderStepped:Connect(function()
     end
 end)
 
+_RS.RenderStepped:Connect(function(deltaTime)
+    if _NearbyFarm then
+        _ToNearbyMobs()
+    end
+end)
+
 _AddCornerUI(_GetCommands, 0.2)
 _AddCornerUI(_GetFocusedButton, 0.2)
 _AddCornerUI(_GetCorrectedCommands, 0.2)
@@ -736,4 +856,4 @@ else
     _Notice("Script Notice", "Worlds Detected: Error!", 1, "SendNotification")
 end
 
-_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: 1.0", 1, "SendNotification")
+_Notice("BF Commands Scripts", "Completely Loaded!\nVersion: 1.1", 1, "SendNotification")
