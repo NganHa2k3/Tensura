@@ -78,9 +78,20 @@ function AbsoluteSmooth()
 end
 
 function AbsoluteRemove()
-    _Him:FindFirstChild("Extra_Wings_IX"):Destroy()
-    warn("=-= becareful.")
+    if _Him:FindFirstChild("Extra_Wings_IX") then
+        _Him:FindFirstChild("Extra_Wings_IX"):Destroy()
+        warn("=-= becareful.")
+    else
+        warn("where is my beautiful wings...")
+    end
 end
+
+_PLR.CharacterAdded:Connect(function()
+    if _PLR and _PLR.Character and _PLR.Character:FindFirstChild("HumanoidRootPart") then
+        _Him = _PLR.Character.HumanoidRootPart
+        print("reconnected- HRP")
+    end
+end)
 
 local tweenService = game:GetService("TweenService")
 local tweenSpeed = 325 -- Default speed in studs per second
