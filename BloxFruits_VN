@@ -63,13 +63,12 @@ BoatSelection.ScrollBarThickness = 0.1
 
 local _PLRS = game:GetService("Players")
 local _PLR = _PLRS.LocalPlayer
-local _Char = _PLR.Character
-local _Him = _Char:WaitForChild("HumanoidRootPart")
 local _ItsMath = math.huge
 
 function AbsoluteSmooth()
-    if not _Him:FindFirstChild("Extra_Wings_IX") then
-        local Safety_First = Instance.new("BodyVelocity", _Him)
+    if not _PLR.Character.HumanoidRootPart:FindFirstChild("Extra_Wings_IX") then
+        local Safety_First = Instance.new("BodyVelocity")
+        Safety_First.Parent = _PLR.Character.HumanoidRootPart
         Safety_First.Name = "Extra_Wings_IX"
         Safety_First.Velocity = Vector3.new(0, 0, 0)
         Safety_First.MaxForce = Vector3.new(_ItsMath, _ItsMath, _ItsMath)
@@ -78,20 +77,13 @@ function AbsoluteSmooth()
 end
 
 function AbsoluteRemove()
-    if _Him:FindFirstChild("Extra_Wings_IX") then
-        _Him:FindFirstChild("Extra_Wings_IX"):Destroy()
+    if _PLR.Character.HumanoidRootPart:FindFirstChild("Extra_Wings_IX") then
+        _PLR.Character.HumanoidRootPart:FindFirstChild("Extra_Wings_IX"):Destroy()
         warn("=-= becareful.")
     else
         warn("where is my beautiful wings...")
     end
 end
-
-_PLR.CharacterAdded:Connect(function()
-    if _PLR and _PLR.Character and _PLR.Character:FindFirstChild("HumanoidRootPart") then
-        _Him = _PLR.Character.HumanoidRootPart
-        print("reconnected- HRP")
-    end
-end)
 
 local tweenService = game:GetService("TweenService")
 local tweenSpeed = 325 -- Default speed in studs per second
@@ -815,7 +807,7 @@ button3.FocusLost:Connect(function(enterPressed)
         if newSpeed and newSpeed > 0 then
             tweenSpeed = newSpeed
         else
-            warn("Invalid tween speed: " .. tostring(speedTextBox.Text))
+            warn("Invalid tween speed: " .. tostring(button3.Text))
         end
     end
 end)
