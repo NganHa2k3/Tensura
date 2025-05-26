@@ -2,14 +2,25 @@
 local Player = game:GetService("Players").LocalPlayer
 local RunService = game:GetService("RunService")
 local Repli = game:GetService("ReplicatedStorage")
+local PlayerScripts = Player:WaitForChild("PlayerScripts")
 local Modules = Repli:WaitForChild("Modules")
 local Net = Modules:WaitForChild("Net")
 local RE_RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
 local RE_RegisterHit = Net:WaitForChild("RE/RegisterHit")
+local LocalScript = PlayerScripts:FindFirstChildOfClass("LocalScript")
 local Enemies = workspace:WaitForChild("Enemies")
+local LSHits
+
+task.spawn(function()
+    while not LocalScript do
+        Player.PlayerScripts.ChildAdded:Wait()
+        LocalScript = PlayerScripts:FindFirstChildOfClass("LocalScript")
+    end
+end)
 
 _G.EnableFastAttack_Enemies = false
 _G.SuperFastAttack_Enemies = false
+_G.Method = 2
 local Its_Disable_ATKEnemies, _WaitTime_Enemies
 
 Its_Disable_ATKEnemies = false
@@ -24,11 +35,11 @@ end
 function DoProcessHits(Position, Distance)
     local BladeHits = {}
     local Mobs = Enemies:GetChildren()
-
+    
     for i = 1, #Mobs do
         local Enemy = Mobs[i]
         local BasePart = Enemy.PrimaryPart
-
+        
         if BasePart and IsAlive(Enemy) and (Position - BasePart.Position).Magnitude <= Distance then
             table.insert(BladeHits, {Enemy, BasePart})
         end
@@ -40,20 +51,23 @@ end
 function ValidPartFor_Bladehits(Character, Distance)
     local Position = Character:GetPivot().Position
     Distance = Distance or 50
-
+    
     return DoProcessHits(Position, Distance)
 end
 
 function NormalAttacking(Character, Cooldown)
     local EnemyRootPart = nil
     local BladeHits = ValidPartFor_Bladehits(Character)
-
+    
     if #BladeHits > 0 then
         EnemyRootPart = BladeHits[1][2]
-
+        
         RE_RegisterAttack:FireServer(Cooldown)
-
-        RE_RegisterHit:FireServer(EnemyRootPart, BladeHits)
+        if _G.Method == 1 then
+            RE_RegisterHit:FireServer(EnemyRootPart, BladeHits)
+        elseif _G.Method == 2 then
+            LSHits(EnemyRootPart, BladeHits)
+        end
     end
 end
 
@@ -69,9 +83,23 @@ function AttackNoCD(Cooldown_I)
     end
     
     local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or Cooldown_I
-
+    
     NormalAttacking(Character, Cooldown)
 end
+
+local Point = 0
+RunService.RenderStepped:Connect(function()
+    Point += 1
+    if Point >= 2 then
+        if getsenv then
+            local scc, env = pcall(getsenv, LocalScript)
+            if scc and env then
+                LSHits = env._G.SendHitsToServer
+            end
+        end
+        Point = 0
+    end
+end)
 
 RunService.RenderStepped:Connect(function()
     if _G.EnableFastAttack_Enemies and not Its_Disable_ATKEnemies then
