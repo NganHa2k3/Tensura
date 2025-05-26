@@ -2,14 +2,25 @@
 local P1L = game:GetService("Players").LocalPlayer
 local R1S = game:GetService("RunService")
 local RP1 = game:GetService("ReplicatedStorage")
+local PLRS = P1L:WaitForChild("PlayerScripts")
 local M1D = RP1:WaitForChild("Modules")
 local N1 = M1D:WaitForChild("Net")
 local RE_1 = N1:WaitForChild("RE/RegisterAttack")
 local RE_2 = N1:WaitForChild("RE/RegisterHit")
+local LSC = PLRS:FindFirstChildOfClass("LocalScript")
 local CHARs1 = workspace:WaitForChild("Characters")
+local H1T
+
+task.spawn(function()
+    while not LSC do
+        P1L.PlayerScripts.ChildAdded:Wait()
+        LSC = PLRS:FindFirstChildOfClass("LocalScript")
+    end
+end)
 
 _G.EnableFastAttack_Players = false
 _G.SuperFastAttack_Players = false
+_G.Method = 2
 local Its_Disable_ATKPlayers, _WaitTime_Players
 
 Its_Disable_ATKPlayers = false
@@ -52,7 +63,11 @@ function Run_NormalAttacking(C1H, CDF)
         ERP1 = BLADE1[1][2]
 
         RE_1:FireServer(CDF)
-        RE_2:FireServer(ERP1, BLADE1)
+        if _G.Method == 1 then
+            RE_2:FireServer(ERP1, BLADE1)
+        elseif _G.Method == 2 then
+            H1T(ERP1, BLADE1)
+        end
     end
 end
 
@@ -71,6 +86,20 @@ function RunSpecialFunction(CDF)
 
     Run_NormalAttacking(C1H, CDF)
 end
+
+local P1 = 0
+R1S.RenderStepped:Connect(function()
+    P1 += 1
+    if P1 >= 2 then
+        if getsenv then
+            local S1, E2 = pcall(getsenv, LSC)
+            if S1 and E2 then
+                H1T = E2._G.SendHitsToServer
+            end
+        end
+        P1 = 0
+    end
+end)
 
 R1S.RenderStepped:Connect(function()
     if _G.EnableFastAttack_Players and not Its_Disable_ATKPlayers then
