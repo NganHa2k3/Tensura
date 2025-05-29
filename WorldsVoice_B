@@ -1,4 +1,4 @@
--- If Place ID Were Wrongs I Will Fixed It --
+-- If Games ID Were Wrongs I Will Fixed It --
 
 local gameScripts = {
     -- Blox Fruit --
@@ -35,7 +35,10 @@ local gameScripts = {
     [5287704645] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/ChakraBattleground",
 
     -- Elemental Tycoon --
-    [3754482795] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/ElementalTycoon"
+    [3754482795] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/ElementalTycoon",
+
+    -- Grow a Garden --
+    [7436755782] = "https://raw.githubusercontent.com/NganHa2k3/Tensura/refs/heads/place/Grow%20a%20Garden.luau"
 }
 
 local function loadGameScript(gameId)
