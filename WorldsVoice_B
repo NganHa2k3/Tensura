@@ -65,14 +65,4 @@ local function loadGameScript(gameId)
     end
 end
 
-local ss, err = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/NganHa2k3/Tools/refs/heads/main/Minecraft/Cubes.luau"))()
-end)
-
-if ss then
-    print("mc tools success!")
-    loadGameScript(game.GameId)
-else
-    print("mc tools err: " .. err)
-    loadGameScript(game.GameId)
-end
+loadGameScript(game.GameId)
