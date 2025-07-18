@@ -392,6 +392,40 @@ WalkOnAir.MouseButton1Click:Connect(function()
     end
 end)
 
+local function LoopsTPP_NearestPlayer()
+    local nearestPlayer = nil
+    local shortestDistance = math.huge
+    local localPlayerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+
+    for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+        if player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player ~= game.Players.LocalPlayer then
+            local distance = (player.Character.HumanoidRootPart.Position - localPlayerPos).magnitude
+            if distance < shortestDistance then
+                nearestPlayer = player
+                shortestDistance = distance
+            end
+        end
+    end
+
+    if nearestPlayer then
+        local targetPosition = nearestPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 40, 0)
+        if isTweenMode then
+            if currentTween then
+                currentTween:Cancel()
+            end
+
+            local goal = {CFrame = CFrame.new(targetPosition)}
+            local tweenInfo = createTweenInfo(localPlayerPos, targetPosition)
+            currentTween = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
+            currentTween:Play()
+        else
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+        end
+    else
+        warn("No other players found")
+    end
+end
+
 local GetQuestHunter = Instance.new("TextButton")
 GetQuestHunter.Parent = ScrollingFrame
 GetQuestHunter.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -401,21 +435,24 @@ GetQuestHunter.TextScaled = true
 GetQuestHunter.Position = UDim2.new(0.205, 0, 0, 0)  -- Positioned inside the ScrollingFrame
 GetQuestHunter.TextColor3 = Color3.fromRGB(255, 255, 255)
 GetQuestHunter.Font = Enum.Font.PatrickHand
-GetQuestHunter.Text = "Lấy nhiệm vụ thợ săn"
+GetQuestHunter.Text = "Săn mục tiêu (Gần nhất)"
 
+local _loop2nearestenemies = false
 GetQuestHunter.MouseButton1Click:Connect(function()
-    local args = {
-    [1] = "PlayerHunter"
-}
-
-game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-    
-    local CoreGui = game:GetService("StarterGui")
-        CoreGui:SetCore("SendNotification", {
-            Title = "Nhiệm vụ thợ săn",
-            Text = "Đã lấy nhiệm vụ thợ săn, Tìm nó và hủy diệt cho phần thưởng !",
-            Duration = 2,
-        })
+    if _loop2nearestenemies then
+        _loop2nearestenemies = false
+        AbsoluteRemove()
+        GetQuestHunter.TextColor3 = Color3.fromRGB(255, 255, 255)
+    else
+        _loop2nearestenemies = true
+        AbsoluteSmooth()
+        GetQuestHunter.TextColor3 = Color3.fromRGB(0, 255, 0)
+        LoopActivated_AllF.RenderStepped:Connect(function()
+            if _loop2nearestenemies then
+                LoopsTPP_NearestPlayer()
+            end
+        end)
+    end
 end)
 
 local ChangeDashLength = Instance.new("TextBox")
