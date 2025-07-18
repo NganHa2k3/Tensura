@@ -408,7 +408,7 @@ local function LoopsTPP_NearestPlayer()
     end
 
     if nearestPlayer then
-        local targetPosition = nearestPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 40, 0)
+        local targetPosition = nearestPlayer.Character.HumanoidRootPart.Position + Vector3.new(0, 2, 0)
         if isTweenMode then
             if currentTween then
                 currentTween:Cancel()
