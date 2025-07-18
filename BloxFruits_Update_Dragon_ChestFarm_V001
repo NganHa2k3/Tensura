@@ -1,92 +1,132 @@
--- Blox Fruits: HoangHien Script/<Collecting Chest Update Dragon 25> --
-local _WS, _PLRS, _PLR, _RS, _TS, _TpS, _Char, _Him, _He
-local _Chests_Name, _ItsMath, _NowPlay, _IsDeathOnec
+-- Blox Fruits: HoangHienXScript/Auto Chest v2 --
+local _ws, _plrs, _rs, _ts, _stg = game:GetService("Workspace"), game:GetService("Players"), game:GetService("RunService"), game:GetService("TweenService"), game:GetService("StarterGui")
+local _chestmodels, _map = _ws:WaitForChild("ChestModels"), _ws:WaitForChild("Map")
+local _modelsnamed = {"SilverChest", "GoldChest", "DiamondChest"}
+local _self = _plrs.LocalPlayer
+local _blacklistedmaps = {}
 
-_WS = game:GetService("Workspace")
-_PLRS = game:GetService("Players")
-_RS = game:GetService("RunService")
-_TS = game:GetService("TweenService")
-_TpS = game:GetService("TeleportService")
-
-_PLR = _PLRS.LocalPlayer
-_Char = _PLR.Character
-_Him = _Char:WaitForChild("HumanoidRootPart")
-_He = _Char:WaitForChild("Humanoid")
-
-_Chests_Name = {"Chest1", "Chest2", "Chest3"}
-_ItsMath = math.huge
-_NowPlay = false
-_IsDeathOnec = false
-_G.Hmm_WantSome = _G.Hmm_WantSome or 200
-
-function FlyingSmooth_Toggler(Whatsup)
-    if not _Him:FindFirstChild("Extra_Wings_IX") then
-        local Safety_First = Instance.new("BodyVelocity", Whatsup)
-        Safety_First.Name = "Extra_Wings_IX"
-        Safety_First.Velocity = Vector3.new(0, 0, 0)
-        Safety_First.MaxForce = Vector3.new(_ItsMath, _ItsMath, _ItsMath)
-        warn(":3 Safety flight.")
-    else
-        _Him:FindFirstChild("Extra_Wings_IX"):Destroy()
-        warn("=-= becareful.")
-    end
-end
-
-function LetUsGoThroughObject(TrueOrFalse)
-    for nothing, noclip_part in pairs(_Char:GetDescendants()) do
-        if noclip_part:IsA("BasePart") then
-            noclip_part.CanCollide = TrueOrFalse
-            warn("your a ghost :0")
+function _find_part(m)
+    if m.PrimaryPart then return m.PrimaryPart end
+    for nothing, part in ipairs(m:GetDescendants()) do
+        if part:IsA("Part") or part:IsA("MeshPart") then
+            return part
         end
     end
+    return nil
 end
 
-function Let_meSearching4CHEST_OK()
+function _expected_distance(p1, m)
+    local part = _find_part(m)
+    if not part then return math.huge end
+    return (p1.Position - part.Position).magnitude
+end
+
+function _targetsort(t)
+    table.sort(t, function(p1, p2)
+        return _expected_distance(_self.Character.HumanoidRootPart, p1) < _expected_distance(_self.Character.HumanoidRootPart, p2)
+    end)
+end
+
+function _get_chests()
     local chests = {}
-    
-    for nothing, a_mess in pairs(_WS:GetDescendants()) do
-        if a_mess:IsA("BasePart") and table.find(_Chests_Name, a_mess.Name) then
-            table.insert(chests, a_mess)
+    for beli, chest in pairs(_chestmodels:GetChildren()) do
+        if chest:IsA("Model") and table.find(_modelsnamed, chest.Name) and _find_part(chest) then
+            table.insert(chests, chest)
         end
     end
+    _targetsort(chests)
     return chests
 end
 
-function ExpectedGet_Distance(Money1, Money2)
-    return (Money1.Position - Money2.Position).Magnitude
-end
-
-function Lets_Go_CollectedAllTheseCrateOrChests()
-    local new_chests = Let_meSearching4CHEST_OK()
-    
-    table.sort(new_chests, function(A_Point, B_Point)
-        return ExpectedGet_Distance(_Him, A_Point) < ExpectedGet_Distance(_Him, B_Point)
-    end)
-    
-    for money, locate_new_chest in pairs(new_chests) do
-        local Start_Farm = _TS:Create(_Him, TweenInfo.new(ExpectedGet_Distance(_Him, locate_new_chest) / _G.Hmm_WantSome, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {CFrame = CFrame.new(locate_new_chest.Position)})
-        Start_Farm:Play()
-        Start_Farm.Completed:Wait()
-    end
-end
-
-function OkLetStart()
-    print("Let's Go !")
-    FlyingSmooth_Toggler(_Him)
-    LetUsGoThroughObject(false)
-    Lets_Go_CollectedAllTheseCrateOrChests()
-end
-
-OkLetStart()
-
-_RS.RenderStepped:Connect(function()
-    local _YourHealth = _He.Health
-    if _YourHealth <= 0 then
-        if not _IsDeathOnec then
-            _IsDeathOnec = true
-            FlyingSmooth_Toggler(_Him)
-            LetUsGoThroughObject(true)
-            warn("oh u ded, imma disable some stuff... wait until u activated it again :) !")
+function _get_maps()
+    local maps = {}
+    for crates, map in pairs(_map:GetChildren()) do
+        if map:IsA("Model") and not table.find(_blacklistedmaps, map) and _find_part(map) then
+            table.insert(maps, map)
         end
     end
+    _targetsort(maps)
+    return maps
+end
+
+function _tween_to(m, y_axis)
+    local part = _find_part(m)
+    if not part then return end
+    if tween then tween:Cancel() end
+    local distance = (_self.Character.HumanoidRootPart.Position - part.Position + Vector3.new(0, y_axis or 1.5, 0)).magnitude
+    local tween = _ts:Create(_self.Character.HumanoidRootPart, TweenInfo.new(distance / 250, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, 0, false, 0), {CFrame = CFrame.new(part.Position + Vector3.new(0, y_axis or 1.5, 0))})
+    tween:Play()
+    tween.Completed:Wait()
+end
+
+function _bv(pr)
+    if not _self.Character.HumanoidRootPart:FindFirstChild("Extra_Wings_IX") then
+        local safety = Instance.new("BodyVelocity", pr)
+        safety.Name = "Extra_Wings_IX"
+        safety.Velocity = Vector3.new(0, 0, 0)
+        safety.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+    else
+        _self.Character.HumanoidRootPart:FindFirstChild("Extra_Wings_IX"):Destroy()
+    end
+end
+
+function _nocliped(bl)
+    for nothing, noclip_part in pairs(_self.Character:GetDescendants()) do
+        if noclip_part:IsA("BasePart") then
+            noclip_part.CanCollide = bl
+        end
+    end
+end
+
+function _notify(msg)
+    _stg:SetCore("SendNotification", {Title = "Auto/Farming Chest v2.0", Text = msg, Duration = 2.5,})
+end
+
+local _looping = false
+local _conn
+
+_bv(_self.Character.HumanoidRootPart)
+_nocliped(false)
+if _G.AutoFarmChest_InitRun and _G.AutoFarmChest_InitRun == "already_onec" then
+    _notify("Re-Started, Create by HoangHienXScripts!")
+else
+    _notify("Started, Create by HoangHienXScripts!")
+end
+_conn = _rs.RenderStepped:Connect(function()
+    if _looping then return end
+    _looping = true
+
+    if not _self.Character or not _self.Character:FindFirstChild("HumanoidRootPart") or not _self.Character:FindFirstChild("Humanoid") or _self.Character.Humanoid.Health <= 0 then
+        _conn:Disconnect()
+        return
+    end
+
+    local chests = _get_chests()
+    if #chests > 0 then
+        for _, chest in ipairs(chests) do
+            if not _self.Character or not _self.Character:FindFirstChild("HumanoidRootPart") or not _self.Character:FindFirstChild("Humanoid") or _self.Character.Humanoid.Health <= 0 then
+                _conn:Disconnect()
+                return
+            end
+            _tween_to(chest, 1.5)
+        end
+    end
+
+    local maps = _get_maps()
+    if #maps == 0 then
+        _conn:Disconnect()
+        return
+    end
+
+    local nextmap = maps[1]
+    _tween_to(nextmap, 100)
+    table.insert(_blacklistedmaps, nextmap)
+
+    _looping = false
+end)
+
+_self.CharacterAdded:Once(function()
+    _conn:Disconnect()
+    _G.AutoFarmChest_InitRun = "already_onec"
+    _notify("Completely Disabled!")
 end)
